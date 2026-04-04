@@ -397,7 +397,8 @@ fn buildTodoRow(t: *const todo.Todo, idx: usize) ak.NSStackView {
     const checkbox = ak.NSButton.createCheckbox("", handler, objc.sel("toggleTodo:"));
     checkbox.send("setTag:", .{@as(i64, @intCast(t.id))});
     checkbox.send("setState:", .{@as(i64, if (t.completed) 1 else 0)});
-    checkbox.send("setAccessibilityLabel:", .{if (t.completed) "Mark incomplete" else "Mark complete"});
+    const a11y_label: [*:0]const u8 = if (t.completed) "Mark incomplete" else "Mark complete";
+    checkbox.send("setAccessibilityLabel:", .{a11y_label});
 
     // Priority icon
     const pri_iv = ak.NSImageView.createWithSymbol(switch (t.priority) {
