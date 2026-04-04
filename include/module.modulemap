@@ -1,0 +1,4 @@
+module ZiftCore {
+    header "zift.h"
+    export *
+}
