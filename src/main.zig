@@ -5,7 +5,8 @@
 
 const std = @import("std");
 const objc = @import("objc.zig");
-const ak = @import("AppKit.zig");
+const AppKit = @import("AppKit.zig");
+const Foundation = @import("Foundation.zig");
 const todo = @import("todo.zig");
 
 const cc = std.builtin.CallingConvention.c;
@@ -13,13 +14,13 @@ const Object = objc.Object;
 
 // ── App state ──────────────────────────────────────────────────────────
 
-var main_window: ak.NSWindow = undefined;
-var todo_list_stack: ak.NSStackView = undefined;
-var input_field: ak.NSTextField = undefined;
-var priority_seg: ak.NSSegmentedControl = undefined;
-var filter_seg: ak.NSSegmentedControl = undefined;
-var scroll_view: ak.NSScrollView = undefined;
-var empty_container: ak.NSStackView = undefined;
+var main_window: AppKit.NSWindow = undefined;
+var todo_list_stack: AppKit.NSStackView = undefined;
+var input_field: AppKit.NSTextField = undefined;
+var priority_seg: AppKit.NSSegmentedControl = undefined;
+var filter_seg: AppKit.NSSegmentedControl = undefined;
+var scroll_view: AppKit.NSScrollView = undefined;
+var empty_container: AppKit.NSStackView = undefined;
 var toolbar_delegate_inst: Object = undefined;
 
 // ── Entry point ────────────────────────────────────────────────────────
@@ -28,41 +29,41 @@ pub fn main() void {
     const pool = objc.autoreleasePoolPush();
     defer objc.autoreleasePoolPop(pool);
 
-    const app = ak.NSApplication.shared();
-    app.send("setActivationPolicy:", .{@as(i64, @intFromEnum(ak.NSApplication.NSApplicationActivationPolicy.regular))});
+    const app = AppKit.NSApplication.shared();
+    _ = app.send("setActivationPolicy:", .{@as(i64, @intFromEnum(AppKit.NSApplication.NSApplicationActivationPolicy.regular))});
 
     setupMenu(app);
     registerAllClasses();
 
-    const delegate_inst = ak.init("ZiftAppDelegate");
+    const delegate_inst = AppKit.init("ZiftAppDelegate");
     app.send("setDelegate:", .{delegate_inst});
     app.send("run", .{});
 }
 
 // ── Menu bar ───────────────────────────────────────────────────────────
 
-fn setupMenu(app: ak.NSApplication) void {
-    const bar = ak.NSMenu.create("");
+fn setupMenu(app: AppKit.NSApplication) void {
+    const bar = AppKit.NSMenu.create("");
 
     { // App menu
-        const item = ak.NSMenuItem.create();
-        const menu = ak.NSMenu.create("Zift");
+        const item = AppKit.NSMenuItem.create();
+        const menu = AppKit.NSMenu.create("Zift");
         _ = menu.addItemWithTitle("About Zift", null, "");
-        menu.addItem(ak.NSMenuItem.separator());
+        menu.addItem(AppKit.NSMenuItem.separator());
         _ = menu.addItemWithTitle("Hide Zift", objc.sel("hide:"), "h");
         _ = menu.addItemWithTitle("Hide Others", objc.sel("hideOtherApplications:"), "");
-        menu.addItem(ak.NSMenuItem.separator());
+        menu.addItem(AppKit.NSMenuItem.separator());
         _ = menu.addItemWithTitle("Quit Zift", objc.sel("terminate:"), "q");
         item.send("setSubmenu:", .{menu.obj});
         bar.addItem(item.obj);
     }
 
     { // Edit menu
-        const item = ak.NSMenuItem.create();
-        const menu = ak.NSMenu.create("Edit");
+        const item = AppKit.NSMenuItem.create();
+        const menu = AppKit.NSMenu.create("Edit");
         _ = menu.addItemWithTitle("Undo", objc.sel("undo:"), "z");
         _ = menu.addItemWithTitle("Redo", objc.sel("redo:"), "Z");
-        menu.addItem(ak.NSMenuItem.separator());
+        menu.addItem(AppKit.NSMenuItem.separator());
         _ = menu.addItemWithTitle("Cut", objc.sel("cut:"), "x");
         _ = menu.addItemWithTitle("Copy", objc.sel("copy:"), "c");
         _ = menu.addItemWithTitle("Paste", objc.sel("paste:"), "v");
@@ -72,8 +73,8 @@ fn setupMenu(app: ak.NSApplication) void {
     }
 
     { // Window menu
-        const item = ak.NSMenuItem.create();
-        const menu = ak.NSMenu.create("Window");
+        const item = AppKit.NSMenuItem.create();
+        const menu = AppKit.NSMenu.create("Window");
         _ = menu.addItemWithTitle("Close", objc.sel("performClose:"), "w");
         _ = menu.addItemWithTitle("Minimize", objc.sel("performMiniaturize:"), "m");
         _ = menu.addItemWithTitle("Zoom", objc.sel("performZoom:"), "");
@@ -144,10 +145,10 @@ fn toolbarItemForIdentifier(_: Object, _: objc.Sel, _: Object, ident: Object, _:
     const ident_slice = std.mem.span(ident_str);
 
     if (std.mem.eql(u8, ident_slice, tb_filter)) {
-        const item = ak.NSToolbarItem.create(ident);
-        const handler = ak.init("ZiftActionHandler");
+        const item = AppKit.NSToolbarItem.create(ident);
+        const handler = AppKit.init("ZiftActionHandler");
 
-        filter_seg = ak.NSSegmentedControl.create(ak.NSRect.make(0, 0, 240, 24));
+        filter_seg = AppKit.NSSegmentedControl.create(AppKit.NSRect.make(0, 0, 240, 24));
         filter_seg.send("setSegmentCount:", .{@as(i64, 3)});
         filter_seg.send("setLabel:forSegment:", .{ "All", @as(i64, 0) });
         filter_seg.send("setLabel:forSegment:", .{ "Pending", @as(i64, 1) });
@@ -162,12 +163,12 @@ fn toolbarItemForIdentifier(_: Object, _: objc.Sel, _: Object, ident: Object, _:
     }
 
     if (std.mem.eql(u8, ident_slice, tb_add)) {
-        const item = ak.NSToolbarItem.create(ident);
+        const item = AppKit.NSToolbarItem.create(ident);
         item.send("setLabel:", .{"Add"});
-        const del = ak.init("ZiftInputDelegate");
-        const btn = ak.NSButton.createImage("plus.circle.fill", "Add todo", del, objc.sel("addTodo:"));
+        const del = AppKit.init("ZiftInputDelegate");
+        const btn = AppKit.NSButton.createImage("plus.circle.fill", "Add todo", del, objc.sel("addTodo:"));
         btn.send("setBordered:", .{false});
-        btn.send("setContentTintColor:", .{ak.NSColor.class("labelColor", .{})});
+        btn.send("setContentTintColor:", .{AppKit.NSColor.class("labelColor", .{})});
         item.send("setView:", .{btn.obj});
         return item.obj;
     }
@@ -176,12 +177,12 @@ fn toolbarItemForIdentifier(_: Object, _: objc.Sel, _: Object, ident: Object, _:
 }
 
 fn toolbarAllowedIdentifiers(_: Object, _: objc.Sel, _: Object) callconv(cc) Object {
-    return ak.nsArray(&.{ objc.nsString(tb_filter), objc.nsString(tb_add) });
+    return AppKit.nsArray(&.{ objc.nsString(tb_filter), objc.nsString(tb_add) });
 }
 
 fn toolbarDefaultIdentifiers(_: Object, _: objc.Sel, _: Object) callconv(cc) Object {
-    return ak.nsArray(&.{
-        objc.nsString(ak.NSToolbarItemIdentifier.flexibleSpace),
+    return AppKit.nsArray(&.{
+        objc.nsString(AppKit.NSToolbarItemIdentifier.flexibleSpace),
         objc.nsString(tb_filter),
         objc.nsString(tb_add),
     });
@@ -190,51 +191,51 @@ fn toolbarDefaultIdentifiers(_: Object, _: objc.Sel, _: Object) callconv(cc) Obj
 // ── UI construction ────────────────────────────────────────────────────
 
 fn buildUI() void {
-    main_window = ak.NSWindow.create(.{ .title = "Zift", .width = 560, .height = 680 });
-    main_window.send("setMinSize:", .{ak.NSSize{ .width = 440, .height = 400 }});
+    main_window = AppKit.NSWindow.create(.{ .title = "Zift", .width = 560, .height = 680 });
+    main_window.send("setMinSize:", .{AppKit.NSSize{ .width = 440, .height = 400 }});
     main_window.send("setSubtitle:", .{"0 pending \xc2\xb7 0 done"});
 
     // Toolbar
-    const toolbar = ak.NSToolbar.create("com.zift.toolbar");
-    toolbar_delegate_inst = ak.init("ZiftToolbarDelegate");
+    const toolbar = AppKit.NSToolbar.create("com.zift.toolbar");
+    toolbar_delegate_inst = AppKit.init("ZiftToolbarDelegate");
     toolbar.send("setDelegate:", .{toolbar_delegate_inst});
-    toolbar.send("setDisplayMode:", .{@as(i64, @intFromEnum(ak.NSToolbar.NSToolbarDisplayMode.iconOnly))});
+    toolbar.send("setDisplayMode:", .{@as(i64, @intFromEnum(AppKit.NSToolbar.NSToolbarDisplayMode.iconOnly))});
     main_window.send("setToolbar:", .{toolbar.obj});
-    main_window.send("setToolbarStyle:", .{@as(i64, @intFromEnum(ak.NSWindow.NSWindowToolbarStyle.unified))});
+    main_window.send("setToolbarStyle:", .{@as(i64, @intFromEnum(AppKit.NSWindow.NSWindowToolbarStyle.unified))});
 
     // Content
-    const root = ak.NSStackView.create(.vertical);
+    const root = AppKit.NSStackView.create(.vertical);
     root.send("setSpacing:", .{@as(f64, 0)});
     root.send("addArrangedSubview:", .{buildInputBar().obj});
-    root.send("addArrangedSubview:", .{ak.NSBox.createSeparator().obj});
+    root.send("addArrangedSubview:", .{AppKit.NSBox.createSeparator().obj});
 
     // Scrollable todo list
-    scroll_view = ak.NSScrollView.create();
+    scroll_view = AppKit.NSScrollView.create();
     scroll_view.send("setDrawsBackground:", .{false});
 
-    todo_list_stack = ak.NSStackView.create(.vertical);
+    todo_list_stack = AppKit.NSStackView.create(.vertical);
     todo_list_stack.send("setSpacing:", .{@as(f64, 0)});
 
     // Empty state
-    empty_container = ak.NSStackView.create(.vertical);
+    empty_container = AppKit.NSStackView.create(.vertical);
     empty_container.send("setSpacing:", .{@as(f64, 6)});
-    empty_container.send("setEdgeInsets:", .{ @as(f64, 60), @as(f64, 60), @as(f64, 60), @as(f64, 60) });
+    empty_container.send("setEdgeInsets:", .{AppKit.NSEdgeInsets{ .top = 60, .left = 60, .bottom = 60, .right = 60 }});
     empty_container.send("setAlignment:", .{@as(i64, 9)}); // centerX
 
-    const empty_iv = ak.NSImageView.createWithSymbol("checkmark.circle", "No todos");
-    empty_iv.send("setContentTintColor:", .{ak.NSColor.class("secondaryLabelColor", .{})});
-    const sym_config = ak.NSImageSymbolConfiguration.class("configurationWithPointSize:weight:", .{ @as(f64, 36.0), @as(f64, 0.0) });
+    const empty_iv = AppKit.NSImageView.createWithSymbol("checkmark.circle", "No todos");
+    empty_iv.send("setContentTintColor:", .{AppKit.NSColor.class("secondaryLabelColor", .{})});
+    const sym_config = AppKit.NSImageSymbolConfiguration.class("configurationWithPointSize:weight:", .{ @as(f64, 36.0), @as(f64, 0.0) });
     empty_iv.send("setSymbolConfiguration:", .{sym_config});
 
-    const empty_msg = ak.NSTextField.createLabel("No Todos Yet");
-    empty_msg.send("setFont:", .{ak.NSFont.class("boldSystemFontOfSize:", .{@as(f64, 17)})});
-    empty_msg.send("setTextColor:", .{ak.NSColor.class("secondaryLabelColor", .{})});
+    const empty_msg = AppKit.NSTextField.createLabel("No Todos Yet");
+    empty_msg.send("setFont:", .{AppKit.NSFont.class("boldSystemFontOfSize:", .{@as(f64, 17)})});
+    empty_msg.send("setTextColor:", .{AppKit.NSColor.class("secondaryLabelColor", .{})});
     empty_msg.send("setAlignment:", .{@as(i64, 2)});
     empty_msg.send("setContentCompressionResistancePriority:forOrientation:", .{ @as(f32, 999), @as(i64, 0) });
 
-    const hint = ak.NSTextField.createLabel("Add one above to get started.");
-    hint.send("setFont:", .{ak.NSFont.class("systemFontOfSize:", .{@as(f64, 13)})});
-    hint.send("setTextColor:", .{ak.NSColor.class("tertiaryLabelColor", .{})});
+    const hint = AppKit.NSTextField.createLabel("Add one above to get started.");
+    hint.send("setFont:", .{AppKit.NSFont.class("systemFontOfSize:", .{@as(f64, 13)})});
+    hint.send("setTextColor:", .{AppKit.NSColor.class("tertiaryLabelColor", .{})});
     hint.send("setAlignment:", .{@as(i64, 2)});
     hint.send("setContentCompressionResistancePriority:forOrientation:", .{ @as(f32, 999), @as(i64, 0) });
 
@@ -243,14 +244,14 @@ fn buildUI() void {
     empty_container.send("addArrangedSubview:", .{hint.obj});
 
     // Flipped clip view
-    const fclip = objc.msgSend(Object, objc.msgSendClass(Object, "ZiftFlippedClipView", "alloc", .{}), "initWithFrame:", .{ak.NSRect.make(0, 0, 0, 0)});
+    const fclip = objc.msgSend(Object, objc.msgSendClass(Object, "ZiftFlippedClipView", "alloc", .{}), "initWithFrame:", .{AppKit.NSRect.make(0, 0, 0, 0)});
     scroll_view.send("setContentView:", .{fclip});
     scroll_view.send("setDocumentView:", .{todo_list_stack.obj});
 
     // Pin stack width to clip view
     todo_list_stack.send("setTranslatesAutoresizingMaskIntoConstraints:", .{false});
     const clip_view = scroll_view.send("contentView", .{});
-    ak.NSLayoutConstraint.pinWidthEqual(todo_list_stack.obj, clip_view);
+    AppKit.NSLayoutConstraint.pinWidthEqual(todo_list_stack.obj, clip_view);
 
     root.send("addArrangedSubview:", .{scroll_view.obj});
     scroll_view.send("setContentHuggingPriority:forOrientation:", .{ @as(f32, 249), @as(i64, 1) });
@@ -260,24 +261,24 @@ fn buildUI() void {
     main_window.send("setContentView:", .{root.obj});
 
     refreshTodoList();
-    main_window.send("makeKeyAndOrderFront:", .{@as(?*anyopaque, null)});
-    ak.NSApplication.shared().send("activateIgnoringOtherApps:", .{true});
+    objc.msgSend(void, main_window.obj, "makeKeyAndOrderFront:", .{@as(?*anyopaque, null)});
+    AppKit.NSApplication.shared().send("activateIgnoringOtherApps:", .{true});
 }
 
-fn buildInputBar() ak.NSStackView {
-    const bar = ak.NSStackView.create(.horizontal);
+fn buildInputBar() AppKit.NSStackView {
+    const bar = AppKit.NSStackView.create(.horizontal);
     bar.send("setSpacing:", .{@as(f64, 10)});
-    bar.send("setEdgeInsets:", .{ @as(f64, 10), @as(f64, 16), @as(f64, 10), @as(f64, 16) });
+    bar.send("setEdgeInsets:", .{AppKit.NSEdgeInsets{ .top = 10, .left = 16, .bottom = 10, .right = 16 }});
 
-    input_field = ak.NSTextField.createInput("What needs to be done?");
-    input_field.send("setAccessibilityLabel:", .{"New todo title"});
-    input_field.send("setFont:", .{ak.NSFont.class("systemFontOfSize:", .{@as(f64, 13)})});
+    input_field = AppKit.NSTextField.createInput("What needs to be done?");
+    objc.msgSend(void, input_field.obj, "setAccessibilityLabel:", .{objc.nsString("New todo title")});
+    input_field.send("setFont:", .{AppKit.NSFont.class("systemFontOfSize:", .{@as(f64, 13)})});
 
-    const del = ak.init("ZiftInputDelegate");
+    const del = AppKit.init("ZiftInputDelegate");
     input_field.send("setDelegate:", .{del});
     input_field.send("setContentHuggingPriority:forOrientation:", .{ @as(f32, 249), @as(i64, 0) });
 
-    priority_seg = ak.NSSegmentedControl.create(ak.NSRect.make(0, 0, 180, 24));
+    priority_seg = AppKit.NSSegmentedControl.create(AppKit.NSRect.make(0, 0, 180, 24));
     priority_seg.send("setSegmentCount:", .{@as(i64, 3)});
     priority_seg.send("setLabel:forSegment:", .{ "Low", @as(i64, 0) });
     priority_seg.send("setLabel:forSegment:", .{ "Medium", @as(i64, 1) });
@@ -318,12 +319,12 @@ fn clearCompletedAction(_: Object, _: objc.Sel, _: Object) callconv(cc) void {
     refreshTodoList();
 }
 fn toggleTodoAction(_: Object, _: objc.Sel, sender: Object) callconv(cc) void {
-    const btn: ak.NSButton = .{ .obj = sender };
+    const btn: AppKit.NSButton = .{ .obj = sender };
     _ = todo.zift_toggle_todo(@intCast(btn.send("tag", .{})));
     refreshTodoList();
 }
 fn removeTodoAction(_: Object, _: objc.Sel, sender: Object) callconv(cc) void {
-    const btn: ak.NSButton = .{ .obj = sender };
+    const btn: AppKit.NSButton = .{ .obj = sender };
     _ = todo.zift_remove_todo(@intCast(btn.send("tag", .{})));
     refreshTodoList();
 }
@@ -347,13 +348,13 @@ fn todoPassesFilter(t: *const todo.Todo) bool {
 
 fn refreshTodoList() void {
     // Remove all arranged subviews
-    const subviews: ak.NSArrayObj = .{ .obj = todo_list_stack.send("arrangedSubviews", .{}) };
+    const subviews: AppKit.NSArrayObj = .{ .obj = todo_list_stack.send("arrangedSubviews", .{}) };
     var i: c_ulong = subviews.send("count", .{});
     while (i > 0) {
         i -= 1;
         const view = subviews.send("objectAtIndex:", .{i});
         todo_list_stack.send("removeArrangedSubview:", .{view});
-        const v: ak.NSView = .{ .obj = view };
+        const v: AppKit.NSView = .{ .obj = view };
         v.send("removeFromSuperview", .{});
     }
 
@@ -375,33 +376,34 @@ fn refreshTodoList() void {
 
     // Update subtitle
     var buf: [64]u8 = undefined;
-    main_window.send("setSubtitle:", .{ak.fmtZ("{d} pending \xc2\xb7 {d} done", .{ todo.zift_count_pending(), todo.zift_count_completed() }, &buf)});
+    main_window.send("setSubtitle:", .{AppKit.fmtZ("{d} pending \xc2\xb7 {d} done", .{ todo.zift_count_pending(), todo.zift_count_completed() }, &buf)});
 }
 
-fn buildTodoRow(t: *const todo.Todo, idx: usize) ak.NSStackView {
-    const row = ak.NSStackView.create(.horizontal);
+fn buildTodoRow(t: *const todo.Todo, idx: usize) AppKit.NSStackView {
+    const row = AppKit.NSStackView.create(.horizontal);
     row.send("setSpacing:", .{@as(f64, 10)});
-    row.send("setEdgeInsets:", .{ @as(f64, 8), @as(f64, 16), @as(f64, 8), @as(f64, 16) });
+    row.send("setEdgeInsets:", .{AppKit.NSEdgeInsets{ .top = 8, .left = 16, .bottom = 8, .right = 16 }});
 
     // Alternating background
     if (idx % 2 == 1) {
-        const rv: ak.NSView = .{ .obj = row.obj };
+        const rv: AppKit.NSView = .{ .obj = row.obj };
         rv.send("setWantsLayer:", .{true});
-        const layer: ak.CALayer = .{ .obj = rv.send("layer", .{}) };
-        layer.send("setBackgroundColor:", .{ak.NSColor.send(ak.NSColor.class("colorWithRed:green:blue:alpha:", .{ 0.5, 0.5, 0.5, 0.06 }), "CGColor", .{})});
+        const layer: AppKit.CALayer = .{ .obj = @ptrCast(rv.send("layer", .{}).?) };
+        const color: AppKit.NSColor = .{ .obj = AppKit.NSColor.class("colorWithRed:green:blue:alpha:", .{ 0.5, 0.5, 0.5, 0.06 }) };
+            layer.send("setBackgroundColor:", .{color.send("CGColor", .{})});
     }
 
-    const handler = ak.init("ZiftActionHandler");
+    const handler = AppKit.init("ZiftActionHandler");
 
     // Checkbox
-    const checkbox = ak.NSButton.createCheckbox("", handler, objc.sel("toggleTodo:"));
+    const checkbox = AppKit.NSButton.createCheckbox("", handler, objc.sel("toggleTodo:"));
     checkbox.send("setTag:", .{@as(i64, @intCast(t.id))});
     checkbox.send("setState:", .{@as(i64, if (t.completed) 1 else 0)});
     const a11y_label: [*:0]const u8 = if (t.completed) "Mark incomplete" else "Mark complete";
-    checkbox.send("setAccessibilityLabel:", .{a11y_label});
+    objc.msgSend(void, checkbox.obj, "setAccessibilityLabel:", .{objc.nsString(a11y_label)});
 
     // Priority icon
-    const pri_iv = ak.NSImageView.createWithSymbol(switch (t.priority) {
+    const pri_iv = AppKit.NSImageView.createWithSymbol(switch (t.priority) {
         .low => "arrow.down.circle",
         .medium => "equal.circle",
         .high => "exclamationmark.circle",
@@ -411,9 +413,9 @@ fn buildTodoRow(t: *const todo.Todo, idx: usize) ak.NSStackView {
         .high => "High",
     });
     pri_iv.send("setContentTintColor:", .{switch (t.priority) {
-        .low => ak.NSColor.class("systemBlueColor", .{}),
-        .medium => ak.NSColor.class("systemOrangeColor", .{}),
-        .high => ak.NSColor.class("systemRedColor", .{}),
+        .low => AppKit.NSColor.class("systemBlueColor", .{}),
+        .medium => AppKit.NSColor.class("systemOrangeColor", .{}),
+        .high => AppKit.NSColor.class("systemRedColor", .{}),
     }});
 
     // Title
@@ -421,17 +423,17 @@ fn buildTodoRow(t: *const todo.Todo, idx: usize) ak.NSStackView {
     @memcpy(title_buf[0..t.title_len], t.title[0..t.title_len]);
     title_buf[t.title_len] = 0;
 
-    const title_label = ak.NSTextField.createLabel(@ptrCast(&title_buf));
-    title_label.send("setFont:", .{ak.NSFont.class("systemFontOfSize:", .{@as(f64, 13)})});
+    const title_label = AppKit.NSTextField.createLabel(@ptrCast(&title_buf));
+    title_label.send("setFont:", .{AppKit.NSFont.class("systemFontOfSize:", .{@as(f64, 13)})});
     if (t.completed) {
-        title_label.send("setTextColor:", .{ak.NSColor.class("secondaryLabelColor", .{})});
+        title_label.send("setTextColor:", .{AppKit.NSColor.class("secondaryLabelColor", .{})});
         // Strikethrough
         const str_val = title_label.send("stringValue", .{});
         const str_len = objc.msgSend(c_ulong, str_val, "length", .{});
-        const attr = ak.NSMutableAttributedString.create(str_val);
+        const attr: Foundation.NSMutableAttributedString = .{ .obj = objc.msgSend(Object, objc.msgSendClass(Object, "NSMutableAttributedString", "alloc", .{}), "initWithString:", .{str_val}) };
         attr.send("addAttribute:value:range:", .{
             objc.nsString("NSStrikethrough"),               objc.nsNumberWithInt(1),
-            ak.NSRange{ .location = 0, .length = str_len },
+            AppKit.NSRange{ .location = 0, .length = str_len },
         });
         title_label.send("setAttributedStringValue:", .{attr.obj});
     }
@@ -440,9 +442,9 @@ fn buildTodoRow(t: *const todo.Todo, idx: usize) ak.NSStackView {
     title_label.setLineBreakMode(4);
 
     // Delete button
-    const del_btn = ak.NSButton.createImage("trash", "Delete", handler, objc.sel("removeTodo:"));
+    const del_btn = AppKit.NSButton.createImage("trash", "Delete", handler, objc.sel("removeTodo:"));
     del_btn.send("setBordered:", .{false});
-    del_btn.send("setContentTintColor:", .{ak.NSColor.class("systemRedColor", .{})});
+    del_btn.send("setContentTintColor:", .{AppKit.NSColor.class("systemRedColor", .{})});
     del_btn.send("setTag:", .{@as(i64, @intCast(t.id))});
 
     row.send("addArrangedSubview:", .{checkbox.obj});

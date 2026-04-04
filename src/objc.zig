@@ -208,6 +208,53 @@ pub fn typedClassSend(comptime class_name: [*:0]const u8, comptime table: anytyp
     return msgSendClass(SendReturn(table, selector), class_name, selector, coerceArgs(SendArgTypes(table, selector), args));
 }
 
+/// Look up selector in a single method table. Returns the entry index or null.
+fn findInTable(comptime table: anytype, comptime sel_s: []const u8) ?comptime_int {
+    for (table, 0..) |entry, i| {
+        if (comptime std.mem.eql(u8, selStr(entry[0]), sel_s)) {
+            return i;
+        }
+    }
+    return null;
+}
+
+/// Walk an inheritance chain of method tables to find a selector's return type.
+pub fn SendReturnChain(comptime Cls: type, comptime selector: [*:0]const u8) type {
+    @setEvalBranchQuota(100000);
+    const sel_s = comptime selStr(selector);
+    if (@hasDecl(Cls, "methods")) {
+        if (findInTable(Cls.methods, sel_s)) |i| {
+            return Cls.methods[i][1];
+        }
+    }
+    if (@hasDecl(Cls, "Super")) {
+        return SendReturnChain(Cls.Super, selector);
+    }
+    @compileError("Unknown selector: " ++ sel_s ++ " — not found in class or any superclass");
+}
+
+/// Walk an inheritance chain to find arg types for a selector.
+fn SendArgTypesChain(comptime Cls: type, comptime selector: [*:0]const u8) type {
+    @setEvalBranchQuota(100000);
+    const sel_s = comptime selStr(selector);
+    if (@hasDecl(Cls, "methods")) {
+        if (findInTable(Cls.methods, sel_s)) |i| {
+            return ArgTuple(Cls.methods[i][2]);
+        }
+    }
+    if (@hasDecl(Cls, "Super")) {
+        return SendArgTypesChain(Cls.Super, selector);
+    }
+    unreachable;
+}
+
+/// Walk an inheritance chain to find a selector, then do a typed send.
+pub fn typedSendChain(comptime Cls: type, target: Object, comptime selector: [*:0]const u8, args: anytype) SendReturnChain(Cls, selector) {
+    const RetType = SendReturnChain(Cls, selector);
+    const ArgTypes = SendArgTypesChain(Cls, selector);
+    return msgSend(RetType, target, selector, coerceArgs(ArgTypes, args));
+}
+
 /// Look up the return type for a selector in the table. Compile error if not found.
 fn selStr(comptime s: anytype) []const u8 {
     @setEvalBranchQuota(10000);
@@ -307,9 +354,21 @@ fn coerceArgs(comptime Expected: type, args: anytype) Expected {
         } else if (@typeInfo(ValType) == .@"struct") {
             // Struct → struct (e.g. Size, Rect)
             @field(result, field.name) = val;
+        } else if (ExpType == ?*anyopaque and @typeInfo(ValType) == .pointer) {
+            // Any pointer → ?*anyopaque
+            @field(result, field.name) = @ptrCast(@constCast(val));
         } else if (@typeInfo(ValType) == .optional and ExpType == ?*anyopaque) {
             // Optional pointer
             @field(result, field.name) = val;
+        } else if (ExpType == Object and ValType == ?*anyopaque) {
+            // ?*anyopaque → Object (unsafe but needed for generated bindings)
+            @field(result, field.name) = @ptrCast(val.?);
+        } else if (@typeInfo(ExpType) == .int and @typeInfo(ValType) == .float) {
+            // float → int (for mixed type mappings in generated code)
+            @field(result, field.name) = @intFromFloat(val);
+        } else if (@typeInfo(ExpType) == .float and @typeInfo(ValType) == .int) {
+            // int → float
+            @field(result, field.name) = @floatFromInt(val);
         } else {
             @compileError("Cannot coerce " ++ @typeName(ValType) ++ " to " ++ @typeName(ExpType));
         }
