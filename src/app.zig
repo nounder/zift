@@ -130,7 +130,7 @@ pub fn main() void {
     setupMenu(app);
     registerAllClasses();
 
-    const delegate_inst = AppKit.init("TodozAppDelegate");
+    const delegate_inst = objc.init("TodozAppDelegate");
     app.send("setDelegate:", .{delegate_inst});
     app.send("run", .{});
 }
@@ -240,7 +240,7 @@ fn toolbarItemForIdentifier(_: Object, _: objc.Sel, _: Object, ident: Object, _:
 
     if (std.mem.eql(u8, ident_slice, tb_filter)) {
         const item = AppKit.NSToolbarItem.static("alloc", .{}).send("initWithItemIdentifier:", .{ident});
-        const handler = AppKit.init("TodozActionHandler");
+        const handler = objc.init("TodozActionHandler");
 
         filter_seg = AppKit.NSSegmentedControl.static("alloc", .{}).send("initWithFrame:", .{AppKit.NSRect.make(0, 0, 200, 24)});
         filter_seg.send("setSegmentCount:", .{3});
@@ -287,7 +287,7 @@ fn buildUI() void {
 
     { // Toolbar
         const toolbar = AppKit.NSToolbar.static("alloc", .{}).send("initWithIdentifier:", .{"org.nounder.todoz.toolbar"});
-        toolbar_delegate_inst = AppKit.init("TodozToolbarDelegate");
+        toolbar_delegate_inst = objc.init("TodozToolbarDelegate");
         toolbar.send("setDelegate:", .{toolbar_delegate_inst});
         toolbar.send("setDisplayMode:", .{AppKit.NSToolbar.DisplayMode.iconOnly});
         main_window.send("setToolbar:", .{toolbar.id});
@@ -306,7 +306,7 @@ fn buildUI() void {
         input_field.send("setFont:", .{AppKit.NSFont.static("systemFontOfSize:", .{13})});
         input_field.send("setContentHuggingPriority:forOrientation:", .{ 249, 0 });
 
-        const del = AppKit.init("TodozInputDelegate");
+        const del = objc.init("TodozInputDelegate");
         input_field.send("setDelegate:", .{del});
 
         const bar = AppKit.NSStackView.static("alloc", .{}).send("initWithFrame:", .{AppKit.NSRect.make(0, 0, 0, 0)});
@@ -492,7 +492,7 @@ fn buildTodozRow(t: *const Todoz, idx: usize) AppKit.NSStackView {
         layer.send("setBackgroundColor:", .{color.send("CGColor", .{})});
     }
 
-    const handler = AppKit.init("TodozActionHandler");
+    const handler = objc.init("TodozActionHandler");
 
     { // Checkbox
         const sym_name = if (t.completed) "checkmark.circle.fill" else "circle";

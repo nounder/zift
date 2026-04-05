@@ -18,6 +18,8 @@ pub const TimeInterval = f64;
 pub const pid_t = std.c_int;
 
 pub const Accessibility = @import("Accessibility.zig");
+pub const AppKit = @import("AppKit.zig");
+pub const WebKit = @import("WebKit.zig");
 
 pub const NSPoint = extern struct { x: f64 = 0, y: f64 = 0 };
 pub const NSSize = extern struct { width: f64 = 0, height: f64 = 0 };
@@ -6670,7 +6672,7 @@ pub const NSUserNotification = struct {
         .{ "actualDeliveryDate", ?NSDate, .{} },
         .{ "additionalActions", ?*anyopaque, .{} },
         .{ "additionalActivationAction", ?NSUserNotificationAction, .{} },
-        .{ "contentImage", ?*anyopaque, .{} },
+        .{ "contentImage", ?AppKit.NSImage, .{} },
         .{ "deliveryDate", ?NSDate, .{} },
         .{ "deliveryRepeatInterval", ?NSDateComponents, .{} },
         .{ "deliveryTimeZone", ?NSTimeZone, .{} },
@@ -6685,7 +6687,7 @@ pub const NSUserNotification = struct {
         .{ "responsePlaceholder", ?objc.NSString, .{} },
         .{ "setActionButtonTitle:", void, .{objc.NSString} },
         .{ "setAdditionalActions:", void, .{?*anyopaque} },
-        .{ "setContentImage:", void, .{?*anyopaque} },
+        .{ "setContentImage:", void, .{?AppKit.NSImage} },
         .{ "setDeliveryDate:", void, .{?NSDate} },
         .{ "setDeliveryRepeatInterval:", void, .{?NSDateComponents} },
         .{ "setDeliveryTimeZone:", void, .{?NSTimeZone} },
@@ -7361,10 +7363,6 @@ pub fn viewObj(val: anytype) Object {
     if (T == Object) return val;
     if (@hasField(T, "id")) return val.id;
     @compileError("cannot extract obj from " ++ @typeName(T));
-}
-
-pub fn init(comptime class_name: [*:0]const u8) Object {
-    return objc.send(objc.send(objc.getClass(class_name).?, "alloc", Object, .{}), "init", Object, .{});
 }
 
 pub fn nsArray(items: []const Object) Object {

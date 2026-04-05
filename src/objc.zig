@@ -137,6 +137,12 @@ pub fn alloc(comptime T: type) Id {
     return .{ .id = send(T.class, "alloc", Object, .{}) };
 }
 
+/// Alloc+init a runtime-registered ObjC class by name.
+/// For dynamically created classes (via allocateClassPair), not framework classes.
+pub fn init(comptime class_name: [*:0]const u8) Object {
+    return send(send(getClass(class_name).?, "alloc", Object, .{}), "init", Object, .{});
+}
+
 pub const Id = struct {
     id: Object,
 

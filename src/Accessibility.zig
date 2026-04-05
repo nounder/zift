@@ -17,7 +17,9 @@ pub const UnsafePointer = *const anyopaque;
 pub const TimeInterval = f64;
 pub const pid_t = std.c_int;
 
+pub const AppKit = @import("AppKit.zig");
 pub const Foundation = @import("Foundation.zig");
+pub const WebKit = @import("WebKit.zig");
 
 pub const NSPoint = Foundation.NSPoint;
 pub const NSSize = Foundation.NSSize;
@@ -440,10 +442,6 @@ pub fn viewObj(val: anytype) Object {
     if (T == Object) return val;
     if (@hasField(T, "id")) return val.id;
     @compileError("cannot extract obj from " ++ @typeName(T));
-}
-
-pub fn init(comptime class_name: [*:0]const u8) Object {
-    return objc.send(objc.send(objc.getClass(class_name).?, "alloc", Object, .{}), "init", Object, .{});
 }
 
 pub fn nsArray(items: []const Object) Object {
