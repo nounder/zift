@@ -50,10 +50,9 @@ fn addTodozItem(title_ptr: [*]const u8, title_len: u32) u64 {
 fn removeTodozItem(id: u64) bool {
     for (0..todo_count) |i| {
         if (todos[i].id == id) {
-            if (i + 1 < todo_count) {
-                const dest = todos[i .. todo_count - 1];
-                const src = todos[i + 1 .. todo_count];
-                @memcpy(dest, src);
+            var j = i;
+            while (j + 1 < todo_count) : (j += 1) {
+                todos[j] = todos[j + 1];
             }
             todo_count -= 1;
             return true;
@@ -82,10 +81,9 @@ fn clearCompletedItems() u32 {
     var i: u32 = 0;
     while (i < todo_count) {
         if (todos[i].completed) {
-            if (i + 1 < todo_count) {
-                const dest = todos[i .. todo_count - 1];
-                const src = todos[i + 1 .. todo_count];
-                @memcpy(dest, src);
+            var j = i;
+            while (j + 1 < todo_count) : (j += 1) {
+                todos[j] = todos[j + 1];
             }
             todo_count -= 1;
             removed += 1;

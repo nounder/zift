@@ -587,6 +587,9 @@ fn coerceArgs(comptime Expected: type, args: anytype) Expected {
         } else if (ExpType == Object and ValType == [*:0]const u8) {
             // Null-terminated string → NSString
             @field(result, field.name) = nsString(val);
+        } else if (ExpType == Object and ValType == [:0]const u8) {
+            // Sentinel-terminated slice → NSString
+            @field(result, field.name) = nsString(val.ptr);
         } else if (ExpType == Object and comptime isStringLiteral(ValType)) {
             // String literal (*const [N:0]u8) → NSString
             @field(result, field.name) = nsString(@as([*:0]const u8, val));
