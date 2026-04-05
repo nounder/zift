@@ -53,8 +53,14 @@ pub const AXBrailleMap = struct {
         .{ "setHeight:atPoint:", void, .{ f32, NSPoint } },
     };
 
-    pub fn send(self: AXBrailleMap, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: AXBrailleMap, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
+    }
+
+    pub const class_methods = .{};
+
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "AXBrailleMap", class_methods, selector, args);
     }
 };
 
@@ -63,6 +69,7 @@ pub const AXBrailleTable = struct {
 
     pub const methods = .{
         .{ "identifier", objc.NSString, .{} },
+        .{ "initWithIdentifier:", AXBrailleTable, .{objc.NSString} },
         .{ "isEightDot", objc.BOOL, .{} },
         .{ "locales", Foundation.NSLocale, .{} },
         .{ "localizedName", objc.NSString, .{} },
@@ -70,20 +77,19 @@ pub const AXBrailleTable = struct {
         .{ "providerIdentifier", objc.NSString, .{} },
     };
 
-    pub fn send(self: AXBrailleTable, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: AXBrailleTable, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
         .{ "defaultTableForLocale:", ?AXBrailleTable, .{Foundation.NSLocale} },
-        .{ "initWithIdentifier:", Object, .{objc.NSString} },
         .{ "languageAgnosticTables", AXBrailleTable, .{} },
         .{ "supportedLocales", Foundation.NSLocale, .{} },
         .{ "tablesForLocale:", AXBrailleTable, .{Foundation.NSLocale} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("AXBrailleTable", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "AXBrailleTable", class_methods, selector, args);
     }
 };
 
@@ -94,8 +100,14 @@ pub const AXBrailleTranslationResult = struct {
         .{ "resultString", objc.NSString, .{} },
     };
 
-    pub fn send(self: AXBrailleTranslationResult, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: AXBrailleTranslationResult, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
+    }
+
+    pub const class_methods = .{};
+
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "AXBrailleTranslationResult", class_methods, selector, args);
     }
 };
 
@@ -104,19 +116,18 @@ pub const AXBrailleTranslator = struct {
 
     pub const methods = .{
         .{ "backTranslateBraille:", AXBrailleTranslationResult, .{objc.NSString} },
+        .{ "initWithBrailleTable:", AXBrailleTranslator, .{AXBrailleTable} },
         .{ "translatePrintText:", AXBrailleTranslationResult, .{objc.NSString} },
     };
 
-    pub fn send(self: AXBrailleTranslator, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: AXBrailleTranslator, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
-    pub const class_methods = .{
-        .{ "initWithBrailleTable:", Object, .{AXBrailleTable} },
-    };
+    pub const class_methods = .{};
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("AXBrailleTranslator", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "AXBrailleTranslator", class_methods, selector, args);
     }
 };
 
@@ -125,20 +136,19 @@ pub const AXCategoricalDataAxisDescriptor = struct {
 
     pub const methods = .{
         .{ "categoryOrder", Object, .{} },
+        .{ "initWithAttributedTitle:categoryOrder:", AXCategoricalDataAxisDescriptor, .{ Foundation.NSAttributedString, Object } },
+        .{ "initWithTitle:categoryOrder:", AXCategoricalDataAxisDescriptor, .{ objc.NSString, Object } },
         .{ "setCategoryOrder:", void, .{Object} },
     };
 
-    pub fn send(self: AXCategoricalDataAxisDescriptor, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: AXCategoricalDataAxisDescriptor, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
-    pub const class_methods = .{
-        .{ "initWithAttributedTitle:categoryOrder:", Object, .{ Foundation.NSAttributedString, Object } },
-        .{ "initWithTitle:categoryOrder:", Object, .{ objc.NSString, Object } },
-    };
+    pub const class_methods = .{};
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("AXCategoricalDataAxisDescriptor", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "AXCategoricalDataAxisDescriptor", class_methods, selector, args);
     }
 };
 
@@ -162,8 +172,14 @@ pub const AXChartDescriptor = struct {
         .{ "yAxis", ?AXNumericDataAxisDescriptor, .{} },
     };
 
-    pub fn send(self: AXChartDescriptor, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: AXChartDescriptor, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
+    }
+
+    pub const class_methods = .{};
+
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "AXChartDescriptor", class_methods, selector, args);
     }
 
     pub const ContentDirection = enum(i64) {
@@ -188,8 +204,8 @@ pub const AXCustomContent = struct {
         .{ "value", objc.NSString, .{} },
     };
 
-    pub fn send(self: AXCustomContent, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: AXCustomContent, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
@@ -197,8 +213,8 @@ pub const AXCustomContent = struct {
         .{ "customContentWithLabel:value:", Object, .{ objc.NSString, objc.NSString } },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("AXCustomContent", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "AXCustomContent", class_methods, selector, args);
     }
 
     pub const Importance = enum(i64) {
@@ -221,8 +237,14 @@ pub const AXDataPoint = struct {
         .{ "yValue", ?*anyopaque, .{} },
     };
 
-    pub fn send(self: AXDataPoint, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: AXDataPoint, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
+    }
+
+    pub const class_methods = .{};
+
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "AXDataPoint", class_methods, selector, args);
     }
 };
 
@@ -232,6 +254,8 @@ pub const AXDataSeriesDescriptor = struct {
     pub const methods = .{
         .{ "attributedName", Foundation.NSAttributedString, .{} },
         .{ "dataPoints", Object, .{} },
+        .{ "initWithAttributedName:isContinuous:dataPoints:", AXDataSeriesDescriptor, .{ Foundation.NSAttributedString, objc.BOOL, Object } },
+        .{ "initWithName:isContinuous:dataPoints:", AXDataSeriesDescriptor, .{ objc.NSString, objc.BOOL, Object } },
         .{ "isContinuous", objc.BOOL, .{} },
         .{ "name", ?objc.NSString, .{} },
         .{ "setAttributedName:", void, .{Foundation.NSAttributedString} },
@@ -240,17 +264,14 @@ pub const AXDataSeriesDescriptor = struct {
         .{ "setName:", void, .{?objc.NSString} },
     };
 
-    pub fn send(self: AXDataSeriesDescriptor, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: AXDataSeriesDescriptor, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
-    pub const class_methods = .{
-        .{ "initWithAttributedName:isContinuous:dataPoints:", Object, .{ Foundation.NSAttributedString, objc.BOOL, Object } },
-        .{ "initWithName:isContinuous:dataPoints:", Object, .{ objc.NSString, objc.BOOL, Object } },
-    };
+    pub const class_methods = .{};
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("AXDataSeriesDescriptor", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "AXDataSeriesDescriptor", class_methods, selector, args);
     }
 };
 
@@ -261,8 +282,8 @@ pub const AXLiveAudioGraph = struct {
         .{ "updateValue:", void, .{f64} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("AXLiveAudioGraph", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "AXLiveAudioGraph", class_methods, selector, args);
     }
 };
 
@@ -272,19 +293,18 @@ pub const AXMathExpressionFenced = struct {
     pub const methods = .{
         .{ "closeString", objc.NSString, .{} },
         .{ "expressions", Object, .{} },
+        .{ "initWithExpressions:openString:closeString:", AXMathExpressionFenced, .{ Object, objc.NSString, objc.NSString } },
         .{ "openString", objc.NSString, .{} },
     };
 
-    pub fn send(self: AXMathExpressionFenced, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: AXMathExpressionFenced, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
-    pub const class_methods = .{
-        .{ "initWithExpressions:openString:closeString:", Object, .{ Object, objc.NSString, objc.NSString } },
-    };
+    pub const class_methods = .{};
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("AXMathExpressionFenced", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "AXMathExpressionFenced", class_methods, selector, args);
     }
 };
 
@@ -293,19 +313,18 @@ pub const AXMathExpressionFraction = struct {
 
     pub const methods = .{
         .{ "denimonatorExpression", Object, .{} },
+        .{ "initWithNumeratorExpression:denimonatorExpression:", AXMathExpressionFraction, .{ Object, Object } },
         .{ "numeratorExpression", Object, .{} },
     };
 
-    pub fn send(self: AXMathExpressionFraction, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: AXMathExpressionFraction, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
-    pub const class_methods = .{
-        .{ "initWithNumeratorExpression:denimonatorExpression:", Object, .{ Object, Object } },
-    };
+    pub const class_methods = .{};
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("AXMathExpressionFraction", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "AXMathExpressionFraction", class_methods, selector, args);
     }
 };
 
@@ -314,18 +333,17 @@ pub const AXMathExpressionIdentifier = struct {
 
     pub const methods = .{
         .{ "content", objc.NSString, .{} },
+        .{ "initWithContent:", AXMathExpressionIdentifier, .{objc.NSString} },
     };
 
-    pub fn send(self: AXMathExpressionIdentifier, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: AXMathExpressionIdentifier, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
-    pub const class_methods = .{
-        .{ "initWithContent:", Object, .{objc.NSString} },
-    };
+    pub const class_methods = .{};
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("AXMathExpressionIdentifier", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "AXMathExpressionIdentifier", class_methods, selector, args);
     }
 };
 
@@ -334,20 +352,19 @@ pub const AXMathExpressionMultiscript = struct {
 
     pub const methods = .{
         .{ "baseExpression", Object, .{} },
+        .{ "initWithBaseExpression:prescriptExpressions:postscriptExpressions:", AXMathExpressionMultiscript, .{ Object, Object, Object } },
         .{ "postscriptExpressions", Object, .{} },
         .{ "prescriptExpressions", Object, .{} },
     };
 
-    pub fn send(self: AXMathExpressionMultiscript, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: AXMathExpressionMultiscript, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
-    pub const class_methods = .{
-        .{ "initWithBaseExpression:prescriptExpressions:postscriptExpressions:", Object, .{ Object, Object, Object } },
-    };
+    pub const class_methods = .{};
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("AXMathExpressionMultiscript", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "AXMathExpressionMultiscript", class_methods, selector, args);
     }
 };
 
@@ -356,18 +373,17 @@ pub const AXMathExpressionNumber = struct {
 
     pub const methods = .{
         .{ "content", objc.NSString, .{} },
+        .{ "initWithContent:", AXMathExpressionNumber, .{objc.NSString} },
     };
 
-    pub fn send(self: AXMathExpressionNumber, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: AXMathExpressionNumber, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
-    pub const class_methods = .{
-        .{ "initWithContent:", Object, .{objc.NSString} },
-    };
+    pub const class_methods = .{};
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("AXMathExpressionNumber", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "AXMathExpressionNumber", class_methods, selector, args);
     }
 };
 
@@ -376,18 +392,17 @@ pub const AXMathExpressionOperator = struct {
 
     pub const methods = .{
         .{ "content", objc.NSString, .{} },
+        .{ "initWithContent:", AXMathExpressionOperator, .{objc.NSString} },
     };
 
-    pub fn send(self: AXMathExpressionOperator, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: AXMathExpressionOperator, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
-    pub const class_methods = .{
-        .{ "initWithContent:", Object, .{objc.NSString} },
-    };
+    pub const class_methods = .{};
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("AXMathExpressionOperator", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "AXMathExpressionOperator", class_methods, selector, args);
     }
 };
 
@@ -395,20 +410,19 @@ pub const AXMathExpressionRoot = struct {
     obj: Object,
 
     pub const methods = .{
+        .{ "initWithRadicandExpressions:rootIndexExpression:", AXMathExpressionRoot, .{ Object, Object } },
         .{ "radicandExpressions", Object, .{} },
         .{ "rootIndexExpression", Object, .{} },
     };
 
-    pub fn send(self: AXMathExpressionRoot, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: AXMathExpressionRoot, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
-    pub const class_methods = .{
-        .{ "initWithRadicandExpressions:rootIndexExpression:", Object, .{ Object, Object } },
-    };
+    pub const class_methods = .{};
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("AXMathExpressionRoot", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "AXMathExpressionRoot", class_methods, selector, args);
     }
 };
 
@@ -417,18 +431,17 @@ pub const AXMathExpressionRow = struct {
 
     pub const methods = .{
         .{ "expressions", Object, .{} },
+        .{ "initWithExpressions:", AXMathExpressionRow, .{Object} },
     };
 
-    pub fn send(self: AXMathExpressionRow, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: AXMathExpressionRow, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
-    pub const class_methods = .{
-        .{ "initWithExpressions:", Object, .{Object} },
-    };
+    pub const class_methods = .{};
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("AXMathExpressionRow", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "AXMathExpressionRow", class_methods, selector, args);
     }
 };
 
@@ -437,20 +450,19 @@ pub const AXMathExpressionSubSuperscript = struct {
 
     pub const methods = .{
         .{ "baseExpression", Object, .{} },
+        .{ "initWithBaseExpression:subscriptExpressions:superscriptExpressions:", AXMathExpressionSubSuperscript, .{ Object, Object, Object } },
         .{ "subscriptExpressions", Object, .{} },
         .{ "superscriptExpressions", Object, .{} },
     };
 
-    pub fn send(self: AXMathExpressionSubSuperscript, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: AXMathExpressionSubSuperscript, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
-    pub const class_methods = .{
-        .{ "initWithBaseExpression:subscriptExpressions:superscriptExpressions:", Object, .{ Object, Object, Object } },
-    };
+    pub const class_methods = .{};
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("AXMathExpressionSubSuperscript", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "AXMathExpressionSubSuperscript", class_methods, selector, args);
     }
 };
 
@@ -459,18 +471,17 @@ pub const AXMathExpressionTable = struct {
 
     pub const methods = .{
         .{ "expressions", Object, .{} },
+        .{ "initWithExpressions:", AXMathExpressionTable, .{Object} },
     };
 
-    pub fn send(self: AXMathExpressionTable, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: AXMathExpressionTable, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
-    pub const class_methods = .{
-        .{ "initWithExpressions:", Object, .{Object} },
-    };
+    pub const class_methods = .{};
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("AXMathExpressionTable", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "AXMathExpressionTable", class_methods, selector, args);
     }
 };
 
@@ -479,18 +490,17 @@ pub const AXMathExpressionTableCell = struct {
 
     pub const methods = .{
         .{ "expressions", Object, .{} },
+        .{ "initWithExpressions:", AXMathExpressionTableCell, .{Object} },
     };
 
-    pub fn send(self: AXMathExpressionTableCell, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: AXMathExpressionTableCell, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
-    pub const class_methods = .{
-        .{ "initWithExpressions:", Object, .{Object} },
-    };
+    pub const class_methods = .{};
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("AXMathExpressionTableCell", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "AXMathExpressionTableCell", class_methods, selector, args);
     }
 };
 
@@ -499,18 +509,17 @@ pub const AXMathExpressionTableRow = struct {
 
     pub const methods = .{
         .{ "expressions", Object, .{} },
+        .{ "initWithExpressions:", AXMathExpressionTableRow, .{Object} },
     };
 
-    pub fn send(self: AXMathExpressionTableRow, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: AXMathExpressionTableRow, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
-    pub const class_methods = .{
-        .{ "initWithExpressions:", Object, .{Object} },
-    };
+    pub const class_methods = .{};
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("AXMathExpressionTableRow", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "AXMathExpressionTableRow", class_methods, selector, args);
     }
 };
 
@@ -519,18 +528,17 @@ pub const AXMathExpressionText = struct {
 
     pub const methods = .{
         .{ "content", objc.NSString, .{} },
+        .{ "initWithContent:", AXMathExpressionText, .{objc.NSString} },
     };
 
-    pub fn send(self: AXMathExpressionText, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: AXMathExpressionText, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
-    pub const class_methods = .{
-        .{ "initWithContent:", Object, .{objc.NSString} },
-    };
+    pub const class_methods = .{};
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("AXMathExpressionText", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "AXMathExpressionText", class_methods, selector, args);
     }
 };
 
@@ -539,20 +547,19 @@ pub const AXMathExpressionUnderOver = struct {
 
     pub const methods = .{
         .{ "baseExpression", Object, .{} },
+        .{ "initWithBaseExpression:underExpression:overExpression:", AXMathExpressionUnderOver, .{ Object, Object, Object } },
         .{ "overExpression", Object, .{} },
         .{ "underExpression", Object, .{} },
     };
 
-    pub fn send(self: AXMathExpressionUnderOver, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: AXMathExpressionUnderOver, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
-    pub const class_methods = .{
-        .{ "initWithBaseExpression:underExpression:overExpression:", Object, .{ Object, Object, Object } },
-    };
+    pub const class_methods = .{};
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("AXMathExpressionUnderOver", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "AXMathExpressionUnderOver", class_methods, selector, args);
     }
 };
 
@@ -566,8 +573,14 @@ pub const AXNumericDataAxisDescriptor = struct {
         .{ "valueDescriptionProvider", objc.NSString, .{} },
     };
 
-    pub fn send(self: AXNumericDataAxisDescriptor, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: AXNumericDataAxisDescriptor, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
+    }
+
+    pub const class_methods = .{};
+
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "AXNumericDataAxisDescriptor", class_methods, selector, args);
     }
 
     pub const ScaleType = enum(i64) {
@@ -584,16 +597,16 @@ pub const AccessibilityRequest = struct {
         .{ "technology", objc.NSString, .{} },
     };
 
-    pub fn send(self: AccessibilityRequest, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: AccessibilityRequest, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
         .{ "currentRequest", ?AccessibilityRequest, .{} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("AXRequest", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "AXRequest", class_methods, selector, args);
     }
 };
 

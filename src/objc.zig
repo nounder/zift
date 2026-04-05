@@ -200,7 +200,17 @@ pub fn autoreleasePoolPop(ctx: ?*anyopaque) void {
 ///       return objc.typedSend(table, self.obj, selector, args);
 ///   }
 pub fn typedSend(comptime table: anytype, target: Object, comptime selector: [*:0]const u8, args: anytype) SendReturn(table, selector) {
-    const Ret = SendReturn(table, selector);
+    return typedSendFor(void, table, target, selector, args);
+}
+
+pub fn typedSendFor(comptime Cls: type, comptime table: anytype, target: Object, comptime selector: [*:0]const u8, args: anytype) SendReturnFor(Cls, table, selector) {
+    const Ret = SendReturnFor(Cls, table, selector);
+    const sel_s = comptime selStr(selector);
+    // Implicit NSObject selectors have no table entry for arg types — they take no args
+    if (Cls != void and comptime isObjcStruct(Cls) and findInTable(table, sel_s) == null) {
+        const raw = msgSend(AbiType(Ret), target, selector, .{});
+        return wrapReturn(Ret, raw);
+    }
     const AbiArgs = AbiArgTypes(SendArgTypes(table, selector));
     const raw = msgSend(AbiType(Ret), target, selector, coerceArgs(AbiArgs, args));
     return wrapReturn(Ret, raw);
@@ -208,7 +218,17 @@ pub fn typedSend(comptime table: anytype, target: Object, comptime selector: [*:
 
 /// Type-checked class-level send. For class methods (like [NSColor systemRedColor]).
 pub fn typedClassSend(comptime class_name: [*:0]const u8, comptime table: anytype, comptime selector: [*:0]const u8, args: anytype) SendReturn(table, selector) {
-    const Ret = SendReturn(table, selector);
+    return typedClassSendFor(void, class_name, table, selector, args);
+}
+
+pub fn typedClassSendFor(comptime Cls: type, comptime class_name: [*:0]const u8, comptime table: anytype, comptime selector: [*:0]const u8, args: anytype) SendReturnFor(Cls, table, selector) {
+    const Ret = SendReturnFor(Cls, table, selector);
+    const sel_s = comptime selStr(selector);
+    // Implicit NSObject selectors have no table entry for arg types — they take no args
+    if (Cls != void and comptime isObjcStruct(Cls) and findInTable(table, sel_s) == null) {
+        const raw = msgSendClass(AbiType(Ret), class_name, selector, .{});
+        return wrapReturn(Ret, raw);
+    }
     const AbiArgs = AbiArgTypes(SendArgTypes(table, selector));
     const raw = msgSendClass(AbiType(Ret), class_name, selector, coerceArgs(AbiArgs, args));
     return wrapReturn(Ret, raw);
@@ -225,18 +245,38 @@ fn findInTable(comptime table: anytype, comptime sel_s: []const u8) ?comptime_in
 }
 
 /// Walk an inheritance chain of method tables to find a selector's return type.
+/// For init selectors found on a parent class, returns the leaf Cls instead
+/// of the parent type — since ObjC init always returns the receiver's type.
 pub fn SendReturnChain(comptime Cls: type, comptime selector: [*:0]const u8) type {
+    return SendReturnChainInner(Cls, Cls, selector);
+}
+
+fn SendReturnChainInner(comptime LeafCls: type, comptime Cls: type, comptime selector: [*:0]const u8) type {
     @setEvalBranchQuota(100000);
     const sel_s = comptime selStr(selector);
     if (@hasDecl(Cls, "methods")) {
         if (findInTable(Cls.methods, sel_s)) |i| {
-            return Cls.methods[i][1];
+            const ret = Cls.methods[i][1];
+            // If this is an init selector and it was found on a parent,
+            // return the leaf class type instead of the parent type.
+            if (comptime isInitSelector(sel_s) and ret != LeafCls and isObjcStruct(ret)) {
+                return LeafCls;
+            }
+            return ret;
         }
     }
     if (@hasDecl(Cls, "Super")) {
-        return SendReturnChain(Cls.Super, selector);
+        return SendReturnChainInner(LeafCls, Cls.Super, selector);
+    }
+    // Implicit NSObject selectors — init/alloc always return Self
+    if (comptime isInitSelector(sel_s) or std.mem.eql(u8, sel_s, "alloc")) {
+        return LeafCls;
     }
     @compileError("Unknown selector: " ++ sel_s ++ " — not found in class or any superclass");
+}
+
+fn isInitSelector(comptime sel_s: []const u8) bool {
+    return sel_s.len >= 4 and sel_s[0] == 'i' and sel_s[1] == 'n' and sel_s[2] == 'i' and sel_s[3] == 't' and (sel_s.len == 4 or sel_s[4] < 'a' or sel_s[4] > 'z');
 }
 
 /// Walk an inheritance chain to find arg types for a selector.
@@ -250,6 +290,10 @@ fn SendArgTypesChain(comptime Cls: type, comptime selector: [*:0]const u8) type 
     }
     if (@hasDecl(Cls, "Super")) {
         return SendArgTypesChain(Cls.Super, selector);
+    }
+    // Implicit NSObject selectors take no args
+    if (comptime std.mem.eql(u8, sel_s, "init") or std.mem.eql(u8, sel_s, "alloc")) {
+        return ArgTuple(.{});
     }
     unreachable;
 }
@@ -273,10 +317,21 @@ fn selStr(comptime s: anytype) []const u8 {
 }
 
 pub fn SendReturn(comptime table: anytype, comptime selector: [*:0]const u8) type {
+    return SendReturnFor(void, table, selector);
+}
+
+/// Like SendReturn, but with a fallback Cls for implicit NSObject selectors (alloc, init).
+pub fn SendReturnFor(comptime Cls: type, comptime table: anytype, comptime selector: [*:0]const u8) type {
     const sel_s = comptime selStr(selector);
     for (table) |entry| {
         if (comptime std.mem.eql(u8, selStr(entry[0]), sel_s)) {
             return entry[1];
+        }
+    }
+    // Implicit NSObject selectors — return Self if Cls is known
+    if (Cls != void and comptime isObjcStruct(Cls)) {
+        if (comptime std.mem.eql(u8, sel_s, "alloc") or isInitSelector(sel_s)) {
+            return Cls;
         }
     }
     @compileError("Unknown selector: " ++ sel_s ++ " — add it to the method table");
@@ -426,6 +481,15 @@ fn coerceArgs(comptime Expected: type, args: anytype) Expected {
         } else if (ExpType == ?Object and ValType == Object) {
             // Object → ?Object
             @field(result, field.name) = val;
+        } else if (ExpType == ?Object and ValType == [*:0]const u8) {
+            // Null-terminated string → ?NSString
+            @field(result, field.name) = nsString(val);
+        } else if (ExpType == ?Object and ValType == [:0]const u8) {
+            // Sentinel-terminated slice → ?NSString
+            @field(result, field.name) = nsString(val.ptr);
+        } else if (ExpType == ?Object and comptime isStringLiteral(ValType)) {
+            // String literal → ?NSString
+            @field(result, field.name) = nsString(@as([*:0]const u8, val));
         } else if (ExpType == ?*anyopaque and comptime isObjcStruct(ValType)) {
             // ObjC wrapper struct → ?*anyopaque (protocol-typed params)
             @field(result, field.name) = val.obj;

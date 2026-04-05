@@ -685,6 +685,7 @@ def process_module(module_name, sg, global_classes, global_inherits, typedef_map
                 "swift_name": swift_name,
                 "methods": [],
                 "class_methods": [],
+                "inits": [],  # (selector, arg_types, param_names)
                 "properties": [],
                 "super": super_name,
                 "super_module": super_module,
@@ -699,11 +700,14 @@ def process_module(module_name, sg, global_classes, global_inherits, typedef_map
             info = _parse_method(sym, typedef_map, enum_type_map, class_type_map, proto_type_map)
             if info and info["class"] in classes:
                 cls = classes[info["class"]]
-                entry = (info["selector"], info["ret"], info["args"])
-                if info["is_class"]:
-                    cls["class_methods"].append(entry)
+                if info["is_init"] and not info["is_class"]:
+                    # (im) inits are instance methods on the alloc'd object.
+                    # Return type "Self" is resolved to the struct name during codegen.
+                    cls["methods"].append((info["selector"], "Self", info["args"]))
+                elif info["is_class"]:
+                    cls["class_methods"].append((info["selector"], info["ret"], info["args"]))
                 else:
-                    cls["methods"].append(entry)
+                    cls["methods"].append((info["selector"], info["ret"], info["args"]))
 
         elif kind == "swift.property":
             info = _parse_property(sym, is_class_prop=False, typedef_map=typedef_map, enum_type_map=enum_type_map, class_type_map=class_type_map, proto_type_map=proto_type_map)
@@ -738,16 +742,26 @@ def _parse_method(sym, typedef_map, enum_type_map=None, class_type_map=None, pro
     is_class = m.group(2) == "cm"
     selector = m.group(3)
 
+    # Skip compiler-synthesized duplicates (e.g. :::SYNTHESIZED::...)
+    if "SYNTHESIZED" in selector:
+        return None
+
     func_sig = sym.get("functionSignature", {})
     ret_frags = func_sig.get("returns", [])
     ret_type = map_swift_type(ret_frags, typedef_map, enum_type_map, class_type_map, proto_type_map) if ret_frags else "void"
 
-    # Swift inits are ObjC class factory methods
-    if sym["kind"]["identifier"] == "swift.init":
+    # Swift inits: (im) inits are alloc+init style (instance methods),
+    # (cm) inits are convenience constructors (class factory methods).
+    is_init = sym["kind"]["identifier"] == "swift.init"
+    if is_init:
         ret_type = "Object"
-        is_class = True
+        if not is_class:
+            # (im) init — will be placed in instance methods with Self return
+            pass
+        # (cm) init — stays as class method
 
     arg_types = []
+    param_names = []
     for param in func_sig.get("parameters", []):
         param_frags = param.get("declarationFragments", [])
         if _is_closure_type(param_frags):
@@ -755,9 +769,18 @@ def _parse_method(sym, typedef_map, enum_type_map=None, class_type_map=None, pro
         else:
             type_frags = extract_arg_type_frags(param_frags)
             arg_types.append(map_swift_type(type_frags, typedef_map, enum_type_map, class_type_map, proto_type_map))
+        # Extract parameter name from first identifier fragment
+        pname = None
+        for f in param_frags:
+            if f.get("kind") == "identifier":
+                pname = f.get("spelling", "")
+                break
+        param_names.append(pname or f"arg{len(param_names)}")
 
+    is_init = sym["kind"]["identifier"] == "swift.init"
     return {"class": class_name, "selector": selector, "is_class": is_class,
-            "ret": ret_type, "args": arg_types}
+            "ret": ret_type, "args": arg_types, "param_names": param_names,
+            "is_init": is_init}
 
 
 def _parse_property(sym, is_class_prop, typedef_map=None, enum_type_map=None, class_type_map=None, proto_type_map=None):
@@ -916,6 +939,105 @@ def generate_zig(module_name, classes, all_results, enum_map, proto_type_map):
     return "\n".join(out)
 
 
+def _init_factory_name(selector, short=True):
+    """Derive a Zig factory method name from an ObjC init selector.
+
+    Short form (default — used when no collision):
+        init                          → create
+        initWithFrame:                → createWithFrame
+        initWithFrame:configuration:  → createWithFrame
+
+    Long form (when short collides):
+        initWithFrame:configuration:  → createWithFrame_configuration
+    """
+    if selector == "init" or selector == "init:":
+        return "create"
+
+    parts = [p for p in selector.split(":") if p]
+
+    if parts[0] == "init":
+        return "create"
+
+    if parts[0].startswith("initWith"):
+        first = parts[0][len("initWith"):]
+        if short or len(parts) == 1:
+            return "createWith" + first
+        return "createWith" + "_".join([first] + parts[1:])
+
+    if parts[0].startswith("init"):
+        first = parts[0][len("init"):]
+        if short or len(parts) == 1:
+            return "create" + first
+        return "create" + "_".join([first] + parts[1:])
+
+    return None
+
+
+def _gen_factories(objc_name, swift_name, inits, has_instance_methods=False):
+    """Generate factory methods from parsed init selectors.
+
+    Returns a list of Zig source lines (indented with 4 spaces).
+    """
+    # Filter out closure-based inits
+    valid_inits = [(sel, args, pnames) for sel, args, pnames in inits
+                   if "?*anyopaque" not in args]
+
+    # Build name map: detect short-name collisions, use long names where needed
+    short_names = {}  # short_name → [selectors]
+    for selector, _, _ in valid_inits:
+        short = _init_factory_name(selector, short=True)
+        if short:
+            short_names.setdefault(short, []).append(selector)
+
+    def factory_name(selector):
+        short = _init_factory_name(selector, short=True)
+        if not short:
+            return None
+        # Use long name if short name has collisions
+        if len(short_names.get(short, [])) > 1:
+            return _init_factory_name(selector, short=False)
+        return short
+
+    lines = []
+    seen_names = set()
+
+    for selector, arg_types, param_names in valid_inits:
+        fname = factory_name(selector)
+        if not fname or fname in seen_names:
+            continue
+        seen_names.add(fname)
+
+        # Sanitize param names — use selector parts as fallback for better names
+        sel_parts = [p for p in selector.split(":") if p]
+        safe_params = []
+        for i, pname in enumerate(param_names):
+            # Prefer selector-derived name for the first param if it's more descriptive
+            p = pname if pname and re.match(r'^[a-zA-Z_]\w*$', pname) else f"arg{i}"
+            if p in ZIG_KEYWORDS:
+                p = f"@\"{p}\""
+            safe_params.append(p)
+
+        if not arg_types:
+            lines.append(f'    pub fn create() {swift_name} {{')
+            lines.append(f'        return .{{ .obj = objc.msgSend(Object, objc.msgSendClass(Object, "{objc_name}", "alloc", .{{}}), "init", .{{}}) }};')
+            lines.append(f'    }}')
+        else:
+            params = ", ".join(f"{safe_params[i]}: {arg_types[i]}" for i in range(len(arg_types)))
+            args = ", ".join(safe_params)
+            lines.append(f'    pub fn {fname}({params}) {swift_name} {{')
+            lines.append(f'        return .{{ .obj = objc.msgSend(Object, objc.msgSendClass(Object, "{objc_name}", "alloc", .{{}}), "{selector}", .{{ {args} }}) }};')
+            lines.append(f'    }}')
+
+    # Every ObjC class inherits alloc+init from NSObject.
+    # If no explicit no-arg init was found, generate a default create().
+    if "create" not in seen_names and has_instance_methods:
+        lines.append(f'    pub fn create() {swift_name} {{')
+        lines.append(f'        return .{{ .obj = objc.msgSend(Object, objc.msgSendClass(Object, "{objc_name}", "alloc", .{{}}), "init", .{{}}) }};')
+        lines.append(f'    }}')
+
+    return lines
+
+
 def _gen_enum_decl(swift_name, cases, indent=""):
     """Generate a Zig enum(i64) declaration from (name, value) pairs."""
     zig_name = f'@"{swift_name}"' if swift_name in ZIG_KEYWORDS else swift_name
@@ -946,15 +1068,19 @@ def _gen_class(objc_name, cls, module_classes, all_results, module_name, class_e
             seen.add(s)
             method_entries.append((s, "void", [prop["type"]]))
 
-    # Instance methods
+    # Instance methods (bare "init" is implicit from NSObject, skip it)
     for sel, ret, args in cls["methods"]:
+        if sel == "init":
+            continue
         if sel in seen or not re.match(r'^[a-zA-Z_]\w*:?(?:\w+:)*$', sel):
             continue
         seen.add(sel)
         method_entries.append((sel, ret, args))
 
-    # Class methods
+    # Class methods (bare "alloc" is implicit from NSObject, skip it)
     for sel, ret, args in cls["class_methods"]:
+        if sel == "alloc":
+            continue
         if sel in seen_class or not re.match(r'^[a-zA-Z_]\w*:?(?:\w+:)*$', sel):
             continue
         seen_class.add(sel)
@@ -988,6 +1114,12 @@ def _gen_class(objc_name, cls, module_classes, all_results, module_name, class_e
     lines = [f"pub const {swift_name} = struct {{"]
 
     if method_entries:
+        # Resolve "Self" → swift_name for init return types
+        resolved_entries = []
+        for sel, ret, args in method_entries:
+            resolved_entries.append((sel, swift_name if ret == "Self" else ret, args))
+        method_entries = resolved_entries
+
         lines.append("    obj: Object,")
         lines.append("")
         if has_super:
@@ -1002,8 +1134,8 @@ def _gen_class(objc_name, cls, module_classes, all_results, module_name, class_e
             lines.append(f"    pub fn send(self: {swift_name}, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {{")
             lines.append("        return objc.typedSendChain(@This(), self.obj, selector, args);")
         else:
-            lines.append(f"    pub fn send(self: {swift_name}, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {{")
-            lines.append("        return objc.typedSend(methods, self.obj, selector, args);")
+            lines.append(f"    pub fn send(self: {swift_name}, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {{")
+            lines.append("        return objc.typedSendFor(@This(), methods, self.obj, selector, args);")
         lines.append("    }")
 
     if class_entries:
@@ -1014,8 +1146,16 @@ def _gen_class(objc_name, cls, module_classes, all_results, module_name, class_e
             lines.append(f'        .{{ "{sel}", {ret}, .{{{a}}} }},')
         lines.append("    };")
         lines.append("")
-        lines.append(f'    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {{')
-        lines.append(f'        return objc.typedClassSend("{objc_name}", class_methods, selector, args);')
+        lines.append(f'    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {{')
+        lines.append(f'        return objc.typedClassSendFor(@This(), "{objc_name}", class_methods, selector, args);')
+        lines.append("    }")
+    elif method_entries:
+        # No class methods, but still need class() for alloc (implicit NSObject)
+        lines.append("")
+        lines.append("    pub const class_methods = .{};")
+        lines.append("")
+        lines.append(f'    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {{')
+        lines.append(f'        return objc.typedClassSendFor(@This(), "{objc_name}", class_methods, selector, args);')
         lines.append("    }")
 
     # Class-owned enums
@@ -1036,23 +1176,7 @@ def _class_has_methods(cls):
 # Hand-written convenience functions injected into generated structs.
 # Keyed by (module, class_name) → Zig code to inject before the closing };
 
-FACTORIES = {
-    ("AppKit", "NSApplication"): '    pub fn shared() NSApplication { return .{ .obj = objc.msgSendClass(Object, "NSApplication", "sharedApplication", .{}) }; }',
-    ("AppKit", "NSWindow"): '    pub const Style = struct { titled: bool = true, closable: bool = true, miniaturizable: bool = true, resizable: bool = true };\n    pub const Config = struct { title: [*:0]const u8 = "Untitled", x: f64 = 200, y: f64 = 200, width: f64 = 600, height: f64 = 400, style: Style = .{} };\n    pub fn create(cfg: Config) NSWindow { var mask: c_ulong = 0; if (cfg.style.titled) mask |= (1 << 0); if (cfg.style.closable) mask |= (1 << 1); if (cfg.style.miniaturizable) mask |= (1 << 2); if (cfg.style.resizable) mask |= (1 << 3); const alloc = objc.msgSendClass(Object, "NSWindow", "alloc", .{}); const win = objc.msgSend(Object, alloc, "initWithContentRect:styleMask:backing:defer:", .{ NSRect.make(cfg.x, cfg.y, cfg.width, cfg.height), mask, @as(c_ulong, 2), @as(u8, 0) }); objc.msgSend(void, win, "setTitle:", .{objc.nsString(cfg.title)}); objc.msgSend(void, win, "center", .{}); return .{ .obj = win }; }',
-    ("AppKit", "NSMenu"): '    pub fn create(title: [*:0]const u8) NSMenu { return .{ .obj = objc.msgSend(Object, objc.msgSendClass(Object, "NSMenu", "alloc", .{}), "initWithTitle:", .{objc.nsString(title)}) }; }\n    pub fn addItem(self: NSMenu, item: Object) void { objc.msgSend(void, self.obj, "addItem:", .{item}); }\n    pub fn addItemWithTitle(self: NSMenu, title: [*:0]const u8, action: ?Selector, key: [*:0]const u8) Object { return objc.msgSend(Object, self.obj, "addItemWithTitle:action:keyEquivalent:", .{ objc.nsString(title), action, objc.nsString(key) }); }',
-    ("AppKit", "NSMenuItem"): '    pub fn separator() Object { return objc.msgSendClass(Object, "NSMenuItem", "separatorItem", .{}); }\n    pub fn create() NSMenuItem { return .{ .obj = objc.msgSend(Object, objc.msgSendClass(Object, "NSMenuItem", "alloc", .{}), "init", .{}) }; }',
-    ("AppKit", "NSToolbarItem"): '    pub fn create(identifier: Object) NSToolbarItem { return .{ .obj = objc.msgSend(Object, objc.msgSendClass(Object, "NSToolbarItem", "alloc", .{}), "initWithItemIdentifier:", .{identifier}) }; }',
-    ("AppKit", "NSToolbar"): '    pub fn create(identifier: [*:0]const u8) NSToolbar { return .{ .obj = objc.msgSend(Object, objc.msgSendClass(Object, "NSToolbar", "alloc", .{}), "initWithIdentifier:", .{objc.nsString(identifier)}) }; }',
-    ("AppKit", "NSButton"): '    pub fn create(title: [*:0]const u8, target: Object, action: Selector) NSButton { const btn = objc.msgSendClass(Object, "NSButton", "buttonWithTitle:target:action:", .{ objc.nsString(title), target, action }); objc.msgSend(void, btn, "setTranslatesAutoresizingMaskIntoConstraints:", .{@as(u8, 0)}); return .{ .obj = btn }; }\n    pub fn createCheckbox(title: [*:0]const u8, target: Object, action: Selector) NSButton { const btn = objc.msgSendClass(Object, "NSButton", "checkboxWithTitle:target:action:", .{ objc.nsString(title), target, action }); objc.msgSend(void, btn, "setTranslatesAutoresizingMaskIntoConstraints:", .{@as(u8, 0)}); return .{ .obj = btn }; }\n    pub fn createImage(symbol: [*:0]const u8, desc: [*:0]const u8, target: Object, action: Selector) NSButton { const img = objc.msgSendClass(Object, "NSImage", "imageWithSystemSymbolName:accessibilityDescription:", .{ objc.nsString(symbol), objc.nsString(desc) }); const btn = objc.msgSendClass(Object, "NSButton", "buttonWithImage:target:action:", .{ img, target, action }); objc.msgSend(void, btn, "setTranslatesAutoresizingMaskIntoConstraints:", .{@as(u8, 0)}); return .{ .obj = btn }; }',
-    ("AppKit", "NSTextField"): '    pub fn createLabel(text: [*:0]const u8) NSTextField { const label = objc.msgSendClass(Object, "NSTextField", "labelWithString:", .{objc.nsString(text)}); objc.msgSend(void, label, "setTranslatesAutoresizingMaskIntoConstraints:", .{@as(u8, 0)}); return .{ .obj = label }; }\n    pub fn createInput(placeholder: [*:0]const u8) NSTextField { const field = objc.msgSend(Object, objc.msgSendClass(Object, "NSTextField", "alloc", .{}), "initWithFrame:", .{NSRect.make(0, 0, 200, 24)}); objc.msgSend(void, field, "setPlaceholderString:", .{objc.nsString(placeholder)}); objc.msgSend(void, field, "setTranslatesAutoresizingMaskIntoConstraints:", .{@as(u8, 0)}); return .{ .obj = field }; }\n    pub fn stringValueZ(self: NSTextField) ?[*:0]const u8 { const ns_str = objc.msgSend(Object, self.obj, "stringValue", .{}); return objc.toZigString(ns_str); }\n    pub fn setLineBreakMode(self: NSTextField, mode: i64) void { const cell = objc.msgSend(Object, self.obj, "cell", .{}); objc.msgSend(void, cell, "setLineBreakMode:", .{mode}); }',
-    ("AppKit", "NSImageView"): '    pub fn createWithSymbol(name: [*:0]const u8, desc: [*:0]const u8) NSImageView { const img = objc.msgSendClass(Object, "NSImage", "imageWithSystemSymbolName:accessibilityDescription:", .{ objc.nsString(name), objc.nsString(desc) }); const iv = objc.msgSendClass(Object, "NSImageView", "imageViewWithImage:", .{img}); objc.msgSend(void, iv, "setTranslatesAutoresizingMaskIntoConstraints:", .{@as(u8, 0)}); return .{ .obj = iv }; }',
-    ("AppKit", "NSScrollView"): '    pub fn create() NSScrollView { const v = objc.msgSend(Object, objc.msgSendClass(Object, "NSScrollView", "alloc", .{}), "initWithFrame:", .{NSRect.make(0, 0, 0, 0)}); objc.msgSend(void, v, "setTranslatesAutoresizingMaskIntoConstraints:", .{@as(u8, 0)}); objc.msgSend(void, v, "setHasVerticalScroller:", .{@as(u8, 1)}); objc.msgSend(void, v, "setAutohidesScrollers:", .{@as(u8, 1)}); return .{ .obj = v }; }',
-    ("AppKit", "NSStackView"): '    pub fn create(orientation: NSUserInterfaceLayoutOrientation) NSStackView { const v = objc.msgSend(Object, objc.msgSendClass(Object, "NSStackView", "alloc", .{}), "initWithFrame:", .{NSRect.make(0, 0, 0, 0)}); objc.msgSend(void, v, "setOrientation:", .{@intFromEnum(orientation)}); objc.msgSend(void, v, "setTranslatesAutoresizingMaskIntoConstraints:", .{@as(u8, 0)}); return .{ .obj = v }; }',
-    ("AppKit", "NSSegmentedControl"): '    pub fn create(frame: NSRect) NSSegmentedControl { const seg = objc.msgSend(Object, objc.msgSendClass(Object, "NSSegmentedControl", "alloc", .{}), "initWithFrame:", .{frame}); objc.msgSend(void, seg, "setTranslatesAutoresizingMaskIntoConstraints:", .{@as(u8, 0)}); return .{ .obj = seg }; }',
-    ("AppKit", "NSBox"): '    pub fn createSeparator() NSBox { const b = objc.msgSend(Object, objc.msgSendClass(Object, "NSBox", "alloc", .{}), "initWithFrame:", .{NSRect.make(0, 0, 0, 1)}); objc.msgSend(void, b, "setBoxType:", .{@as(i64, 2)}); objc.msgSend(void, b, "setTranslatesAutoresizingMaskIntoConstraints:", .{@as(u8, 0)}); return .{ .obj = b }; }',
-    ("AppKit", "NSAlert"): '    pub fn create() NSAlert { return .{ .obj = objc.msgSend(Object, objc.msgSendClass(Object, "NSAlert", "alloc", .{}), "init", .{}) }; }',
-    ("Foundation", "NSMutableAttributedString"): '    pub fn create(string: Object) NSMutableAttributedString { return .{ .obj = objc.msgSend(Object, objc.msgSendClass(Object, "NSMutableAttributedString", "alloc", .{}), "initWithString:", .{string}) }; }',
-}
+FACTORIES = {}
 
 # Standalone types to inject before helpers section
 STANDALONE_TYPES = {

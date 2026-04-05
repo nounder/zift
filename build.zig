@@ -4,7 +4,21 @@ pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
 
-    // ── Executable (pure Zig AppKit UI) ────────────────────────────────
+    // ── Shared zift module ────────────────────────────────────────────
+
+    const zift = b.createModule(.{
+        .root_source_file = b.path("src/zift.zig"),
+        .target = target,
+        .optimize = optimize,
+        .link_libc = true,
+    });
+    zift.linkFramework("AppKit", .{});
+    zift.linkFramework("WebKit", .{});
+    zift.linkFramework("CoreGraphics", .{});
+    zift.linkFramework("Accessibility", .{});
+    zift.linkSystemLibrary("objc", .{});
+
+    // ── Todoz app ─────────────────────────────────────────────────────
 
     const exe = b.addExecutable(.{
         .name = "todoz",
@@ -71,7 +85,11 @@ pub fn build(b: *std.Build) void {
     open_swift.step.dependOn(&swiftc.step);
     run_swift_step.dependOn(&open_swift.step);
 
-    // ── Default: build both ────────────────────────────────────────────
+    // ── Examples ───────────────────────────────────────────────────────
+
+    addExample(b, zift, target, optimize, "floating_webview");
+
+    // ── Default: build both apps ──────────────────────────────────────
 
     b.getInstallStep().dependOn(&cp_exe.step);
     b.getInstallStep().dependOn(&swiftc.step);
@@ -89,6 +107,36 @@ pub fn build(b: *std.Build) void {
 
     const test_step = b.step("test", "Run unit tests");
     test_step.dependOn(&run_lib_tests.step);
+}
+
+// ── Example helper ─────────────────────────────────────────────────────
+
+fn addExample(
+    b: *std.Build,
+    zift: *std.Build.Module,
+    target: std.Build.ResolvedTarget,
+    optimize: std.builtin.OptimizeMode,
+    comptime name: []const u8,
+) void {
+    const example = b.addExecutable(.{
+        .name = name,
+        .root_module = b.createModule(.{
+            .root_source_file = b.path("examples/" ++ name ++ ".zig"),
+            .target = target,
+            .optimize = optimize,
+            .link_libc = true,
+            .imports = &.{.{ .name = "zift", .module = zift }},
+        }),
+    });
+    example.root_module.linkFramework("AppKit", .{});
+    example.root_module.linkFramework("WebKit", .{});
+    example.root_module.linkFramework("CoreGraphics", .{});
+    example.root_module.linkFramework("Accessibility", .{});
+    example.root_module.linkSystemLibrary("objc", .{});
+
+    const run = b.addRunArtifact(example);
+    const step = b.step("run-" ++ name, "Run " ++ name ++ " example");
+    step.dependOn(&run.step);
 }
 
 // ── App bundle helper ──────────────────────────────────────────────────

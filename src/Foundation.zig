@@ -230,6 +230,7 @@ pub const NSAffineTransform = struct {
 
     pub const methods = .{
         .{ "appendTransform:", void, .{NSAffineTransform} },
+        .{ "initWithTransform:", NSAffineTransform, .{NSAffineTransform} },
         .{ "invert", void, .{} },
         .{ "prependTransform:", void, .{NSAffineTransform} },
         .{ "rotateByDegrees:", void, .{f64} },
@@ -243,17 +244,14 @@ pub const NSAffineTransform = struct {
         .{ "translateXBy:yBy:", void, .{ f64, f64 } },
     };
 
-    pub fn send(self: NSAffineTransform, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSAffineTransform, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
-    pub const class_methods = .{
-        .{ "init", Object, .{} },
-        .{ "initWithTransform:", Object, .{NSAffineTransform} },
-    };
+    pub const class_methods = .{};
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSAffineTransform", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSAffineTransform", class_methods, selector, args);
     }
 };
 
@@ -275,6 +273,12 @@ pub const NSAppleEventDescriptor = struct {
         .{ "eventClass", objc.NSString, .{} },
         .{ "eventID", objc.NSString, .{} },
         .{ "fileURLValue", ?NSURL, .{} },
+        .{ "initListDescriptor", NSAppleEventDescriptor, .{void} },
+        .{ "initRecordDescriptor", NSAppleEventDescriptor, .{void} },
+        .{ "initWithAEDescNoCopy:", NSAppleEventDescriptor, .{?*anyopaque} },
+        .{ "initWithDescriptorType:bytes:length:", NSAppleEventDescriptor, .{ objc.NSString, ?UnsafeRawPointer, objc.NSInteger } },
+        .{ "initWithDescriptorType:data:", NSAppleEventDescriptor, .{ objc.NSString, ?NSData } },
+        .{ "initWithEventClass:eventID:targetDescriptor:returnID:transactionID:", NSAppleEventDescriptor, .{ objc.NSString, objc.NSString, ?NSAppleEventDescriptor, objc.NSString, objc.NSString } },
         .{ "insertDescriptor:atIndex:", void, .{ NSAppleEventDescriptor, objc.NSInteger } },
         .{ "int32Value", i32, .{} },
         .{ "isRecordDescriptor", objc.BOOL, .{} },
@@ -294,8 +298,8 @@ pub const NSAppleEventDescriptor = struct {
         .{ "typeCodeValue", objc.NSString, .{} },
     };
 
-    pub fn send(self: NSAppleEventDescriptor, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSAppleEventDescriptor, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
@@ -312,19 +316,13 @@ pub const NSAppleEventDescriptor = struct {
         .{ "descriptorWithProcessIdentifier:", Object, .{pid_t} },
         .{ "descriptorWithString:", Object, .{objc.NSString} },
         .{ "descriptorWithTypeCode:", Object, .{objc.NSString} },
-        .{ "initListDescriptor", Object, .{void} },
-        .{ "initRecordDescriptor", Object, .{void} },
-        .{ "initWithAEDescNoCopy:", Object, .{?*anyopaque} },
-        .{ "initWithDescriptorType:bytes:length:", Object, .{ objc.NSString, ?UnsafeRawPointer, objc.NSInteger } },
-        .{ "initWithDescriptorType:data:", Object, .{ objc.NSString, ?NSData } },
-        .{ "initWithEventClass:eventID:targetDescriptor:returnID:transactionID:", Object, .{ objc.NSString, objc.NSString, ?NSAppleEventDescriptor, objc.NSString, objc.NSString } },
         .{ "listDescriptor", NSAppleEventDescriptor, .{} },
         .{ "nullDescriptor", NSAppleEventDescriptor, .{} },
         .{ "recordDescriptor", NSAppleEventDescriptor, .{} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSAppleEventDescriptor", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSAppleEventDescriptor", class_methods, selector, args);
     }
 };
 
@@ -344,16 +342,16 @@ pub const NSAppleEventManager = struct {
         .{ "suspendCurrentAppleEvent", OpaquePointer, .{} },
     };
 
-    pub fn send(self: NSAppleEventManager, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSAppleEventManager, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
         .{ "sharedAppleEventManager", NSAppleEventManager, .{} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSAppleEventManager", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSAppleEventManager", class_methods, selector, args);
     }
 };
 
@@ -365,20 +363,19 @@ pub const NSAppleScript = struct {
         .{ "compiled", objc.BOOL, .{} },
         .{ "executeAndReturnError:", NSAppleEventDescriptor, .{?NSDictionary} },
         .{ "executeAppleEvent:error:", NSAppleEventDescriptor, .{ NSAppleEventDescriptor, ?NSDictionary } },
+        .{ "initWithContentsOfURL:error:", NSAppleScript, .{ NSURL, ?NSDictionary } },
+        .{ "initWithSource:", NSAppleScript, .{objc.NSString} },
         .{ "source", ?objc.NSString, .{} },
     };
 
-    pub fn send(self: NSAppleScript, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSAppleScript, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
-    pub const class_methods = .{
-        .{ "initWithContentsOfURL:error:", Object, .{ NSURL, ?NSDictionary } },
-        .{ "initWithSource:", Object, .{objc.NSString} },
-    };
+    pub const class_methods = .{};
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSAppleScript", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSAppleScript", class_methods, selector, args);
     }
 };
 
@@ -392,6 +389,7 @@ pub const NSArchiver = struct {
         .{ "encodeClassName:intoClassName:", void, .{ objc.NSString, objc.NSString } },
         .{ "encodeConditionalObject:", void, .{?Any} },
         .{ "encodeRootObject:", void, .{Any} },
+        .{ "initForWritingWithMutableData:", NSArchiver, .{NSMutableData} },
         .{ "replaceObject:withObject:", void, .{ Any, Any } },
     };
 
@@ -402,11 +400,10 @@ pub const NSArchiver = struct {
     pub const class_methods = .{
         .{ "archiveRootObject:toFile:", objc.BOOL, .{ Any, objc.NSString } },
         .{ "archivedDataWithRootObject:", NSData, .{Any} },
-        .{ "initForWritingWithMutableData:", Object, .{NSMutableData} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSArchiver", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSArchiver", class_methods, selector, args);
     }
 };
 
@@ -441,6 +438,13 @@ pub const NSArray = struct {
         .{ "indexesOfObjectsAtIndexes:options:passingTest:", NSIndexSet, .{ NSIndexSet, objc.NSInteger, ?*anyopaque } },
         .{ "indexesOfObjectsPassingTest:", NSIndexSet, .{?*anyopaque} },
         .{ "indexesOfObjectsWithOptions:passingTest:", NSIndexSet, .{ objc.NSInteger, ?*anyopaque } },
+        .{ "initWithArray:", NSArray, .{Object} },
+        .{ "initWithArray:copyItems:", NSArray, .{ Object, objc.BOOL } },
+        .{ "initWithCoder:", NSArray, .{NSCoder} },
+        .{ "initWithContentsOfFile:", NSArray, .{objc.NSString} },
+        .{ "initWithContentsOfURL:", NSArray, .{NSURL} },
+        .{ "initWithContentsOfURL:error:", NSArray, .{ NSURL, void } },
+        .{ "initWithObjects:count:", NSArray, .{ ?UnsafePointer, objc.NSInteger } },
         .{ "isEqualToArray:", objc.BOOL, .{Object} },
         .{ "lastObject", ?Any, .{} },
         .{ "objectAtIndex:", Any, .{objc.NSInteger} },
@@ -467,26 +471,18 @@ pub const NSArray = struct {
         .{ "writeToURL:error:", void, .{NSURL} },
     };
 
-    pub fn send(self: NSArray, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSArray, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
         .{ "arrayWithContentsOfURL:", Object, .{NSURL} },
         .{ "arrayWithObject:", Object, .{Any} },
         .{ "arrayWithObjects:count:", Object, .{ UnsafePointer, objc.NSInteger } },
-        .{ "init", Object, .{} },
-        .{ "initWithArray:", Object, .{Object} },
-        .{ "initWithArray:copyItems:", Object, .{ Object, objc.BOOL } },
-        .{ "initWithCoder:", Object, .{NSCoder} },
-        .{ "initWithContentsOfFile:", Object, .{objc.NSString} },
-        .{ "initWithContentsOfURL:", Object, .{NSURL} },
-        .{ "initWithContentsOfURL:error:", Object, .{ NSURL, void } },
-        .{ "initWithObjects:count:", Object, .{ ?UnsafePointer, objc.NSInteger } },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSArray", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSArray", class_methods, selector, args);
     }
 };
 
@@ -495,8 +491,8 @@ pub const NSAssertionHandler = struct {
         .{ "currentHandler", NSAssertionHandler, .{} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSAssertionHandler", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSAssertionHandler", class_methods, selector, args);
     }
 };
 
@@ -512,23 +508,22 @@ pub const NSAttributedString = struct {
         .{ "attributesAtIndex:longestEffectiveRange:inRange:", Object, .{ objc.NSInteger, NSRange, NSRange } },
         .{ "enumerateAttribute:inRange:options:usingBlock:", void, .{ objc.NSString, NSRange, objc.NSInteger, ?*anyopaque } },
         .{ "enumerateAttributesInRange:options:usingBlock:", void, .{ NSRange, objc.NSInteger, ?*anyopaque } },
+        .{ "initWithAttributedString:", NSAttributedString, .{NSAttributedString} },
+        .{ "initWithString:", NSAttributedString, .{objc.NSString} },
+        .{ "initWithString:attributes:", NSAttributedString, .{ objc.NSString, ?*anyopaque } },
         .{ "isEqualToAttributedString:", objc.BOOL, .{NSAttributedString} },
         .{ "length", objc.NSInteger, .{} },
         .{ "string", objc.NSString, .{} },
     };
 
-    pub fn send(self: NSAttributedString, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSAttributedString, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
-    pub const class_methods = .{
-        .{ "initWithAttributedString:", Object, .{NSAttributedString} },
-        .{ "initWithString:", Object, .{objc.NSString} },
-        .{ "initWithString:attributes:", Object, .{ objc.NSString, ?*anyopaque } },
-    };
+    pub const class_methods = .{};
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSAttributedString", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSAttributedString", class_methods, selector, args);
     }
 };
 
@@ -537,6 +532,7 @@ pub const NSBackgroundActivityScheduler = struct {
 
     pub const methods = .{
         .{ "identifier", objc.NSString, .{} },
+        .{ "initWithIdentifier:", NSBackgroundActivityScheduler, .{objc.NSString} },
         .{ "interval", TimeInterval, .{} },
         .{ "invalidate", void, .{} },
         .{ "qualityOfService", QualityOfService, .{} },
@@ -550,16 +546,14 @@ pub const NSBackgroundActivityScheduler = struct {
         .{ "tolerance", TimeInterval, .{} },
     };
 
-    pub fn send(self: NSBackgroundActivityScheduler, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSBackgroundActivityScheduler, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
-    pub const class_methods = .{
-        .{ "initWithIdentifier:", Object, .{objc.NSString} },
-    };
+    pub const class_methods = .{};
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSBackgroundActivityScheduler", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSBackgroundActivityScheduler", class_methods, selector, args);
     }
 
     pub const Result = enum(i64) {
@@ -585,8 +579,8 @@ pub const BlockOperation = struct {
         .{ "blockOperationWithBlock:", Object, .{?*anyopaque} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSBlockOperation", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSBlockOperation", class_methods, selector, args);
     }
 };
 
@@ -612,6 +606,8 @@ pub const Bundle = struct {
         .{ "executablePath", ?objc.NSString, .{} },
         .{ "executableURL", ?NSURL, .{} },
         .{ "infoDictionary", ?*anyopaque, .{} },
+        .{ "initWithPath:", Bundle, .{objc.NSString} },
+        .{ "initWithURL:", Bundle, .{NSURL} },
         .{ "load", objc.BOOL, .{} },
         .{ "loadAndReturnError:", void, .{} },
         .{ "loaded", objc.BOOL, .{} },
@@ -639,8 +635,8 @@ pub const Bundle = struct {
         .{ "unload", objc.BOOL, .{} },
     };
 
-    pub fn send(self: Bundle, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: Bundle, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
@@ -650,8 +646,6 @@ pub const Bundle = struct {
         .{ "allFrameworks", Object, .{} },
         .{ "bundleForClass:", Object, .{AnyClass} },
         .{ "bundleWithIdentifier:", Object, .{objc.NSString} },
-        .{ "initWithPath:", Object, .{objc.NSString} },
-        .{ "initWithURL:", Object, .{NSURL} },
         .{ "mainBundle", Bundle, .{} },
         .{ "pathForResource:ofType:inDirectory:", ?objc.NSString, .{ ?objc.NSString, ?objc.NSString, objc.NSString } },
         .{ "pathsForResourcesOfType:inDirectory:", Object, .{ ?objc.NSString, objc.NSString } },
@@ -659,8 +653,8 @@ pub const Bundle = struct {
         .{ "preferredLocalizationsFromArray:forPreferences:", Object, .{ Object, ?*anyopaque } },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSBundle", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSBundle", class_methods, selector, args);
     }
 };
 
@@ -701,8 +695,8 @@ pub const ByteCountFormatter = struct {
         .{ "stringFromMeasurement:countStyle:", objc.NSString, .{ UnitInformationStorage, ByteCountFormatter.CountStyle } },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSByteCountFormatter", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSByteCountFormatter", class_methods, selector, args);
     }
 
     pub const CountStyle = enum(i64) {
@@ -734,8 +728,14 @@ pub const NSCache = struct {
         .{ "totalCostLimit", objc.NSInteger, .{} },
     };
 
-    pub fn send(self: NSCache, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSCache, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
+    }
+
+    pub const class_methods = .{};
+
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSCache", class_methods, selector, args);
     }
 };
 
@@ -744,22 +744,21 @@ pub const CachedURLResponse = struct {
 
     pub const methods = .{
         .{ "data", NSData, .{} },
+        .{ "initWithResponse:data:", CachedURLResponse, .{ URLResponse, NSData } },
+        .{ "initWithResponse:data:userInfo:storagePolicy:", CachedURLResponse, .{ URLResponse, NSData, ?*anyopaque, URLCache.StoragePolicy } },
         .{ "response", URLResponse, .{} },
         .{ "storagePolicy", URLCache.StoragePolicy, .{} },
         .{ "userInfo", ?*anyopaque, .{} },
     };
 
-    pub fn send(self: CachedURLResponse, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: CachedURLResponse, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
-    pub const class_methods = .{
-        .{ "initWithResponse:data:", Object, .{ URLResponse, NSData } },
-        .{ "initWithResponse:data:userInfo:storagePolicy:", Object, .{ URLResponse, NSData, ?*anyopaque, URLCache.StoragePolicy } },
-    };
+    pub const class_methods = .{};
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSCachedURLResponse", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSCachedURLResponse", class_methods, selector, args);
     }
 };
 
@@ -790,6 +789,7 @@ pub const NSCalendar = struct {
         .{ "getEra:year:month:day:fromDate:", void, .{ objc.NSInteger, objc.NSInteger, objc.NSInteger, objc.NSInteger, NSDate } },
         .{ "getEra:yearForWeekOfYear:weekOfYear:weekday:fromDate:", void, .{ objc.NSInteger, objc.NSInteger, objc.NSInteger, objc.NSInteger, NSDate } },
         .{ "getHour:minute:second:nanosecond:fromDate:", void, .{ objc.NSInteger, objc.NSInteger, objc.NSInteger, objc.NSInteger, NSDate } },
+        .{ "initWithCalendarIdentifier:", NSCalendar, .{objc.NSString} },
         .{ "isDate:equalToDate:toUnitGranularity:", objc.BOOL, .{ NSDate, NSDate, objc.NSInteger } },
         .{ "isDate:inSameDayAsDate:", objc.BOOL, .{ NSDate, NSDate } },
         .{ "isDateInToday:", objc.BOOL, .{NSDate} },
@@ -833,19 +833,18 @@ pub const NSCalendar = struct {
         .{ "weekdaySymbols", Object, .{} },
     };
 
-    pub fn send(self: NSCalendar, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSCalendar, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
         .{ "autoupdatingCurrentCalendar", NSCalendar, .{} },
         .{ "calendarWithIdentifier:", Object, .{objc.NSString} },
         .{ "currentCalendar", NSCalendar, .{} },
-        .{ "initWithCalendarIdentifier:", Object, .{objc.NSString} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSCalendar", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSCalendar", class_methods, selector, args);
     }
 };
 
@@ -856,13 +855,14 @@ pub const NSCharacterSet = struct {
         .{ "bitmapRepresentation", NSData, .{} },
         .{ "characterIsMember:", objc.BOOL, .{u16} },
         .{ "hasMemberInPlane:", objc.BOOL, .{u8} },
+        .{ "initWithCoder:", NSCharacterSet, .{NSCoder} },
         .{ "invertedSet", NSCharacterSet, .{} },
         .{ "isSupersetOfSet:", objc.BOOL, .{NSCharacterSet} },
         .{ "longCharacterIsMember:", objc.BOOL, .{objc.NSString} },
     };
 
-    pub fn send(self: NSCharacterSet, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSCharacterSet, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
@@ -882,7 +882,6 @@ pub const NSCharacterSet = struct {
         .{ "decimalDigitCharacterSet", NSCharacterSet, .{} },
         .{ "decomposableCharacterSet", NSCharacterSet, .{} },
         .{ "illegalCharacterSet", NSCharacterSet, .{} },
-        .{ "initWithCoder:", Object, .{NSCoder} },
         .{ "letterCharacterSet", NSCharacterSet, .{} },
         .{ "lowercaseLetterCharacterSet", NSCharacterSet, .{} },
         .{ "newlineCharacterSet", NSCharacterSet, .{} },
@@ -894,8 +893,8 @@ pub const NSCharacterSet = struct {
         .{ "whitespaceCharacterSet", NSCharacterSet, .{} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSCharacterSet", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSCharacterSet", class_methods, selector, args);
     }
 };
 
@@ -909,8 +908,8 @@ pub const NSClassDescription = struct {
         .{ "toOneRelationshipKeys", Object, .{} },
     };
 
-    pub fn send(self: NSClassDescription, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSClassDescription, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
@@ -919,8 +918,8 @@ pub const NSClassDescription = struct {
         .{ "registerClassDescription:forClass:", void, .{ NSClassDescription, AnyClass } },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSClassDescription", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSClassDescription", class_methods, selector, args);
     }
 };
 
@@ -936,6 +935,12 @@ pub const NSCloneCommand = struct {
     pub fn send(self: NSCloneCommand, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
         return objc.typedSendChain(@This(), self.obj, selector, args);
     }
+
+    pub const class_methods = .{};
+
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSCloneCommand", class_methods, selector, args);
+    }
 };
 
 pub const NSCloseCommand = struct {
@@ -948,6 +953,12 @@ pub const NSCloseCommand = struct {
 
     pub fn send(self: NSCloseCommand, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
         return objc.typedSendChain(@This(), self.obj, selector, args);
+    }
+
+    pub const class_methods = .{};
+
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSCloseCommand", class_methods, selector, args);
     }
 };
 
@@ -1017,8 +1028,14 @@ pub const NSCoder = struct {
         .{ "versionForClassName:", objc.NSInteger, .{objc.NSString} },
     };
 
-    pub fn send(self: NSCoder, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSCoder, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
+    }
+
+    pub const class_methods = .{};
+
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSCoder", class_methods, selector, args);
     }
 
     pub const DecodingFailurePolicy = enum(i64) {
@@ -1034,6 +1051,9 @@ pub const NSComparisonPredicate = struct {
     pub const methods = .{
         .{ "comparisonPredicateModifier", NSComparisonPredicate.Modifier, .{} },
         .{ "customSelector", Selector, .{} },
+        .{ "initWithCoder:", NSComparisonPredicate, .{NSCoder} },
+        .{ "initWithLeftExpression:rightExpression:customSelector:", NSComparisonPredicate, .{ NSExpression, NSExpression, Selector } },
+        .{ "initWithLeftExpression:rightExpression:modifier:type:options:", NSComparisonPredicate, .{ NSExpression, NSExpression, NSComparisonPredicate.Modifier, NSComparisonPredicate.Operator, objc.NSInteger } },
         .{ "leftExpression", NSExpression, .{} },
         .{ "options", objc.NSInteger, .{} },
         .{ "predicateOperatorType", NSComparisonPredicate.Operator, .{} },
@@ -1044,14 +1064,10 @@ pub const NSComparisonPredicate = struct {
         return objc.typedSendChain(@This(), self.obj, selector, args);
     }
 
-    pub const class_methods = .{
-        .{ "initWithCoder:", Object, .{NSCoder} },
-        .{ "initWithLeftExpression:rightExpression:customSelector:", Object, .{ NSExpression, NSExpression, Selector } },
-        .{ "initWithLeftExpression:rightExpression:modifier:type:options:", Object, .{ NSExpression, NSExpression, NSComparisonPredicate.Modifier, NSComparisonPredicate.Operator, objc.NSInteger } },
-    };
+    pub const class_methods = .{};
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSComparisonPredicate", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSComparisonPredicate", class_methods, selector, args);
     }
 
     pub const Modifier = enum(i64) {
@@ -1083,6 +1099,8 @@ pub const NSCompoundPredicate = struct {
     pub const Super = NSPredicate;
     pub const methods = .{
         .{ "compoundPredicateType", NSCompoundPredicate.LogicalType, .{} },
+        .{ "initWithCoder:", NSCompoundPredicate, .{NSCoder} },
+        .{ "initWithType:subpredicates:", NSCompoundPredicate, .{ NSCompoundPredicate.LogicalType, Object } },
         .{ "subpredicates", Object, .{} },
     };
 
@@ -1092,14 +1110,12 @@ pub const NSCompoundPredicate = struct {
 
     pub const class_methods = .{
         .{ "andPredicateWithSubpredicates:", Object, .{Object} },
-        .{ "initWithCoder:", Object, .{NSCoder} },
-        .{ "initWithType:subpredicates:", Object, .{ NSCompoundPredicate.LogicalType, Object } },
         .{ "notPredicateWithSubpredicate:", Object, .{NSPredicate} },
         .{ "orPredicateWithSubpredicates:", Object, .{Object} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSCompoundPredicate", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSCompoundPredicate", class_methods, selector, args);
     }
 
     pub const LogicalType = enum(i64) {
@@ -1121,8 +1137,14 @@ pub const NSCondition = struct {
         .{ "waitUntilDate:", objc.BOOL, .{NSDate} },
     };
 
-    pub fn send(self: NSCondition, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSCondition, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
+    }
+
+    pub const class_methods = .{};
+
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSCondition", class_methods, selector, args);
     }
 };
 
@@ -1131,6 +1153,7 @@ pub const NSConditionLock = struct {
 
     pub const methods = .{
         .{ "condition", objc.NSInteger, .{} },
+        .{ "initWithCondition:", NSConditionLock, .{objc.NSInteger} },
         .{ "lockBeforeDate:", objc.BOOL, .{NSDate} },
         .{ "lockWhenCondition:", void, .{objc.NSInteger} },
         .{ "lockWhenCondition:beforeDate:", objc.BOOL, .{ objc.NSInteger, NSDate } },
@@ -1141,16 +1164,14 @@ pub const NSConditionLock = struct {
         .{ "unlockWithCondition:", void, .{objc.NSInteger} },
     };
 
-    pub fn send(self: NSConditionLock, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSConditionLock, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
-    pub const class_methods = .{
-        .{ "initWithCondition:", Object, .{objc.NSInteger} },
-    };
+    pub const class_methods = .{};
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSConditionLock", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSConditionLock", class_methods, selector, args);
     }
 };
 
@@ -1161,6 +1182,9 @@ pub const NSCountedSet = struct {
     pub const methods = .{
         .{ "addObject:", void, .{Any} },
         .{ "countForObject:", objc.NSInteger, .{Any} },
+        .{ "initWithArray:", NSCountedSet, .{Object} },
+        .{ "initWithCapacity:", NSCountedSet, .{objc.NSInteger} },
+        .{ "initWithSet:", NSCountedSet, .{?*anyopaque} },
         .{ "objectEnumerator", NSEnumerator, .{} },
         .{ "removeObject:", void, .{Any} },
     };
@@ -1169,14 +1193,10 @@ pub const NSCountedSet = struct {
         return objc.typedSendChain(@This(), self.obj, selector, args);
     }
 
-    pub const class_methods = .{
-        .{ "initWithArray:", Object, .{Object} },
-        .{ "initWithCapacity:", Object, .{objc.NSInteger} },
-        .{ "initWithSet:", Object, .{?*anyopaque} },
-    };
+    pub const class_methods = .{};
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSCountedSet", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSCountedSet", class_methods, selector, args);
     }
 };
 
@@ -1191,6 +1211,12 @@ pub const NSCreateCommand = struct {
 
     pub fn send(self: NSCreateCommand, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
         return objc.typedSendChain(@This(), self.obj, selector, args);
+    }
+
+    pub const class_methods = .{};
+
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSCreateCommand", class_methods, selector, args);
     }
 };
 
@@ -1208,6 +1234,18 @@ pub const NSData = struct {
         .{ "getBytes:", void, .{UnsafeMutableRawPointer} },
         .{ "getBytes:length:", void, .{ UnsafeMutableRawPointer, objc.NSInteger } },
         .{ "getBytes:range:", void, .{ UnsafeMutableRawPointer, NSRange } },
+        .{ "initWithBase64EncodedData:options:", NSData, .{ NSData, objc.NSInteger } },
+        .{ "initWithBase64EncodedString:options:", NSData, .{ objc.NSString, objc.NSInteger } },
+        .{ "initWithBytes:length:", NSData, .{ ?UnsafeRawPointer, objc.NSInteger } },
+        .{ "initWithBytesNoCopy:length:", NSData, .{ UnsafeMutableRawPointer, objc.NSInteger } },
+        .{ "initWithBytesNoCopy:length:deallocator:", NSData, .{ UnsafeMutableRawPointer, objc.NSInteger, ?*anyopaque } },
+        .{ "initWithBytesNoCopy:length:freeWhenDone:", NSData, .{ UnsafeMutableRawPointer, objc.NSInteger, objc.BOOL } },
+        .{ "initWithContentsOfFile:", NSData, .{objc.NSString} },
+        .{ "initWithContentsOfFile:options:error:", NSData, .{ objc.NSString, objc.NSInteger } },
+        .{ "initWithContentsOfMappedFile:", NSData, .{objc.NSString} },
+        .{ "initWithContentsOfURL:", NSData, .{NSURL} },
+        .{ "initWithContentsOfURL:options:error:", NSData, .{ NSURL, objc.NSInteger } },
+        .{ "initWithData:", NSData, .{NSData} },
         .{ "isEqualToData:", objc.BOOL, .{NSData} },
         .{ "length", objc.NSInteger, .{} },
         .{ "rangeOfData:options:range:", NSRange, .{ NSData, objc.NSInteger, NSRange } },
@@ -1218,30 +1256,18 @@ pub const NSData = struct {
         .{ "writeToURL:options:error:", void, .{ NSURL, objc.NSInteger } },
     };
 
-    pub fn send(self: NSData, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSData, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
         .{ "dataWithContentsOfMappedFile:", ?Any, .{objc.NSString} },
         .{ "dataWithContentsOfURL:", Object, .{NSURL} },
         .{ "dataWithContentsOfURL:options:error:", Object, .{ NSURL, objc.NSInteger } },
-        .{ "initWithBase64EncodedData:options:", Object, .{ NSData, objc.NSInteger } },
-        .{ "initWithBase64EncodedString:options:", Object, .{ objc.NSString, objc.NSInteger } },
-        .{ "initWithBytes:length:", Object, .{ ?UnsafeRawPointer, objc.NSInteger } },
-        .{ "initWithBytesNoCopy:length:", Object, .{ UnsafeMutableRawPointer, objc.NSInteger } },
-        .{ "initWithBytesNoCopy:length:deallocator:", Object, .{ UnsafeMutableRawPointer, objc.NSInteger, ?*anyopaque } },
-        .{ "initWithBytesNoCopy:length:freeWhenDone:", Object, .{ UnsafeMutableRawPointer, objc.NSInteger, objc.BOOL } },
-        .{ "initWithContentsOfFile:", Object, .{objc.NSString} },
-        .{ "initWithContentsOfFile:options:error:", Object, .{ objc.NSString, objc.NSInteger } },
-        .{ "initWithContentsOfMappedFile:", Object, .{objc.NSString} },
-        .{ "initWithContentsOfURL:", Object, .{NSURL} },
-        .{ "initWithContentsOfURL:options:error:", Object, .{ NSURL, objc.NSInteger } },
-        .{ "initWithData:", Object, .{NSData} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSData", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSData", class_methods, selector, args);
     }
 
     pub const CompressionAlgorithm = enum(i64) {
@@ -1258,18 +1284,17 @@ pub const NSDataDetector = struct {
     pub const Super = NSRegularExpression;
     pub const methods = .{
         .{ "checkingTypes", u64, .{} },
+        .{ "initWithTypes:error:", NSDataDetector, .{u64} },
     };
 
     pub fn send(self: NSDataDetector, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
         return objc.typedSendChain(@This(), self.obj, selector, args);
     }
 
-    pub const class_methods = .{
-        .{ "initWithTypes:error:", Object, .{u64} },
-    };
+    pub const class_methods = .{};
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSDataDetector", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSDataDetector", class_methods, selector, args);
     }
 };
 
@@ -1284,6 +1309,12 @@ pub const NSDate = struct {
         .{ "descriptionWithCalendarFormat:timeZone:locale:", ?objc.NSString, .{ ?objc.NSString, ?NSTimeZone, ?Any } },
         .{ "descriptionWithLocale:", objc.NSString, .{?Any} },
         .{ "earlierDate:", NSDate, .{NSDate} },
+        .{ "initWithCoder:", NSDate, .{NSCoder} },
+        .{ "initWithString:", NSDate, .{objc.NSString} },
+        .{ "initWithTimeInterval:sinceDate:", NSDate, .{ TimeInterval, NSDate } },
+        .{ "initWithTimeIntervalSince1970:", NSDate, .{TimeInterval} },
+        .{ "initWithTimeIntervalSinceNow:", NSDate, .{TimeInterval} },
+        .{ "initWithTimeIntervalSinceReferenceDate:", NSDate, .{TimeInterval} },
         .{ "isEqualToDate:", objc.BOOL, .{NSDate} },
         .{ "laterDate:", NSDate, .{NSDate} },
         .{ "timeIntervalSince1970", TimeInterval, .{} },
@@ -1292,8 +1323,8 @@ pub const NSDate = struct {
         .{ "timeIntervalSinceReferenceDate", TimeInterval, .{} },
     };
 
-    pub fn send(self: NSDate, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSDate, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
@@ -1303,19 +1334,12 @@ pub const NSDate = struct {
         .{ "dateWithTimeInterval:sinceDate:", Object, .{ TimeInterval, NSDate } },
         .{ "distantFuture", NSDate, .{} },
         .{ "distantPast", NSDate, .{} },
-        .{ "init", Object, .{} },
-        .{ "initWithCoder:", Object, .{NSCoder} },
-        .{ "initWithString:", Object, .{objc.NSString} },
-        .{ "initWithTimeInterval:sinceDate:", Object, .{ TimeInterval, NSDate } },
-        .{ "initWithTimeIntervalSince1970:", Object, .{TimeInterval} },
-        .{ "initWithTimeIntervalSinceNow:", Object, .{TimeInterval} },
-        .{ "initWithTimeIntervalSinceReferenceDate:", Object, .{TimeInterval} },
         .{ "now", NSDate, .{} },
         .{ "timeIntervalSinceReferenceDate", TimeInterval, .{} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSDate", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSDate", class_methods, selector, args);
     }
 };
 
@@ -1368,8 +1392,14 @@ pub const NSDateComponents = struct {
         .{ "yearForWeekOfYear", objc.NSInteger, .{} },
     };
 
-    pub fn send(self: NSDateComponents, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSDateComponents, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
+    }
+
+    pub const class_methods = .{};
+
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSDateComponents", class_methods, selector, args);
     }
 };
 
@@ -1415,8 +1445,8 @@ pub const DateComponentsFormatter = struct {
         .{ "localizedStringFromDateComponents:unitsStyle:", ?objc.NSString, .{ NSDateComponents, DateComponentsFormatter.UnitsStyle } },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSDateComponentsFormatter", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSDateComponentsFormatter", class_methods, selector, args);
     }
 
     pub const UnitsStyle = enum(i64) {
@@ -1519,8 +1549,8 @@ pub const DateFormatter = struct {
         .{ "setDefaultFormatterBehavior:", void, .{DateFormatter.Behavior} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSDateFormatter", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSDateFormatter", class_methods, selector, args);
     }
 
     pub const Behavior = enum(i64) {
@@ -1545,25 +1575,23 @@ pub const NSDateInterval = struct {
         .{ "containsDate:", objc.BOOL, .{NSDate} },
         .{ "duration", TimeInterval, .{} },
         .{ "endDate", NSDate, .{} },
+        .{ "initWithCoder:", NSDateInterval, .{NSCoder} },
+        .{ "initWithStartDate:duration:", NSDateInterval, .{ NSDate, TimeInterval } },
+        .{ "initWithStartDate:endDate:", NSDateInterval, .{ NSDate, NSDate } },
         .{ "intersectionWithDateInterval:", ?NSDateInterval, .{NSDateInterval} },
         .{ "intersectsDateInterval:", objc.BOOL, .{NSDateInterval} },
         .{ "isEqualToDateInterval:", objc.BOOL, .{NSDateInterval} },
         .{ "startDate", NSDate, .{} },
     };
 
-    pub fn send(self: NSDateInterval, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSDateInterval, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
-    pub const class_methods = .{
-        .{ "init", Object, .{} },
-        .{ "initWithCoder:", Object, .{NSCoder} },
-        .{ "initWithStartDate:duration:", Object, .{ NSDate, TimeInterval } },
-        .{ "initWithStartDate:endDate:", Object, .{ NSDate, NSDate } },
-    };
+    pub const class_methods = .{};
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSDateInterval", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSDateInterval", class_methods, selector, args);
     }
 };
 
@@ -1590,6 +1618,12 @@ pub const DateIntervalFormatter = struct {
 
     pub fn send(self: DateIntervalFormatter, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
         return objc.typedSendChain(@This(), self.obj, selector, args);
+    }
+
+    pub const class_methods = .{};
+
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSDateIntervalFormatter", class_methods, selector, args);
     }
 
     pub const Style = enum(i64) {
@@ -1623,6 +1657,10 @@ pub const NSDecimalNumber = struct {
         .{ "decimalValue", ?*anyopaque, .{} },
         .{ "descriptionWithLocale:", objc.NSString, .{?Any} },
         .{ "doubleValue", f64, .{} },
+        .{ "initWithDecimal:", NSDecimalNumber, .{?*anyopaque} },
+        .{ "initWithMantissa:exponent:isNegative:", NSDecimalNumber, .{ u64, i16, objc.BOOL } },
+        .{ "initWithString:", NSDecimalNumber, .{?objc.NSString} },
+        .{ "initWithString:locale:", NSDecimalNumber, .{ ?objc.NSString, ?Any } },
         .{ "objCType", ?*anyopaque, .{} },
     };
 
@@ -1632,10 +1670,6 @@ pub const NSDecimalNumber = struct {
 
     pub const class_methods = .{
         .{ "defaultBehavior", NSDecimalNumberBehaviors, .{} },
-        .{ "initWithDecimal:", Object, .{?*anyopaque} },
-        .{ "initWithMantissa:exponent:isNegative:", Object, .{ u64, i16, objc.BOOL } },
-        .{ "initWithString:", Object, .{?objc.NSString} },
-        .{ "initWithString:locale:", Object, .{ ?objc.NSString, ?Any } },
         .{ "maximumDecimalNumber", NSDecimalNumber, .{} },
         .{ "minimumDecimalNumber", NSDecimalNumber, .{} },
         .{ "notANumber", NSDecimalNumber, .{} },
@@ -1644,8 +1678,8 @@ pub const NSDecimalNumber = struct {
         .{ "zero", NSDecimalNumber, .{} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSDecimalNumber", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSDecimalNumber", class_methods, selector, args);
     }
 
     pub const CalculationError = enum(i64) {
@@ -1664,13 +1698,22 @@ pub const NSDecimalNumber = struct {
 };
 
 pub const NSDecimalNumberHandler = struct {
-    pub const class_methods = .{
-        .{ "defaultDecimalNumberHandler", NSDecimalNumberHandler, .{} },
-        .{ "initWithRoundingMode:scale:raiseOnExactness:raiseOnOverflow:raiseOnUnderflow:raiseOnDivideByZero:", Object, .{ NSDecimalNumber.RoundingMode, i16, objc.BOOL, objc.BOOL, objc.BOOL, objc.BOOL } },
+    obj: Object,
+
+    pub const methods = .{
+        .{ "initWithRoundingMode:scale:raiseOnExactness:raiseOnOverflow:raiseOnUnderflow:raiseOnDivideByZero:", NSDecimalNumberHandler, .{ NSDecimalNumber.RoundingMode, i16, objc.BOOL, objc.BOOL, objc.BOOL, objc.BOOL } },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSDecimalNumberHandler", class_methods, selector, args);
+    pub fn send(self: NSDecimalNumberHandler, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
+    }
+
+    pub const class_methods = .{
+        .{ "defaultDecimalNumberHandler", NSDecimalNumberHandler, .{} },
+    };
+
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSDecimalNumberHandler", class_methods, selector, args);
     }
 };
 
@@ -1685,6 +1728,12 @@ pub const NSDeleteCommand = struct {
 
     pub fn send(self: NSDeleteCommand, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
         return objc.typedSendChain(@This(), self.obj, selector, args);
+    }
+
+    pub const class_methods = .{};
+
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSDeleteCommand", class_methods, selector, args);
     }
 };
 
@@ -1718,6 +1767,14 @@ pub const NSDictionary = struct {
         .{ "fileSystemFileNumber", objc.NSInteger, .{} },
         .{ "fileSystemNumber", objc.NSInteger, .{} },
         .{ "fileType", ?objc.NSString, .{} },
+        .{ "initWithCoder:", NSDictionary, .{NSCoder} },
+        .{ "initWithContentsOfFile:", NSDictionary, .{objc.NSString} },
+        .{ "initWithContentsOfURL:", NSDictionary, .{NSURL} },
+        .{ "initWithContentsOfURL:error:", NSDictionary, .{ NSURL, void } },
+        .{ "initWithDictionary:", NSDictionary, .{Object} },
+        .{ "initWithDictionary:copyItems:", NSDictionary, .{ Object, objc.BOOL } },
+        .{ "initWithObjects:forKeys:", NSDictionary, .{ Object, Object } },
+        .{ "initWithObjects:forKeys:count:", NSDictionary, .{ ?UnsafePointer, ?NSCopying, objc.NSInteger } },
         .{ "isEqualToDictionary:", objc.BOOL, .{Object} },
         .{ "keyEnumerator", NSEnumerator, .{} },
         .{ "keysOfEntriesPassingTest:", ?*anyopaque, .{?*anyopaque} },
@@ -1734,27 +1791,18 @@ pub const NSDictionary = struct {
         .{ "writeToURL:error:", void, .{NSURL} },
     };
 
-    pub fn send(self: NSDictionary, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSDictionary, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
         .{ "dictionaryWithContentsOfURL:", Object, .{NSURL} },
         .{ "dictionaryWithObject:forKey:", Object, .{ Any, NSCopying } },
-        .{ "init", Object, .{} },
-        .{ "initWithCoder:", Object, .{NSCoder} },
-        .{ "initWithContentsOfFile:", Object, .{objc.NSString} },
-        .{ "initWithContentsOfURL:", Object, .{NSURL} },
-        .{ "initWithContentsOfURL:error:", Object, .{ NSURL, void } },
-        .{ "initWithDictionary:", Object, .{Object} },
-        .{ "initWithDictionary:copyItems:", Object, .{ Object, objc.BOOL } },
-        .{ "initWithObjects:forKeys:", Object, .{ Object, Object } },
-        .{ "initWithObjects:forKeys:count:", Object, .{ ?UnsafePointer, ?NSCopying, objc.NSInteger } },
         .{ "sharedKeySetForKeys:", Any, .{Object} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSDictionary", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSDictionary", class_methods, selector, args);
     }
 };
 
@@ -1764,6 +1812,7 @@ pub const Dimension = struct {
     pub const Super = Unit;
     pub const methods = .{
         .{ "converter", UnitConverter, .{} },
+        .{ "initWithSymbol:converter:", Dimension, .{ objc.NSString, UnitConverter } },
     };
 
     pub fn send(self: Dimension, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
@@ -1772,11 +1821,10 @@ pub const Dimension = struct {
 
     pub const class_methods = .{
         .{ "baseUnit", ?*anyopaque, .{} },
-        .{ "initWithSymbol:converter:", Object, .{ objc.NSString, UnitConverter } },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSDimension", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSDimension", class_methods, selector, args);
     }
 };
 
@@ -1796,6 +1844,12 @@ pub const NSDirectoryEnumerator = struct {
     pub fn send(self: NSDirectoryEnumerator, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
         return objc.typedSendChain(@This(), self.obj, selector, args);
     }
+
+    pub const class_methods = .{};
+
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSDirectoryEnumerator", class_methods, selector, args);
+    }
 };
 
 pub const NSDistributedLock = struct {
@@ -1803,21 +1857,20 @@ pub const NSDistributedLock = struct {
 
     pub const methods = .{
         .{ "breakLock", void, .{} },
+        .{ "initWithPath:", NSDistributedLock, .{objc.NSString} },
         .{ "lockDate", NSDate, .{} },
         .{ "tryLock", objc.BOOL, .{} },
         .{ "unlock", void, .{} },
     };
 
-    pub fn send(self: NSDistributedLock, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSDistributedLock, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
-    pub const class_methods = .{
-        .{ "initWithPath:", Object, .{objc.NSString} },
-    };
+    pub const class_methods = .{};
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSDistributedLock", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSDistributedLock", class_methods, selector, args);
     }
 };
 
@@ -1846,8 +1899,8 @@ pub const DistributedNotificationCenter = struct {
         .{ "notificationCenterForType:", DistributedNotificationCenter, .{objc.NSString} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSDistributedNotificationCenter", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSDistributedNotificationCenter", class_methods, selector, args);
     }
 
     pub const SuspensionBehavior = enum(i64) {
@@ -1880,6 +1933,12 @@ pub const EnergyFormatter = struct {
         return objc.typedSendChain(@This(), self.obj, selector, args);
     }
 
+    pub const class_methods = .{};
+
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSEnergyFormatter", class_methods, selector, args);
+    }
+
     pub const Unit = enum(i64) {
         joule = 11,
         kilojoule = 14,
@@ -1896,8 +1955,14 @@ pub const NSEnumerator = struct {
         .{ "nextObject", ?Any, .{} },
     };
 
-    pub fn send(self: NSEnumerator, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSEnumerator, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
+    }
+
+    pub const class_methods = .{};
+
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSEnumerator", class_methods, selector, args);
     }
 };
 
@@ -1908,6 +1973,7 @@ pub const NSError = struct {
         .{ "code", objc.NSInteger, .{} },
         .{ "domain", objc.NSString, .{} },
         .{ "helpAnchor", ?objc.NSString, .{} },
+        .{ "initWithDomain:code:userInfo:", NSError, .{ objc.NSString, objc.NSInteger, ?*anyopaque } },
         .{ "localizedDescription", objc.NSString, .{} },
         .{ "localizedFailureReason", ?objc.NSString, .{} },
         .{ "localizedRecoveryOptions", ?*anyopaque, .{} },
@@ -1917,18 +1983,17 @@ pub const NSError = struct {
         .{ "userInfo", Object, .{} },
     };
 
-    pub fn send(self: NSError, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSError, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
-        .{ "initWithDomain:code:userInfo:", Object, .{ objc.NSString, objc.NSInteger, ?*anyopaque } },
         .{ "setUserInfoValueProviderForDomain:provider:", void, .{ objc.NSString, ?*anyopaque } },
         .{ "userInfoValueProviderForDomain:", ?Any, .{objc.NSString} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSError", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSError", class_methods, selector, args);
     }
 };
 
@@ -1938,23 +2003,23 @@ pub const NSException = struct {
     pub const methods = .{
         .{ "callStackReturnAddresses", Object, .{} },
         .{ "callStackSymbols", Object, .{} },
+        .{ "initWithName:reason:userInfo:", NSException, .{ objc.NSString, ?objc.NSString, ?*anyopaque } },
         .{ "name", objc.NSString, .{} },
         .{ "raise", void, .{} },
         .{ "reason", ?objc.NSString, .{} },
         .{ "userInfo", ?*anyopaque, .{} },
     };
 
-    pub fn send(self: NSException, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSException, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
-        .{ "initWithName:reason:userInfo:", Object, .{ objc.NSString, ?objc.NSString, ?*anyopaque } },
         .{ "raise:format:arguments:", void, .{ objc.NSString, objc.NSString, ?*anyopaque } },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSException", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSException", class_methods, selector, args);
     }
 };
 
@@ -1971,6 +2036,8 @@ pub const NSExpression = struct {
         .{ "expressionValueWithObject:context:", ?Any, .{ ?Any, ?NSMutableDictionary } },
         .{ "falseExpression", NSExpression, .{} },
         .{ "function", objc.NSString, .{} },
+        .{ "initWithCoder:", NSExpression, .{NSCoder} },
+        .{ "initWithExpressionType:", NSExpression, .{NSExpression.ExpressionType} },
         .{ "keyPath", objc.NSString, .{} },
         .{ "leftExpression", NSExpression, .{} },
         .{ "operand", NSExpression, .{} },
@@ -1980,8 +2047,8 @@ pub const NSExpression = struct {
         .{ "variable", objc.NSString, .{} },
     };
 
-    pub fn send(self: NSExpression, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSExpression, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
@@ -2001,12 +2068,10 @@ pub const NSExpression = struct {
         .{ "expressionForVariable:", Object, .{objc.NSString} },
         .{ "expressionWithFormat:argumentArray:", Object, .{ objc.NSString, Object } },
         .{ "expressionWithFormat:arguments:", Object, .{ objc.NSString, ?*anyopaque } },
-        .{ "initWithCoder:", Object, .{NSCoder} },
-        .{ "initWithExpressionType:", Object, .{NSExpression.ExpressionType} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSExpression", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSExpression", class_methods, selector, args);
     }
 
     pub const ExpressionType = enum(i64) {
@@ -2036,8 +2101,14 @@ pub const NSExtensionContext = struct {
         .{ "openURL:completionHandler:", void, .{ NSURL, ?*anyopaque } },
     };
 
-    pub fn send(self: NSExtensionContext, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSExtensionContext, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
+    }
+
+    pub const class_methods = .{};
+
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSExtensionContext", class_methods, selector, args);
     }
 };
 
@@ -2055,8 +2126,14 @@ pub const NSExtensionItem = struct {
         .{ "userInfo", ?*anyopaque, .{} },
     };
 
-    pub fn send(self: NSExtensionItem, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSExtensionItem, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
+    }
+
+    pub const class_methods = .{};
+
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSExtensionItem", class_methods, selector, args);
     }
 };
 
@@ -2067,8 +2144,8 @@ pub const NSFileAccessIntent = struct {
         .{ "URL", NSURL, .{} },
     };
 
-    pub fn send(self: NSFileAccessIntent, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSFileAccessIntent, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
@@ -2076,8 +2153,8 @@ pub const NSFileAccessIntent = struct {
         .{ "writingIntentWithURL:options:", ?*anyopaque, .{ NSURL, objc.NSInteger } },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSFileAccessIntent", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSFileAccessIntent", class_methods, selector, args);
     }
 };
 
@@ -2091,6 +2168,7 @@ pub const NSFileCoordinator = struct {
         .{ "coordinateReadingItemAtURL:options:writingItemAtURL:options:error:byAccessor:", void, .{ NSURL, objc.NSInteger, NSURL, objc.NSInteger, Object, ?*anyopaque } },
         .{ "coordinateWritingItemAtURL:options:error:byAccessor:", void, .{ NSURL, objc.NSInteger, Object, ?*anyopaque } },
         .{ "coordinateWritingItemAtURL:options:writingItemAtURL:options:error:byAccessor:", void, .{ NSURL, objc.NSInteger, NSURL, objc.NSInteger, Object, ?*anyopaque } },
+        .{ "initWithFilePresenter:", NSFileCoordinator, .{?NSFilePresenter} },
         .{ "itemAtURL:didChangeUbiquityAttributes:", void, .{ NSURL, objc.NSString } },
         .{ "itemAtURL:didMoveToURL:", void, .{ NSURL, NSURL } },
         .{ "itemAtURL:willMoveToURL:", void, .{ NSURL, NSURL } },
@@ -2099,19 +2177,18 @@ pub const NSFileCoordinator = struct {
         .{ "setPurposeIdentifier:", void, .{objc.NSString} },
     };
 
-    pub fn send(self: NSFileCoordinator, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSFileCoordinator, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
         .{ "addFilePresenter:", void, .{NSFilePresenter} },
         .{ "filePresenters", Object, .{} },
-        .{ "initWithFilePresenter:", Object, .{?NSFilePresenter} },
         .{ "removeFilePresenter:", void, .{NSFilePresenter} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSFileCoordinator", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSFileCoordinator", class_methods, selector, args);
     }
 };
 
@@ -2125,6 +2202,9 @@ pub const FileHandle = struct {
         .{ "closeAndReturnError:", void, .{} },
         .{ "closeFile", void, .{} },
         .{ "fileDescriptor", i32, .{} },
+        .{ "initWithCoder:", FileHandle, .{NSCoder} },
+        .{ "initWithFileDescriptor:", FileHandle, .{i32} },
+        .{ "initWithFileDescriptor:closeOnDealloc:", FileHandle, .{ i32, objc.BOOL } },
         .{ "offsetInFile", u64, .{} },
         .{ "readDataOfLength:", NSData, .{objc.NSInteger} },
         .{ "readDataToEndOfFile", NSData, .{} },
@@ -2149,8 +2229,8 @@ pub const FileHandle = struct {
         .{ "writeabilityHandler", void, .{} },
     };
 
-    pub fn send(self: FileHandle, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: FileHandle, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
@@ -2164,13 +2244,10 @@ pub const FileHandle = struct {
         .{ "fileHandleWithStandardError", FileHandle, .{} },
         .{ "fileHandleWithStandardInput", FileHandle, .{} },
         .{ "fileHandleWithStandardOutput", FileHandle, .{} },
-        .{ "initWithCoder:", Object, .{NSCoder} },
-        .{ "initWithFileDescriptor:", Object, .{i32} },
-        .{ "initWithFileDescriptor:closeOnDealloc:", Object, .{ i32, objc.BOOL } },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSFileHandle", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSFileHandle", class_methods, selector, args);
     }
 };
 
@@ -2242,16 +2319,16 @@ pub const FileManager = struct {
         .{ "uploadLocalVersionOfUbiquitousItemAtURL:withConflictResolutionPolicy:completionHandler:", void, .{ NSURL, NSFileManagerUploadLocalVersionConflictPolicy, ?*anyopaque } },
     };
 
-    pub fn send(self: FileManager, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: FileManager, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
         .{ "defaultManager", FileManager, .{} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSFileManager", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSFileManager", class_methods, selector, args);
     }
 
     pub const SearchPathDirectory = enum(i64) {
@@ -2298,18 +2375,32 @@ pub const NSFileProviderService = struct {
         .{ "name", objc.NSString, .{} },
     };
 
-    pub fn send(self: NSFileProviderService, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSFileProviderService, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
+    }
+
+    pub const class_methods = .{};
+
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSFileProviderService", class_methods, selector, args);
     }
 };
 
 pub const NSFileSecurity = struct {
-    pub const class_methods = .{
-        .{ "initWithCoder:", Object, .{NSCoder} },
+    obj: Object,
+
+    pub const methods = .{
+        .{ "initWithCoder:", NSFileSecurity, .{NSCoder} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSFileSecurity", class_methods, selector, args);
+    pub fn send(self: NSFileSecurity, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
+    }
+
+    pub const class_methods = .{};
+
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSFileSecurity", class_methods, selector, args);
     }
 };
 
@@ -2334,8 +2425,8 @@ pub const NSFileVersion = struct {
         .{ "setResolved:", void, .{objc.BOOL} },
     };
 
-    pub fn send(self: NSFileVersion, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSFileVersion, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
@@ -2349,8 +2440,8 @@ pub const NSFileVersion = struct {
         .{ "versionOfItemAtURL:forPersistentIdentifier:", ?NSFileVersion, .{ NSURL, Any } },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSFileVersion", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSFileVersion", class_methods, selector, args);
     }
 };
 
@@ -2366,6 +2457,14 @@ pub const FileWrapper = struct {
         .{ "fileAttributes", Object, .{} },
         .{ "fileWrappers", ?*anyopaque, .{} },
         .{ "filename", ?objc.NSString, .{} },
+        .{ "initDirectoryWithFileWrappers:", FileWrapper, .{Object} },
+        .{ "initRegularFileWithContents:", FileWrapper, .{NSData} },
+        .{ "initSymbolicLinkWithDestination:", FileWrapper, .{objc.NSString} },
+        .{ "initSymbolicLinkWithDestinationURL:", FileWrapper, .{NSURL} },
+        .{ "initWithCoder:", FileWrapper, .{NSCoder} },
+        .{ "initWithPath:", FileWrapper, .{objc.NSString} },
+        .{ "initWithSerializedRepresentation:", FileWrapper, .{NSData} },
+        .{ "initWithURL:options:error:", FileWrapper, .{ NSURL, objc.NSInteger } },
         .{ "keyForFileWrapper:", ?objc.NSString, .{FileWrapper} },
         .{ "matchesContentsOfURL:", objc.BOOL, .{NSURL} },
         .{ "needsToBeUpdatedFromPath:", objc.BOOL, .{objc.NSString} },
@@ -2386,23 +2485,14 @@ pub const FileWrapper = struct {
         .{ "writeToURL:options:originalContentsURL:error:", void, .{ NSURL, objc.NSInteger, ?NSURL } },
     };
 
-    pub fn send(self: FileWrapper, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: FileWrapper, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
-    pub const class_methods = .{
-        .{ "initDirectoryWithFileWrappers:", Object, .{Object} },
-        .{ "initRegularFileWithContents:", Object, .{NSData} },
-        .{ "initSymbolicLinkWithDestination:", Object, .{objc.NSString} },
-        .{ "initSymbolicLinkWithDestinationURL:", Object, .{NSURL} },
-        .{ "initWithCoder:", Object, .{NSCoder} },
-        .{ "initWithPath:", Object, .{objc.NSString} },
-        .{ "initWithSerializedRepresentation:", Object, .{NSData} },
-        .{ "initWithURL:options:error:", Object, .{ NSURL, objc.NSInteger } },
-    };
+    pub const class_methods = .{};
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSFileWrapper", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSFileWrapper", class_methods, selector, args);
     }
 };
 
@@ -2418,8 +2508,14 @@ pub const Formatter = struct {
         .{ "stringForObjectValue:", ?objc.NSString, .{?Any} },
     };
 
-    pub fn send(self: Formatter, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: Formatter, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
+    }
+
+    pub const class_methods = .{};
+
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSFormatter", class_methods, selector, args);
     }
 
     pub const Context = enum(i64) {
@@ -2446,6 +2542,7 @@ pub const HTTPCookie = struct {
         .{ "commentURL", ?NSURL, .{} },
         .{ "domain", objc.NSString, .{} },
         .{ "expiresDate", ?NSDate, .{} },
+        .{ "initWithProperties:", HTTPCookie, .{Object} },
         .{ "name", objc.NSString, .{} },
         .{ "path", objc.NSString, .{} },
         .{ "portList", ?*anyopaque, .{} },
@@ -2457,18 +2554,17 @@ pub const HTTPCookie = struct {
         .{ "version", objc.NSInteger, .{} },
     };
 
-    pub fn send(self: HTTPCookie, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: HTTPCookie, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
         .{ "cookiesWithResponseHeaderFields:forURL:", Object, .{ Object, NSURL } },
-        .{ "initWithProperties:", Object, .{Object} },
         .{ "requestHeaderFieldsWithCookies:", Object, .{Object} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSHTTPCookie", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSHTTPCookie", class_methods, selector, args);
     }
 
     pub const AcceptPolicy = enum(i64) {
@@ -2495,8 +2591,8 @@ pub const HTTPCookieStorage = struct {
         .{ "storeCookies:forTask:", void, .{ Object, URLSessionTask } },
     };
 
-    pub fn send(self: HTTPCookieStorage, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: HTTPCookieStorage, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
@@ -2504,8 +2600,8 @@ pub const HTTPCookieStorage = struct {
         .{ "sharedHTTPCookieStorage", HTTPCookieStorage, .{} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSHTTPCookieStorage", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSHTTPCookieStorage", class_methods, selector, args);
     }
 };
 
@@ -2515,6 +2611,7 @@ pub const HTTPURLResponse = struct {
     pub const Super = URLResponse;
     pub const methods = .{
         .{ "allHeaderFields", Object, .{} },
+        .{ "initWithURL:statusCode:HTTPVersion:headerFields:", HTTPURLResponse, .{ NSURL, objc.NSInteger, ?objc.NSString, ?*anyopaque } },
         .{ "statusCode", objc.NSInteger, .{} },
         .{ "valueForHTTPHeaderField:", ?objc.NSString, .{objc.NSString} },
     };
@@ -2524,12 +2621,11 @@ pub const HTTPURLResponse = struct {
     }
 
     pub const class_methods = .{
-        .{ "initWithURL:statusCode:HTTPVersion:headerFields:", Object, .{ NSURL, objc.NSInteger, ?objc.NSString, ?*anyopaque } },
         .{ "localizedStringForStatusCode:", objc.NSString, .{objc.NSInteger} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSHTTPURLResponse", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSHTTPURLResponse", class_methods, selector, args);
     }
 };
 
@@ -2542,6 +2638,8 @@ pub const NSHashTable = struct {
         .{ "anyObject", ?*anyopaque, .{} },
         .{ "containsObject:", objc.BOOL, .{?*anyopaque} },
         .{ "count", objc.NSInteger, .{} },
+        .{ "initWithOptions:capacity:", NSHashTable, .{ objc.NSInteger, objc.NSInteger } },
+        .{ "initWithPointerFunctions:capacity:", NSHashTable, .{ NSPointerFunctions, objc.NSInteger } },
         .{ "intersectHashTable:", void, .{?*anyopaque} },
         .{ "intersectsHashTable:", objc.BOOL, .{?*anyopaque} },
         .{ "isEqualToHashTable:", objc.BOOL, .{?*anyopaque} },
@@ -2557,19 +2655,17 @@ pub const NSHashTable = struct {
         .{ "unionHashTable:", void, .{?*anyopaque} },
     };
 
-    pub fn send(self: NSHashTable, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSHashTable, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
         .{ "hashTableWithOptions:", Object, .{objc.NSInteger} },
-        .{ "initWithOptions:capacity:", Object, .{ objc.NSInteger, objc.NSInteger } },
-        .{ "initWithPointerFunctions:capacity:", Object, .{ NSPointerFunctions, objc.NSInteger } },
         .{ "weakObjectsHashTable", ?*anyopaque, .{} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSHashTable", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSHashTable", class_methods, selector, args);
     }
 };
 
@@ -2585,8 +2681,8 @@ pub const Host = struct {
         .{ "names", Object, .{} },
     };
 
-    pub fn send(self: Host, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: Host, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
@@ -2595,8 +2691,8 @@ pub const Host = struct {
         .{ "hostWithName:", Object, .{?objc.NSString} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSHost", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSHost", class_methods, selector, args);
     }
 };
 
@@ -2618,12 +2714,11 @@ pub const ISO8601DateFormatter = struct {
     }
 
     pub const class_methods = .{
-        .{ "init", Object, .{} },
         .{ "stringFromDate:timeZone:formatOptions:", objc.NSString, .{ NSDate, NSTimeZone, objc.NSInteger } },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSISO8601DateFormatter", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSISO8601DateFormatter", class_methods, selector, args);
     }
 };
 
@@ -2637,20 +2732,19 @@ pub const NSIndexPath = struct {
         .{ "indexAtPosition:", objc.NSInteger, .{objc.NSInteger} },
         .{ "indexPathByAddingIndex:", NSIndexPath, .{objc.NSInteger} },
         .{ "indexPathByRemovingLastIndex", NSIndexPath, .{} },
+        .{ "initWithIndex:", NSIndexPath, .{objc.NSInteger} },
+        .{ "initWithIndexes:length:", NSIndexPath, .{ objc.NSInteger, objc.NSInteger } },
         .{ "length", objc.NSInteger, .{} },
     };
 
-    pub fn send(self: NSIndexPath, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSIndexPath, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
-    pub const class_methods = .{
-        .{ "initWithIndex:", Object, .{objc.NSInteger} },
-        .{ "initWithIndexes:length:", Object, .{ objc.NSInteger, objc.NSInteger } },
-    };
+    pub const class_methods = .{};
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSIndexPath", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSIndexPath", class_methods, selector, args);
     }
 };
 
@@ -2681,23 +2775,22 @@ pub const NSIndexSet = struct {
         .{ "indexesInRange:options:passingTest:", NSIndexSet, .{ NSRange, objc.NSInteger, ?*anyopaque } },
         .{ "indexesPassingTest:", NSIndexSet, .{?*anyopaque} },
         .{ "indexesWithOptions:passingTest:", NSIndexSet, .{ objc.NSInteger, ?*anyopaque } },
+        .{ "initWithIndex:", NSIndexSet, .{objc.NSInteger} },
+        .{ "initWithIndexSet:", NSIndexSet, .{NSIndexSet} },
+        .{ "initWithIndexesInRange:", NSIndexSet, .{NSRange} },
         .{ "intersectsIndexesInRange:", objc.BOOL, .{NSRange} },
         .{ "isEqualToIndexSet:", objc.BOOL, .{NSIndexSet} },
         .{ "lastIndex", objc.NSInteger, .{} },
     };
 
-    pub fn send(self: NSIndexSet, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSIndexSet, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
-    pub const class_methods = .{
-        .{ "initWithIndex:", Object, .{objc.NSInteger} },
-        .{ "initWithIndexSet:", Object, .{NSIndexSet} },
-        .{ "initWithIndexesInRange:", Object, .{NSRange} },
-    };
+    pub const class_methods = .{};
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSIndexSet", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSIndexSet", class_methods, selector, args);
     }
 };
 
@@ -2707,6 +2800,7 @@ pub const NSIndexSpecifier = struct {
     pub const Super = NSScriptObjectSpecifier;
     pub const methods = .{
         .{ "index", objc.NSInteger, .{} },
+        .{ "initWithContainerClassDescription:containerSpecifier:key:index:", NSIndexSpecifier, .{ NSScriptClassDescription, ?NSScriptObjectSpecifier, objc.NSString, objc.NSInteger } },
         .{ "setIndex:", void, .{objc.NSInteger} },
     };
 
@@ -2714,12 +2808,10 @@ pub const NSIndexSpecifier = struct {
         return objc.typedSendChain(@This(), self.obj, selector, args);
     }
 
-    pub const class_methods = .{
-        .{ "initWithContainerClassDescription:containerSpecifier:key:index:", Object, .{ NSScriptClassDescription, ?NSScriptObjectSpecifier, objc.NSString, objc.NSInteger } },
-    };
+    pub const class_methods = .{};
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSIndexSpecifier", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSIndexSpecifier", class_methods, selector, args);
     }
 };
 
@@ -2730,6 +2822,9 @@ pub const InputStream = struct {
     pub const methods = .{
         .{ "getBuffer:length:", objc.BOOL, .{ u8, objc.NSInteger } },
         .{ "hasBytesAvailable", objc.BOOL, .{} },
+        .{ "initWithData:", InputStream, .{NSData} },
+        .{ "initWithFileAtPath:", InputStream, .{objc.NSString} },
+        .{ "initWithURL:", InputStream, .{NSURL} },
         .{ "read:maxLength:", objc.NSInteger, .{ u8, objc.NSInteger } },
     };
 
@@ -2738,14 +2833,11 @@ pub const InputStream = struct {
     }
 
     pub const class_methods = .{
-        .{ "initWithData:", Object, .{NSData} },
-        .{ "initWithFileAtPath:", Object, .{objc.NSString} },
-        .{ "initWithURL:", Object, .{NSURL} },
         .{ "inputStreamWithURL:", Object, .{NSURL} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSInputStream", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSInputStream", class_methods, selector, args);
     }
 };
 
@@ -2756,6 +2848,9 @@ pub const NSItemProvider = struct {
         .{ "canLoadObjectOfClass:", objc.BOOL, .{NSItemProviderReading} },
         .{ "hasItemConformingToTypeIdentifier:", objc.BOOL, .{objc.NSString} },
         .{ "hasRepresentationConformingToTypeIdentifier:fileOptions:", objc.BOOL, .{ objc.NSString, objc.NSInteger } },
+        .{ "initWithContentsOfURL:", NSItemProvider, .{NSURL} },
+        .{ "initWithItem:typeIdentifier:", NSItemProvider, .{ ?NSSecureCoding, ?objc.NSString } },
+        .{ "initWithObject:", NSItemProvider, .{NSItemProviderWriting} },
         .{ "loadDataRepresentationForTypeIdentifier:completionHandler:", Progress, .{ objc.NSString, ?*anyopaque } },
         .{ "loadFileRepresentationForTypeIdentifier:completionHandler:", Progress, .{ objc.NSString, ?*anyopaque } },
         .{ "loadInPlaceFileRepresentationForTypeIdentifier:completionHandler:", Progress, .{ objc.NSString, ?*anyopaque } },
@@ -2775,19 +2870,14 @@ pub const NSItemProvider = struct {
         .{ "suggestedName", ?objc.NSString, .{} },
     };
 
-    pub fn send(self: NSItemProvider, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSItemProvider, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
-    pub const class_methods = .{
-        .{ "init", Object, .{} },
-        .{ "initWithContentsOfURL:", Object, .{NSURL} },
-        .{ "initWithItem:typeIdentifier:", Object, .{ ?NSSecureCoding, ?objc.NSString } },
-        .{ "initWithObject:", Object, .{NSItemProviderWriting} },
-    };
+    pub const class_methods = .{};
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSItemProvider", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSItemProvider", class_methods, selector, args);
     }
 
     pub const ErrorCode = enum(i64) {
@@ -2807,8 +2897,8 @@ pub const JSONSerialization = struct {
         .{ "writeJSONObject:toStream:options:error:", objc.NSInteger, .{ Any, OutputStream, objc.NSInteger, Object } },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSJSONSerialization", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSJSONSerialization", class_methods, selector, args);
     }
 };
 
@@ -2817,19 +2907,18 @@ pub const NSKeyValueSharedObservers = struct {
 
     pub const methods = .{
         .{ "addSharedObserver:forKey:options:context:", void, .{ Object, objc.NSString, objc.NSInteger, ?UnsafeMutableRawPointer } },
+        .{ "initWithObservableClass:", NSKeyValueSharedObservers, .{AnyClass} },
         .{ "snapshot", Object, .{} },
     };
 
-    pub fn send(self: NSKeyValueSharedObservers, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSKeyValueSharedObservers, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
-    pub const class_methods = .{
-        .{ "initWithObservableClass:", Object, .{AnyClass} },
-    };
+    pub const class_methods = .{};
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSKeyValueSharedObservers", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSKeyValueSharedObservers", class_methods, selector, args);
     }
 };
 
@@ -2850,6 +2939,8 @@ pub const NSKeyedArchiver = struct {
         .{ "encodeObject:forKey:", void, .{ ?Any, objc.NSString } },
         .{ "encodedData", NSData, .{} },
         .{ "finishEncoding", void, .{} },
+        .{ "initForWritingWithMutableData:", NSKeyedArchiver, .{NSMutableData} },
+        .{ "initRequiringSecureCoding:", NSKeyedArchiver, .{objc.BOOL} },
         .{ "outputFormat", PropertyListSerialization.PropertyListFormat, .{} },
         .{ "requiresSecureCoding", objc.BOOL, .{} },
         .{ "setClassName:forClass:", void, .{ ?objc.NSString, AnyClass } },
@@ -2867,14 +2958,11 @@ pub const NSKeyedArchiver = struct {
         .{ "archivedDataWithRootObject:", NSData, .{Any} },
         .{ "archivedDataWithRootObject:requiringSecureCoding:error:", NSData, .{ Any, objc.BOOL } },
         .{ "classNameForClass:", ?objc.NSString, .{AnyClass} },
-        .{ "init", Object, .{} },
-        .{ "initForWritingWithMutableData:", Object, .{NSMutableData} },
-        .{ "initRequiringSecureCoding:", Object, .{objc.BOOL} },
         .{ "setClassName:forClass:", void, .{ ?objc.NSString, AnyClass } },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSKeyedArchiver", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSKeyedArchiver", class_methods, selector, args);
     }
 };
 
@@ -2895,6 +2983,8 @@ pub const NSKeyedUnarchiver = struct {
         .{ "decodingFailurePolicy", NSCoder.DecodingFailurePolicy, .{} },
         .{ "delegate", ?NSKeyedUnarchiverDelegate, .{} },
         .{ "finishDecoding", void, .{} },
+        .{ "initForReadingFromData:error:", NSKeyedUnarchiver, .{NSData} },
+        .{ "initForReadingWithData:", NSKeyedUnarchiver, .{NSData} },
         .{ "requiresSecureCoding", objc.BOOL, .{} },
         .{ "setClass:forClassName:", void, .{ ?AnyClass, objc.NSString } },
         .{ "setDecodingFailurePolicy:", void, .{NSCoder.DecodingFailurePolicy} },
@@ -2908,17 +2998,14 @@ pub const NSKeyedUnarchiver = struct {
 
     pub const class_methods = .{
         .{ "classForClassName:", ?AnyClass, .{objc.NSString} },
-        .{ "init", Object, .{} },
-        .{ "initForReadingFromData:error:", Object, .{NSData} },
-        .{ "initForReadingWithData:", Object, .{NSData} },
         .{ "setClass:forClassName:", void, .{ ?AnyClass, objc.NSString } },
         .{ "unarchiveObjectWithData:", ?Any, .{NSData} },
         .{ "unarchiveObjectWithFile:", ?Any, .{objc.NSString} },
         .{ "unarchivedObjectOfClasses:fromData:error:", Any, .{ ?*anyopaque, NSData } },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSKeyedUnarchiver", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSKeyedUnarchiver", class_methods, selector, args);
     }
 };
 
@@ -2944,6 +3031,12 @@ pub const LengthFormatter = struct {
         return objc.typedSendChain(@This(), self.obj, selector, args);
     }
 
+    pub const class_methods = .{};
+
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSLengthFormatter", class_methods, selector, args);
+    }
+
     pub const Unit = enum(i64) {
         millimeter = 8,
         centimeter = 9,
@@ -2963,6 +3056,7 @@ pub const NSLinguisticTagger = struct {
         .{ "dominantLanguage", ?objc.NSString, .{} },
         .{ "enumerateTagsInRange:scheme:options:usingBlock:", void, .{ NSRange, objc.NSString, objc.NSInteger, ?*anyopaque } },
         .{ "enumerateTagsInRange:unit:scheme:options:usingBlock:", void, .{ NSRange, NSLinguisticTaggerUnit, objc.NSString, objc.NSInteger, ?*anyopaque } },
+        .{ "initWithTagSchemes:options:", NSLinguisticTagger, .{ Object, objc.NSInteger } },
         .{ "orthographyAtIndex:effectiveRange:", ?NSOrthography, .{ objc.NSInteger, NSRange } },
         .{ "possibleTagsAtIndex:scheme:tokenRange:sentenceRange:scores:", ?*anyopaque, .{ objc.NSInteger, objc.NSString, NSRange, NSRange, ?NSArray } },
         .{ "sentenceRangeForRange:", NSRange, .{NSRange} },
@@ -2978,8 +3072,8 @@ pub const NSLinguisticTagger = struct {
         .{ "tokenRangeAtIndex:unit:", NSRange, .{ objc.NSInteger, NSLinguisticTaggerUnit } },
     };
 
-    pub fn send(self: NSLinguisticTagger, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSLinguisticTagger, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
@@ -2987,13 +3081,12 @@ pub const NSLinguisticTagger = struct {
         .{ "availableTagSchemesForUnit:language:", Object, .{ NSLinguisticTaggerUnit, objc.NSString } },
         .{ "dominantLanguageForString:", ?objc.NSString, .{objc.NSString} },
         .{ "enumerateTagsForString:range:unit:scheme:options:orthography:usingBlock:", void, .{ objc.NSString, NSRange, NSLinguisticTaggerUnit, objc.NSString, objc.NSInteger, ?NSOrthography, ?*anyopaque } },
-        .{ "initWithTagSchemes:options:", Object, .{ Object, objc.NSInteger } },
         .{ "tagForString:atIndex:unit:scheme:orthography:tokenRange:", objc.NSString, .{ objc.NSString, objc.NSInteger, NSLinguisticTaggerUnit, objc.NSString, ?NSOrthography, NSRange } },
         .{ "tagsForString:range:unit:scheme:options:orthography:tokenRanges:", Object, .{ objc.NSString, NSRange, NSLinguisticTaggerUnit, objc.NSString, objc.NSInteger, ?NSOrthography, ?NSArray } },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSLinguisticTagger", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSLinguisticTagger", class_methods, selector, args);
     }
 };
 
@@ -3018,8 +3111,8 @@ pub const ListFormatter = struct {
         .{ "localizedStringByJoiningStrings:", objc.NSString, .{Object} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSListFormatter", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSListFormatter", class_methods, selector, args);
     }
 };
 
@@ -3039,6 +3132,8 @@ pub const NSLocale = struct {
         .{ "displayNameForKey:value:", ?objc.NSString, .{ objc.NSString, Any } },
         .{ "exemplarCharacterSet", NSCharacterSet, .{} },
         .{ "groupingSeparator", objc.NSString, .{} },
+        .{ "initWithCoder:", NSLocale, .{NSCoder} },
+        .{ "initWithLocaleIdentifier:", NSLocale, .{objc.NSString} },
         .{ "languageCode", objc.NSString, .{} },
         .{ "languageIdentifier", objc.NSString, .{} },
         .{ "localeIdentifier", objc.NSString, .{} },
@@ -3060,8 +3155,8 @@ pub const NSLocale = struct {
         .{ "variantCode", ?objc.NSString, .{} },
     };
 
-    pub fn send(self: NSLocale, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSLocale, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
@@ -3076,8 +3171,6 @@ pub const NSLocale = struct {
         .{ "commonISOCurrencyCodes", Object, .{} },
         .{ "componentsFromLocaleIdentifier:", Object, .{objc.NSString} },
         .{ "currentLocale", NSLocale, .{} },
-        .{ "initWithCoder:", Object, .{NSCoder} },
-        .{ "initWithLocaleIdentifier:", Object, .{objc.NSString} },
         .{ "lineDirectionForLanguage:", NSLocale.LanguageDirection, .{objc.NSString} },
         .{ "localeIdentifierFromComponents:", objc.NSString, .{Object} },
         .{ "localeIdentifierFromWindowsLocaleCode:", ?objc.NSString, .{u32} },
@@ -3086,8 +3179,8 @@ pub const NSLocale = struct {
         .{ "windowsLocaleCodeFromLocaleIdentifier:", u32, .{objc.NSString} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSLocale", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSLocale", class_methods, selector, args);
     }
 
     pub const LanguageDirection = enum(i64) {
@@ -3109,20 +3202,35 @@ pub const NSLock = struct {
         .{ "tryLock", objc.BOOL, .{} },
     };
 
-    pub fn send(self: NSLock, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSLock, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
+    }
+
+    pub const class_methods = .{};
+
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSLock", class_methods, selector, args);
     }
 };
 
 pub const NSLogicalTest = struct {
-    pub const class_methods = .{
-        .{ "initAndTestWithTests:", Object, .{Object} },
-        .{ "initNotTestWithTest:", Object, .{NSScriptWhoseTest} },
-        .{ "initOrTestWithTests:", Object, .{Object} },
+    obj: Object,
+
+    pub const Super = NSScriptWhoseTest;
+    pub const methods = .{
+        .{ "initAndTestWithTests:", NSLogicalTest, .{Object} },
+        .{ "initNotTestWithTest:", NSLogicalTest, .{NSScriptWhoseTest} },
+        .{ "initOrTestWithTests:", NSLogicalTest, .{Object} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSLogicalTest", class_methods, selector, args);
+    pub fn send(self: NSLogicalTest, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
+        return objc.typedSendChain(@This(), self.obj, selector, args);
+    }
+
+    pub const class_methods = .{};
+
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSLogicalTest", class_methods, selector, args);
     }
 };
 
@@ -3132,6 +3240,8 @@ pub const NSMachPort = struct {
     pub const Super = Port;
     pub const methods = .{
         .{ "delegate", ?NSMachPortDelegate, .{} },
+        .{ "initWithMachPort:", NSMachPort, .{u32} },
+        .{ "initWithMachPort:options:", NSMachPort, .{ u32, objc.NSInteger } },
         .{ "machPort", u32, .{} },
         .{ "removeFromRunLoop:forMode:", void, .{ RunLoop, objc.NSString } },
         .{ "scheduleInRunLoop:forMode:", void, .{ RunLoop, objc.NSString } },
@@ -3143,14 +3253,12 @@ pub const NSMachPort = struct {
     }
 
     pub const class_methods = .{
-        .{ "initWithMachPort:", Object, .{u32} },
-        .{ "initWithMachPort:options:", Object, .{ u32, objc.NSInteger } },
         .{ "portWithMachPort:", Port, .{u32} },
         .{ "portWithMachPort:options:", Port, .{ u32, objc.NSInteger } },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSMachPort", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSMachPort", class_methods, selector, args);
     }
 };
 
@@ -3160,6 +3268,8 @@ pub const NSMapTable = struct {
     pub const methods = .{
         .{ "count", objc.NSInteger, .{} },
         .{ "dictionaryRepresentation", Object, .{} },
+        .{ "initWithKeyOptions:valueOptions:capacity:", NSMapTable, .{ objc.NSInteger, objc.NSInteger, objc.NSInteger } },
+        .{ "initWithKeyPointerFunctions:valuePointerFunctions:capacity:", NSMapTable, .{ NSPointerFunctions, NSPointerFunctions, objc.NSInteger } },
         .{ "keyEnumerator", NSEnumerator, .{} },
         .{ "keyPointerFunctions", NSPointerFunctions, .{} },
         .{ "objectEnumerator", ?NSEnumerator, .{} },
@@ -3170,13 +3280,11 @@ pub const NSMapTable = struct {
         .{ "valuePointerFunctions", NSPointerFunctions, .{} },
     };
 
-    pub fn send(self: NSMapTable, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSMapTable, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
-        .{ "initWithKeyOptions:valueOptions:capacity:", Object, .{ objc.NSInteger, objc.NSInteger, objc.NSInteger } },
-        .{ "initWithKeyPointerFunctions:valuePointerFunctions:capacity:", Object, .{ NSPointerFunctions, NSPointerFunctions, objc.NSInteger } },
         .{ "mapTableWithKeyOptions:valueOptions:", Object, .{ objc.NSInteger, objc.NSInteger } },
         .{ "strongToStrongObjectsMapTable", ?*anyopaque, .{} },
         .{ "strongToWeakObjectsMapTable", ?*anyopaque, .{} },
@@ -3184,8 +3292,8 @@ pub const NSMapTable = struct {
         .{ "weakToWeakObjectsMapTable", ?*anyopaque, .{} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSMapTable", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSMapTable", class_methods, selector, args);
     }
 };
 
@@ -3211,6 +3319,12 @@ pub const MassFormatter = struct {
         return objc.typedSendChain(@This(), self.obj, selector, args);
     }
 
+    pub const class_methods = .{};
+
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSMassFormatter", class_methods, selector, args);
+    }
+
     pub const Unit = enum(i64) {
         gram = 11,
         kilogram = 14,
@@ -3226,22 +3340,21 @@ pub const NSMeasurement = struct {
     pub const methods = .{
         .{ "canBeConvertedToUnit:", objc.BOOL, .{Unit} },
         .{ "doubleValue", f64, .{} },
+        .{ "initWithDoubleValue:unit:", NSMeasurement, .{ f64, Unit } },
         .{ "measurementByAddingMeasurement:", Unit, .{Unit} },
         .{ "measurementByConvertingToUnit:", Unit, .{Unit} },
         .{ "measurementBySubtractingMeasurement:", Unit, .{Unit} },
         .{ "unit", Unit, .{} },
     };
 
-    pub fn send(self: NSMeasurement, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSMeasurement, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
-    pub const class_methods = .{
-        .{ "initWithDoubleValue:unit:", Object, .{ f64, Unit } },
-    };
+    pub const class_methods = .{};
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSMeasurement", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSMeasurement", class_methods, selector, args);
     }
 };
 
@@ -3265,6 +3378,12 @@ pub const MeasurementFormatter = struct {
     pub fn send(self: MeasurementFormatter, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
         return objc.typedSendChain(@This(), self.obj, selector, args);
     }
+
+    pub const class_methods = .{};
+
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSMeasurementFormatter", class_methods, selector, args);
+    }
 };
 
 pub const NSMetadataItem = struct {
@@ -3272,20 +3391,19 @@ pub const NSMetadataItem = struct {
 
     pub const methods = .{
         .{ "attributes", Object, .{} },
+        .{ "initWithURL:", NSMetadataItem, .{NSURL} },
         .{ "valueForAttribute:", ?Any, .{objc.NSString} },
         .{ "valuesForAttributes:", ?*anyopaque, .{Object} },
     };
 
-    pub fn send(self: NSMetadataItem, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSMetadataItem, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
-    pub const class_methods = .{
-        .{ "initWithURL:", Object, .{NSURL} },
-    };
+    pub const class_methods = .{};
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSMetadataItem", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSMetadataItem", class_methods, selector, args);
     }
 };
 
@@ -3329,8 +3447,14 @@ pub const NSMetadataQuery = struct {
         .{ "valueOfAttribute:forResultAtIndex:", ?Any, .{ objc.NSString, objc.NSInteger } },
     };
 
-    pub fn send(self: NSMetadataQuery, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSMetadataQuery, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
+    }
+
+    pub const class_methods = .{};
+
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSMetadataQuery", class_methods, selector, args);
     }
 };
 
@@ -3343,8 +3467,14 @@ pub const NSMetadataQueryAttributeValueTuple = struct {
         .{ "value", ?Any, .{} },
     };
 
-    pub fn send(self: NSMetadataQueryAttributeValueTuple, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSMetadataQueryAttributeValueTuple, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
+    }
+
+    pub const class_methods = .{};
+
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSMetadataQueryAttributeValueTuple", class_methods, selector, args);
     }
 };
 
@@ -3360,8 +3490,14 @@ pub const NSMetadataQueryResultGroup = struct {
         .{ "value", Any, .{} },
     };
 
-    pub fn send(self: NSMetadataQueryResultGroup, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSMetadataQueryResultGroup, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
+    }
+
+    pub const class_methods = .{};
+
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSMetadataQueryResultGroup", class_methods, selector, args);
     }
 };
 
@@ -3377,6 +3513,12 @@ pub const NSMoveCommand = struct {
     pub fn send(self: NSMoveCommand, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
         return objc.typedSendChain(@This(), self.obj, selector, args);
     }
+
+    pub const class_methods = .{};
+
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSMoveCommand", class_methods, selector, args);
+    }
 };
 
 pub const NSMutableArray = struct {
@@ -3388,6 +3530,8 @@ pub const NSMutableArray = struct {
         .{ "addObjectsFromArray:", void, .{Object} },
         .{ "exchangeObjectAtIndex:withObjectAtIndex:", void, .{ objc.NSInteger, objc.NSInteger } },
         .{ "filterUsingPredicate:", void, .{NSPredicate} },
+        .{ "initWithCapacity:", NSMutableArray, .{objc.NSInteger} },
+        .{ "initWithCoder:", NSMutableArray, .{NSCoder} },
         .{ "insertObject:atIndex:", void, .{ Any, objc.NSInteger } },
         .{ "insertObjects:atIndexes:", void, .{ Object, NSIndexSet } },
         .{ "removeAllObjects", void, .{} },
@@ -3418,13 +3562,10 @@ pub const NSMutableArray = struct {
 
     pub const class_methods = .{
         .{ "arrayWithContentsOfURL:", Object, .{NSURL} },
-        .{ "init", Object, .{} },
-        .{ "initWithCapacity:", Object, .{objc.NSInteger} },
-        .{ "initWithCoder:", Object, .{NSCoder} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSMutableArray", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSMutableArray", class_methods, selector, args);
     }
 };
 
@@ -3452,8 +3593,10 @@ pub const NSMutableAttributedString = struct {
         return objc.typedSendChain(@This(), self.obj, selector, args);
     }
 
-    pub fn create(string: Object) NSMutableAttributedString {
-        return .{ .obj = objc.msgSend(Object, objc.msgSendClass(Object, "NSMutableAttributedString", "alloc", .{}), "initWithString:", .{string}) };
+    pub const class_methods = .{};
+
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSMutableAttributedString", class_methods, selector, args);
     }
 };
 
@@ -3497,8 +3640,8 @@ pub const NSMutableCharacterSet = struct {
         .{ "whitespaceCharacterSet", NSMutableCharacterSet, .{} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSMutableCharacterSet", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSMutableCharacterSet", class_methods, selector, args);
     }
 };
 
@@ -3512,6 +3655,8 @@ pub const NSMutableData = struct {
         .{ "compressUsingAlgorithm:error:", void, .{NSData.CompressionAlgorithm} },
         .{ "decompressUsingAlgorithm:error:", void, .{NSData.CompressionAlgorithm} },
         .{ "increaseLengthBy:", void, .{objc.NSInteger} },
+        .{ "initWithCapacity:", NSMutableData, .{objc.NSInteger} },
+        .{ "initWithLength:", NSMutableData, .{objc.NSInteger} },
         .{ "length", objc.NSInteger, .{} },
         .{ "mutableBytes", UnsafeMutableRawPointer, .{} },
         .{ "replaceBytesInRange:withBytes:", void, .{ NSRange, UnsafeRawPointer } },
@@ -3525,13 +3670,10 @@ pub const NSMutableData = struct {
         return objc.typedSendChain(@This(), self.obj, selector, args);
     }
 
-    pub const class_methods = .{
-        .{ "initWithCapacity:", Object, .{objc.NSInteger} },
-        .{ "initWithLength:", Object, .{objc.NSInteger} },
-    };
+    pub const class_methods = .{};
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSMutableData", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSMutableData", class_methods, selector, args);
     }
 };
 
@@ -3541,6 +3683,8 @@ pub const NSMutableDictionary = struct {
     pub const Super = NSDictionary;
     pub const methods = .{
         .{ "addEntriesFromDictionary:", void, .{Object} },
+        .{ "initWithCapacity:", NSMutableDictionary, .{objc.NSInteger} },
+        .{ "initWithCoder:", NSMutableDictionary, .{NSCoder} },
         .{ "removeAllObjects", void, .{} },
         .{ "removeObjectForKey:", void, .{Any} },
         .{ "removeObjectsForKeys:", void, .{Object} },
@@ -3556,13 +3700,10 @@ pub const NSMutableDictionary = struct {
     pub const class_methods = .{
         .{ "dictionaryWithContentsOfURL:", Object, .{NSURL} },
         .{ "dictionaryWithSharedKeySet:", Object, .{Any} },
-        .{ "init", Object, .{} },
-        .{ "initWithCapacity:", Object, .{objc.NSInteger} },
-        .{ "initWithCoder:", Object, .{NSCoder} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSMutableDictionary", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSMutableDictionary", class_methods, selector, args);
     }
 };
 
@@ -3584,6 +3725,12 @@ pub const NSMutableIndexSet = struct {
     pub fn send(self: NSMutableIndexSet, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
         return objc.typedSendChain(@This(), self.obj, selector, args);
     }
+
+    pub const class_methods = .{};
+
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSMutableIndexSet", class_methods, selector, args);
+    }
 };
 
 pub const NSMutableOrderedSet = struct {
@@ -3596,6 +3743,8 @@ pub const NSMutableOrderedSet = struct {
         .{ "addObjectsFromArray:", void, .{Object} },
         .{ "exchangeObjectAtIndex:withObjectAtIndex:", void, .{ objc.NSInteger, objc.NSInteger } },
         .{ "filterUsingPredicate:", void, .{NSPredicate} },
+        .{ "initWithCapacity:", NSMutableOrderedSet, .{objc.NSInteger} },
+        .{ "initWithCoder:", NSMutableOrderedSet, .{NSCoder} },
         .{ "insertObject:atIndex:", void, .{ Any, objc.NSInteger } },
         .{ "insertObjects:atIndexes:", void, .{ Object, NSIndexSet } },
         .{ "intersectOrderedSet:", void, .{NSOrderedSet} },
@@ -3625,14 +3774,10 @@ pub const NSMutableOrderedSet = struct {
         return objc.typedSendChain(@This(), self.obj, selector, args);
     }
 
-    pub const class_methods = .{
-        .{ "init", Object, .{} },
-        .{ "initWithCapacity:", Object, .{objc.NSInteger} },
-        .{ "initWithCoder:", Object, .{NSCoder} },
-    };
+    pub const class_methods = .{};
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSMutableOrderedSet", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSMutableOrderedSet", class_methods, selector, args);
     }
 };
 
@@ -3644,6 +3789,8 @@ pub const NSMutableSet = struct {
         .{ "addObject:", void, .{Any} },
         .{ "addObjectsFromArray:", void, .{Object} },
         .{ "filterUsingPredicate:", void, .{NSPredicate} },
+        .{ "initWithCapacity:", NSMutableSet, .{objc.NSInteger} },
+        .{ "initWithCoder:", NSMutableSet, .{NSCoder} },
         .{ "intersectSet:", void, .{?*anyopaque} },
         .{ "minusSet:", void, .{?*anyopaque} },
         .{ "removeAllObjects", void, .{} },
@@ -3656,14 +3803,10 @@ pub const NSMutableSet = struct {
         return objc.typedSendChain(@This(), self.obj, selector, args);
     }
 
-    pub const class_methods = .{
-        .{ "init", Object, .{} },
-        .{ "initWithCapacity:", Object, .{objc.NSInteger} },
-        .{ "initWithCoder:", Object, .{NSCoder} },
-    };
+    pub const class_methods = .{};
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSMutableSet", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSMutableSet", class_methods, selector, args);
     }
 };
 
@@ -3675,6 +3818,7 @@ pub const NSMutableString = struct {
         .{ "appendString:", void, .{objc.NSString} },
         .{ "applyTransform:reverse:range:updatedRange:", objc.BOOL, .{ objc.NSString, objc.BOOL, NSRange, NSRange } },
         .{ "deleteCharactersInRange:", void, .{NSRange} },
+        .{ "initWithCapacity:", NSMutableString, .{objc.NSInteger} },
         .{ "insertString:atIndex:", void, .{ objc.NSString, objc.NSInteger } },
         .{ "replaceCharactersInRange:withString:", void, .{ NSRange, objc.NSString } },
         .{ "replaceOccurrencesOfString:withString:options:range:", objc.NSInteger, .{ objc.NSString, objc.NSString, objc.NSInteger, NSRange } },
@@ -3685,12 +3829,10 @@ pub const NSMutableString = struct {
         return objc.typedSendChain(@This(), self.obj, selector, args);
     }
 
-    pub const class_methods = .{
-        .{ "initWithCapacity:", Object, .{objc.NSInteger} },
-    };
+    pub const class_methods = .{};
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSMutableString", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSMutableString", class_methods, selector, args);
     }
 };
 
@@ -3746,6 +3888,12 @@ pub const NSMutableURLRequest = struct {
     pub fn send(self: NSMutableURLRequest, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
         return objc.typedSendChain(@This(), self.obj, selector, args);
     }
+
+    pub const class_methods = .{};
+
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSMutableURLRequest", class_methods, selector, args);
+    }
 };
 
 pub const NSNameSpecifier = struct {
@@ -3753,6 +3901,8 @@ pub const NSNameSpecifier = struct {
 
     pub const Super = NSScriptObjectSpecifier;
     pub const methods = .{
+        .{ "initWithCoder:", NSNameSpecifier, .{NSCoder} },
+        .{ "initWithContainerClassDescription:containerSpecifier:key:name:", NSNameSpecifier, .{ NSScriptClassDescription, ?NSScriptObjectSpecifier, objc.NSString, objc.NSString } },
         .{ "name", objc.NSString, .{} },
         .{ "setName:", void, .{objc.NSString} },
     };
@@ -3761,13 +3911,10 @@ pub const NSNameSpecifier = struct {
         return objc.typedSendChain(@This(), self.obj, selector, args);
     }
 
-    pub const class_methods = .{
-        .{ "initWithCoder:", Object, .{NSCoder} },
-        .{ "initWithContainerClassDescription:containerSpecifier:key:name:", Object, .{ NSScriptClassDescription, ?NSScriptObjectSpecifier, objc.NSString, objc.NSString } },
-    };
+    pub const class_methods = .{};
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSNameSpecifier", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSNameSpecifier", class_methods, selector, args);
     }
 };
 
@@ -3782,6 +3929,8 @@ pub const NetService = struct {
         .{ "getInputStream:outputStream:", objc.BOOL, .{ ?InputStream, ?OutputStream } },
         .{ "hostName", ?objc.NSString, .{} },
         .{ "includesPeerToPeer", objc.BOOL, .{} },
+        .{ "initWithDomain:type:name:", NetService, .{ objc.NSString, objc.NSString, objc.NSString } },
+        .{ "initWithDomain:type:name:port:", NetService, .{ objc.NSString, objc.NSString, objc.NSString, i32 } },
         .{ "name", objc.NSString, .{} },
         .{ "port", objc.NSInteger, .{} },
         .{ "publish", void, .{} },
@@ -3798,19 +3947,17 @@ pub const NetService = struct {
         .{ "type", objc.NSString, .{} },
     };
 
-    pub fn send(self: NetService, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NetService, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
         .{ "dataFromTXTRecordDictionary:", NSData, .{Object} },
         .{ "dictionaryFromTXTRecordData:", Object, .{NSData} },
-        .{ "initWithDomain:type:name:", Object, .{ objc.NSString, objc.NSString, objc.NSString } },
-        .{ "initWithDomain:type:name:port:", Object, .{ objc.NSString, objc.NSString, objc.NSString, i32 } },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSNetService", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSNetService", class_methods, selector, args);
     }
 
     pub const ErrorCode = enum(i64) {
@@ -3842,16 +3989,14 @@ pub const NetServiceBrowser = struct {
         .{ "stop", void, .{} },
     };
 
-    pub fn send(self: NetServiceBrowser, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NetServiceBrowser, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
-    pub const class_methods = .{
-        .{ "init", Object, .{} },
-    };
+    pub const class_methods = .{};
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSNetServiceBrowser", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSNetServiceBrowser", class_methods, selector, args);
     }
 };
 
@@ -3859,23 +4004,23 @@ pub const NSNotification = struct {
     obj: Object,
 
     pub const methods = .{
+        .{ "initWithCoder:", NSNotification, .{NSCoder} },
+        .{ "initWithName:object:userInfo:", NSNotification, .{ objc.NSString, ?Any, ?*anyopaque } },
         .{ "name", objc.NSString, .{} },
         .{ "object", ?Any, .{} },
         .{ "userInfo", ?*anyopaque, .{} },
     };
 
-    pub fn send(self: NSNotification, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSNotification, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
-        .{ "initWithCoder:", Object, .{NSCoder} },
-        .{ "initWithName:object:userInfo:", Object, .{ objc.NSString, ?Any, ?*anyopaque } },
         .{ "notificationWithName:object:", Object, .{ objc.NSString, ?Any } },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSNotification", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSNotification", class_methods, selector, args);
     }
 };
 
@@ -3892,16 +4037,16 @@ pub const NotificationCenter = struct {
         .{ "removeObserver:name:object:", void, .{ Any, objc.NSString, ?Any } },
     };
 
-    pub fn send(self: NotificationCenter, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NotificationCenter, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
         .{ "defaultCenter", NotificationCenter, .{} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSNotificationCenter", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSNotificationCenter", class_methods, selector, args);
     }
 };
 
@@ -3912,19 +4057,19 @@ pub const NotificationQueue = struct {
         .{ "dequeueNotificationsMatching:coalesceMask:", void, .{ NSNotification, objc.NSInteger } },
         .{ "enqueueNotification:postingStyle:", void, .{ NSNotification, NotificationQueue.PostingStyle } },
         .{ "enqueueNotification:postingStyle:coalesceMask:forModes:", void, .{ NSNotification, NotificationQueue.PostingStyle, objc.NSInteger, ?*anyopaque } },
+        .{ "initWithNotificationCenter:", NotificationQueue, .{NotificationCenter} },
     };
 
-    pub fn send(self: NotificationQueue, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NotificationQueue, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
         .{ "defaultQueue", NotificationQueue, .{} },
-        .{ "initWithNotificationCenter:", Object, .{NotificationCenter} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSNotificationQueue", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSNotificationQueue", class_methods, selector, args);
     }
 
     pub const PostingStyle = enum(i64) {
@@ -3946,6 +4091,20 @@ pub const NSNumber = struct {
         .{ "descriptionWithLocale:", objc.NSString, .{?Any} },
         .{ "doubleValue", f64, .{} },
         .{ "floatValue", f32, .{} },
+        .{ "initWithBool:", NSNumber, .{objc.BOOL} },
+        .{ "initWithChar:", NSNumber, .{?*anyopaque} },
+        .{ "initWithCoder:", NSNumber, .{NSCoder} },
+        .{ "initWithDouble:", NSNumber, .{f64} },
+        .{ "initWithFloat:", NSNumber, .{f32} },
+        .{ "initWithInt:", NSNumber, .{i32} },
+        .{ "initWithInteger:", NSNumber, .{objc.NSInteger} },
+        .{ "initWithLongLong:", NSNumber, .{i64} },
+        .{ "initWithShort:", NSNumber, .{i16} },
+        .{ "initWithUnsignedChar:", NSNumber, .{u8} },
+        .{ "initWithUnsignedInt:", NSNumber, .{u32} },
+        .{ "initWithUnsignedInteger:", NSNumber, .{c_ulong} },
+        .{ "initWithUnsignedLongLong:", NSNumber, .{u64} },
+        .{ "initWithUnsignedShort:", NSNumber, .{u16} },
         .{ "intValue", i32, .{} },
         .{ "integerValue", objc.NSInteger, .{} },
         .{ "isEqualToNumber:", objc.BOOL, .{NSNumber} },
@@ -3963,25 +4122,10 @@ pub const NSNumber = struct {
         return objc.typedSendChain(@This(), self.obj, selector, args);
     }
 
-    pub const class_methods = .{
-        .{ "initWithBool:", Object, .{objc.BOOL} },
-        .{ "initWithChar:", Object, .{?*anyopaque} },
-        .{ "initWithCoder:", Object, .{NSCoder} },
-        .{ "initWithDouble:", Object, .{f64} },
-        .{ "initWithFloat:", Object, .{f32} },
-        .{ "initWithInt:", Object, .{i32} },
-        .{ "initWithInteger:", Object, .{objc.NSInteger} },
-        .{ "initWithLongLong:", Object, .{i64} },
-        .{ "initWithShort:", Object, .{i16} },
-        .{ "initWithUnsignedChar:", Object, .{u8} },
-        .{ "initWithUnsignedInt:", Object, .{u32} },
-        .{ "initWithUnsignedInteger:", Object, .{c_ulong} },
-        .{ "initWithUnsignedLongLong:", Object, .{u64} },
-        .{ "initWithUnsignedShort:", Object, .{u16} },
-    };
+    pub const class_methods = .{};
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSNumber", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSNumber", class_methods, selector, args);
     }
 };
 
@@ -4137,8 +4281,8 @@ pub const NumberFormatter = struct {
         .{ "setDefaultFormatterBehavior:", void, .{NumberFormatter.Behavior} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSNumberFormatter", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSNumberFormatter", class_methods, selector, args);
     }
 
     pub const Behavior = enum(i64) {
@@ -4204,8 +4348,14 @@ pub const Operation = struct {
         .{ "waitUntilFinished", void, .{} },
     };
 
-    pub fn send(self: Operation, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: Operation, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
+    }
+
+    pub const class_methods = .{};
+
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSOperation", class_methods, selector, args);
     }
 
     pub const QueuePriority = enum(i64) {
@@ -4242,8 +4392,8 @@ pub const OperationQueue = struct {
         .{ "waitUntilAllOperationsAreFinished", void, .{} },
     };
 
-    pub fn send(self: OperationQueue, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: OperationQueue, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
@@ -4251,8 +4401,8 @@ pub const OperationQueue = struct {
         .{ "mainQueue", OperationQueue, .{} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSOperationQueue", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSOperationQueue", class_methods, selector, args);
     }
 };
 
@@ -4263,20 +4413,19 @@ pub const NSOrderedCollectionChange = struct {
         .{ "associatedIndex", objc.NSInteger, .{} },
         .{ "changeType", NSCollectionChangeType, .{} },
         .{ "index", objc.NSInteger, .{} },
+        .{ "initWithObject:type:index:", NSOrderedCollectionChange, .{ ?Any, NSCollectionChangeType, objc.NSInteger } },
+        .{ "initWithObject:type:index:associatedIndex:", NSOrderedCollectionChange, .{ ?Any, NSCollectionChangeType, objc.NSInteger, objc.NSInteger } },
         .{ "object", ?Any, .{} },
     };
 
-    pub fn send(self: NSOrderedCollectionChange, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSOrderedCollectionChange, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
-    pub const class_methods = .{
-        .{ "initWithObject:type:index:", Object, .{ ?Any, NSCollectionChangeType, objc.NSInteger } },
-        .{ "initWithObject:type:index:associatedIndex:", Object, .{ ?Any, NSCollectionChangeType, objc.NSInteger, objc.NSInteger } },
-    };
+    pub const class_methods = .{};
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSOrderedCollectionChange", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSOrderedCollectionChange", class_methods, selector, args);
     }
 };
 
@@ -4286,23 +4435,22 @@ pub const NSOrderedCollectionDifference = struct {
     pub const methods = .{
         .{ "differenceByTransformingChangesWithBlock:", Any, .{?*anyopaque} },
         .{ "hasChanges", objc.BOOL, .{} },
+        .{ "initWithChanges:", NSOrderedCollectionDifference, .{Object} },
+        .{ "initWithInsertIndexes:insertedObjects:removeIndexes:removedObjects:", NSOrderedCollectionDifference, .{ NSIndexSet, ?*anyopaque, NSIndexSet, ?*anyopaque } },
+        .{ "initWithInsertIndexes:insertedObjects:removeIndexes:removedObjects:additionalChanges:", NSOrderedCollectionDifference, .{ NSIndexSet, ?*anyopaque, NSIndexSet, ?*anyopaque, Object } },
         .{ "insertions", Object, .{} },
         .{ "inverseDifference", ?*anyopaque, .{} },
         .{ "removals", Object, .{} },
     };
 
-    pub fn send(self: NSOrderedCollectionDifference, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSOrderedCollectionDifference, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
-    pub const class_methods = .{
-        .{ "initWithChanges:", Object, .{Object} },
-        .{ "initWithInsertIndexes:insertedObjects:removeIndexes:removedObjects:", Object, .{ NSIndexSet, ?*anyopaque, NSIndexSet, ?*anyopaque } },
-        .{ "initWithInsertIndexes:insertedObjects:removeIndexes:removedObjects:additionalChanges:", Object, .{ NSIndexSet, ?*anyopaque, NSIndexSet, ?*anyopaque, Object } },
-    };
+    pub const class_methods = .{};
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSOrderedCollectionDifference", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSOrderedCollectionDifference", class_methods, selector, args);
     }
 };
 
@@ -4330,6 +4478,17 @@ pub const NSOrderedSet = struct {
         .{ "indexesOfObjectsAtIndexes:options:passingTest:", NSIndexSet, .{ NSIndexSet, objc.NSInteger, ?*anyopaque } },
         .{ "indexesOfObjectsPassingTest:", NSIndexSet, .{?*anyopaque} },
         .{ "indexesOfObjectsWithOptions:passingTest:", NSIndexSet, .{ objc.NSInteger, ?*anyopaque } },
+        .{ "initWithArray:", NSOrderedSet, .{Object} },
+        .{ "initWithArray:copyItems:", NSOrderedSet, .{ Object, objc.BOOL } },
+        .{ "initWithArray:range:copyItems:", NSOrderedSet, .{ Object, NSRange, objc.BOOL } },
+        .{ "initWithCoder:", NSOrderedSet, .{NSCoder} },
+        .{ "initWithObject:", NSOrderedSet, .{Any} },
+        .{ "initWithObjects:count:", NSOrderedSet, .{ ?UnsafePointer, objc.NSInteger } },
+        .{ "initWithOrderedSet:", NSOrderedSet, .{NSOrderedSet} },
+        .{ "initWithOrderedSet:copyItems:", NSOrderedSet, .{ NSOrderedSet, objc.BOOL } },
+        .{ "initWithOrderedSet:range:copyItems:", NSOrderedSet, .{ NSOrderedSet, NSRange, objc.BOOL } },
+        .{ "initWithSet:", NSOrderedSet, .{?*anyopaque} },
+        .{ "initWithSet:copyItems:", NSOrderedSet, .{ ?*anyopaque, objc.BOOL } },
         .{ "intersectsOrderedSet:", objc.BOOL, .{NSOrderedSet} },
         .{ "intersectsSet:", objc.BOOL, .{?*anyopaque} },
         .{ "isEqualToOrderedSet:", objc.BOOL, .{NSOrderedSet} },
@@ -4352,28 +4511,16 @@ pub const NSOrderedSet = struct {
         .{ "valueForKey:", Any, .{objc.NSString} },
     };
 
-    pub fn send(self: NSOrderedSet, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSOrderedSet, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
-        .{ "init", Object, .{} },
-        .{ "initWithArray:", Object, .{Object} },
-        .{ "initWithArray:copyItems:", Object, .{ Object, objc.BOOL } },
-        .{ "initWithArray:range:copyItems:", Object, .{ Object, NSRange, objc.BOOL } },
-        .{ "initWithCoder:", Object, .{NSCoder} },
-        .{ "initWithObject:", Object, .{Any} },
-        .{ "initWithObjects:count:", Object, .{ ?UnsafePointer, objc.NSInteger } },
-        .{ "initWithOrderedSet:", Object, .{NSOrderedSet} },
-        .{ "initWithOrderedSet:copyItems:", Object, .{ NSOrderedSet, objc.BOOL } },
-        .{ "initWithOrderedSet:range:copyItems:", Object, .{ NSOrderedSet, NSRange, objc.BOOL } },
-        .{ "initWithSet:", Object, .{?*anyopaque} },
-        .{ "initWithSet:copyItems:", Object, .{ ?*anyopaque, objc.BOOL } },
         .{ "orderedSetWithObjects:count:", Object, .{ UnsafePointer, objc.NSInteger } },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSOrderedSet", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSOrderedSet", class_methods, selector, args);
     }
 };
 
@@ -4386,22 +4533,22 @@ pub const NSOrthography = struct {
         .{ "dominantLanguage", objc.NSString, .{} },
         .{ "dominantLanguageForScript:", ?objc.NSString, .{objc.NSString} },
         .{ "dominantScript", objc.NSString, .{} },
+        .{ "initWithCoder:", NSOrthography, .{NSCoder} },
+        .{ "initWithDominantScript:languageMap:", NSOrthography, .{ objc.NSString, Object } },
         .{ "languageMap", Object, .{} },
         .{ "languagesForScript:", ?*anyopaque, .{objc.NSString} },
     };
 
-    pub fn send(self: NSOrthography, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSOrthography, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
         .{ "defaultOrthographyForLanguage:", ?*anyopaque, .{objc.NSString} },
-        .{ "initWithCoder:", Object, .{NSCoder} },
-        .{ "initWithDominantScript:languageMap:", Object, .{ objc.NSString, Object } },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSOrthography", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSOrthography", class_methods, selector, args);
     }
 };
 
@@ -4411,6 +4558,10 @@ pub const OutputStream = struct {
     pub const Super = Stream;
     pub const methods = .{
         .{ "hasSpaceAvailable", objc.BOOL, .{} },
+        .{ "initToBuffer:capacity:", OutputStream, .{ u8, objc.NSInteger } },
+        .{ "initToFileAtPath:append:", OutputStream, .{ objc.NSString, objc.BOOL } },
+        .{ "initToMemory", OutputStream, .{void} },
+        .{ "initWithURL:append:", OutputStream, .{ NSURL, objc.BOOL } },
         .{ "write:maxLength:", objc.NSInteger, .{ u8, objc.NSInteger } },
     };
 
@@ -4419,16 +4570,12 @@ pub const OutputStream = struct {
     }
 
     pub const class_methods = .{
-        .{ "initToBuffer:capacity:", Object, .{ u8, objc.NSInteger } },
-        .{ "initToFileAtPath:append:", Object, .{ objc.NSString, objc.BOOL } },
-        .{ "initToMemory", Object, .{void} },
-        .{ "initWithURL:append:", Object, .{ NSURL, objc.BOOL } },
         .{ "outputStreamToMemory", ?*anyopaque, .{} },
         .{ "outputStreamWithURL:append:", Object, .{ NSURL, objc.BOOL } },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSOutputStream", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSOutputStream", class_methods, selector, args);
     }
 };
 
@@ -4452,8 +4599,14 @@ pub const NSPersonNameComponents = struct {
         .{ "setPhoneticRepresentation:", void, .{?NSPersonNameComponents} },
     };
 
-    pub fn send(self: NSPersonNameComponents, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSPersonNameComponents, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
+    }
+
+    pub const class_methods = .{};
+
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSPersonNameComponents", class_methods, selector, args);
     }
 };
 
@@ -4482,8 +4635,8 @@ pub const PersonNameComponentsFormatter = struct {
         .{ "localizedStringFromPersonNameComponents:style:options:", objc.NSString, .{ NSPersonNameComponents, PersonNameComponentsFormatter.Style, objc.NSInteger } },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSPersonNameComponentsFormatter", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSPersonNameComponentsFormatter", class_methods, selector, args);
     }
 
     pub const Style = enum(i64) {
@@ -4503,8 +4656,14 @@ pub const Pipe = struct {
         .{ "fileHandleForWriting", FileHandle, .{} },
     };
 
-    pub fn send(self: Pipe, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: Pipe, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
+    }
+
+    pub const class_methods = .{};
+
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSPipe", class_methods, selector, args);
     }
 };
 
@@ -4516,6 +4675,8 @@ pub const NSPointerArray = struct {
         .{ "allObjects", Object, .{} },
         .{ "compact", void, .{} },
         .{ "count", objc.NSInteger, .{} },
+        .{ "initWithOptions:", NSPointerArray, .{objc.NSInteger} },
+        .{ "initWithPointerFunctions:", NSPointerArray, .{NSPointerFunctions} },
         .{ "insertPointer:atIndex:", void, .{ ?UnsafeMutableRawPointer, objc.NSInteger } },
         .{ "pointerAtIndex:", ?UnsafeMutableRawPointer, .{objc.NSInteger} },
         .{ "pointerFunctions", NSPointerFunctions, .{} },
@@ -4524,19 +4685,17 @@ pub const NSPointerArray = struct {
         .{ "setCount:", void, .{objc.NSInteger} },
     };
 
-    pub fn send(self: NSPointerArray, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSPointerArray, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
-        .{ "initWithOptions:", Object, .{objc.NSInteger} },
-        .{ "initWithPointerFunctions:", Object, .{NSPointerFunctions} },
         .{ "strongObjectsPointerArray", NSPointerArray, .{} },
         .{ "weakObjectsPointerArray", NSPointerArray, .{} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSPointerArray", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSPointerArray", class_methods, selector, args);
     }
 };
 
@@ -4547,6 +4706,7 @@ pub const NSPointerFunctions = struct {
         .{ "acquireFunction", ?UnsafeMutableRawPointer, .{} },
         .{ "descriptionFunction", ?objc.NSString, .{} },
         .{ "hashFunction", objc.NSInteger, .{} },
+        .{ "initWithOptions:", NSPointerFunctions, .{objc.NSInteger} },
         .{ "isEqualFunction", ?*anyopaque, .{} },
         .{ "relinquishFunction", void, .{} },
         .{ "setAcquireFunction:", void, .{?UnsafeMutableRawPointer} },
@@ -4562,16 +4722,14 @@ pub const NSPointerFunctions = struct {
         .{ "usesWeakReadAndWriteBarriers", objc.BOOL, .{} },
     };
 
-    pub fn send(self: NSPointerFunctions, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSPointerFunctions, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
-    pub const class_methods = .{
-        .{ "initWithOptions:", Object, .{objc.NSInteger} },
-    };
+    pub const class_methods = .{};
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSPointerFunctions", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSPointerFunctions", class_methods, selector, args);
     }
 };
 
@@ -4590,8 +4748,14 @@ pub const Port = struct {
         .{ "valid", objc.BOOL, .{} },
     };
 
-    pub fn send(self: Port, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: Port, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
+    }
+
+    pub const class_methods = .{};
+
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSPort", class_methods, selector, args);
     }
 };
 
@@ -4600,6 +4764,7 @@ pub const PortMessage = struct {
 
     pub const methods = .{
         .{ "components", ?*anyopaque, .{} },
+        .{ "initWithSendPort:receivePort:components:", PortMessage, .{ ?Port, ?Port, ?*anyopaque } },
         .{ "msgid", u32, .{} },
         .{ "receivePort", ?Port, .{} },
         .{ "sendBeforeDate:", objc.BOOL, .{NSDate} },
@@ -4607,16 +4772,14 @@ pub const PortMessage = struct {
         .{ "setMsgid:", void, .{u32} },
     };
 
-    pub fn send(self: PortMessage, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: PortMessage, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
-    pub const class_methods = .{
-        .{ "initWithSendPort:receivePort:components:", Object, .{ ?Port, ?Port, ?*anyopaque } },
-    };
+    pub const class_methods = .{};
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSPortMessage", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSPortMessage", class_methods, selector, args);
     }
 };
 
@@ -4625,6 +4788,7 @@ pub const NSPositionalSpecifier = struct {
 
     pub const methods = .{
         .{ "evaluate", void, .{} },
+        .{ "initWithPosition:objectSpecifier:", NSPositionalSpecifier, .{ NSPositionalSpecifier.InsertionPosition, NSScriptObjectSpecifier } },
         .{ "insertionContainer", ?Any, .{} },
         .{ "insertionIndex", objc.NSInteger, .{} },
         .{ "insertionKey", ?objc.NSString, .{} },
@@ -4634,16 +4798,14 @@ pub const NSPositionalSpecifier = struct {
         .{ "setInsertionClassDescription:", void, .{NSScriptClassDescription} },
     };
 
-    pub fn send(self: NSPositionalSpecifier, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSPositionalSpecifier, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
-    pub const class_methods = .{
-        .{ "initWithPosition:objectSpecifier:", Object, .{ NSPositionalSpecifier.InsertionPosition, NSScriptObjectSpecifier } },
-    };
+    pub const class_methods = .{};
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSPositionalSpecifier", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSPositionalSpecifier", class_methods, selector, args);
     }
 
     pub const InsertionPosition = enum(i64) {
@@ -4666,8 +4828,8 @@ pub const NSPredicate = struct {
         .{ "predicateWithSubstitutionVariables:", ?*anyopaque, .{Object} },
     };
 
-    pub fn send(self: NSPredicate, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSPredicate, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
@@ -4678,8 +4840,8 @@ pub const NSPredicate = struct {
         .{ "predicateWithValue:", Object, .{objc.BOOL} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSPredicate", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSPredicate", class_methods, selector, args);
     }
 };
 
@@ -4721,16 +4883,16 @@ pub const ProcessInfo = struct {
         .{ "userName", objc.NSString, .{} },
     };
 
-    pub fn send(self: ProcessInfo, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: ProcessInfo, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
         .{ "processInfo", ProcessInfo, .{} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSProcessInfo", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSProcessInfo", class_methods, selector, args);
     }
 
     pub const ThermalState = enum(i64) {
@@ -4757,6 +4919,7 @@ pub const Progress = struct {
         .{ "finished", objc.BOOL, .{} },
         .{ "fractionCompleted", f64, .{} },
         .{ "indeterminate", objc.BOOL, .{} },
+        .{ "initWithParent:userInfo:", Progress, .{ ?Progress, ?*anyopaque } },
         .{ "kind", objc.NSString, .{} },
         .{ "localizedAdditionalDescription", objc.NSString, .{} },
         .{ "localizedDescription", objc.NSString, .{} },
@@ -4787,22 +4950,21 @@ pub const Progress = struct {
         .{ "userInfo", Object, .{} },
     };
 
-    pub fn send(self: Progress, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: Progress, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
         .{ "addSubscriberForFileURL:withPublishingHandler:", Any, .{ NSURL, objc.NSString } },
         .{ "currentProgress", ?Progress, .{} },
         .{ "discreteProgressWithTotalUnitCount:", Progress, .{i64} },
-        .{ "initWithParent:userInfo:", Object, .{ ?Progress, ?*anyopaque } },
         .{ "progressWithTotalUnitCount:", Object, .{i64} },
         .{ "progressWithTotalUnitCount:parent:pendingUnitCount:", Object, .{ i64, Progress, i64 } },
         .{ "removeSubscriber:", void, .{Any} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSProgress", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSProgress", class_methods, selector, args);
     }
 };
 
@@ -4817,8 +4979,8 @@ pub const PropertyListSerialization = struct {
         .{ "writePropertyList:toStream:format:options:error:", objc.NSInteger, .{ Any, OutputStream, PropertyListSerialization.PropertyListFormat, objc.NSInteger, Object } },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSPropertyListSerialization", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSPropertyListSerialization", class_methods, selector, args);
     }
 
     pub const PropertyListFormat = enum(i64) {
@@ -4833,6 +4995,7 @@ pub const NSProtocolChecker = struct {
 
     pub const Super = NSProxy;
     pub const methods = .{
+        .{ "initWithTarget:protocol:", NSProtocolChecker, .{ Object, Object } },
         .{ "protocol", Object, .{} },
         .{ "target", ?*anyopaque, .{} },
     };
@@ -4841,12 +5004,10 @@ pub const NSProtocolChecker = struct {
         return objc.typedSendChain(@This(), self.obj, selector, args);
     }
 
-    pub const class_methods = .{
-        .{ "initWithTarget:protocol:", Object, .{ Object, Object } },
-    };
+    pub const class_methods = .{};
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSProtocolChecker", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSProtocolChecker", class_methods, selector, args);
     }
 };
 
@@ -4861,18 +5022,17 @@ pub const NSProxy = struct {
         .{ "forwardInvocation:", void, .{Object} },
     };
 
-    pub fn send(self: NSProxy, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSProxy, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
-        .{ "alloc", ?*anyopaque, .{} },
         .{ "class", AnyClass, .{} },
         .{ "respondsToSelector:", objc.BOOL, .{Selector} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSProxy", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSProxy", class_methods, selector, args);
     }
 };
 
@@ -4887,6 +5047,12 @@ pub const NSQuitCommand = struct {
     pub fn send(self: NSQuitCommand, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
         return objc.typedSendChain(@This(), self.obj, selector, args);
     }
+
+    pub const class_methods = .{};
+
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSQuitCommand", class_methods, selector, args);
+    }
 };
 
 pub const NSRangeSpecifier = struct {
@@ -4895,6 +5061,8 @@ pub const NSRangeSpecifier = struct {
     pub const Super = NSScriptObjectSpecifier;
     pub const methods = .{
         .{ "endSpecifier", ?NSScriptObjectSpecifier, .{} },
+        .{ "initWithCoder:", NSRangeSpecifier, .{NSCoder} },
+        .{ "initWithContainerClassDescription:containerSpecifier:key:startSpecifier:endSpecifier:", NSRangeSpecifier, .{ NSScriptClassDescription, ?NSScriptObjectSpecifier, objc.NSString, ?NSScriptObjectSpecifier, ?NSScriptObjectSpecifier } },
         .{ "setEndSpecifier:", void, .{?NSScriptObjectSpecifier} },
         .{ "setStartSpecifier:", void, .{?NSScriptObjectSpecifier} },
         .{ "startSpecifier", ?NSScriptObjectSpecifier, .{} },
@@ -4904,13 +5072,10 @@ pub const NSRangeSpecifier = struct {
         return objc.typedSendChain(@This(), self.obj, selector, args);
     }
 
-    pub const class_methods = .{
-        .{ "initWithCoder:", Object, .{NSCoder} },
-        .{ "initWithContainerClassDescription:containerSpecifier:key:startSpecifier:endSpecifier:", Object, .{ NSScriptClassDescription, ?NSScriptObjectSpecifier, objc.NSString, ?NSScriptObjectSpecifier, ?NSScriptObjectSpecifier } },
-    };
+    pub const class_methods = .{};
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSRangeSpecifier", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSRangeSpecifier", class_methods, selector, args);
     }
 };
 
@@ -4924,8 +5089,14 @@ pub const NSRecursiveLock = struct {
         .{ "tryLock", objc.BOOL, .{} },
     };
 
-    pub fn send(self: NSRecursiveLock, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSRecursiveLock, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
+    }
+
+    pub const class_methods = .{};
+
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSRecursiveLock", class_methods, selector, args);
     }
 };
 
@@ -4935,6 +5106,7 @@ pub const NSRegularExpression = struct {
     pub const methods = .{
         .{ "enumerateMatchesInString:options:range:usingBlock:", void, .{ objc.NSString, objc.NSInteger, NSRange, ?*anyopaque } },
         .{ "firstMatchInString:options:range:", ?NSTextCheckingResult, .{ objc.NSString, objc.NSInteger, NSRange } },
+        .{ "initWithPattern:options:error:", NSRegularExpression, .{ objc.NSString, objc.NSInteger } },
         .{ "matchesInString:options:range:", Object, .{ objc.NSString, objc.NSInteger, NSRange } },
         .{ "numberOfCaptureGroups", objc.NSInteger, .{} },
         .{ "numberOfMatchesInString:options:range:", objc.NSInteger, .{ objc.NSString, objc.NSInteger, NSRange } },
@@ -4946,18 +5118,17 @@ pub const NSRegularExpression = struct {
         .{ "stringByReplacingMatchesInString:options:range:withTemplate:", objc.NSString, .{ objc.NSString, objc.NSInteger, NSRange, objc.NSString } },
     };
 
-    pub fn send(self: NSRegularExpression, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSRegularExpression, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
         .{ "escapedPatternForString:", objc.NSString, .{objc.NSString} },
         .{ "escapedTemplateForString:", objc.NSString, .{objc.NSString} },
-        .{ "initWithPattern:options:error:", Object, .{ objc.NSString, objc.NSInteger } },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSRegularExpression", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSRegularExpression", class_methods, selector, args);
     }
 };
 
@@ -4986,6 +5157,12 @@ pub const RelativeDateTimeFormatter = struct {
         return objc.typedSendChain(@This(), self.obj, selector, args);
     }
 
+    pub const class_methods = .{};
+
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSRelativeDateTimeFormatter", class_methods, selector, args);
+    }
+
     pub const DateTimeStyle = enum(i64) {
         numeric = 0,
         named = 1,
@@ -5004,6 +5181,8 @@ pub const NSRelativeSpecifier = struct {
     pub const Super = NSScriptObjectSpecifier;
     pub const methods = .{
         .{ "baseSpecifier", ?NSScriptObjectSpecifier, .{} },
+        .{ "initWithCoder:", NSRelativeSpecifier, .{NSCoder} },
+        .{ "initWithContainerClassDescription:containerSpecifier:key:relativePosition:baseSpecifier:", NSRelativeSpecifier, .{ NSScriptClassDescription, ?NSScriptObjectSpecifier, objc.NSString, NSRelativeSpecifier.RelativePosition, ?NSScriptObjectSpecifier } },
         .{ "relativePosition", NSRelativeSpecifier.RelativePosition, .{} },
         .{ "setBaseSpecifier:", void, .{?NSScriptObjectSpecifier} },
         .{ "setRelativePosition:", void, .{NSRelativeSpecifier.RelativePosition} },
@@ -5013,13 +5192,10 @@ pub const NSRelativeSpecifier = struct {
         return objc.typedSendChain(@This(), self.obj, selector, args);
     }
 
-    pub const class_methods = .{
-        .{ "initWithCoder:", Object, .{NSCoder} },
-        .{ "initWithContainerClassDescription:containerSpecifier:key:relativePosition:baseSpecifier:", Object, .{ NSScriptClassDescription, ?NSScriptObjectSpecifier, objc.NSString, NSRelativeSpecifier.RelativePosition, ?NSScriptObjectSpecifier } },
-    };
+    pub const class_methods = .{};
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSRelativeSpecifier", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSRelativeSpecifier", class_methods, selector, args);
     }
 
     pub const RelativePosition = enum(i64) {
@@ -5049,8 +5225,8 @@ pub const RunLoop = struct {
         .{ "runUntilDate:", void, .{NSDate} },
     };
 
-    pub fn send(self: RunLoop, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: RunLoop, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
@@ -5058,8 +5234,8 @@ pub const RunLoop = struct {
         .{ "mainRunLoop", RunLoop, .{} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSRunLoop", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSRunLoop", class_methods, selector, args);
     }
 };
 
@@ -5070,6 +5246,7 @@ pub const Scanner = struct {
         .{ "atEnd", objc.BOOL, .{} },
         .{ "caseSensitive", objc.BOOL, .{} },
         .{ "charactersToBeSkipped", ?NSCharacterSet, .{} },
+        .{ "initWithString:", Scanner, .{objc.NSString} },
         .{ "locale", ?Any, .{} },
         .{ "scanCharactersFromSet:intoString:", objc.BOOL, .{ NSCharacterSet, ?objc.NSString } },
         .{ "scanDecimal:", objc.BOOL, .{?*anyopaque} },
@@ -5094,17 +5271,16 @@ pub const Scanner = struct {
         .{ "string", objc.NSString, .{} },
     };
 
-    pub fn send(self: Scanner, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: Scanner, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
-        .{ "initWithString:", Object, .{objc.NSString} },
         .{ "localizedScannerWithString:", Any, .{objc.NSString} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSScanner", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSScanner", class_methods, selector, args);
     }
 };
 
@@ -5123,6 +5299,7 @@ pub const NSScriptClassDescription = struct {
         .{ "hasReadablePropertyForKey:", objc.BOOL, .{objc.NSString} },
         .{ "hasWritablePropertyForKey:", objc.BOOL, .{objc.NSString} },
         .{ "implementationClassName", ?objc.NSString, .{} },
+        .{ "initWithSuiteName:className:dictionary:", NSScriptClassDescription, .{ objc.NSString, objc.NSString, ?*anyopaque } },
         .{ "isLocationRequiredToCreateForKey:", objc.BOOL, .{objc.NSString} },
         .{ "keyWithAppleEventCode:", ?objc.NSString, .{objc.NSString} },
         .{ "matchesAppleEventCode:", objc.BOOL, .{objc.NSString} },
@@ -5139,11 +5316,10 @@ pub const NSScriptClassDescription = struct {
 
     pub const class_methods = .{
         .{ "classDescriptionForClass:", Object, .{AnyClass} },
-        .{ "initWithSuiteName:className:dictionary:", Object, .{ objc.NSString, objc.NSString, ?*anyopaque } },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSScriptClassDescription", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSScriptClassDescription", class_methods, selector, args);
     }
 };
 
@@ -5155,16 +5331,16 @@ pub const NSScriptCoercionHandler = struct {
         .{ "registerCoercer:selector:toConvertFromClass:toClass:", void, .{ Any, Selector, AnyClass, AnyClass } },
     };
 
-    pub fn send(self: NSScriptCoercionHandler, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSScriptCoercionHandler, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
         .{ "sharedCoercionHandler", NSScriptCoercionHandler, .{} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSScriptCoercionHandler", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSScriptCoercionHandler", class_methods, selector, args);
     }
 };
 
@@ -5179,6 +5355,8 @@ pub const NSScriptCommand = struct {
         .{ "evaluatedArguments", ?*anyopaque, .{} },
         .{ "evaluatedReceivers", ?Any, .{} },
         .{ "executeCommand", ?Any, .{} },
+        .{ "initWithCoder:", NSScriptCommand, .{NSCoder} },
+        .{ "initWithCommandDescription:", NSScriptCommand, .{NSScriptCommandDescription} },
         .{ "performDefaultImplementation", ?Any, .{} },
         .{ "receiversSpecifier", ?NSScriptObjectSpecifier, .{} },
         .{ "resumeExecutionWithResult:", void, .{?Any} },
@@ -5197,18 +5375,16 @@ pub const NSScriptCommand = struct {
         .{ "wellFormed", objc.BOOL, .{} },
     };
 
-    pub fn send(self: NSScriptCommand, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSScriptCommand, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
         .{ "currentCommand", ?NSScriptCommand, .{} },
-        .{ "initWithCoder:", Object, .{NSCoder} },
-        .{ "initWithCommandDescription:", Object, .{NSScriptCommandDescription} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSScriptCommand", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSScriptCommand", class_methods, selector, args);
     }
 };
 
@@ -5225,23 +5401,22 @@ pub const NSScriptCommandDescription = struct {
         .{ "commandName", objc.NSString, .{} },
         .{ "createCommandInstance", NSScriptCommand, .{} },
         .{ "createCommandInstanceWithZone:", NSScriptCommand, .{?*anyopaque} },
+        .{ "initWithCoder:", NSScriptCommandDescription, .{NSCoder} },
+        .{ "initWithSuiteName:commandName:dictionary:", NSScriptCommandDescription, .{ objc.NSString, objc.NSString, ?*anyopaque } },
         .{ "isOptionalArgumentWithName:", objc.BOOL, .{objc.NSString} },
         .{ "returnType", ?objc.NSString, .{} },
         .{ "suiteName", objc.NSString, .{} },
         .{ "typeForArgumentWithName:", ?objc.NSString, .{objc.NSString} },
     };
 
-    pub fn send(self: NSScriptCommandDescription, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSScriptCommandDescription, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
-    pub const class_methods = .{
-        .{ "initWithCoder:", Object, .{NSCoder} },
-        .{ "initWithSuiteName:commandName:dictionary:", Object, .{ objc.NSString, objc.NSString, ?*anyopaque } },
-    };
+    pub const class_methods = .{};
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSScriptCommandDescription", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSScriptCommandDescription", class_methods, selector, args);
     }
 };
 
@@ -5257,16 +5432,16 @@ pub const NSScriptExecutionContext = struct {
         .{ "topLevelObject", ?Any, .{} },
     };
 
-    pub fn send(self: NSScriptExecutionContext, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSScriptExecutionContext, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
         .{ "sharedScriptExecutionContext", NSScriptExecutionContext, .{} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSScriptExecutionContext", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSScriptExecutionContext", class_methods, selector, args);
     }
 };
 
@@ -5283,6 +5458,9 @@ pub const NSScriptObjectSpecifier = struct {
         .{ "evaluationErrorNumber", objc.NSInteger, .{} },
         .{ "evaluationErrorSpecifier", ?NSScriptObjectSpecifier, .{} },
         .{ "indicesOfObjectsByEvaluatingWithContainer:count:", objc.NSInteger, .{ Any, objc.NSInteger } },
+        .{ "initWithCoder:", NSScriptObjectSpecifier, .{NSCoder} },
+        .{ "initWithContainerClassDescription:containerSpecifier:key:", NSScriptObjectSpecifier, .{ NSScriptClassDescription, ?NSScriptObjectSpecifier, objc.NSString } },
+        .{ "initWithContainerSpecifier:key:", NSScriptObjectSpecifier, .{ NSScriptObjectSpecifier, objc.NSString } },
         .{ "key", objc.NSString, .{} },
         .{ "keyClassDescription", ?NSScriptClassDescription, .{} },
         .{ "objectsByEvaluatingSpecifier", ?Any, .{} },
@@ -5296,19 +5474,16 @@ pub const NSScriptObjectSpecifier = struct {
         .{ "setKey:", void, .{objc.NSString} },
     };
 
-    pub fn send(self: NSScriptObjectSpecifier, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSScriptObjectSpecifier, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
-        .{ "initWithCoder:", Object, .{NSCoder} },
-        .{ "initWithContainerClassDescription:containerSpecifier:key:", Object, .{ NSScriptClassDescription, ?NSScriptObjectSpecifier, objc.NSString } },
-        .{ "initWithContainerSpecifier:key:", Object, .{ NSScriptObjectSpecifier, objc.NSString } },
         .{ "objectSpecifierWithDescriptor:", Object, .{NSAppleEventDescriptor} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSScriptObjectSpecifier", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSScriptObjectSpecifier", class_methods, selector, args);
     }
 };
 
@@ -5331,8 +5506,8 @@ pub const NSScriptSuiteRegistry = struct {
         .{ "suiteNames", Object, .{} },
     };
 
-    pub fn send(self: NSScriptSuiteRegistry, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSScriptSuiteRegistry, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
@@ -5340,8 +5515,8 @@ pub const NSScriptSuiteRegistry = struct {
         .{ "sharedScriptSuiteRegistry", NSScriptSuiteRegistry, .{} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSScriptSuiteRegistry", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSScriptSuiteRegistry", class_methods, selector, args);
     }
 };
 
@@ -5349,20 +5524,18 @@ pub const NSScriptWhoseTest = struct {
     obj: Object,
 
     pub const methods = .{
+        .{ "initWithCoder:", NSScriptWhoseTest, .{NSCoder} },
         .{ "isTrue", objc.BOOL, .{} },
     };
 
-    pub fn send(self: NSScriptWhoseTest, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSScriptWhoseTest, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
-    pub const class_methods = .{
-        .{ "init", Object, .{} },
-        .{ "initWithCoder:", Object, .{NSCoder} },
-    };
+    pub const class_methods = .{};
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSScriptWhoseTest", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSScriptWhoseTest", class_methods, selector, args);
     }
 };
 
@@ -5371,8 +5544,8 @@ pub const NSSecureUnarchiveFromDataTransformer = struct {
         .{ "allowedTopLevelClasses", Object, .{} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSSecureUnarchiveFromDataTransformer", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSSecureUnarchiveFromDataTransformer", class_methods, selector, args);
     }
 };
 
@@ -5390,6 +5563,11 @@ pub const NSSet = struct {
         .{ "enumerateObjectsUsingBlock:", void, .{?*anyopaque} },
         .{ "enumerateObjectsWithOptions:usingBlock:", void, .{ objc.NSInteger, ?*anyopaque } },
         .{ "filteredSetUsingPredicate:", ?*anyopaque, .{NSPredicate} },
+        .{ "initWithArray:", NSSet, .{Object} },
+        .{ "initWithCoder:", NSSet, .{NSCoder} },
+        .{ "initWithObjects:count:", NSSet, .{ ?UnsafePointer, objc.NSInteger } },
+        .{ "initWithSet:", NSSet, .{?*anyopaque} },
+        .{ "initWithSet:copyItems:", NSSet, .{ ?*anyopaque, objc.BOOL } },
         .{ "intersectsSet:", objc.BOOL, .{?*anyopaque} },
         .{ "isEqualToSet:", objc.BOOL, .{?*anyopaque} },
         .{ "isSubsetOfSet:", objc.BOOL, .{?*anyopaque} },
@@ -5407,23 +5585,17 @@ pub const NSSet = struct {
         .{ "valueForKey:", Any, .{objc.NSString} },
     };
 
-    pub fn send(self: NSSet, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSSet, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
-        .{ "init", Object, .{} },
-        .{ "initWithArray:", Object, .{Object} },
-        .{ "initWithCoder:", Object, .{NSCoder} },
-        .{ "initWithObjects:count:", Object, .{ ?UnsafePointer, objc.NSInteger } },
-        .{ "initWithSet:", Object, .{?*anyopaque} },
-        .{ "initWithSet:copyItems:", Object, .{ ?*anyopaque, objc.BOOL } },
         .{ "setWithObject:", Object, .{Any} },
         .{ "setWithObjects:count:", Object, .{ UnsafePointer, objc.NSInteger } },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSSet", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSSet", class_methods, selector, args);
     }
 };
 
@@ -5439,6 +5611,12 @@ pub const NSSetCommand = struct {
     pub fn send(self: NSSetCommand, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
         return objc.typedSendChain(@This(), self.obj, selector, args);
     }
+
+    pub const class_methods = .{};
+
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSSetCommand", class_methods, selector, args);
+    }
 };
 
 pub const SocketPort = struct {
@@ -5447,6 +5625,11 @@ pub const SocketPort = struct {
     pub const Super = Port;
     pub const methods = .{
         .{ "address", NSData, .{} },
+        .{ "initRemoteWithProtocolFamily:socketType:protocol:address:", SocketPort, .{ i32, i32, i32, NSData } },
+        .{ "initRemoteWithTCPPort:host:", SocketPort, .{ u16, ?objc.NSString } },
+        .{ "initWithProtocolFamily:socketType:protocol:address:", SocketPort, .{ i32, i32, i32, NSData } },
+        .{ "initWithProtocolFamily:socketType:protocol:socket:", SocketPort, .{ i32, i32, i32, i32 } },
+        .{ "initWithTCPPort:", SocketPort, .{u16} },
         .{ "protocol", i32, .{} },
         .{ "protocolFamily", i32, .{} },
         .{ "socket", i32, .{} },
@@ -5457,17 +5640,10 @@ pub const SocketPort = struct {
         return objc.typedSendChain(@This(), self.obj, selector, args);
     }
 
-    pub const class_methods = .{
-        .{ "init", Object, .{} },
-        .{ "initRemoteWithProtocolFamily:socketType:protocol:address:", Object, .{ i32, i32, i32, NSData } },
-        .{ "initRemoteWithTCPPort:host:", Object, .{ u16, ?objc.NSString } },
-        .{ "initWithProtocolFamily:socketType:protocol:address:", Object, .{ i32, i32, i32, NSData } },
-        .{ "initWithProtocolFamily:socketType:protocol:socket:", Object, .{ i32, i32, i32, i32 } },
-        .{ "initWithTCPPort:", Object, .{u16} },
-    };
+    pub const class_methods = .{};
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSSocketPort", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSSocketPort", class_methods, selector, args);
     }
 };
 
@@ -5479,35 +5655,43 @@ pub const NSSortDescriptor = struct {
         .{ "ascending", objc.BOOL, .{} },
         .{ "comparator", objc.NSString, .{} },
         .{ "compareObject:toObject:", ComparisonResult, .{ Any, Any } },
+        .{ "initWithCoder:", NSSortDescriptor, .{NSCoder} },
+        .{ "initWithKey:ascending:", NSSortDescriptor, .{ ?objc.NSString, objc.BOOL } },
+        .{ "initWithKey:ascending:comparator:", NSSortDescriptor, .{ ?objc.NSString, objc.BOOL, objc.NSString } },
+        .{ "initWithKey:ascending:selector:", NSSortDescriptor, .{ ?objc.NSString, objc.BOOL, Selector } },
         .{ "key", ?objc.NSString, .{} },
         .{ "reversedSortDescriptor", Any, .{} },
         .{ "selector", Selector, .{} },
     };
 
-    pub fn send(self: NSSortDescriptor, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSSortDescriptor, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
-    pub const class_methods = .{
-        .{ "initWithCoder:", Object, .{NSCoder} },
-        .{ "initWithKey:ascending:", Object, .{ ?objc.NSString, objc.BOOL } },
-        .{ "initWithKey:ascending:comparator:", Object, .{ ?objc.NSString, objc.BOOL, objc.NSString } },
-        .{ "initWithKey:ascending:selector:", Object, .{ ?objc.NSString, objc.BOOL, Selector } },
-    };
+    pub const class_methods = .{};
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSSortDescriptor", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSSortDescriptor", class_methods, selector, args);
     }
 };
 
 pub const NSSpecifierTest = struct {
-    pub const class_methods = .{
-        .{ "initWithCoder:", Object, .{NSCoder} },
-        .{ "initWithObjectSpecifier:comparisonOperator:testObject:", Object, .{ ?NSScriptObjectSpecifier, NSSpecifierTest.TestComparisonOperation, ?Any } },
+    obj: Object,
+
+    pub const Super = NSScriptWhoseTest;
+    pub const methods = .{
+        .{ "initWithCoder:", NSSpecifierTest, .{NSCoder} },
+        .{ "initWithObjectSpecifier:comparisonOperator:testObject:", NSSpecifierTest, .{ ?NSScriptObjectSpecifier, NSSpecifierTest.TestComparisonOperation, ?Any } },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSSpecifierTest", class_methods, selector, args);
+    pub fn send(self: NSSpecifierTest, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
+        return objc.typedSendChain(@This(), self.obj, selector, args);
+    }
+
+    pub const class_methods = .{};
+
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSSpecifierTest", class_methods, selector, args);
     }
 
     pub const TestComparisonOperation = enum(i64) {
@@ -5533,8 +5717,14 @@ pub const NSSpellServer = struct {
         .{ "setDelegate:", void, .{?NSSpellServerDelegate} },
     };
 
-    pub fn send(self: NSSpellServer, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSSpellServer, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
+    }
+
+    pub const class_methods = .{};
+
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSSpellServer", class_methods, selector, args);
     }
 };
 
@@ -5554,8 +5744,8 @@ pub const Stream = struct {
         .{ "streamStatus", Stream.Status, .{} },
     };
 
-    pub fn send(self: Stream, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: Stream, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
@@ -5564,8 +5754,8 @@ pub const Stream = struct {
         .{ "getStreamsToHostWithName:port:inputStream:outputStream:", void, .{ objc.NSString, objc.NSInteger, ?InputStream, ?OutputStream } },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSStream", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSStream", class_methods, selector, args);
     }
 
     pub const Status = enum(i64) {
@@ -5624,6 +5814,23 @@ pub const NSString = struct {
         .{ "hasPrefix:", objc.BOOL, .{objc.NSString} },
         .{ "hasSuffix:", objc.BOOL, .{objc.NSString} },
         .{ "hash", objc.NSInteger, .{} },
+        .{ "initWithBytes:length:encoding:", NSString, .{ UnsafeRawPointer, objc.NSInteger, c_ulong } },
+        .{ "initWithBytesNoCopy:length:encoding:deallocator:", NSString, .{ UnsafeMutableRawPointer, objc.NSInteger, c_ulong, ?*anyopaque } },
+        .{ "initWithBytesNoCopy:length:encoding:freeWhenDone:", NSString, .{ UnsafeMutableRawPointer, objc.NSInteger, c_ulong, objc.BOOL } },
+        .{ "initWithCString:encoding:", NSString, .{ ?*anyopaque, c_ulong } },
+        .{ "initWithCharacters:length:", NSString, .{ u16, objc.NSInteger } },
+        .{ "initWithCharactersNoCopy:length:deallocator:", NSString, .{ u16, objc.NSInteger, ?*anyopaque } },
+        .{ "initWithCharactersNoCopy:length:freeWhenDone:", NSString, .{ u16, objc.NSInteger, objc.BOOL } },
+        .{ "initWithCoder:", NSString, .{NSCoder} },
+        .{ "initWithContentsOfFile:encoding:error:", NSString, .{ objc.NSString, c_ulong } },
+        .{ "initWithContentsOfFile:usedEncoding:error:", NSString, .{ objc.NSString, c_ulong } },
+        .{ "initWithContentsOfURL:encoding:error:", NSString, .{ NSURL, c_ulong } },
+        .{ "initWithContentsOfURL:usedEncoding:error:", NSString, .{ NSURL, c_ulong } },
+        .{ "initWithData:encoding:", NSString, .{ NSData, c_ulong } },
+        .{ "initWithFormat:arguments:", NSString, .{ objc.NSString, ?*anyopaque } },
+        .{ "initWithFormat:locale:arguments:", NSString, .{ objc.NSString, ?Any, ?*anyopaque } },
+        .{ "initWithString:", NSString, .{objc.NSString} },
+        .{ "initWithUTF8String:", NSString, .{?*anyopaque} },
         .{ "intValue", i32, .{} },
         .{ "integerValue", objc.NSInteger, .{} },
         .{ "isEqualToString:", objc.BOOL, .{objc.NSString} },
@@ -5693,31 +5900,13 @@ pub const NSString = struct {
         .{ "writeToURL:atomically:encoding:error:", void, .{ NSURL, objc.BOOL, c_ulong } },
     };
 
-    pub fn send(self: NSString, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSString, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
         .{ "availableStringEncodings", c_ulong, .{} },
         .{ "defaultCStringEncoding", c_ulong, .{} },
-        .{ "init", Object, .{} },
-        .{ "initWithBytes:length:encoding:", Object, .{ UnsafeRawPointer, objc.NSInteger, c_ulong } },
-        .{ "initWithBytesNoCopy:length:encoding:deallocator:", Object, .{ UnsafeMutableRawPointer, objc.NSInteger, c_ulong, ?*anyopaque } },
-        .{ "initWithBytesNoCopy:length:encoding:freeWhenDone:", Object, .{ UnsafeMutableRawPointer, objc.NSInteger, c_ulong, objc.BOOL } },
-        .{ "initWithCString:encoding:", Object, .{ ?*anyopaque, c_ulong } },
-        .{ "initWithCharacters:length:", Object, .{ u16, objc.NSInteger } },
-        .{ "initWithCharactersNoCopy:length:deallocator:", Object, .{ u16, objc.NSInteger, ?*anyopaque } },
-        .{ "initWithCharactersNoCopy:length:freeWhenDone:", Object, .{ u16, objc.NSInteger, objc.BOOL } },
-        .{ "initWithCoder:", Object, .{NSCoder} },
-        .{ "initWithContentsOfFile:encoding:error:", Object, .{ objc.NSString, c_ulong } },
-        .{ "initWithContentsOfFile:usedEncoding:error:", Object, .{ objc.NSString, c_ulong } },
-        .{ "initWithContentsOfURL:encoding:error:", Object, .{ NSURL, c_ulong } },
-        .{ "initWithContentsOfURL:usedEncoding:error:", Object, .{ NSURL, c_ulong } },
-        .{ "initWithData:encoding:", Object, .{ NSData, c_ulong } },
-        .{ "initWithFormat:arguments:", Object, .{ objc.NSString, ?*anyopaque } },
-        .{ "initWithFormat:locale:arguments:", Object, .{ objc.NSString, ?Any, ?*anyopaque } },
-        .{ "initWithString:", Object, .{objc.NSString} },
-        .{ "initWithUTF8String:", Object, .{?*anyopaque} },
         .{ "localizedNameOfStringEncoding:", objc.NSString, .{c_ulong} },
         .{ "pathWithComponents:", objc.NSString, .{Object} },
         .{ "stringEncodingForData:encodingOptions:convertedString:usedLossyConversion:", c_ulong, .{ NSData, ?*anyopaque, ?objc.NSString, ?*anyopaque } },
@@ -5727,8 +5916,8 @@ pub const NSString = struct {
         .{ "stringWithUTF8String:", Object, .{?*anyopaque} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSString", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSString", class_methods, selector, args);
     }
 };
 
@@ -5773,18 +5962,17 @@ pub const Process = struct {
         .{ "waitUntilExit", void, .{} },
     };
 
-    pub fn send(self: Process, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: Process, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
-        .{ "init", Object, .{} },
         .{ "launchedTaskWithExecutableURL:arguments:error:terminationHandler:", Process, .{ NSURL, Object, ?*anyopaque } },
         .{ "launchedTaskWithLaunchPath:arguments:", Process, .{ objc.NSString, Object } },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSTask", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSTask", class_methods, selector, args);
     }
 
     pub const TerminationReason = enum(i64) {
@@ -5817,8 +6005,8 @@ pub const NSTextCheckingResult = struct {
         .{ "timeZone", ?NSTimeZone, .{} },
     };
 
-    pub fn send(self: NSTextCheckingResult, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSTextCheckingResult, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
@@ -5839,8 +6027,8 @@ pub const NSTextCheckingResult = struct {
         .{ "transitInformationCheckingResultWithRange:components:", NSTextCheckingResult, .{ NSRange, Object } },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSTextCheckingResult", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSTextCheckingResult", class_methods, selector, args);
     }
 };
 
@@ -5852,6 +6040,8 @@ pub const Thread = struct {
         .{ "cancelled", objc.BOOL, .{} },
         .{ "executing", objc.BOOL, .{} },
         .{ "finished", objc.BOOL, .{} },
+        .{ "initWithBlock:", Thread, .{?*anyopaque} },
+        .{ "initWithTarget:selector:object:", Thread, .{ Any, Selector, ?Any } },
         .{ "isMainThread", objc.BOOL, .{} },
         .{ "main", void, .{} },
         .{ "name", ?objc.NSString, .{} },
@@ -5866,8 +6056,8 @@ pub const Thread = struct {
         .{ "threadPriority", f64, .{} },
     };
 
-    pub fn send(self: Thread, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: Thread, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
@@ -5877,9 +6067,6 @@ pub const Thread = struct {
         .{ "detachNewThreadSelector:toTarget:withObject:", void, .{ Selector, Any, ?Any } },
         .{ "detachNewThreadWithBlock:", void, .{?*anyopaque} },
         .{ "exit", void, .{} },
-        .{ "init", Object, .{} },
-        .{ "initWithBlock:", Object, .{?*anyopaque} },
-        .{ "initWithTarget:selector:object:", Object, .{ Any, Selector, ?Any } },
         .{ "isMainThread", objc.BOOL, .{} },
         .{ "isMultiThreaded", objc.BOOL, .{} },
         .{ "mainThread", Thread, .{} },
@@ -5889,8 +6076,8 @@ pub const Thread = struct {
         .{ "threadPriority", f64, .{} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSThread", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSThread", class_methods, selector, args);
     }
 };
 
@@ -5905,6 +6092,8 @@ pub const NSTimeZone = struct {
         .{ "daylightSavingTimeOffset", TimeInterval, .{} },
         .{ "daylightSavingTimeOffsetForDate:", TimeInterval, .{NSDate} },
         .{ "description", objc.NSString, .{} },
+        .{ "initWithName:", NSTimeZone, .{objc.NSString} },
+        .{ "initWithName:data:", NSTimeZone, .{ objc.NSString, ?NSData } },
         .{ "isDaylightSavingTimeForDate:", objc.BOOL, .{NSDate} },
         .{ "isEqualToTimeZone:", objc.BOOL, .{NSTimeZone} },
         .{ "localizedName:locale:", ?objc.NSString, .{ NSTimeZone.NameStyle, ?NSLocale } },
@@ -5916,15 +6105,13 @@ pub const NSTimeZone = struct {
         .{ "setDaylightSavingTimeOffset:", void, .{TimeInterval} },
     };
 
-    pub fn send(self: NSTimeZone, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSTimeZone, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
         .{ "abbreviationDictionary", Object, .{} },
         .{ "defaultTimeZone", NSTimeZone, .{} },
-        .{ "initWithName:", Object, .{objc.NSString} },
-        .{ "initWithName:data:", Object, .{ objc.NSString, ?NSData } },
         .{ "knownTimeZoneNames", Object, .{} },
         .{ "localTimeZone", NSTimeZone, .{} },
         .{ "resetSystemTimeZone", void, .{} },
@@ -5936,8 +6123,8 @@ pub const NSTimeZone = struct {
         .{ "timeZoneWithAbbreviation:", Object, .{objc.NSString} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSTimeZone", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSTimeZone", class_methods, selector, args);
     }
 
     pub const NameStyle = enum(i64) {
@@ -5956,6 +6143,8 @@ pub const Timer = struct {
     pub const methods = .{
         .{ "fire", void, .{} },
         .{ "fireDate", NSDate, .{} },
+        .{ "initWithFireDate:interval:repeats:block:", Timer, .{ NSDate, TimeInterval, objc.BOOL, ?*anyopaque } },
+        .{ "initWithFireDate:interval:target:selector:userInfo:repeats:", Timer, .{ NSDate, TimeInterval, Any, Selector, ?Any, objc.BOOL } },
         .{ "invalidate", void, .{} },
         .{ "setFireDate:", void, .{NSDate} },
         .{ "setTolerance:", void, .{TimeInterval} },
@@ -5965,13 +6154,11 @@ pub const Timer = struct {
         .{ "valid", objc.BOOL, .{} },
     };
 
-    pub fn send(self: Timer, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: Timer, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
-        .{ "initWithFireDate:interval:repeats:block:", Object, .{ NSDate, TimeInterval, objc.BOOL, ?*anyopaque } },
-        .{ "initWithFireDate:interval:target:selector:userInfo:repeats:", Object, .{ NSDate, TimeInterval, Any, Selector, ?Any, objc.BOOL } },
         .{ "scheduledTimerWithTimeInterval:invocation:repeats:", Timer, .{ TimeInterval, Object, objc.BOOL } },
         .{ "scheduledTimerWithTimeInterval:repeats:block:", Timer, .{ TimeInterval, objc.BOOL, ?*anyopaque } },
         .{ "scheduledTimerWithTimeInterval:target:selector:userInfo:repeats:", Timer, .{ TimeInterval, Any, Selector, ?Any, objc.BOOL } },
@@ -5980,8 +6167,8 @@ pub const Timer = struct {
         .{ "timerWithTimeInterval:target:selector:userInfo:repeats:", Object, .{ TimeInterval, Any, Selector, ?Any, objc.BOOL } },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSTimer", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSTimer", class_methods, selector, args);
     }
 };
 
@@ -6013,6 +6200,18 @@ pub const NSURL = struct {
         .{ "getResourceValue:forKey:error:", void, .{ ?*anyopaque, objc.NSString } },
         .{ "hasDirectoryPath", objc.BOOL, .{} },
         .{ "host", ?objc.NSString, .{} },
+        .{ "initAbsoluteURLWithDataRepresentation:relativeToURL:", NSURL, .{ NSData, ?NSURL } },
+        .{ "initByResolvingBookmarkData:options:relativeToURL:bookmarkDataIsStale:error:", NSURL, .{ NSData, objc.NSInteger, ?NSURL, ?*anyopaque } },
+        .{ "initFileURLWithFileSystemRepresentation:isDirectory:relativeToURL:", NSURL, .{ ?*anyopaque, objc.BOOL, ?NSURL } },
+        .{ "initFileURLWithPath:", NSURL, .{objc.NSString} },
+        .{ "initFileURLWithPath:isDirectory:", NSURL, .{ objc.NSString, objc.BOOL } },
+        .{ "initFileURLWithPath:isDirectory:relativeToURL:", NSURL, .{ objc.NSString, objc.BOOL, ?NSURL } },
+        .{ "initFileURLWithPath:relativeToURL:", NSURL, .{ objc.NSString, ?NSURL } },
+        .{ "initWithDataRepresentation:relativeToURL:", NSURL, .{ NSData, ?NSURL } },
+        .{ "initWithScheme:host:path:", NSURL, .{ objc.NSString, ?objc.NSString, objc.NSString } },
+        .{ "initWithString:", NSURL, .{objc.NSString} },
+        .{ "initWithString:encodingInvalidCharacters:", NSURL, .{ objc.NSString, objc.BOOL } },
+        .{ "initWithString:relativeToURL:", NSURL, .{ objc.NSString, ?NSURL } },
         .{ "isFileReferenceURL", objc.BOOL, .{} },
         .{ "lastPathComponent", ?objc.NSString, .{} },
         .{ "parameterString", ?objc.NSString, .{} },
@@ -6039,8 +6238,8 @@ pub const NSURL = struct {
         .{ "user", ?objc.NSString, .{} },
     };
 
-    pub fn send(self: NSURL, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSURL, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
@@ -6053,24 +6252,12 @@ pub const NSURL = struct {
         .{ "fileURLWithPath:isDirectory:relativeToURL:", NSURL, .{ objc.NSString, objc.BOOL, ?NSURL } },
         .{ "fileURLWithPath:relativeToURL:", NSURL, .{ objc.NSString, ?NSURL } },
         .{ "fileURLWithPathComponents:", ?NSURL, .{Object} },
-        .{ "initAbsoluteURLWithDataRepresentation:relativeToURL:", Object, .{ NSData, ?NSURL } },
-        .{ "initByResolvingBookmarkData:options:relativeToURL:bookmarkDataIsStale:error:", Object, .{ NSData, objc.NSInteger, ?NSURL, ?*anyopaque } },
-        .{ "initFileURLWithFileSystemRepresentation:isDirectory:relativeToURL:", Object, .{ ?*anyopaque, objc.BOOL, ?NSURL } },
-        .{ "initFileURLWithPath:", Object, .{objc.NSString} },
-        .{ "initFileURLWithPath:isDirectory:", Object, .{ objc.NSString, objc.BOOL } },
-        .{ "initFileURLWithPath:isDirectory:relativeToURL:", Object, .{ objc.NSString, objc.BOOL, ?NSURL } },
-        .{ "initFileURLWithPath:relativeToURL:", Object, .{ objc.NSString, ?NSURL } },
-        .{ "initWithDataRepresentation:relativeToURL:", Object, .{ NSData, ?NSURL } },
-        .{ "initWithScheme:host:path:", Object, .{ objc.NSString, ?objc.NSString, objc.NSString } },
-        .{ "initWithString:", Object, .{objc.NSString} },
-        .{ "initWithString:encodingInvalidCharacters:", Object, .{ objc.NSString, objc.BOOL } },
-        .{ "initWithString:relativeToURL:", Object, .{ objc.NSString, ?NSURL } },
         .{ "resourceValuesForKeys:fromBookmarkData:", ?*anyopaque, .{ Object, NSData } },
         .{ "writeBookmarkData:toURL:options:error:", void, .{ NSData, NSURL, objc.NSInteger } },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSURL", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSURL", class_methods, selector, args);
     }
 };
 
@@ -6080,23 +6267,22 @@ pub const URLAuthenticationChallenge = struct {
     pub const methods = .{
         .{ "error", ?*anyopaque, .{} },
         .{ "failureResponse", ?URLResponse, .{} },
+        .{ "initWithAuthenticationChallenge:sender:", URLAuthenticationChallenge, .{ URLAuthenticationChallenge, URLAuthenticationChallengeSender } },
+        .{ "initWithProtectionSpace:proposedCredential:previousFailureCount:failureResponse:error:sender:", URLAuthenticationChallenge, .{ URLProtectionSpace, ?URLCredential, objc.NSInteger, ?URLResponse, ?*anyopaque, URLAuthenticationChallengeSender } },
         .{ "previousFailureCount", objc.NSInteger, .{} },
         .{ "proposedCredential", ?URLCredential, .{} },
         .{ "protectionSpace", URLProtectionSpace, .{} },
         .{ "sender", ?URLAuthenticationChallengeSender, .{} },
     };
 
-    pub fn send(self: URLAuthenticationChallenge, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: URLAuthenticationChallenge, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
-    pub const class_methods = .{
-        .{ "initWithAuthenticationChallenge:sender:", Object, .{ URLAuthenticationChallenge, URLAuthenticationChallengeSender } },
-        .{ "initWithProtectionSpace:proposedCredential:previousFailureCount:failureResponse:error:sender:", Object, .{ URLProtectionSpace, ?URLCredential, objc.NSInteger, ?URLResponse, ?*anyopaque, URLAuthenticationChallengeSender } },
-    };
+    pub const class_methods = .{};
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSURLAuthenticationChallenge", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSURLAuthenticationChallenge", class_methods, selector, args);
     }
 };
 
@@ -6109,6 +6295,7 @@ pub const URLCache = struct {
         .{ "currentMemoryUsage", objc.NSInteger, .{} },
         .{ "diskCapacity", objc.NSInteger, .{} },
         .{ "getCachedResponseForDataTask:completionHandler:", void, .{ URLSessionDataTask, ?*anyopaque } },
+        .{ "initWithMemoryCapacity:diskCapacity:diskPath:", URLCache, .{ objc.NSInteger, objc.NSInteger, ?objc.NSString } },
         .{ "memoryCapacity", objc.NSInteger, .{} },
         .{ "removeAllCachedResponses", void, .{} },
         .{ "removeCachedResponseForDataTask:", void, .{URLSessionDataTask} },
@@ -6120,18 +6307,17 @@ pub const URLCache = struct {
         .{ "storeCachedResponse:forRequest:", void, .{ CachedURLResponse, NSURLRequest } },
     };
 
-    pub fn send(self: URLCache, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: URLCache, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
-        .{ "initWithMemoryCapacity:diskCapacity:diskPath:", Object, .{ objc.NSInteger, objc.NSInteger, ?objc.NSString } },
         .{ "setSharedURLCache:", void, .{URLCache} },
         .{ "sharedURLCache", URLCache, .{} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSURLCache", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSURLCache", class_methods, selector, args);
     }
 
     pub const StoragePolicy = enum(i64) {
@@ -6150,6 +6336,9 @@ pub const NSURLComponents = struct {
         .{ "encodedHost", ?objc.NSString, .{} },
         .{ "fragment", ?objc.NSString, .{} },
         .{ "host", ?objc.NSString, .{} },
+        .{ "initWithString:", NSURLComponents, .{objc.NSString} },
+        .{ "initWithString:encodingInvalidCharacters:", NSURLComponents, .{ objc.NSString, objc.BOOL } },
+        .{ "initWithURL:resolvingAgainstBaseURL:", NSURLComponents, .{ NSURL, objc.BOOL } },
         .{ "password", ?objc.NSString, .{} },
         .{ "path", ?objc.NSString, .{} },
         .{ "percentEncodedFragment", ?objc.NSString, .{} },
@@ -6192,19 +6381,14 @@ pub const NSURLComponents = struct {
         .{ "user", ?objc.NSString, .{} },
     };
 
-    pub fn send(self: NSURLComponents, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSURLComponents, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
-    pub const class_methods = .{
-        .{ "init", Object, .{} },
-        .{ "initWithString:", Object, .{objc.NSString} },
-        .{ "initWithString:encodingInvalidCharacters:", Object, .{ objc.NSString, objc.BOOL } },
-        .{ "initWithURL:resolvingAgainstBaseURL:", Object, .{ NSURL, objc.BOOL } },
-    };
+    pub const class_methods = .{};
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSURLComponents", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSURLComponents", class_methods, selector, args);
     }
 };
 
@@ -6214,6 +6398,8 @@ pub const NSURLConnection = struct {
     pub const methods = .{
         .{ "cancel", void, .{} },
         .{ "currentRequest", NSURLRequest, .{} },
+        .{ "initWithRequest:delegate:", NSURLConnection, .{ NSURLRequest, ?Any } },
+        .{ "initWithRequest:delegate:startImmediately:", NSURLConnection, .{ NSURLRequest, ?Any, objc.BOOL } },
         .{ "originalRequest", NSURLRequest, .{} },
         .{ "scheduleInRunLoop:forMode:", void, .{ RunLoop, objc.NSString } },
         .{ "setDelegateQueue:", void, .{?OperationQueue} },
@@ -6221,20 +6407,18 @@ pub const NSURLConnection = struct {
         .{ "unscheduleFromRunLoop:forMode:", void, .{ RunLoop, objc.NSString } },
     };
 
-    pub fn send(self: NSURLConnection, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSURLConnection, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
         .{ "canHandleRequest:", objc.BOOL, .{NSURLRequest} },
-        .{ "initWithRequest:delegate:", Object, .{ NSURLRequest, ?Any } },
-        .{ "initWithRequest:delegate:startImmediately:", Object, .{ NSURLRequest, ?Any, objc.BOOL } },
         .{ "sendAsynchronousRequest:queue:completionHandler:", void, .{ NSURLRequest, OperationQueue, ?*anyopaque } },
         .{ "sendSynchronousRequest:returningResponse:error:", NSData, .{ NSURLRequest, ?URLResponse } },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSURLConnection", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSURLConnection", class_methods, selector, args);
     }
 };
 
@@ -6245,24 +6429,24 @@ pub const URLCredential = struct {
         .{ "certificates", Object, .{} },
         .{ "hasPassword", objc.BOOL, .{} },
         .{ "identity", ?*anyopaque, .{} },
+        .{ "initWithIdentity:certificates:persistence:", URLCredential, .{ ?*anyopaque, ?*anyopaque, URLCredential.Persistence } },
+        .{ "initWithTrust:", URLCredential, .{?*anyopaque} },
+        .{ "initWithUser:password:persistence:", URLCredential, .{ objc.NSString, objc.NSString, URLCredential.Persistence } },
         .{ "password", ?objc.NSString, .{} },
         .{ "persistence", URLCredential.Persistence, .{} },
         .{ "user", ?objc.NSString, .{} },
     };
 
-    pub fn send(self: URLCredential, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: URLCredential, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
         .{ "credentialForTrust:", Object, .{?*anyopaque} },
-        .{ "initWithIdentity:certificates:persistence:", Object, .{ ?*anyopaque, ?*anyopaque, URLCredential.Persistence } },
-        .{ "initWithTrust:", Object, .{?*anyopaque} },
-        .{ "initWithUser:password:persistence:", Object, .{ objc.NSString, objc.NSString, URLCredential.Persistence } },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSURLCredential", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSURLCredential", class_methods, selector, args);
     }
 
     pub const Persistence = enum(i64) {
@@ -6291,16 +6475,16 @@ pub const URLCredentialStorage = struct {
         .{ "setDefaultCredential:forProtectionSpace:task:", void, .{ URLCredential, URLProtectionSpace, URLSessionTask } },
     };
 
-    pub fn send(self: URLCredentialStorage, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: URLCredentialStorage, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
         .{ "sharedCredentialStorage", URLCredentialStorage, .{} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSURLCredentialStorage", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSURLCredentialStorage", class_methods, selector, args);
     }
 };
 
@@ -6310,24 +6494,24 @@ pub const NSURLDownload = struct {
     pub const methods = .{
         .{ "cancel", void, .{} },
         .{ "deletesFileUponFailure", objc.BOOL, .{} },
+        .{ "initWithRequest:delegate:", NSURLDownload, .{ NSURLRequest, ?NSURLDownloadDelegate } },
+        .{ "initWithResumeData:delegate:path:", NSURLDownload, .{ NSData, ?NSURLDownloadDelegate, objc.NSString } },
         .{ "request", NSURLRequest, .{} },
         .{ "resumeData", ?NSData, .{} },
         .{ "setDeletesFileUponFailure:", void, .{objc.BOOL} },
         .{ "setDestination:allowOverwrite:", void, .{ objc.NSString, objc.BOOL } },
     };
 
-    pub fn send(self: NSURLDownload, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSURLDownload, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
         .{ "canResumeDownloadDecodedWithEncodingMIMEType:", objc.BOOL, .{objc.NSString} },
-        .{ "initWithRequest:delegate:", Object, .{ NSURLRequest, ?NSURLDownloadDelegate } },
-        .{ "initWithResumeData:delegate:path:", Object, .{ NSData, ?NSURLDownloadDelegate, objc.NSString } },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSURLDownload", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSURLDownload", class_methods, selector, args);
     }
 };
 
@@ -6347,6 +6531,8 @@ pub const URLProtectionSpace = struct {
         .{ "authenticationMethod", objc.NSString, .{} },
         .{ "distinguishedNames", ?*anyopaque, .{} },
         .{ "host", objc.NSString, .{} },
+        .{ "initWithHost:port:protocol:realm:authenticationMethod:", URLProtectionSpace, .{ objc.NSString, objc.NSInteger, ?objc.NSString, ?objc.NSString, ?objc.NSString } },
+        .{ "initWithProxyHost:port:type:realm:authenticationMethod:", URLProtectionSpace, .{ objc.NSString, objc.NSInteger, ?objc.NSString, ?objc.NSString, ?objc.NSString } },
         .{ "isProxy", objc.BOOL, .{} },
         .{ "port", objc.NSInteger, .{} },
         .{ "protocol", ?objc.NSString, .{} },
@@ -6356,17 +6542,14 @@ pub const URLProtectionSpace = struct {
         .{ "serverTrust", ?*anyopaque, .{} },
     };
 
-    pub fn send(self: URLProtectionSpace, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: URLProtectionSpace, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
-    pub const class_methods = .{
-        .{ "initWithHost:port:protocol:realm:authenticationMethod:", Object, .{ objc.NSString, objc.NSInteger, ?objc.NSString, ?objc.NSString, ?objc.NSString } },
-        .{ "initWithProxyHost:port:type:realm:authenticationMethod:", Object, .{ objc.NSString, objc.NSInteger, ?objc.NSString, ?objc.NSString, ?objc.NSString } },
-    };
+    pub const class_methods = .{};
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSURLProtectionSpace", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSURLProtectionSpace", class_methods, selector, args);
     }
 };
 
@@ -6376,22 +6559,22 @@ pub const URLProtocol = struct {
     pub const methods = .{
         .{ "cachedResponse", ?CachedURLResponse, .{} },
         .{ "client", ?URLProtocolClient, .{} },
+        .{ "initWithRequest:cachedResponse:client:", URLProtocol, .{ NSURLRequest, ?CachedURLResponse, ?URLProtocolClient } },
+        .{ "initWithTask:cachedResponse:client:", URLProtocol, .{ URLSessionTask, ?CachedURLResponse, ?URLProtocolClient } },
         .{ "request", NSURLRequest, .{} },
         .{ "startLoading", void, .{} },
         .{ "stopLoading", void, .{} },
         .{ "task", ?URLSessionTask, .{} },
     };
 
-    pub fn send(self: URLProtocol, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: URLProtocol, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
         .{ "canInitWithRequest:", objc.BOOL, .{NSURLRequest} },
         .{ "canInitWithTask:", objc.BOOL, .{URLSessionTask} },
         .{ "canonicalRequestForRequest:", NSURLRequest, .{NSURLRequest} },
-        .{ "initWithRequest:cachedResponse:client:", Object, .{ NSURLRequest, ?CachedURLResponse, ?URLProtocolClient } },
-        .{ "initWithTask:cachedResponse:client:", Object, .{ URLSessionTask, ?CachedURLResponse, ?URLProtocolClient } },
         .{ "propertyForKey:inRequest:", ?Any, .{ objc.NSString, NSURLRequest } },
         .{ "registerClass:", objc.BOOL, .{AnyClass} },
         .{ "removePropertyForKey:inRequest:", void, .{ objc.NSString, NSMutableURLRequest } },
@@ -6400,8 +6583,8 @@ pub const URLProtocol = struct {
         .{ "unregisterClass:", void, .{AnyClass} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSURLProtocol", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSURLProtocol", class_methods, selector, args);
     }
 };
 
@@ -6409,20 +6592,19 @@ pub const NSURLQueryItem = struct {
     obj: Object,
 
     pub const methods = .{
+        .{ "initWithName:value:", NSURLQueryItem, .{ objc.NSString, ?objc.NSString } },
         .{ "name", objc.NSString, .{} },
         .{ "value", ?objc.NSString, .{} },
     };
 
-    pub fn send(self: NSURLQueryItem, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSURLQueryItem, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
-    pub const class_methods = .{
-        .{ "initWithName:value:", Object, .{ objc.NSString, ?objc.NSString } },
-    };
+    pub const class_methods = .{};
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSURLQueryItem", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSURLQueryItem", class_methods, selector, args);
     }
 };
 
@@ -6446,6 +6628,8 @@ pub const NSURLRequest = struct {
         .{ "attribution", NSURLRequest.Attribution, .{} },
         .{ "cachePolicy", NSURLRequest.CachePolicy, .{} },
         .{ "cookiePartitionIdentifier", ?objc.NSString, .{} },
+        .{ "initWithURL:", NSURLRequest, .{NSURL} },
+        .{ "initWithURL:cachePolicy:timeoutInterval:", NSURLRequest, .{ NSURL, NSURLRequest.CachePolicy, TimeInterval } },
         .{ "mainDocumentURL", ?NSURL, .{} },
         .{ "networkServiceType", NSURLRequest.NetworkServiceType, .{} },
         .{ "requiresDNSSECValidation", objc.BOOL, .{} },
@@ -6453,18 +6637,16 @@ pub const NSURLRequest = struct {
         .{ "valueForHTTPHeaderField:", ?objc.NSString, .{objc.NSString} },
     };
 
-    pub fn send(self: NSURLRequest, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSURLRequest, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
-        .{ "initWithURL:", Object, .{NSURL} },
-        .{ "initWithURL:cachePolicy:timeoutInterval:", Object, .{ NSURL, NSURLRequest.CachePolicy, TimeInterval } },
         .{ "supportsSecureCoding", objc.BOOL, .{} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSURLRequest", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSURLRequest", class_methods, selector, args);
     }
 
     pub const Attribution = enum(i64) {
@@ -6499,20 +6681,19 @@ pub const URLResponse = struct {
         .{ "MIMEType", ?objc.NSString, .{} },
         .{ "URL", ?NSURL, .{} },
         .{ "expectedContentLength", i64, .{} },
+        .{ "initWithURL:MIMEType:expectedContentLength:textEncodingName:", URLResponse, .{ NSURL, ?objc.NSString, objc.NSInteger, ?objc.NSString } },
         .{ "suggestedFilename", ?objc.NSString, .{} },
         .{ "textEncodingName", ?objc.NSString, .{} },
     };
 
-    pub fn send(self: URLResponse, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: URLResponse, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
-    pub const class_methods = .{
-        .{ "initWithURL:MIMEType:expectedContentLength:textEncodingName:", Object, .{ NSURL, ?objc.NSString, objc.NSInteger, ?objc.NSString } },
-    };
+    pub const class_methods = .{};
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSURLResponse", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSURLResponse", class_methods, selector, args);
     }
 };
 
@@ -6555,20 +6736,19 @@ pub const URLSession = struct {
         .{ "webSocketTaskWithURL:protocols:", URLSessionWebSocketTask, .{ NSURL, Object } },
     };
 
-    pub fn send(self: URLSession, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: URLSession, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
-        .{ "init", Object, .{} },
         .{ "new", ?*anyopaque, .{} },
         .{ "sessionWithConfiguration:", Object, .{URLSessionConfiguration} },
         .{ "sessionWithConfiguration:delegate:delegateQueue:", Object, .{ URLSessionConfiguration, ?URLSessionDelegate, ?OperationQueue } },
         .{ "sharedSession", URLSession, .{} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSURLSession", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSURLSession", class_methods, selector, args);
     }
 
     pub const AuthChallengeDisposition = enum(i64) {
@@ -6657,8 +6837,8 @@ pub const URLSessionConfiguration = struct {
         .{ "waitsForConnectivity", objc.BOOL, .{} },
     };
 
-    pub fn send(self: URLSessionConfiguration, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: URLSessionConfiguration, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
@@ -6666,23 +6846,21 @@ pub const URLSessionConfiguration = struct {
         .{ "backgroundSessionConfigurationWithIdentifier:", URLSessionConfiguration, .{objc.NSString} },
         .{ "defaultSessionConfiguration", URLSessionConfiguration, .{} },
         .{ "ephemeralSessionConfiguration", URLSessionConfiguration, .{} },
-        .{ "init", Object, .{} },
         .{ "new", ?*anyopaque, .{} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSURLSessionConfiguration", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSURLSessionConfiguration", class_methods, selector, args);
     }
 };
 
 pub const URLSessionDataTask = struct {
     pub const class_methods = .{
-        .{ "init", Object, .{} },
         .{ "new", ?*anyopaque, .{} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSURLSessionDataTask", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSURLSessionDataTask", class_methods, selector, args);
     }
 };
 
@@ -6699,12 +6877,11 @@ pub const URLSessionDownloadTask = struct {
     }
 
     pub const class_methods = .{
-        .{ "init", Object, .{} },
         .{ "new", ?*anyopaque, .{} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSURLSessionDownloadTask", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSURLSessionDownloadTask", class_methods, selector, args);
     }
 };
 
@@ -6727,12 +6904,11 @@ pub const URLSessionStreamTask = struct {
     }
 
     pub const class_methods = .{
-        .{ "init", Object, .{} },
         .{ "new", ?*anyopaque, .{} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSURLSessionStreamTask", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSURLSessionStreamTask", class_methods, selector, args);
     }
 };
 
@@ -6770,17 +6946,16 @@ pub const URLSessionTask = struct {
         .{ "taskIdentifier", objc.NSInteger, .{} },
     };
 
-    pub fn send(self: URLSessionTask, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: URLSessionTask, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
-        .{ "init", Object, .{} },
         .{ "new", ?*anyopaque, .{} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSURLSessionTask", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSURLSessionTask", class_methods, selector, args);
     }
 
     pub const State = enum(i64) {
@@ -6800,17 +6975,16 @@ pub const URLSessionTaskMetrics = struct {
         .{ "transactionMetrics", Object, .{} },
     };
 
-    pub fn send(self: URLSessionTaskMetrics, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: URLSessionTaskMetrics, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
-        .{ "init", Object, .{} },
         .{ "new", ?*anyopaque, .{} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSURLSessionTaskMetrics", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSURLSessionTaskMetrics", class_methods, selector, args);
     }
 
     pub const DomainResolutionProtocol = enum(i64) {
@@ -6864,38 +7038,37 @@ pub const URLSessionTaskTransactionMetrics = struct {
         .{ "secureConnectionStartDate", ?NSDate, .{} },
     };
 
-    pub fn send(self: URLSessionTaskTransactionMetrics, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: URLSessionTaskTransactionMetrics, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
-        .{ "init", Object, .{} },
         .{ "new", ?*anyopaque, .{} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSURLSessionTaskTransactionMetrics", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSURLSessionTaskTransactionMetrics", class_methods, selector, args);
     }
 };
 
 pub const URLSessionUploadTask = struct {
     obj: Object,
 
+    pub const Super = URLSessionDataTask;
     pub const methods = .{
         .{ "cancelByProducingResumeData:", void, .{?*anyopaque} },
     };
 
-    pub fn send(self: URLSessionUploadTask, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: URLSessionUploadTask, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
+        return objc.typedSendChain(@This(), self.obj, selector, args);
     }
 
     pub const class_methods = .{
-        .{ "init", Object, .{} },
         .{ "new", ?*anyopaque, .{} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSURLSessionUploadTask", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSURLSessionUploadTask", class_methods, selector, args);
     }
 };
 
@@ -6914,6 +7087,12 @@ pub const URLSessionWebSocketTask = struct {
 
     pub fn send(self: URLSessionWebSocketTask, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
         return objc.typedSendChain(@This(), self.obj, selector, args);
+    }
+
+    pub const class_methods = .{};
+
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSURLSessionWebSocketTask", class_methods, selector, args);
     }
 
     pub const CloseCode = enum(i64) {
@@ -6940,20 +7119,18 @@ pub const NSUUID = struct {
         .{ "UUIDString", objc.NSString, .{} },
         .{ "compare:", ComparisonResult, .{NSUUID} },
         .{ "getUUIDBytes:", void, .{u8} },
+        .{ "initWithUUIDBytes:", NSUUID, .{u8} },
+        .{ "initWithUUIDString:", NSUUID, .{objc.NSString} },
     };
 
-    pub fn send(self: NSUUID, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSUUID, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
-    pub const class_methods = .{
-        .{ "init", Object, .{} },
-        .{ "initWithUUIDBytes:", Object, .{u8} },
-        .{ "initWithUUIDString:", Object, .{objc.NSString} },
-    };
+    pub const class_methods = .{};
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSUUID", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSUUID", class_methods, selector, args);
     }
 };
 
@@ -6982,16 +7159,16 @@ pub const NSUbiquitousKeyValueStore = struct {
         .{ "synchronize", objc.BOOL, .{} },
     };
 
-    pub fn send(self: NSUbiquitousKeyValueStore, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSUbiquitousKeyValueStore, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
         .{ "defaultStore", NSUbiquitousKeyValueStore, .{} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSUbiquitousKeyValueStore", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSUbiquitousKeyValueStore", class_methods, selector, args);
     }
 };
 
@@ -7003,6 +7180,7 @@ pub const NSUnarchiver = struct {
         .{ "atEnd", objc.BOOL, .{} },
         .{ "classNameDecodedForArchiveClassName:", objc.NSString, .{objc.NSString} },
         .{ "decodeClassName:asClassName:", void, .{ objc.NSString, objc.NSString } },
+        .{ "initForReadingWithData:", NSUnarchiver, .{NSData} },
         .{ "replaceObject:withObject:", void, .{ Any, Any } },
         .{ "systemVersion", u32, .{} },
     };
@@ -7014,13 +7192,12 @@ pub const NSUnarchiver = struct {
     pub const class_methods = .{
         .{ "classNameDecodedForArchiveClassName:", objc.NSString, .{objc.NSString} },
         .{ "decodeClassName:asClassName:", void, .{ objc.NSString, objc.NSString } },
-        .{ "initForReadingWithData:", Object, .{NSData} },
         .{ "unarchiveObjectWithData:", ?Any, .{NSData} },
         .{ "unarchiveObjectWithFile:", ?Any, .{objc.NSString} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSUnarchiver", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSUnarchiver", class_methods, selector, args);
     }
 };
 
@@ -7068,8 +7245,14 @@ pub const UndoManager = struct {
         .{ "undoing", objc.BOOL, .{} },
     };
 
-    pub fn send(self: UndoManager, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: UndoManager, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
+    }
+
+    pub const class_methods = .{};
+
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSUndoManager", class_methods, selector, args);
     }
 };
 
@@ -7078,6 +7261,8 @@ pub const NSUniqueIDSpecifier = struct {
 
     pub const Super = NSScriptObjectSpecifier;
     pub const methods = .{
+        .{ "initWithCoder:", NSUniqueIDSpecifier, .{NSCoder} },
+        .{ "initWithContainerClassDescription:containerSpecifier:key:uniqueID:", NSUniqueIDSpecifier, .{ NSScriptClassDescription, ?NSScriptObjectSpecifier, objc.NSString, Any } },
         .{ "setUniqueID:", void, .{Any} },
         .{ "uniqueID", Any, .{} },
     };
@@ -7086,13 +7271,10 @@ pub const NSUniqueIDSpecifier = struct {
         return objc.typedSendChain(@This(), self.obj, selector, args);
     }
 
-    pub const class_methods = .{
-        .{ "initWithCoder:", Object, .{NSCoder} },
-        .{ "initWithContainerClassDescription:containerSpecifier:key:uniqueID:", Object, .{ NSScriptClassDescription, ?NSScriptObjectSpecifier, objc.NSString, Any } },
-    };
+    pub const class_methods = .{};
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSUniqueIDSpecifier", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSUniqueIDSpecifier", class_methods, selector, args);
     }
 };
 
@@ -7100,19 +7282,18 @@ pub const Unit = struct {
     obj: Object,
 
     pub const methods = .{
+        .{ "initWithSymbol:", Unit, .{objc.NSString} },
         .{ "symbol", objc.NSString, .{} },
     };
 
-    pub fn send(self: Unit, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: Unit, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
-    pub const class_methods = .{
-        .{ "initWithSymbol:", Object, .{objc.NSString} },
-    };
+    pub const class_methods = .{};
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSUnit", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSUnit", class_methods, selector, args);
     }
 };
 
@@ -7122,8 +7303,8 @@ pub const UnitAcceleration = struct {
         .{ "metersPerSecondSquared", UnitAcceleration, .{} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSUnitAcceleration", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSUnitAcceleration", class_methods, selector, args);
     }
 };
 
@@ -7137,8 +7318,8 @@ pub const UnitAngle = struct {
         .{ "revolutions", UnitAngle, .{} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSUnitAngle", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSUnitAngle", class_methods, selector, args);
     }
 };
 
@@ -7160,8 +7341,8 @@ pub const UnitArea = struct {
         .{ "squareYards", UnitArea, .{} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSUnitArea", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSUnitArea", class_methods, selector, args);
     }
 };
 
@@ -7172,8 +7353,8 @@ pub const UnitConcentrationMass = struct {
         .{ "millimolesPerLiterWithGramsPerMole:", UnitConcentrationMass, .{f64} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSUnitConcentrationMass", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSUnitConcentrationMass", class_methods, selector, args);
     }
 };
 
@@ -7185,8 +7366,14 @@ pub const UnitConverter = struct {
         .{ "valueFromBaseUnitValue:", f64, .{f64} },
     };
 
-    pub fn send(self: UnitConverter, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: UnitConverter, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
+    }
+
+    pub const class_methods = .{};
+
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSUnitConverter", class_methods, selector, args);
     }
 };
 
@@ -7197,19 +7384,18 @@ pub const UnitConverterLinear = struct {
     pub const methods = .{
         .{ "coefficient", f64, .{} },
         .{ "constant", f64, .{} },
+        .{ "initWithCoefficient:", UnitConverterLinear, .{f64} },
+        .{ "initWithCoefficient:constant:", UnitConverterLinear, .{ f64, f64 } },
     };
 
     pub fn send(self: UnitConverterLinear, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
         return objc.typedSendChain(@This(), self.obj, selector, args);
     }
 
-    pub const class_methods = .{
-        .{ "initWithCoefficient:", Object, .{f64} },
-        .{ "initWithCoefficient:constant:", Object, .{ f64, f64 } },
-    };
+    pub const class_methods = .{};
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSUnitConverterLinear", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSUnitConverterLinear", class_methods, selector, args);
     }
 };
 
@@ -7218,8 +7404,8 @@ pub const UnitDispersion = struct {
         .{ "partsPerMillion", UnitDispersion, .{} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSUnitDispersion", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSUnitDispersion", class_methods, selector, args);
     }
 };
 
@@ -7234,8 +7420,8 @@ pub const UnitDuration = struct {
         .{ "seconds", UnitDuration, .{} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSUnitDuration", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSUnitDuration", class_methods, selector, args);
     }
 };
 
@@ -7249,8 +7435,8 @@ pub const UnitElectricCharge = struct {
         .{ "milliampereHours", UnitElectricCharge, .{} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSUnitElectricCharge", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSUnitElectricCharge", class_methods, selector, args);
     }
 };
 
@@ -7263,8 +7449,8 @@ pub const UnitElectricCurrent = struct {
         .{ "milliamperes", UnitElectricCurrent, .{} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSUnitElectricCurrent", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSUnitElectricCurrent", class_methods, selector, args);
     }
 };
 
@@ -7277,8 +7463,8 @@ pub const UnitElectricPotentialDifference = struct {
         .{ "volts", UnitElectricPotentialDifference, .{} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSUnitElectricPotentialDifference", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSUnitElectricPotentialDifference", class_methods, selector, args);
     }
 };
 
@@ -7291,8 +7477,8 @@ pub const UnitElectricResistance = struct {
         .{ "ohms", UnitElectricResistance, .{} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSUnitElectricResistance", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSUnitElectricResistance", class_methods, selector, args);
     }
 };
 
@@ -7305,8 +7491,8 @@ pub const UnitEnergy = struct {
         .{ "kilowattHours", UnitEnergy, .{} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSUnitEnergy", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSUnitEnergy", class_methods, selector, args);
     }
 };
 
@@ -7323,8 +7509,8 @@ pub const UnitFrequency = struct {
         .{ "terahertz", UnitFrequency, .{} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSUnitFrequency", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSUnitFrequency", class_methods, selector, args);
     }
 };
 
@@ -7335,8 +7521,8 @@ pub const UnitFuelEfficiency = struct {
         .{ "milesPerImperialGallon", UnitFuelEfficiency, .{} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSUnitFuelEfficiency", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSUnitFuelEfficiency", class_methods, selector, args);
     }
 };
 
@@ -7345,8 +7531,8 @@ pub const UnitIlluminance = struct {
         .{ "lux", UnitIlluminance, .{} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSUnitIlluminance", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSUnitIlluminance", class_methods, selector, args);
     }
 };
 
@@ -7389,8 +7575,8 @@ pub const UnitInformationStorage = struct {
         .{ "zettabytes", UnitInformationStorage, .{} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSUnitInformationStorage", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSUnitInformationStorage", class_methods, selector, args);
     }
 };
 
@@ -7420,8 +7606,8 @@ pub const UnitLength = struct {
         .{ "yards", UnitLength, .{} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSUnitLength", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSUnitLength", class_methods, selector, args);
     }
 };
 
@@ -7445,8 +7631,8 @@ pub const UnitMass = struct {
         .{ "stones", UnitMass, .{} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSUnitMass", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSUnitMass", class_methods, selector, args);
     }
 };
 
@@ -7465,8 +7651,8 @@ pub const UnitPower = struct {
         .{ "watts", UnitPower, .{} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSUnitPower", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSUnitPower", class_methods, selector, args);
     }
 };
 
@@ -7484,8 +7670,8 @@ pub const UnitPressure = struct {
         .{ "poundsForcePerSquareInch", UnitPressure, .{} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSUnitPressure", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSUnitPressure", class_methods, selector, args);
     }
 };
 
@@ -7497,8 +7683,8 @@ pub const UnitSpeed = struct {
         .{ "milesPerHour", UnitSpeed, .{} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSUnitSpeed", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSUnitSpeed", class_methods, selector, args);
     }
 };
 
@@ -7509,8 +7695,8 @@ pub const UnitTemperature = struct {
         .{ "kelvin", UnitTemperature, .{} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSUnitTemperature", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSUnitTemperature", class_methods, selector, args);
     }
 };
 
@@ -7549,8 +7735,8 @@ pub const UnitVolume = struct {
         .{ "teaspoons", UnitVolume, .{} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSUnitVolume", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSUnitVolume", class_methods, selector, args);
     }
 };
 
@@ -7567,6 +7753,7 @@ pub const NSUserActivity = struct {
         .{ "eligibleForSearch", objc.BOOL, .{} },
         .{ "expirationDate", ?NSDate, .{} },
         .{ "getContinuationStreamsWithCompletionHandler:", void, .{?*anyopaque} },
+        .{ "initWithActivityType:", NSUserActivity, .{objc.NSString} },
         .{ "invalidate", void, .{} },
         .{ "keywords", objc.NSString, .{} },
         .{ "needsSave", objc.BOOL, .{} },
@@ -7596,19 +7783,17 @@ pub const NSUserActivity = struct {
         .{ "webpageURL", ?NSURL, .{} },
     };
 
-    pub fn send(self: NSUserActivity, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSUserActivity, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
         .{ "deleteAllSavedUserActivitiesWithCompletionHandler:", void, .{?*anyopaque} },
         .{ "deleteSavedUserActivitiesWithPersistentIdentifiers:completionHandler:", void, .{ Object, ?*anyopaque } },
-        .{ "init", Object, .{} },
-        .{ "initWithActivityType:", Object, .{objc.NSString} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSUserActivity", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSUserActivity", class_methods, selector, args);
     }
 };
 
@@ -7622,6 +7807,12 @@ pub const NSUserAppleScriptTask = struct {
 
     pub fn send(self: NSUserAppleScriptTask, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
         return objc.typedSendChain(@This(), self.obj, selector, args);
+    }
+
+    pub const class_methods = .{};
+
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSUserAppleScriptTask", class_methods, selector, args);
     }
 };
 
@@ -7638,6 +7829,12 @@ pub const NSUserAutomatorTask = struct {
     pub fn send(self: NSUserAutomatorTask, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
         return objc.typedSendChain(@This(), self.obj, selector, args);
     }
+
+    pub const class_methods = .{};
+
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSUserAutomatorTask", class_methods, selector, args);
+    }
 };
 
 pub const UserDefaults = struct {
@@ -7653,6 +7850,7 @@ pub const UserDefaults = struct {
         .{ "dictionaryRepresentation", Object, .{} },
         .{ "doubleForKey:", f64, .{objc.NSString} },
         .{ "floatForKey:", f32, .{objc.NSString} },
+        .{ "initWithSuiteName:", UserDefaults, .{?objc.NSString} },
         .{ "integerForKey:", objc.NSInteger, .{objc.NSString} },
         .{ "objectForKey:", ?Any, .{objc.NSString} },
         .{ "objectIsForcedForKey:", objc.BOOL, .{objc.NSString} },
@@ -7678,19 +7876,17 @@ pub const UserDefaults = struct {
         .{ "volatileDomainNames", Object, .{} },
     };
 
-    pub fn send(self: UserDefaults, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: UserDefaults, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
-        .{ "init", Object, .{} },
-        .{ "initWithSuiteName:", Object, .{?objc.NSString} },
         .{ "resetStandardUserDefaults", void, .{} },
         .{ "standardUserDefaults", UserDefaults, .{} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSUserDefaults", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSUserDefaults", class_methods, selector, args);
     }
 };
 
@@ -7738,16 +7934,14 @@ pub const NSUserNotification = struct {
         .{ "userInfo", ?*anyopaque, .{} },
     };
 
-    pub fn send(self: NSUserNotification, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSUserNotification, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
-    pub const class_methods = .{
-        .{ "init", Object, .{} },
-    };
+    pub const class_methods = .{};
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSUserNotification", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSUserNotification", class_methods, selector, args);
     }
 
     pub const ActivationType = enum(i64) {
@@ -7767,16 +7961,16 @@ pub const NSUserNotificationAction = struct {
         .{ "title", ?objc.NSString, .{} },
     };
 
-    pub fn send(self: NSUserNotificationAction, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSUserNotificationAction, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
         .{ "actionWithIdentifier:title:", Object, .{ ?objc.NSString, ?objc.NSString } },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSUserNotificationAction", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSUserNotificationAction", class_methods, selector, args);
     }
 };
 
@@ -7796,16 +7990,16 @@ pub const NSUserNotificationCenter = struct {
         .{ "setScheduledNotifications:", void, .{Object} },
     };
 
-    pub fn send(self: NSUserNotificationCenter, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSUserNotificationCenter, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
         .{ "defaultUserNotificationCenter", NSUserNotificationCenter, .{} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSUserNotificationCenter", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSUserNotificationCenter", class_methods, selector, args);
     }
 };
 
@@ -7814,19 +8008,18 @@ pub const NSUserScriptTask = struct {
 
     pub const methods = .{
         .{ "executeWithCompletionHandler:", void, .{void} },
+        .{ "initWithURL:error:", NSUserScriptTask, .{NSURL} },
         .{ "scriptURL", NSURL, .{} },
     };
 
-    pub fn send(self: NSUserScriptTask, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSUserScriptTask, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
-    pub const class_methods = .{
-        .{ "initWithURL:error:", Object, .{NSURL} },
-    };
+    pub const class_methods = .{};
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSUserScriptTask", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSUserScriptTask", class_methods, selector, args);
     }
 };
 
@@ -7847,6 +8040,12 @@ pub const NSUserUnixTask = struct {
     pub fn send(self: NSUserUnixTask, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
         return objc.typedSendChain(@This(), self.obj, selector, args);
     }
+
+    pub const class_methods = .{};
+
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSUserUnixTask", class_methods, selector, args);
+    }
 };
 
 pub const NSValue = struct {
@@ -7856,6 +8055,8 @@ pub const NSValue = struct {
         .{ "edgeInsetsValue", NSEdgeInsets, .{} },
         .{ "getValue:", void, .{UnsafeMutableRawPointer} },
         .{ "getValue:size:", void, .{ UnsafeMutableRawPointer, objc.NSInteger } },
+        .{ "initWithBytes:objCType:", NSValue, .{ UnsafeRawPointer, ?*anyopaque } },
+        .{ "initWithCoder:", NSValue, .{NSCoder} },
         .{ "isEqualToValue:", objc.BOOL, .{NSValue} },
         .{ "nonretainedObjectValue", ?Any, .{} },
         .{ "objCType", ?*anyopaque, .{} },
@@ -7867,13 +8068,11 @@ pub const NSValue = struct {
         .{ "sizeValue", NSSize, .{} },
     };
 
-    pub fn send(self: NSValue, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSValue, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
-        .{ "initWithBytes:objCType:", Object, .{ UnsafeRawPointer, ?*anyopaque } },
-        .{ "initWithCoder:", Object, .{NSCoder} },
         .{ "value:withObjCType:", Object, .{ UnsafeRawPointer, ?*anyopaque } },
         .{ "valueWithEdgeInsets:", Object, .{NSEdgeInsets} },
         .{ "valueWithNonretainedObject:", Object, .{?Any} },
@@ -7884,8 +8083,8 @@ pub const NSValue = struct {
         .{ "valueWithSize:", Object, .{NSSize} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSValue", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSValue", class_methods, selector, args);
     }
 };
 
@@ -7897,8 +8096,8 @@ pub const ValueTransformer = struct {
         .{ "transformedValue:", ?Any, .{?Any} },
     };
 
-    pub fn send(self: ValueTransformer, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: ValueTransformer, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
@@ -7909,8 +8108,8 @@ pub const ValueTransformer = struct {
         .{ "valueTransformerNames", Object, .{} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSValueTransformer", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSValueTransformer", class_methods, selector, args);
     }
 };
 
@@ -7921,6 +8120,8 @@ pub const NSWhoseSpecifier = struct {
     pub const methods = .{
         .{ "endSubelementIdentifier", NSWhoseSpecifier.SubelementIdentifier, .{} },
         .{ "endSubelementIndex", objc.NSInteger, .{} },
+        .{ "initWithCoder:", NSWhoseSpecifier, .{NSCoder} },
+        .{ "initWithContainerClassDescription:containerSpecifier:key:test:", NSWhoseSpecifier, .{ NSScriptClassDescription, ?NSScriptObjectSpecifier, objc.NSString, NSScriptWhoseTest } },
         .{ "setEndSubelementIdentifier:", void, .{NSWhoseSpecifier.SubelementIdentifier} },
         .{ "setEndSubelementIndex:", void, .{objc.NSInteger} },
         .{ "setStartSubelementIdentifier:", void, .{NSWhoseSpecifier.SubelementIdentifier} },
@@ -7935,13 +8136,10 @@ pub const NSWhoseSpecifier = struct {
         return objc.typedSendChain(@This(), self.obj, selector, args);
     }
 
-    pub const class_methods = .{
-        .{ "initWithCoder:", Object, .{NSCoder} },
-        .{ "initWithContainerClassDescription:containerSpecifier:key:test:", Object, .{ NSScriptClassDescription, ?NSScriptObjectSpecifier, objc.NSString, NSScriptWhoseTest } },
-    };
+    pub const class_methods = .{};
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSWhoseSpecifier", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSWhoseSpecifier", class_methods, selector, args);
     }
 
     pub const SubelementIdentifier = enum(i64) {
@@ -7962,6 +8160,8 @@ pub const XMLDTD = struct {
         .{ "attributeDeclarationForName:elementName:", ?XMLDTDNode, .{ objc.NSString, objc.NSString } },
         .{ "elementDeclarationForName:", ?XMLDTDNode, .{objc.NSString} },
         .{ "entityDeclarationForName:", ?XMLDTDNode, .{objc.NSString} },
+        .{ "initWithContentsOfURL:options:error:", XMLDTD, .{ NSURL, objc.NSInteger } },
+        .{ "initWithData:options:error:", XMLDTD, .{ NSData, objc.NSInteger } },
         .{ "insertChild:atIndex:", void, .{ XMLNode, objc.NSInteger } },
         .{ "insertChildren:atIndex:", void, .{ Object, objc.NSInteger } },
         .{ "notationDeclarationForName:", ?XMLDTDNode, .{objc.NSString} },
@@ -7979,14 +8179,11 @@ pub const XMLDTD = struct {
     }
 
     pub const class_methods = .{
-        .{ "init", Object, .{} },
-        .{ "initWithContentsOfURL:options:error:", Object, .{ NSURL, objc.NSInteger } },
-        .{ "initWithData:options:error:", Object, .{ NSData, objc.NSInteger } },
         .{ "predefinedEntityDeclarationForName:", ?XMLDTDNode, .{objc.NSString} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSXMLDTD", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSXMLDTD", class_methods, selector, args);
     }
 };
 
@@ -7997,6 +8194,8 @@ pub const XMLDTDNode = struct {
     pub const methods = .{
         .{ "DTDKind", XMLDTDNode.DTDKind, .{} },
         .{ "external", objc.BOOL, .{} },
+        .{ "initWithKind:options:", XMLDTDNode, .{ XMLNode.Kind, objc.NSInteger } },
+        .{ "initWithXMLString:", XMLDTDNode, .{objc.NSString} },
         .{ "notationName", ?objc.NSString, .{} },
         .{ "publicID", ?objc.NSString, .{} },
         .{ "setDTDKind:", void, .{XMLDTDNode.DTDKind} },
@@ -8010,14 +8209,10 @@ pub const XMLDTDNode = struct {
         return objc.typedSendChain(@This(), self.obj, selector, args);
     }
 
-    pub const class_methods = .{
-        .{ "init", Object, .{} },
-        .{ "initWithKind:options:", Object, .{ XMLNode.Kind, objc.NSInteger } },
-        .{ "initWithXMLString:", Object, .{objc.NSString} },
-    };
+    pub const class_methods = .{};
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSXMLDTDNode", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSXMLDTDNode", class_methods, selector, args);
     }
 
     pub const DTDKind = enum(i64) {
@@ -8056,6 +8251,10 @@ pub const XMLDocument = struct {
         .{ "addChild:", void, .{XMLNode} },
         .{ "characterEncoding", ?objc.NSString, .{} },
         .{ "documentContentKind", XMLDocument.ContentKind, .{} },
+        .{ "initWithContentsOfURL:options:error:", XMLDocument, .{ NSURL, objc.NSInteger } },
+        .{ "initWithData:options:error:", XMLDocument, .{ NSData, objc.NSInteger } },
+        .{ "initWithRootElement:", XMLDocument, .{?XMLElement} },
+        .{ "initWithXMLString:options:error:", XMLDocument, .{ objc.NSString, objc.NSInteger } },
         .{ "insertChild:atIndex:", void, .{ XMLNode, objc.NSInteger } },
         .{ "insertChildren:atIndex:", void, .{ Object, objc.NSInteger } },
         .{ "objectByApplyingXSLT:arguments:error:", Any, .{ NSData, ?*anyopaque } },
@@ -8082,16 +8281,11 @@ pub const XMLDocument = struct {
     }
 
     pub const class_methods = .{
-        .{ "init", Object, .{} },
-        .{ "initWithContentsOfURL:options:error:", Object, .{ NSURL, objc.NSInteger } },
-        .{ "initWithData:options:error:", Object, .{ NSData, objc.NSInteger } },
-        .{ "initWithRootElement:", Object, .{?XMLElement} },
-        .{ "initWithXMLString:options:error:", Object, .{ objc.NSString, objc.NSInteger } },
         .{ "replacementClassForClass:", AnyClass, .{AnyClass} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSXMLDocument", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSXMLDocument", class_methods, selector, args);
     }
 
     pub const ContentKind = enum(i64) {
@@ -8115,6 +8309,11 @@ pub const XMLElement = struct {
         .{ "attributes", ?*anyopaque, .{} },
         .{ "elementsForLocalName:URI:", Object, .{ objc.NSString, ?objc.NSString } },
         .{ "elementsForName:", Object, .{objc.NSString} },
+        .{ "initWithKind:options:", XMLElement, .{ XMLNode.Kind, objc.NSInteger } },
+        .{ "initWithName:", XMLElement, .{objc.NSString} },
+        .{ "initWithName:URI:", XMLElement, .{ objc.NSString, ?objc.NSString } },
+        .{ "initWithName:stringValue:", XMLElement, .{ objc.NSString, ?objc.NSString } },
+        .{ "initWithXMLString:error:", XMLElement, .{objc.NSString} },
         .{ "insertChild:atIndex:", void, .{ XMLNode, objc.NSInteger } },
         .{ "insertChildren:atIndex:", void, .{ Object, objc.NSInteger } },
         .{ "namespaceForPrefix:", ?XMLNode, .{objc.NSString} },
@@ -8137,16 +8336,10 @@ pub const XMLElement = struct {
         return objc.typedSendChain(@This(), self.obj, selector, args);
     }
 
-    pub const class_methods = .{
-        .{ "initWithKind:options:", Object, .{ XMLNode.Kind, objc.NSInteger } },
-        .{ "initWithName:", Object, .{objc.NSString} },
-        .{ "initWithName:URI:", Object, .{ objc.NSString, ?objc.NSString } },
-        .{ "initWithName:stringValue:", Object, .{ objc.NSString, ?objc.NSString } },
-        .{ "initWithXMLString:error:", Object, .{objc.NSString} },
-    };
+    pub const class_methods = .{};
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSXMLElement", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSXMLElement", class_methods, selector, args);
     }
 };
 
@@ -8165,6 +8358,8 @@ pub const XMLNode = struct {
         .{ "description", objc.NSString, .{} },
         .{ "detach", void, .{} },
         .{ "index", objc.NSInteger, .{} },
+        .{ "initWithKind:", XMLNode, .{XMLNode.Kind} },
+        .{ "initWithKind:options:", XMLNode, .{ XMLNode.Kind, objc.NSInteger } },
         .{ "kind", XMLNode.Kind, .{} },
         .{ "level", objc.NSInteger, .{} },
         .{ "localName", ?objc.NSString, .{} },
@@ -8188,8 +8383,8 @@ pub const XMLNode = struct {
         .{ "stringValue", ?objc.NSString, .{} },
     };
 
-    pub fn send(self: XMLNode, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: XMLNode, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
@@ -8203,9 +8398,6 @@ pub const XMLNode = struct {
         .{ "elementWithName:URI:", Any, .{ objc.NSString, objc.NSString } },
         .{ "elementWithName:children:attributes:", Any, .{ objc.NSString, ?*anyopaque, ?*anyopaque } },
         .{ "elementWithName:stringValue:", Any, .{ objc.NSString, objc.NSString } },
-        .{ "init", Object, .{} },
-        .{ "initWithKind:", Object, .{XMLNode.Kind} },
-        .{ "initWithKind:options:", Object, .{ XMLNode.Kind, objc.NSInteger } },
         .{ "localNameForName:", objc.NSString, .{objc.NSString} },
         .{ "namespaceWithName:stringValue:", Any, .{ objc.NSString, objc.NSString } },
         .{ "predefinedNamespaceForPrefix:", ?XMLNode, .{objc.NSString} },
@@ -8214,8 +8406,8 @@ pub const XMLNode = struct {
         .{ "textWithStringValue:", Any, .{objc.NSString} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSXMLNode", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSXMLNode", class_methods, selector, args);
     }
 
     pub const Kind = enum(i64) {
@@ -8244,6 +8436,9 @@ pub const XMLParser = struct {
         .{ "columnNumber", objc.NSInteger, .{} },
         .{ "delegate", ?XMLParserDelegate, .{} },
         .{ "externalEntityResolvingPolicy", XMLParser.ExternalEntityResolvingPolicy, .{} },
+        .{ "initWithContentsOfURL:", XMLParser, .{NSURL} },
+        .{ "initWithData:", XMLParser, .{NSData} },
+        .{ "initWithStream:", XMLParser, .{InputStream} },
         .{ "lineNumber", objc.NSInteger, .{} },
         .{ "parse", objc.BOOL, .{} },
         .{ "parserError", ?*anyopaque, .{} },
@@ -8260,18 +8455,14 @@ pub const XMLParser = struct {
         .{ "systemID", ?objc.NSString, .{} },
     };
 
-    pub fn send(self: XMLParser, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: XMLParser, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
-    pub const class_methods = .{
-        .{ "initWithContentsOfURL:", Object, .{NSURL} },
-        .{ "initWithData:", Object, .{NSData} },
-        .{ "initWithStream:", Object, .{InputStream} },
-    };
+    pub const class_methods = .{};
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSXMLParser", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSXMLParser", class_methods, selector, args);
     }
 
     pub const ErrorCode = enum(i64) {
@@ -8392,6 +8583,12 @@ pub const NSXPCCoder = struct {
     pub fn send(self: NSXPCCoder, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
         return objc.typedSendChain(@This(), self.obj, selector, args);
     }
+
+    pub const class_methods = .{};
+
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSXPCCoder", class_methods, selector, args);
+    }
 };
 
 pub const NSXPCConnection = struct {
@@ -8405,6 +8602,9 @@ pub const NSXPCConnection = struct {
         .{ "endpoint", Object, .{} },
         .{ "exportedInterface", ?NSXPCInterface, .{} },
         .{ "exportedObject", ?Any, .{} },
+        .{ "initWithListenerEndpoint:", NSXPCConnection, .{Object} },
+        .{ "initWithMachServiceName:options:", NSXPCConnection, .{ objc.NSString, objc.NSInteger } },
+        .{ "initWithServiceName:", NSXPCConnection, .{objc.NSString} },
         .{ "interruptionHandler", void, .{} },
         .{ "invalidate", void, .{} },
         .{ "invalidationHandler", void, .{} },
@@ -8425,19 +8625,16 @@ pub const NSXPCConnection = struct {
         .{ "synchronousRemoteObjectProxyWithErrorHandler:", Any, .{?*anyopaque} },
     };
 
-    pub fn send(self: NSXPCConnection, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSXPCConnection, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
         .{ "currentConnection", ?NSXPCConnection, .{} },
-        .{ "initWithListenerEndpoint:", Object, .{Object} },
-        .{ "initWithMachServiceName:options:", Object, .{ objc.NSString, objc.NSInteger } },
-        .{ "initWithServiceName:", Object, .{objc.NSString} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSXPCConnection", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSXPCConnection", class_methods, selector, args);
     }
 };
 
@@ -8455,16 +8652,16 @@ pub const NSXPCInterface = struct {
         .{ "setXPCType:forSelector:argumentIndex:ofReply:", void, .{ objc.NSString, Selector, objc.NSInteger, objc.BOOL } },
     };
 
-    pub fn send(self: NSXPCInterface, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSXPCInterface, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
         .{ "interfaceWithProtocol:", Object, .{Object} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSXPCInterface", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSXPCInterface", class_methods, selector, args);
     }
 };
 
@@ -8475,6 +8672,7 @@ pub const NSXPCListener = struct {
         .{ "activate", void, .{} },
         .{ "delegate", ?NSXPCListenerDelegate, .{} },
         .{ "endpoint", Object, .{} },
+        .{ "initWithMachServiceName:", NSXPCListener, .{objc.NSString} },
         .{ "invalidate", void, .{} },
         .{ "resume", void, .{} },
         .{ "setConnectionCodeSigningRequirement:", void, .{objc.NSString} },
@@ -8482,18 +8680,17 @@ pub const NSXPCListener = struct {
         .{ "suspend", void, .{} },
     };
 
-    pub fn send(self: NSXPCListener, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
-        return objc.typedSend(methods, self.obj, selector, args);
+    pub fn send(self: NSXPCListener, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
+        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
         .{ "anonymousListener", NSXPCListener, .{} },
-        .{ "initWithMachServiceName:", Object, .{objc.NSString} },
         .{ "serviceListener", NSXPCListener, .{} },
     };
 
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
-        return objc.typedClassSend("NSXPCListener", class_methods, selector, args);
+    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
+        return objc.typedClassSendFor(@This(), "NSXPCListener", class_methods, selector, args);
     }
 };
 
