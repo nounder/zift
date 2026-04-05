@@ -387,6 +387,90 @@ pub const NSWritingToolsBehavior = enum(i64) {
     limited = 2,
 };
 
+pub const NSDirectionalRectEdge = struct {
+    pub const top: i64 = 1;
+    pub const leading: i64 = 2;
+    pub const bottom: i64 = 4;
+    pub const trailing: i64 = 8;
+    pub const all: i64 = 15;
+};
+
+pub const NSDragOperation = struct {
+    pub const copy: i64 = 1;
+    pub const link: i64 = 2;
+    pub const generic: i64 = 4;
+    pub const private: i64 = 8;
+    pub const all_Obsolete: i64 = 15;
+    pub const all: i64 = 15;
+    pub const move: i64 = 16;
+    pub const delete: i64 = 32;
+    pub const every: i64 = 18446744073709551615;
+};
+
+pub const NSDraggingItemEnumerationOptions = struct {
+    pub const concurrent: i64 = 1;
+    pub const clearNonenumeratedImages: i64 = 65536;
+};
+
+pub const NSFontCollectionOptions = struct {
+    pub const applicationOnlyMask: i64 = 1;
+};
+
+pub const NSFontTraitMask = struct {
+    pub const italicFontMask: i64 = 1;
+    pub const boldFontMask: i64 = 2;
+    pub const unboldFontMask: i64 = 4;
+    pub const nonStandardCharacterSetFontMask: i64 = 8;
+    pub const narrowFontMask: i64 = 16;
+    pub const expandedFontMask: i64 = 32;
+    pub const condensedFontMask: i64 = 64;
+    pub const smallCapsFontMask: i64 = 128;
+    pub const posterFontMask: i64 = 256;
+    pub const compressedFontMask: i64 = 512;
+    pub const fixedPitchFontMask: i64 = 1024;
+    pub const unitalicFontMask: i64 = 16777216;
+};
+
+pub const NSSpringLoadingOptions = struct {
+    pub const disabled: i64 = 0;
+    pub const enabled: i64 = 1;
+    pub const continuousActivation: i64 = 2;
+    pub const noHover: i64 = 8;
+};
+
+pub const NSTextStorageEditActions = struct {
+    pub const editedAttributes: i64 = 1;
+    pub const editedCharacters: i64 = 2;
+};
+
+pub const NSTypesetterControlCharacterAction = struct {
+    pub const zeroAdvancementAction: i64 = 1;
+    pub const whitespaceAction: i64 = 2;
+    pub const horizontalTabAction: i64 = 4;
+    pub const lineBreakAction: i64 = 8;
+    pub const paragraphBreakAction: i64 = 16;
+    pub const containerBreakAction: i64 = 32;
+};
+
+pub const NSUnderlineStyle = struct {
+    pub const single: i64 = 1;
+    pub const thick: i64 = 2;
+    pub const double: i64 = 9;
+    pub const patternDot: i64 = 256;
+    pub const patternDash: i64 = 512;
+    pub const patternDashDot: i64 = 768;
+    pub const patternDashDotDot: i64 = 1024;
+    pub const byWord: i64 = 32768;
+};
+
+pub const NSWritingToolsResultOptions = struct {
+    pub const plainText: i64 = 1;
+    pub const richText: i64 = 2;
+    pub const list: i64 = 4;
+    pub const table: i64 = 8;
+    pub const presentationIntent: i64 = 16;
+};
+
 pub const NSAccessibilityProtocol = *anyopaque;
 pub const NSAccessibilityButton = *anyopaque;
 pub const NSAccessibilityCheckBox = *anyopaque;
@@ -1060,6 +1144,37 @@ pub const NSApplication = struct {
         terminateNow = 1,
         terminateLater = 2,
     };
+
+    pub const ActivationOptions = struct {
+        pub const activateAllWindows: i64 = 1;
+        pub const activateIgnoringOtherApps: i64 = 2;
+    };
+    pub const OcclusionState = struct {
+        pub const visible: i64 = 2;
+    };
+    pub const PresentationOptions = struct {
+        pub const autoHideDock: i64 = 1;
+        pub const hideDock: i64 = 2;
+        pub const autoHideMenuBar: i64 = 4;
+        pub const hideMenuBar: i64 = 8;
+        pub const disableAppleMenu: i64 = 16;
+        pub const disableProcessSwitching: i64 = 32;
+        pub const disableForceQuit: i64 = 64;
+        pub const disableSessionTermination: i64 = 128;
+        pub const disableHideApplication: i64 = 256;
+        pub const disableMenuBarTransparency: i64 = 512;
+        pub const fullScreen: i64 = 1024;
+        pub const autoHideToolbar: i64 = 2048;
+        pub const disableCursorLocationAssistance: i64 = 4096;
+    };
+    pub const RemoteNotificationType = struct {
+        pub const badge: i64 = 1;
+        pub const sound: i64 = 2;
+        pub const alert: i64 = 4;
+    };
+    pub const WindowListOptions = struct {
+        pub const orderedFrontToBack: i64 = 1;
+    };
 };
 
 pub const NSArrayController = struct {
@@ -1334,6 +1449,16 @@ pub const NSBitmapImageRep = struct {
         next = 32766,
         packBits = 32773,
         oldJPEG = 32865,
+    };
+
+    pub const Format = struct {
+        pub const alphaFirst: i64 = 1;
+        pub const alphaNonpremultiplied: i64 = 2;
+        pub const floatingPointSamples: i64 = 4;
+        pub const sixteenBitLittleEndian: i64 = 256;
+        pub const thirtyTwoBitLittleEndian: i64 = 512;
+        pub const sixteenBitBigEndian: i64 = 1024;
+        pub const thirtyTwoBitBigEndian: i64 = 2048;
     };
 };
 
@@ -1993,6 +2118,18 @@ pub const NSCell = struct {
         textCellType = 1,
         imageCellType = 2,
     };
+
+    pub const HitResult = struct {
+        pub const contentArea: i64 = 1;
+        pub const editableTextArea: i64 = 2;
+        pub const trackableArea: i64 = 4;
+    };
+    pub const StyleMask = struct {
+        pub const contentsCellMask: i64 = 1;
+        pub const pushInCellMask: i64 = 2;
+        pub const changeGrayCellMask: i64 = 4;
+        pub const changeBackgroundCellMask: i64 = 8;
+    };
 };
 
 pub const NSClickGestureRecognizer = struct {
@@ -2397,6 +2534,19 @@ pub const NSCollectionView = struct {
         reload = 2,
         move = 3,
         none = 4,
+    };
+
+    pub const ScrollPosition = struct {
+        pub const top: i64 = 1;
+        pub const centeredVertically: i64 = 2;
+        pub const bottom: i64 = 4;
+        pub const left: i64 = 8;
+        pub const centeredHorizontally: i64 = 16;
+        pub const right: i64 = 32;
+        pub const leadingEdge: i64 = 64;
+        pub const trailingEdge: i64 = 128;
+        pub const nearestVerticalEdge: i64 = 256;
+        pub const nearestHorizontalEdge: i64 = 512;
     };
 };
 
@@ -2944,6 +3094,18 @@ pub const NSColorPanel = struct {
         colorList = 5,
         wheel = 6,
         crayon = 7,
+    };
+
+    pub const Options = struct {
+        pub const grayModeMask: i64 = 1;
+        pub const rgbModeMask: i64 = 2;
+        pub const cmykModeMask: i64 = 4;
+        pub const hsbModeMask: i64 = 8;
+        pub const customPaletteModeMask: i64 = 16;
+        pub const colorListModeMask: i64 = 32;
+        pub const wheelModeMask: i64 = 64;
+        pub const crayonModeMask: i64 = 128;
+        pub const allModesMask: i64 = 65535;
     };
 };
 
@@ -3531,6 +3693,15 @@ pub const NSDatePicker = struct {
         textFieldAndStepper = 0,
         clockAndCalendar = 1,
         textField = 2,
+    };
+
+    pub const ElementFlags = struct {
+        pub const hourMinute: i64 = 12;
+        pub const hourMinuteSecond: i64 = 14;
+        pub const timeZone: i64 = 16;
+        pub const yearMonth: i64 = 192;
+        pub const yearMonthDay: i64 = 224;
+        pub const era: i64 = 256;
     };
 };
 
@@ -4188,6 +4359,72 @@ pub const NSEvent = struct {
         primaryDeepClick = 5,
         primaryDeepDrag = 6,
     };
+
+    pub const ButtonMask = struct {
+        pub const penTip: i64 = 1;
+        pub const penLowerSide: i64 = 2;
+        pub const penUpperSide: i64 = 4;
+    };
+    pub const EventTypeMask = struct {
+        pub const leftMouseDown: i64 = 2;
+        pub const leftMouseUp: i64 = 4;
+        pub const rightMouseDown: i64 = 8;
+        pub const rightMouseUp: i64 = 16;
+        pub const mouseMoved: i64 = 32;
+        pub const leftMouseDragged: i64 = 64;
+        pub const rightMouseDragged: i64 = 128;
+        pub const mouseEntered: i64 = 256;
+        pub const mouseExited: i64 = 512;
+        pub const keyDown: i64 = 1024;
+        pub const keyUp: i64 = 2048;
+        pub const flagsChanged: i64 = 4096;
+        pub const appKitDefined: i64 = 8192;
+        pub const systemDefined: i64 = 16384;
+        pub const applicationDefined: i64 = 32768;
+        pub const periodic: i64 = 65536;
+        pub const cursorUpdate: i64 = 131072;
+        pub const rotate: i64 = 262144;
+        pub const beginGesture: i64 = 524288;
+        pub const endGesture: i64 = 1048576;
+        pub const scrollWheel: i64 = 4194304;
+        pub const tabletPoint: i64 = 8388608;
+        pub const tabletProximity: i64 = 16777216;
+        pub const otherMouseDown: i64 = 33554432;
+        pub const otherMouseUp: i64 = 67108864;
+        pub const otherMouseDragged: i64 = 134217728;
+        pub const gesture: i64 = 536870912;
+        pub const magnify: i64 = 1073741824;
+        pub const swipe: i64 = 2147483648;
+        pub const smartMagnify: i64 = 4294967296;
+        pub const pressure: i64 = 17179869184;
+        pub const directTouch: i64 = 137438953472;
+        pub const changeMode: i64 = 274877906944;
+        pub const mouseCancelled: i64 = 1099511627776;
+        pub const any: i64 = 18446744073709551615;
+    };
+    pub const ModifierFlags = struct {
+        pub const capsLock: i64 = 65536;
+        pub const shift: i64 = 131072;
+        pub const control: i64 = 262144;
+        pub const option: i64 = 524288;
+        pub const command: i64 = 1048576;
+        pub const numericPad: i64 = 2097152;
+        pub const help: i64 = 4194304;
+        pub const function: i64 = 8388608;
+        pub const deviceIndependentFlagsMask: i64 = 4294901760;
+    };
+    pub const Phase = struct {
+        pub const began: i64 = 1;
+        pub const stationary: i64 = 2;
+        pub const changed: i64 = 4;
+        pub const ended: i64 = 8;
+        pub const cancelled: i64 = 16;
+        pub const mayBegin: i64 = 32;
+    };
+    pub const SwipeTrackingOptions = struct {
+        pub const lockDirection: i64 = 1;
+        pub const clampGestureAmount: i64 = 2;
+    };
 };
 
 pub const NSFilePromiseProvider = struct {
@@ -4316,6 +4553,10 @@ pub const NSFontAssetRequest = struct {
         .{ "initWithFontDescriptors:options:", NSFontAssetRequest, .{ Object, objc.NSInteger } },
         .{ "progress", Foundation.Progress, .{} },
     };
+
+    pub const Options = struct {
+        pub const usesStandardUI: i64 = 1;
+    };
 };
 
 pub const NSFontCollection = struct {
@@ -4343,6 +4584,12 @@ pub const NSFontCollection = struct {
         .{ "hideFontCollectionWithName:visibility:error:", void, .{ objc.NSString, objc.NSInteger } },
         .{ "renameFontCollectionWithName:visibility:toName:error:", void, .{ objc.NSString, objc.NSInteger, objc.NSString } },
         .{ "showFontCollection:withName:visibility:error:", void, .{ NSFontCollection, objc.NSString, objc.NSInteger } },
+    };
+
+    pub const Visibility = struct {
+        pub const process: i64 = 1;
+        pub const user: i64 = 2;
+        pub const computer: i64 = 4;
     };
 };
 
@@ -4377,6 +4624,29 @@ pub const NSFontDescriptor = struct {
         .{ "fontDescriptorWithName:matrix:", Object, .{ objc.NSString, Foundation.NSAffineTransform } },
         .{ "fontDescriptorWithName:size:", Object, .{ objc.NSString, objc.CGFloat } },
         .{ "preferredFontDescriptorForTextStyle:options:", NSFontDescriptor, .{ objc.NSString, Object } },
+    };
+
+    pub const SymbolicTraits = struct {
+        pub const italic: i64 = 1;
+        pub const bold: i64 = 2;
+        pub const expanded: i64 = 32;
+        pub const condensed: i64 = 64;
+        pub const monoSpace: i64 = 1024;
+        pub const vertical: i64 = 2048;
+        pub const UIOptimized: i64 = 4096;
+        pub const tightLeading: i64 = 32768;
+        pub const looseLeading: i64 = 65536;
+        pub const classOldStyleSerifs: i64 = 268435456;
+        pub const classTransitionalSerifs: i64 = 536870912;
+        pub const classModernSerifs: i64 = 805306368;
+        pub const classClarendonSerifs: i64 = 1073741824;
+        pub const classSlabSerifs: i64 = 1342177280;
+        pub const classFreeformSerifs: i64 = 1879048192;
+        pub const classSansSerif: i64 = 2147483648;
+        pub const classOrnamentals: i64 = 2415919104;
+        pub const classScripts: i64 = 2684354560;
+        pub const classSymbolic: i64 = 3221225472;
+        pub const classMask: i64 = 4026531840;
     };
 };
 
@@ -4466,6 +4736,20 @@ pub const NSFontPanel = struct {
     pub const class_methods = .{
         .{ "sharedFontPanel", NSFontPanel, .{} },
         .{ "sharedFontPanelExists", objc.BOOL, .{} },
+    };
+
+    pub const ModeMask = struct {
+        pub const face: i64 = 1;
+        pub const size: i64 = 2;
+        pub const collection: i64 = 4;
+        pub const underlineEffect: i64 = 256;
+        pub const strikethroughEffect: i64 = 512;
+        pub const textColorEffect: i64 = 1024;
+        pub const documentColorEffect: i64 = 2048;
+        pub const shadowEffect: i64 = 4096;
+        pub const standardModes: i64 = 65535;
+        pub const allEffects: i64 = 1048320;
+        pub const allModes: i64 = 4294967295;
     };
 };
 
@@ -4709,6 +4993,11 @@ pub const NSGradient = struct {
         .{ "initWithStartingColor:endingColor:", NSGradient, .{ NSColor, NSColor } },
         .{ "interpolatedColorAtLocation:", NSColor, .{objc.CGFloat} },
         .{ "numberOfColorStops", objc.NSInteger, .{} },
+    };
+
+    pub const DrawingOptions = struct {
+        pub const drawsBeforeStartingLocation: i64 = 1;
+        pub const drawsAfterEndingLocation: i64 = 2;
     };
 };
 
@@ -5320,6 +5609,24 @@ pub const NSLayoutConstraint = struct {
         greaterThanOrEqual = 1,
     };
 
+    pub const FormatOptions = struct {
+        pub const directionLeadingToTrailing: i64 = 0;
+        pub const alignAllLeft: i64 = 2;
+        pub const alignAllRight: i64 = 4;
+        pub const alignAllTop: i64 = 8;
+        pub const alignAllBottom: i64 = 16;
+        pub const alignAllLeading: i64 = 32;
+        pub const alignAllTrailing: i64 = 64;
+        pub const alignAllCenterX: i64 = 512;
+        pub const alignAllCenterY: i64 = 1024;
+        pub const alignAllLastBaseline: i64 = 2048;
+        pub const alignAllFirstBaseline: i64 = 4096;
+        pub const alignmentMask: i64 = 65535;
+        pub const directionLeftToRight: i64 = 65536;
+        pub const directionRightToLeft: i64 = 131072;
+        pub const directionMask: i64 = 196608;
+    };
+
     pub fn make(item: Object, attr: Attribute, rel: Relation, to_item: ?Object, to_attr: Attribute, mult: f64, constant: f64) Object {
         return objc.send(objc.class("NSLayoutConstraint"), "constraintWithItem:attribute:relatedBy:toItem:attribute:multiplier:constant:", Object, .{ item, @intFromEnum(attr), @intFromEnum(rel), @as(?*anyopaque, if (to_item) |t| @ptrCast(t) else null), @intFromEnum(to_attr), mult, constant });
     }
@@ -5551,6 +5858,21 @@ pub const NSLayoutManager = struct {
         behavior_10_2 = 2,
         behavior_10_3 = 3,
         behavior_10_4 = 4,
+    };
+
+    pub const ControlCharacterAction = struct {
+        pub const zeroAdvancement: i64 = 1;
+        pub const whitespace: i64 = 2;
+        pub const horizontalTab: i64 = 4;
+        pub const lineBreak: i64 = 8;
+        pub const paragraphBreak: i64 = 16;
+        pub const containerBreak: i64 = 32;
+    };
+    pub const GlyphProperty = struct {
+        pub const @"null": i64 = 1;
+        pub const controlCharacter: i64 = 2;
+        pub const elastic: i64 = 4;
+        pub const nonBaseCharacter: i64 = 8;
     };
 };
 
@@ -5818,6 +6140,12 @@ pub const NSMediaLibraryBrowserController = struct {
     pub const class_methods = .{
         .{ "sharedMediaLibraryBrowserController", NSMediaLibraryBrowserController, .{} },
     };
+
+    pub const Library = struct {
+        pub const audio: i64 = 1;
+        pub const image: i64 = 2;
+        pub const movie: i64 = 4;
+    };
 };
 
 pub const NSMenu = struct {
@@ -5909,6 +6237,15 @@ pub const NSMenu = struct {
         automatic = 0,
         selectOne = 1,
         selectAny = 2,
+    };
+
+    pub const Properties = struct {
+        pub const propertyItemTitle: i64 = 1;
+        pub const propertyItemAttributedTitle: i64 = 2;
+        pub const propertyItemKeyEquivalent: i64 = 4;
+        pub const propertyItemImage: i64 = 8;
+        pub const propertyItemEnabled: i64 = 16;
+        pub const propertyItemAccessibilityDescription: i64 = 32;
     };
 };
 
@@ -6448,6 +6785,12 @@ pub const NSPDFPanel = struct {
         .{ "setDefaultFileName:", void, .{objc.NSString} },
         .{ "setOptions:", void, .{objc.NSInteger} },
     };
+
+    pub const Options = struct {
+        pub const showsPaperSize: i64 = 4;
+        pub const showsOrientation: i64 = 8;
+        pub const requestsParentDirectory: i64 = 16777216;
+    };
 };
 
 pub const NSPICTImageRep = struct {
@@ -6595,6 +6938,12 @@ pub const NSParagraphStyle = struct {
         centerTabStopType = 2,
         decimalTabStopType = 3,
     };
+
+    pub const LineBreakStrategy = struct {
+        pub const pushOut: i64 = 1;
+        pub const hangulWordPriority: i64 = 2;
+        pub const standard: i64 = 65535;
+    };
 };
 
 pub const NSPasteboard = struct {
@@ -6647,6 +6996,19 @@ pub const NSPasteboard = struct {
         ask = 1,
         alwaysAllow = 2,
         alwaysDeny = 3,
+    };
+
+    pub const ContentsOptions = struct {
+        pub const currentHostOnly: i64 = 1;
+    };
+    pub const ReadingOptions = struct {
+        pub const asData: i64 = 0;
+        pub const asString: i64 = 1;
+        pub const asPropertyList: i64 = 2;
+        pub const asKeyedArchive: i64 = 4;
+    };
+    pub const WritingOptions = struct {
+        pub const promised: i64 = 512;
     };
 };
 
@@ -7294,6 +7656,17 @@ pub const NSPrintPanel = struct {
     pub const Result = enum(i64) {
         cancelled = 0,
         printed = 1,
+    };
+
+    pub const Options = struct {
+        pub const showsCopies: i64 = 1;
+        pub const showsPageRange: i64 = 2;
+        pub const showsPaperSize: i64 = 4;
+        pub const showsOrientation: i64 = 8;
+        pub const showsScaling: i64 = 16;
+        pub const showsPrintSelection: i64 = 32;
+        pub const showsPageSetupAccessory: i64 = 256;
+        pub const showsPreview: i64 = 131072;
     };
 };
 
@@ -8447,6 +8820,14 @@ pub const NSSharingService = struct {
         partial = 1,
         full = 2,
     };
+
+    pub const CloudKitOptions = struct {
+        pub const standard: i64 = 0;
+        pub const allowPublic: i64 = 1;
+        pub const allowPrivate: i64 = 2;
+        pub const allowReadOnly: i64 = 16;
+        pub const allowReadWrite: i64 = 32;
+    };
 };
 
 pub const NSSharingServicePicker = struct {
@@ -9153,6 +9534,11 @@ pub const NSStatusItem = struct {
         .{ "view", ?NSView, .{} },
         .{ "visible", objc.BOOL, .{} },
     };
+
+    pub const Behavior = struct {
+        pub const removalAllowed: i64 = 2;
+        pub const terminationOnRemoval: i64 = 4;
+    };
 };
 
 pub const NSStepper = struct {
@@ -9505,6 +9891,11 @@ pub const NSTableColumn = struct {
         .{ "title", objc.NSString, .{} },
         .{ "width", objc.CGFloat, .{} },
     };
+
+    pub const ResizingOptions = struct {
+        pub const autoresizingMask: i64 = 1;
+        pub const userResizingMask: i64 = 2;
+    };
 };
 
 pub const NSTableHeaderCell = struct {
@@ -9772,6 +10163,20 @@ pub const NSTableView = struct {
         inset = 2,
         sourceList = 3,
         plain = 4,
+    };
+
+    pub const AnimationOptions = struct {
+        pub const effectFade: i64 = 1;
+        pub const effectGap: i64 = 2;
+        pub const slideUp: i64 = 16;
+        pub const slideDown: i64 = 32;
+        pub const slideLeft: i64 = 48;
+        pub const slideRight: i64 = 64;
+    };
+    pub const GridLineStyle = struct {
+        pub const solidVerticalGridLineMask: i64 = 1;
+        pub const solidHorizontalGridLineMask: i64 = 2;
+        pub const dashedHorizontalGridLineMask: i64 = 8;
     };
 };
 
@@ -10124,6 +10529,10 @@ pub const NSTextContentManager = struct {
         .{ "textElementsForRange:", Object, .{NSTextRange} },
         .{ "textLayoutManagers", Object, .{} },
     };
+
+    pub const EnumerationOptions = struct {
+        pub const reverse: i64 = 1;
+    };
 };
 
 pub const NSTextContentStorage = struct {
@@ -10381,6 +10790,11 @@ pub const NSTextInsertionIndicator = struct {
         hidden = 1,
         visible = 2,
     };
+
+    pub const AutomaticModeOptions = struct {
+        pub const showEffectsView: i64 = 1;
+        pub const showWhileTracking: i64 = 2;
+    };
 };
 
 pub const NSTextLayoutFragment = struct {
@@ -10418,6 +10832,13 @@ pub const NSTextLayoutFragment = struct {
         estimatedUsageBounds = 1,
         calculatedUsageBounds = 2,
         layoutAvailable = 3,
+    };
+
+    pub const EnumerationOptions = struct {
+        pub const reverse: i64 = 1;
+        pub const estimatesSize: i64 = 2;
+        pub const ensuresLayout: i64 = 4;
+        pub const ensuresExtraLineFragment: i64 = 8;
     };
 };
 
@@ -10479,6 +10900,14 @@ pub const NSTextLayoutManager = struct {
         selection = 1,
         highlight = 2,
     };
+
+    pub const SegmentOptions = struct {
+        pub const rangeNotRequired: i64 = 1;
+        pub const middleFragmentsExcluded: i64 = 2;
+        pub const headSegmentExtended: i64 = 4;
+        pub const tailSegmentExtended: i64 = 8;
+        pub const upstreamAffinity: i64 = 16;
+    };
 };
 
 pub const NSTextLineFragment = struct {
@@ -10522,6 +10951,10 @@ pub const NSTextList = struct {
 
     pub const class_methods = .{
         .{ "includesTextListMarkers", objc.BOOL, .{} },
+    };
+
+    pub const Options = struct {
+        pub const prependEnclosingMarker: i64 = 1;
     };
 };
 
@@ -10684,6 +11117,12 @@ pub const NSTextSelectionNavigation = struct {
     pub const WritingDirection = enum(i64) {
         leftToRight = 0,
         rightToLeft = 1,
+    };
+
+    pub const Modifier = struct {
+        pub const extend: i64 = 1;
+        pub const visual: i64 = 2;
+        pub const multiple: i64 = 4;
     };
 };
 
@@ -11343,6 +11782,20 @@ pub const NSTouch = struct {
         direct = 0,
         indirect = 1,
     };
+
+    pub const Phase = struct {
+        pub const began: i64 = 1;
+        pub const moved: i64 = 2;
+        pub const stationary: i64 = 4;
+        pub const touching: i64 = 7;
+        pub const ended: i64 = 8;
+        pub const cancelled: i64 = 16;
+        pub const any: i64 = 18446744073709551615;
+    };
+    pub const TouchTypeMask = struct {
+        pub const direct: i64 = 1;
+        pub const indirect: i64 = 2;
+    };
 };
 
 pub const NSTouchBar = struct {
@@ -11411,6 +11864,19 @@ pub const NSTrackingArea = struct {
         .{ "owner", ?AnyObject, .{} },
         .{ "rect", NSRect, .{} },
         .{ "userInfo", ?*anyopaque, .{} },
+    };
+
+    pub const Options = struct {
+        pub const mouseEnteredAndExited: i64 = 1;
+        pub const mouseMoved: i64 = 2;
+        pub const cursorUpdate: i64 = 4;
+        pub const activeWhenFirstResponder: i64 = 16;
+        pub const activeInKeyWindow: i64 = 32;
+        pub const activeInActiveApp: i64 = 64;
+        pub const activeAlways: i64 = 128;
+        pub const assumeInside: i64 = 256;
+        pub const inVisibleRect: i64 = 512;
+        pub const enabledDuringMouseDrag: i64 = 1024;
     };
 };
 
@@ -12012,6 +12478,16 @@ pub const NSView = struct {
         beforeViewResize = 3,
         crossfade = 4,
     };
+
+    pub const AutoresizingMask = struct {
+        pub const none: i64 = 0;
+        pub const minXMargin: i64 = 1;
+        pub const width: i64 = 2;
+        pub const maxXMargin: i64 = 4;
+        pub const minYMargin: i64 = 8;
+        pub const height: i64 = 16;
+        pub const maxYMargin: i64 = 32;
+    };
 };
 
 pub const NSViewAnimation = struct {
@@ -12090,6 +12566,17 @@ pub const NSViewController = struct {
         .{ "viewWillDisappear", void, .{} },
         .{ "viewWillLayout", void, .{} },
         .{ "viewWillTransitionToSize:", void, .{NSSize} },
+    };
+
+    pub const TransitionOptions = struct {
+        pub const crossfade: i64 = 1;
+        pub const slideUp: i64 = 16;
+        pub const slideDown: i64 = 32;
+        pub const slideLeft: i64 = 64;
+        pub const slideRight: i64 = 128;
+        pub const slideForward: i64 = 320;
+        pub const slideBackward: i64 = 384;
+        pub const allowUserInteraction: i64 = 4096;
     };
 };
 
@@ -12566,6 +13053,46 @@ pub const NSWindow = struct {
         always = 1,
         inFullScreen = 2,
     };
+
+    pub const CollectionBehavior = struct {
+        pub const canJoinAllSpaces: i64 = 1;
+        pub const moveToActiveSpace: i64 = 2;
+        pub const managed: i64 = 4;
+        pub const transient: i64 = 8;
+        pub const stationary: i64 = 16;
+        pub const participatesInCycle: i64 = 32;
+        pub const ignoresCycle: i64 = 64;
+        pub const fullScreenPrimary: i64 = 128;
+        pub const fullScreenAuxiliary: i64 = 256;
+        pub const fullScreenNone: i64 = 512;
+        pub const fullScreenAllowsTiling: i64 = 2048;
+        pub const fullScreenDisallowsTiling: i64 = 4096;
+        pub const primary: i64 = 65536;
+        pub const auxiliary: i64 = 131072;
+        pub const canJoinAllApplications: i64 = 262144;
+    };
+    pub const NumberListOptions = struct {
+        pub const allApplications: i64 = 1;
+        pub const allSpaces: i64 = 16;
+    };
+    pub const OcclusionState = struct {
+        pub const visible: i64 = 2;
+    };
+    pub const StyleMask = struct {
+        pub const borderless: i64 = 0;
+        pub const titled: i64 = 1;
+        pub const closable: i64 = 2;
+        pub const miniaturizable: i64 = 4;
+        pub const resizable: i64 = 8;
+        pub const utilityWindow: i64 = 16;
+        pub const docModalWindow: i64 = 64;
+        pub const nonactivatingPanel: i64 = 128;
+        pub const texturedBackground: i64 = 256;
+        pub const unifiedTitleAndToolbar: i64 = 4096;
+        pub const hudWindow: i64 = 8192;
+        pub const fullScreen: i64 = 16384;
+        pub const fullSizeContentView: i64 = 32768;
+    };
 };
 
 pub const NSWindowController = struct {
@@ -12738,6 +13265,25 @@ pub const NSWorkspace = struct {
         createSymbolicLink = 0,
         setAttributes = 1,
         replaceFile = 2,
+    };
+
+    pub const IconCreationOptions = struct {
+        pub const excludeQuickDrawElementsIconCreationOption: i64 = 2;
+        pub const exclude10_4ElementsIconCreationOption: i64 = 4;
+    };
+    pub const LaunchOptions = struct {
+        pub const andPrint: i64 = 2;
+        pub const withErrorPresentation: i64 = 64;
+        pub const inhibitingBackgroundOnly: i64 = 128;
+        pub const withoutAddingToRecents: i64 = 256;
+        pub const withoutActivation: i64 = 512;
+        pub const async: i64 = 65536;
+        pub const default: i64 = 65536;
+        pub const allowingClassicStartup: i64 = 131072;
+        pub const preferringClassic: i64 = 262144;
+        pub const newInstance: i64 = 524288;
+        pub const andHide: i64 = 1048576;
+        pub const andHideOthers: i64 = 2097152;
     };
 };
 

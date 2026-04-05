@@ -182,6 +182,80 @@ pub const NSSaveOptions = enum(i64) {
     ask = 2,
 };
 
+pub const AlignmentOptions = struct {
+    pub const alignMinXInward: i64 = 1;
+    pub const alignMinYInward: i64 = 2;
+    pub const alignMaxXInward: i64 = 4;
+    pub const alignMaxYInward: i64 = 8;
+    pub const alignAllEdgesInward: i64 = 15;
+    pub const alignWidthInward: i64 = 16;
+    pub const alignHeightInward: i64 = 32;
+    pub const alignMinXOutward: i64 = 256;
+    pub const alignMinYOutward: i64 = 512;
+    pub const alignMaxXOutward: i64 = 1024;
+    pub const alignMaxYOutward: i64 = 2048;
+    pub const alignAllEdgesOutward: i64 = 3840;
+    pub const alignWidthOutward: i64 = 4096;
+    pub const alignHeightOutward: i64 = 8192;
+    pub const alignMinXNearest: i64 = 65536;
+    pub const alignMinYNearest: i64 = 131072;
+    pub const alignMaxXNearest: i64 = 262144;
+    pub const alignMaxYNearest: i64 = 524288;
+    pub const alignAllEdgesNearest: i64 = 983040;
+    pub const alignWidthNearest: i64 = 1048576;
+    pub const alignHeightNearest: i64 = 2097152;
+    pub const alignRectFlipped: i64 = 9223372036854775808;
+};
+
+pub const NSBinarySearchingOptions = struct {
+    pub const firstEqual: i64 = 256;
+    pub const lastEqual: i64 = 512;
+    pub const insertionIndex: i64 = 1024;
+};
+
+pub const NSEnumerationOptions = struct {
+    pub const concurrent: i64 = 1;
+    pub const reverse: i64 = 2;
+};
+
+pub const NSFileManagerSupportedSyncControls = struct {
+    pub const pauseSync: i64 = 1;
+    pub const failUploadOnConflict: i64 = 2;
+};
+
+pub const InlinePresentationIntent = struct {
+    pub const emphasized: i64 = 1;
+    pub const stronglyEmphasized: i64 = 2;
+    pub const code: i64 = 4;
+    pub const strikethrough: i64 = 32;
+    pub const softBreak: i64 = 64;
+    pub const lineBreak: i64 = 128;
+    pub const inlineHTML: i64 = 256;
+    pub const blockHTML: i64 = 512;
+};
+
+pub const NSItemProviderFileOptions = struct {
+    pub const openInPlace: i64 = 1;
+};
+
+pub const NSKeyValueObservingOptions = struct {
+    pub const new: i64 = 1;
+    pub const old: i64 = 2;
+    pub const initial: i64 = 4;
+    pub const prior: i64 = 8;
+};
+
+pub const NSOrderedCollectionDifferenceCalculationOptions = struct {
+    pub const omitInsertedObjects: i64 = 1;
+    pub const omitRemovedObjects: i64 = 2;
+    pub const inferMoves: i64 = 4;
+};
+
+pub const NSSortOptions = struct {
+    pub const concurrent: i64 = 1;
+    pub const stable: i64 = 16;
+};
+
 pub const NSCacheDelegate = *anyopaque;
 pub const NSCoding = *anyopaque;
 pub const NSCopying = *anyopaque;
@@ -311,6 +385,20 @@ pub const NSAppleEventDescriptor = struct {
         .{ "listDescriptor", NSAppleEventDescriptor, .{} },
         .{ "nullDescriptor", NSAppleEventDescriptor, .{} },
         .{ "recordDescriptor", NSAppleEventDescriptor, .{} },
+    };
+
+    pub const SendOptions = struct {
+        pub const noReply: i64 = 1;
+        pub const queueReply: i64 = 2;
+        pub const waitForReply: i64 = 3;
+        pub const neverInteract: i64 = 16;
+        pub const canInteract: i64 = 32;
+        pub const defaultOptions: i64 = 35;
+        pub const alwaysInteract: i64 = 48;
+        pub const canSwitchLayer: i64 = 64;
+        pub const dontRecord: i64 = 4096;
+        pub const dontExecute: i64 = 8192;
+        pub const dontAnnotate: i64 = 65536;
     };
 };
 
@@ -480,6 +568,11 @@ pub const NSAttributedString = struct {
         .{ "length", objc.NSInteger, .{} },
         .{ "string", objc.NSString, .{} },
     };
+
+    pub const EnumerationOptions = struct {
+        pub const reverse: i64 = 2;
+        pub const longestEffectiveRangeNotRequired: i64 = 1048576;
+    };
 };
 
 pub const NSBackgroundActivityScheduler = struct {
@@ -638,6 +731,19 @@ pub const ByteCountFormatter = struct {
         decimal = 2,
         binary = 3,
     };
+
+    pub const Units = struct {
+        pub const useBytes: i64 = 1;
+        pub const useKB: i64 = 2;
+        pub const useMB: i64 = 4;
+        pub const useGB: i64 = 8;
+        pub const useTB: i64 = 16;
+        pub const usePB: i64 = 32;
+        pub const useEB: i64 = 64;
+        pub const useZB: i64 = 128;
+        pub const useYBOrHigher: i64 = 65280;
+        pub const useAll: i64 = 65535;
+    };
 };
 
 pub const NSCache = struct {
@@ -759,6 +865,54 @@ pub const NSCalendar = struct {
         .{ "autoupdatingCurrentCalendar", NSCalendar, .{} },
         .{ "calendarWithIdentifier:", Object, .{objc.NSString} },
         .{ "currentCalendar", NSCalendar, .{} },
+    };
+
+    pub const Options = struct {
+        pub const wrapComponents: i64 = 1;
+        pub const matchStrictly: i64 = 2;
+        pub const searchBackwards: i64 = 4;
+        pub const matchPreviousTimePreservingSmallerUnits: i64 = 256;
+        pub const matchNextTimePreservingSmallerUnits: i64 = 512;
+        pub const matchNextTime: i64 = 1024;
+        pub const matchFirst: i64 = 4096;
+        pub const matchLast: i64 = 8192;
+    };
+    pub const Unit = struct {
+        pub const era: i64 = 2;
+        pub const NSEraCalendarUnit: i64 = 2;
+        pub const year: i64 = 4;
+        pub const NSYearCalendarUnit: i64 = 4;
+        pub const month: i64 = 8;
+        pub const NSMonthCalendarUnit: i64 = 8;
+        pub const day: i64 = 16;
+        pub const NSDayCalendarUnit: i64 = 16;
+        pub const hour: i64 = 32;
+        pub const NSHourCalendarUnit: i64 = 32;
+        pub const minute: i64 = 64;
+        pub const NSMinuteCalendarUnit: i64 = 64;
+        pub const second: i64 = 128;
+        pub const NSSecondCalendarUnit: i64 = 128;
+        pub const NSWeekCalendarUnit: i64 = 256;
+        pub const weekday: i64 = 512;
+        pub const NSWeekdayCalendarUnit: i64 = 512;
+        pub const weekdayOrdinal: i64 = 1024;
+        pub const NSWeekdayOrdinalCalendarUnit: i64 = 1024;
+        pub const quarter: i64 = 2048;
+        pub const NSQuarterCalendarUnit: i64 = 2048;
+        pub const weekOfMonth: i64 = 4096;
+        pub const NSWeekOfMonthCalendarUnit: i64 = 4096;
+        pub const weekOfYear: i64 = 8192;
+        pub const NSWeekOfYearCalendarUnit: i64 = 8192;
+        pub const yearForWeekOfYear: i64 = 16384;
+        pub const NSYearForWeekOfYearCalendarUnit: i64 = 16384;
+        pub const nanosecond: i64 = 32768;
+        pub const dayOfYear: i64 = 65536;
+        pub const calendar: i64 = 1048576;
+        pub const NSCalendarCalendarUnit: i64 = 1048576;
+        pub const timeZone: i64 = 2097152;
+        pub const NSTimeZoneCalendarUnit: i64 = 2097152;
+        pub const isLeapMonth: i64 = 1073741824;
+        pub const isRepeatedDay: i64 = 2147483648;
     };
 };
 
@@ -967,6 +1121,12 @@ pub const NSComparisonPredicate = struct {
         contains = 99,
         between = 100,
     };
+
+    pub const Options = struct {
+        pub const caseInsensitive: i64 = 1;
+        pub const diacriticInsensitive: i64 = 2;
+        pub const normalized: i64 = 4;
+    };
 };
 
 pub const NSCompoundPredicate = struct {
@@ -1113,6 +1273,38 @@ pub const NSData = struct {
         lz4 = 1,
         lzma = 2,
         zlib = 3,
+    };
+
+    pub const Base64DecodingOptions = struct {
+        pub const ignoreUnknownCharacters: i64 = 1;
+    };
+    pub const Base64EncodingOptions = struct {
+        pub const lineLength64Characters: i64 = 1;
+        pub const lineLength76Characters: i64 = 2;
+        pub const endLineWithCarriageReturn: i64 = 16;
+        pub const endLineWithLineFeed: i64 = 32;
+    };
+    pub const ReadingOptions = struct {
+        pub const mappedIfSafe: i64 = 1;
+        pub const dataReadingMapped: i64 = 1;
+        pub const mappedRead: i64 = 1;
+        pub const uncached: i64 = 2;
+        pub const uncachedRead: i64 = 2;
+        pub const alwaysMapped: i64 = 8;
+    };
+    pub const SearchOptions = struct {
+        pub const backwards: i64 = 1;
+        pub const anchored: i64 = 2;
+    };
+    pub const WritingOptions = struct {
+        pub const atomic: i64 = 1;
+        pub const atomicWrite: i64 = 1;
+        pub const withoutOverwriting: i64 = 2;
+        pub const noFileProtection: i64 = 268435456;
+        pub const completeFileProtection: i64 = 536870912;
+        pub const completeFileProtectionUnlessOpen: i64 = 805306368;
+        pub const completeFileProtectionUntilFirstUserAuthentication: i64 = 1073741824;
+        pub const fileProtectionMask: i64 = 4026531840;
     };
 };
 
@@ -1270,6 +1462,15 @@ pub const DateComponentsFormatter = struct {
         full = 3,
         spellOut = 4,
         brief = 5,
+    };
+
+    pub const ZeroFormattingBehavior = struct {
+        pub const default: i64 = 1;
+        pub const dropLeading: i64 = 2;
+        pub const dropMiddle: i64 = 4;
+        pub const dropTrailing: i64 = 8;
+        pub const dropAll: i64 = 14;
+        pub const pad: i64 = 65536;
     };
 };
 
@@ -1658,6 +1859,11 @@ pub const DistributedNotificationCenter = struct {
         hold = 3,
         deliverImmediately = 4,
     };
+
+    pub const Options = struct {
+        pub const deliverImmediately: i64 = 1;
+        pub const postToAllSessions: i64 = 2;
+    };
 };
 
 pub const EnergyFormatter = struct {
@@ -1886,6 +2092,20 @@ pub const NSFileCoordinator = struct {
         .{ "filePresenters", Object, .{} },
         .{ "removeFilePresenter:", void, .{NSFilePresenter} },
     };
+
+    pub const ReadingOptions = struct {
+        pub const withoutChanges: i64 = 1;
+        pub const resolvesSymbolicLink: i64 = 2;
+        pub const immediatelyAvailableMetadataOnly: i64 = 4;
+        pub const forUploading: i64 = 8;
+    };
+    pub const WritingOptions = struct {
+        pub const forDeleting: i64 = 1;
+        pub const forMoving: i64 = 2;
+        pub const forMerging: i64 = 4;
+        pub const forReplacing: i64 = 8;
+        pub const contentIndependentMetadataOnly: i64 = 16;
+    };
 };
 
 pub const FileHandle = struct {
@@ -2051,6 +2271,33 @@ pub const FileManager = struct {
         same = 1,
         other = 2,
     };
+
+    pub const DirectoryEnumerationOptions = struct {
+        pub const skipsSubdirectoryDescendants: i64 = 1;
+        pub const skipsPackageDescendants: i64 = 2;
+        pub const skipsHiddenFiles: i64 = 4;
+        pub const includesDirectoriesPostOrder: i64 = 8;
+        pub const producesRelativePathURLs: i64 = 16;
+    };
+    pub const ItemReplacementOptions = struct {
+        pub const usingNewMetadataOnly: i64 = 1;
+        pub const withoutDeletingBackupItem: i64 = 2;
+    };
+    pub const SearchPathDomainMask = struct {
+        pub const userDomainMask: i64 = 1;
+        pub const localDomainMask: i64 = 2;
+        pub const networkDomainMask: i64 = 4;
+        pub const systemDomainMask: i64 = 8;
+        pub const allDomainsMask: i64 = 65535;
+    };
+    pub const UnmountOptions = struct {
+        pub const allPartitionsAndEjectDisk: i64 = 1;
+        pub const withoutUI: i64 = 2;
+    };
+    pub const VolumeEnumerationOptions = struct {
+        pub const skipHiddenVolumes: i64 = 2;
+        pub const produceFileReferenceURLs: i64 = 4;
+    };
 };
 
 pub const NSFileProviderService = struct {
@@ -2110,6 +2357,13 @@ pub const NSFileVersion = struct {
         .{ "unresolvedConflictVersionsOfItemAtURL:", ?*anyopaque, .{NSURL} },
         .{ "versionOfItemAtURL:forPersistentIdentifier:", ?NSFileVersion, .{ NSURL, Any } },
     };
+
+    pub const AddingOptions = struct {
+        pub const byMoving: i64 = 1;
+    };
+    pub const ReplacingOptions = struct {
+        pub const byMoving: i64 = 1;
+    };
 };
 
 pub const FileWrapper = struct {
@@ -2153,6 +2407,15 @@ pub const FileWrapper = struct {
         .{ "updateFromPath:", objc.BOOL, .{objc.NSString} },
         .{ "writeToFile:atomically:updateFilenames:", objc.BOOL, .{ objc.NSString, objc.BOOL, objc.BOOL } },
         .{ "writeToURL:options:originalContentsURL:error:", void, .{ NSURL, objc.NSInteger, ?NSURL } },
+    };
+
+    pub const ReadingOptions = struct {
+        pub const immediate: i64 = 1;
+        pub const withoutMapping: i64 = 2;
+    };
+    pub const WritingOptions = struct {
+        pub const atomic: i64 = 1;
+        pub const withNameUpdating: i64 = 2;
     };
 };
 
@@ -2343,6 +2606,23 @@ pub const ISO8601DateFormatter = struct {
     pub const class_methods = .{
         .{ "stringFromDate:timeZone:formatOptions:", objc.NSString, .{ NSDate, NSTimeZone, objc.NSInteger } },
     };
+
+    pub const Options = struct {
+        pub const withYear: i64 = 1;
+        pub const withMonth: i64 = 2;
+        pub const withWeekOfYear: i64 = 4;
+        pub const withDay: i64 = 16;
+        pub const withTime: i64 = 32;
+        pub const withTimeZone: i64 = 64;
+        pub const withSpaceBetweenDateAndTime: i64 = 128;
+        pub const withDashSeparatorInDate: i64 = 256;
+        pub const withFullDate: i64 = 275;
+        pub const withColonSeparatorInTime: i64 = 512;
+        pub const withColonSeparatorInTimeZone: i64 = 1024;
+        pub const withFullTime: i64 = 1632;
+        pub const withInternetDateTime: i64 = 1907;
+        pub const withFractionalSeconds: i64 = 2048;
+    };
 };
 
 pub const NSIndexPath = struct {
@@ -2485,6 +2765,21 @@ pub const JSONSerialization = struct {
         .{ "dataWithJSONObject:options:error:", NSData, .{ Any, objc.NSInteger } },
         .{ "isValidJSONObject:", objc.BOOL, .{Any} },
         .{ "writeJSONObject:toStream:options:error:", objc.NSInteger, .{ Any, OutputStream, objc.NSInteger, Object } },
+    };
+
+    pub const ReadingOptions = struct {
+        pub const mutableContainers: i64 = 1;
+        pub const mutableLeaves: i64 = 2;
+        pub const fragmentsAllowed: i64 = 4;
+        pub const allowFragments: i64 = 4;
+        pub const json5Allowed: i64 = 8;
+        pub const topLevelDictionaryAssumed: i64 = 16;
+    };
+    pub const WritingOptions = struct {
+        pub const prettyPrinted: i64 = 1;
+        pub const sortedKeys: i64 = 2;
+        pub const fragmentsAllowed: i64 = 4;
+        pub const withoutEscapingSlashes: i64 = 8;
     };
 };
 
@@ -2645,6 +2940,14 @@ pub const NSLinguisticTagger = struct {
         .{ "tagForString:atIndex:unit:scheme:orthography:tokenRange:", objc.NSString, .{ objc.NSString, objc.NSInteger, NSLinguisticTaggerUnit, objc.NSString, ?NSOrthography, NSRange } },
         .{ "tagsForString:range:unit:scheme:options:orthography:tokenRanges:", Object, .{ objc.NSString, NSRange, NSLinguisticTaggerUnit, objc.NSString, objc.NSInteger, ?NSOrthography, ?NSArray } },
     };
+
+    pub const Options = struct {
+        pub const omitWords: i64 = 1;
+        pub const omitPunctuation: i64 = 2;
+        pub const omitWhitespace: i64 = 4;
+        pub const omitOther: i64 = 8;
+        pub const joinNames: i64 = 16;
+    };
 };
 
 pub const ListFormatter = struct {
@@ -2788,6 +3091,11 @@ pub const NSMachPort = struct {
         .{ "portWithMachPort:", Port, .{u32} },
         .{ "portWithMachPort:options:", Port, .{ u32, objc.NSInteger } },
     };
+
+    pub const Options = struct {
+        pub const deallocateSendRight: i64 = 1;
+        pub const deallocateReceiveRight: i64 = 2;
+    };
 };
 
 pub const NSMapTable = struct {
@@ -2885,6 +3193,12 @@ pub const MeasurementFormatter = struct {
         .{ "stringFromUnit:", objc.NSString, .{Unit} },
         .{ "unitOptions", objc.NSInteger, .{} },
         .{ "unitStyle", Formatter.UnitStyle, .{} },
+    };
+
+    pub const UnitOptions = struct {
+        pub const providedUnit: i64 = 1;
+        pub const naturalScale: i64 = 2;
+        pub const temperatureWithoutUnit: i64 = 4;
     };
 };
 
@@ -3362,6 +3676,11 @@ pub const NetService = struct {
         collisionError = -72001,
         unknownError = -72000,
     };
+
+    pub const Options = struct {
+        pub const noAutoRename: i64 = 1;
+        pub const listenForConnections: i64 = 2;
+    };
 };
 
 pub const NetServiceBrowser = struct {
@@ -3445,6 +3764,12 @@ pub const NotificationQueue = struct {
         whenIdle = 1,
         asap = 2,
         now = 3,
+    };
+
+    pub const NotificationCoalescing = struct {
+        pub const none: i64 = 0;
+        pub const onName: i64 = 1;
+        pub const onSender: i64 = 2;
     };
 };
 
@@ -3950,6 +4275,10 @@ pub const PersonNameComponentsFormatter = struct {
         long = 3,
         abbreviated = 4,
     };
+
+    pub const Options = struct {
+        pub const phonetic: i64 = 2;
+    };
 };
 
 pub const Pipe = struct {
@@ -4015,6 +4344,21 @@ pub const NSPointerFunctions = struct {
         .{ "sizeFunction", objc.NSInteger, .{} },
         .{ "usesStrongWriteBarrier", objc.BOOL, .{} },
         .{ "usesWeakReadAndWriteBarriers", objc.BOOL, .{} },
+    };
+
+    pub const Options = struct {
+        pub const strongMemory: i64 = 0;
+        pub const objectPersonality: i64 = 0;
+        pub const opaqueMemory: i64 = 2;
+        pub const mallocMemory: i64 = 3;
+        pub const machVirtualMemory: i64 = 4;
+        pub const weakMemory: i64 = 5;
+        pub const opaquePersonality: i64 = 256;
+        pub const objectPointerPersonality: i64 = 512;
+        pub const cStringPersonality: i64 = 768;
+        pub const structPersonality: i64 = 1024;
+        pub const integerPersonality: i64 = 1280;
+        pub const copyIn: i64 = 65536;
     };
 };
 
@@ -4155,6 +4499,20 @@ pub const ProcessInfo = struct {
         serious = 2,
         critical = 3,
     };
+
+    pub const ActivityOptions = struct {
+        pub const background: i64 = 255;
+        pub const suddenTerminationDisabled: i64 = 16384;
+        pub const automaticTerminationDisabled: i64 = 32768;
+        pub const idleSystemSleepDisabled: i64 = 1048576;
+        pub const userInitiatedAllowingIdleSystemSleep: i64 = 15728639;
+        pub const userInitiated: i64 = 16777215;
+        pub const latencyCritical: i64 = 1095216660480;
+        pub const userInteractive: i64 = 1095233437695;
+        pub const idleDisplaySleepDisabled: i64 = 1099511627776;
+        pub const animationTrackingEnabled: i64 = 35184372088832;
+        pub const trackingEnabled: i64 = 70368744177664;
+    };
 };
 
 pub const Progress = struct {
@@ -4232,6 +4590,11 @@ pub const PropertyListSerialization = struct {
         openStep = 1,
         xml = 100,
         binary = 200,
+    };
+
+    pub const MutabilityOptions = struct {
+        pub const mutableContainers: i64 = 1;
+        pub const mutableContainersAndLeaves: i64 = 2;
     };
 };
 
@@ -4336,6 +4699,30 @@ pub const NSRegularExpression = struct {
     pub const class_methods = .{
         .{ "escapedPatternForString:", objc.NSString, .{objc.NSString} },
         .{ "escapedTemplateForString:", objc.NSString, .{objc.NSString} },
+    };
+
+    pub const MatchingFlags = struct {
+        pub const progress: i64 = 1;
+        pub const completed: i64 = 2;
+        pub const hitEnd: i64 = 4;
+        pub const requiredEnd: i64 = 8;
+        pub const internalError: i64 = 16;
+    };
+    pub const MatchingOptions = struct {
+        pub const reportProgress: i64 = 1;
+        pub const reportCompletion: i64 = 2;
+        pub const anchored: i64 = 4;
+        pub const withTransparentBounds: i64 = 8;
+        pub const withoutAnchoringBounds: i64 = 16;
+    };
+    pub const Options = struct {
+        pub const caseInsensitive: i64 = 1;
+        pub const allowCommentsAndWhitespace: i64 = 2;
+        pub const ignoreMetacharacters: i64 = 4;
+        pub const dotMatchesLineSeparators: i64 = 8;
+        pub const anchorsMatchLines: i64 = 16;
+        pub const useUnixLineSeparators: i64 = 32;
+        pub const useUnicodeWordBoundaries: i64 = 64;
     };
 };
 
@@ -4858,6 +5245,14 @@ pub const Stream = struct {
         closed = 6,
         @"error" = 7,
     };
+
+    pub const Event = struct {
+        pub const openCompleted: i64 = 1;
+        pub const hasBytesAvailable: i64 = 2;
+        pub const hasSpaceAvailable: i64 = 4;
+        pub const errorOccurred: i64 = 8;
+        pub const endEncountered: i64 = 16;
+    };
 };
 
 pub const NSString = struct {
@@ -5004,6 +5399,34 @@ pub const NSString = struct {
         .{ "stringWithContentsOfURL:usedEncoding:error:", Object, .{ NSURL, c_ulong } },
         .{ "stringWithUTF8String:", Object, .{?*anyopaque} },
     };
+
+    pub const CompareOptions = struct {
+        pub const caseInsensitive: i64 = 1;
+        pub const literal: i64 = 2;
+        pub const backwards: i64 = 4;
+        pub const anchored: i64 = 8;
+        pub const numeric: i64 = 64;
+        pub const diacriticInsensitive: i64 = 128;
+        pub const widthInsensitive: i64 = 256;
+        pub const forcedOrdering: i64 = 512;
+        pub const regularExpression: i64 = 1024;
+    };
+    pub const EncodingConversionOptions = struct {
+        pub const allowLossy: i64 = 1;
+        pub const externalRepresentation: i64 = 2;
+    };
+    pub const EnumerationOptions = struct {
+        pub const byLines: i64 = 0;
+        pub const byParagraphs: i64 = 1;
+        pub const byComposedCharacterSequences: i64 = 2;
+        pub const byWords: i64 = 3;
+        pub const bySentences: i64 = 4;
+        pub const byCaretPositions: i64 = 5;
+        pub const byDeletionClusters: i64 = 6;
+        pub const reverse: i64 = 256;
+        pub const substringNotRequired: i64 = 512;
+        pub const localized: i64 = 1024;
+    };
 };
 
 pub const Process = struct {
@@ -5104,6 +5527,22 @@ pub const NSTextCheckingResult = struct {
         .{ "replacementCheckingResultWithRange:replacementString:", NSTextCheckingResult, .{ NSRange, objc.NSString } },
         .{ "spellCheckingResultWithRange:", NSTextCheckingResult, .{NSRange} },
         .{ "transitInformationCheckingResultWithRange:components:", NSTextCheckingResult, .{ NSRange, Object } },
+    };
+
+    pub const CheckingType = struct {
+        pub const orthography: i64 = 1;
+        pub const spelling: i64 = 2;
+        pub const grammar: i64 = 4;
+        pub const date: i64 = 8;
+        pub const address: i64 = 16;
+        pub const link: i64 = 32;
+        pub const quote: i64 = 64;
+        pub const dash: i64 = 128;
+        pub const replacement: i64 = 256;
+        pub const correction: i64 = 512;
+        pub const regularExpression: i64 = 1024;
+        pub const phoneNumber: i64 = 2048;
+        pub const transitInformation: i64 = 4096;
     };
 };
 
@@ -5313,6 +5752,20 @@ pub const NSURL = struct {
         .{ "fileURLWithPathComponents:", ?NSURL, .{Object} },
         .{ "resourceValuesForKeys:fromBookmarkData:", ?*anyopaque, .{ Object, NSData } },
         .{ "writeBookmarkData:toURL:options:error:", void, .{ NSData, NSURL, objc.NSInteger } },
+    };
+
+    pub const BookmarkCreationOptions = struct {
+        pub const minimalBookmark: i64 = 512;
+        pub const suitableForBookmarkFile: i64 = 1024;
+        pub const withSecurityScope: i64 = 2048;
+        pub const securityScopeAllowOnlyReadAccess: i64 = 4096;
+        pub const withoutImplicitSecurityScope: i64 = 536870912;
+    };
+    pub const BookmarkResolutionOptions = struct {
+        pub const withoutUI: i64 = 256;
+        pub const withoutMounting: i64 = 512;
+        pub const withSecurityScope: i64 = 1024;
+        pub const withoutImplicitStartAccessing: i64 = 32768;
     };
 };
 
@@ -7118,6 +7571,36 @@ pub const XMLNode = struct {
         elementDeclaration = 11,
         notationDeclaration = 12,
     };
+
+    pub const Options = struct {
+        pub const nodeIsCDATA: i64 = 1;
+        pub const nodeExpandEmptyElement: i64 = 2;
+        pub const nodeCompactEmptyElement: i64 = 4;
+        pub const nodePreserveEmptyElements: i64 = 6;
+        pub const nodeUseSingleQuotes: i64 = 8;
+        pub const nodeUseDoubleQuotes: i64 = 16;
+        pub const nodePreserveQuotes: i64 = 24;
+        pub const nodeNeverEscapeContents: i64 = 32;
+        pub const documentTidyHTML: i64 = 512;
+        pub const documentTidyXML: i64 = 1024;
+        pub const documentValidate: i64 = 8192;
+        pub const nodeLoadExternalEntitiesAlways: i64 = 16384;
+        pub const nodeLoadExternalEntitiesSameOriginOnly: i64 = 32768;
+        pub const documentXInclude: i64 = 65536;
+        pub const nodePrettyPrint: i64 = 131072;
+        pub const documentIncludeContentTypeDeclaration: i64 = 262144;
+        pub const nodeLoadExternalEntitiesNever: i64 = 524288;
+        pub const nodePreserveNamespaceOrder: i64 = 1048576;
+        pub const nodePreserveAttributeOrder: i64 = 2097152;
+        pub const nodePreserveEntities: i64 = 4194304;
+        pub const nodePreservePrefixes: i64 = 8388608;
+        pub const nodePreserveCDATA: i64 = 16777216;
+        pub const nodePreserveWhitespace: i64 = 33554432;
+        pub const nodePreserveDTD: i64 = 67108864;
+        pub const nodePreserveCharacterReferences: i64 = 134217728;
+        pub const nodePromoteSignificantWhitespace: i64 = 268435456;
+        pub const nodePreserveAll: i64 = 4293918750;
+    };
 };
 
 pub const XMLParser = struct {
@@ -7309,6 +7792,10 @@ pub const NSXPCConnection = struct {
 
     pub const class_methods = .{
         .{ "currentConnection", ?NSXPCConnection, .{} },
+    };
+
+    pub const Options = struct {
+        pub const privileged: i64 = 4096;
     };
 };
 

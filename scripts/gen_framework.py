@@ -286,6 +286,116 @@ def _build_enum_map(graphs):
     return enums
 
 
+def _build_options_map(graphs):
+    """Extract NS_OPTIONS definitions with their flag values.
+
+    NS_OPTIONS are imported as Swift structs (OptionSet) with c:@E@ prefix.
+    Their members are type properties (swift.type.property).
+
+    Returns {c_name: {
+        "owner_class": ObjC class name or None,
+        "owner_module": module name,
+        "swift_name": last pathComponent,
+        "flags": [(flag_name, raw_value), ...],
+    }}
+    """
+    members = {}
+    for sg in graphs.values():
+        for r in sg["relationships"]:
+            if r["kind"] == "memberOf":
+                members.setdefault(r["source"], []).append(r["target"])
+
+    options = {}
+    option_module = {}
+
+    for mod, sg in graphs.items():
+        for sym in sg["symbols"]:
+            kind = sym["kind"]["identifier"]
+            precise = sym["identifier"]["precise"]
+
+            # NS_OPTIONS appear as swift.struct with c:@E@ prefix
+            if kind == "swift.struct" and precise.startswith("c:@E@"):
+                c_name = precise[5:]
+                path = sym.get("pathComponents", [])
+                # Check it's an OptionSet (has SetAlgebra conformance in members)
+                # Heuristic: if it's a struct under c:@E@, it's NS_OPTIONS
+                parents = members.get(precise, [])
+                class_parent = None
+                for p in parents:
+                    if p.startswith("c:objc(cs)"):
+                        m = re.match(r'c:objc\(cs\)(\w+)', p)
+                        if m:
+                            class_parent = m.group(1)
+                            break
+
+                swift_name = path[-1] if path else c_name
+                options[c_name] = {
+                    "owner_class": class_parent,
+                    "owner_module": mod,
+                    "swift_name": swift_name,
+                    "swift_path": ".".join(path),
+                    "flags": [],
+                }
+                option_module[c_name] = mod
+
+            elif kind == "swift.type.property" and precise.startswith("c:@E@"):
+                # e.g. c:@E@NSWindowStyleMask@NSWindowStyleMaskTitled
+                parts = precise.split("@")
+                if len(parts) >= 4 and parts[1] == "E":
+                    c_name = parts[2]
+                    flag_name = sym.get("pathComponents", [])[-1] if sym.get("pathComponents") else ""
+                    if c_name in options and flag_name:
+                        options[c_name]["flags"].append(flag_name)
+
+    # Generate Swift code to extract raw values
+    modules_needed = set()
+    for info in options.values():
+        if info["flags"]:
+            modules_needed.add(info["owner_module"])
+
+    swift_lines = [f"import {m}" for m in sorted(modules_needed)]
+    for c_name, info in sorted(options.items()):
+        for flag_name in info["flags"]:
+            swift_lines.append(
+                f'print("{c_name}.{flag_name}=\\({info["swift_path"]}.{flag_name}.rawValue)")'
+            )
+
+    swift_code = "\n".join(swift_lines)
+    if not modules_needed:
+        return options
+
+    try:
+        result = subprocess.run(
+            ["swift", "-sdk", SDK, "-"],
+            input=swift_code, capture_output=True, text=True, timeout=120,
+        )
+        if result.returncode != 0:
+            print(f"  Warning: Swift options extraction failed: {result.stderr[:200]}", file=sys.stderr)
+            return options
+
+        raw_values = {}
+        for line in result.stdout.strip().split("\n"):
+            if "=" in line:
+                key, val = line.split("=", 1)
+                raw_values[key] = int(val)
+
+        for c_name, info in options.items():
+            valued_flags = []
+            for flag_name in info["flags"]:
+                key = f"{c_name}.{flag_name}"
+                if key in raw_values:
+                    valued_flags.append((flag_name, raw_values[key]))
+            info["flags"] = valued_flags
+
+        total_flags = sum(len(info["flags"]) for info in options.values())
+        print(f"  Extracted {total_flags} option flag values from {len(options)} option sets", file=sys.stderr)
+
+    except (subprocess.TimeoutExpired, FileNotFoundError) as e:
+        print(f"  Warning: Swift options extraction failed: {e}", file=sys.stderr)
+
+    return options
+
+
 def extract_symbolgraph(module_name):
     """Run swift-symbolgraph-extract and return parsed JSON."""
     SG_CACHE.mkdir(parents=True, exist_ok=True)
@@ -531,6 +641,9 @@ def parse_all_modules(module_names):
     # Build enum map (extract all NS_ENUM definitions and raw values)
     enum_map = _build_enum_map(graphs)
 
+    # Build options map (extract all NS_OPTIONS definitions and flag values)
+    options_map = _build_options_map(graphs)
+
     # Build ObjC name → Swift name lookup from global_classes
     objc_to_swift = {}
     for _, (_, objc_name, swift_name) in global_classes.items():
@@ -654,7 +767,7 @@ def parse_all_modules(module_names):
                                        typedef_map, enum_type_maps[mod], class_type_maps[mod],
                                        proto_type_maps[mod])
 
-    return results, enum_map, proto_type_maps
+    return results, enum_map, options_map, proto_type_maps
 
 
 def process_module(module_name, sg, global_classes, global_inherits, typedef_map, enum_type_map, class_type_map, proto_type_map=None):
@@ -808,7 +921,7 @@ def _parse_property(sym, is_class_prop, typedef_map=None, enum_type_map=None, cl
             "is_class": is_class_prop}
 
 
-def generate_zig(module_name, classes, all_results, enum_map, proto_type_map):
+def generate_zig(module_name, classes, all_results, enum_map, options_map, proto_type_map):
     """Generate Zig source for a module."""
     out = []
     out.append(f"//! {module_name} bindings for Zig — AUTO-GENERATED from Swift symbol graph")
@@ -878,6 +991,17 @@ def generate_zig(module_name, classes, all_results, enum_map, proto_type_map):
         out.append(_gen_enum_decl(enum_name, info["cases"]))
         out.append("")
 
+    # Standalone options (NS_OPTIONS — not owned by any class)
+    for c_name, info in sorted(options_map.items()):
+        if info["owner_module"] != module_name:
+            continue
+        if info["owner_class"] is not None:
+            continue  # will be emitted inside the class
+        if not info["flags"]:
+            continue
+        out.append(_gen_options_decl(info["swift_name"], info["flags"]))
+        out.append("")
+
     # Protocol type aliases (protocols are opaque pointers at the ABI level)
     # Skip protocols that share a name with a generated class struct.
     class_names = set()
@@ -900,12 +1024,19 @@ def generate_zig(module_name, classes, all_results, enum_map, proto_type_map):
         if info["owner_module"] == module_name and info["owner_class"] and info["cases"]:
             class_enums[info["owner_class"]].append(info)
 
+    # Build index of class-owned options for this module
+    class_options = defaultdict(list)
+    for c_name, info in options_map.items():
+        if info["owner_module"] == module_name and info["owner_class"] and info["flags"]:
+            class_options[info["owner_class"]].append(info)
+
     # All classes that have methods
     generated_classes = set()
     for objc_name in sorted(classes):
         cls = classes[objc_name]
         code = _gen_class(objc_name, cls, classes, all_results, module_name,
-                          class_enums.get(objc_name, []))
+                          class_enums.get(objc_name, []),
+                          class_options.get(objc_name, []))
         if code:
             out.append(code)
             out.append("")
@@ -1046,7 +1177,18 @@ def _gen_enum_decl(swift_name, cases, indent=""):
     return "\n".join(lines)
 
 
-def _gen_class(objc_name, cls, module_classes, all_results, module_name, class_enums=None):
+def _gen_options_decl(swift_name, flags, indent=""):
+    """Generate a Zig struct with named integer constants for NS_OPTIONS bitmask flags."""
+    zig_name = f'@"{swift_name}"' if swift_name in ZIG_KEYWORDS else swift_name
+    lines = [f"{indent}pub const {zig_name} = struct {{"]
+    for flag_name, value in sorted(flags, key=lambda f: f[1]):
+        fn = f'@"{flag_name}"' if flag_name in ZIG_KEYWORDS else flag_name
+        lines.append(f"{indent}    pub const {fn}: i64 = {value};")
+    lines.append(f"{indent}}};")
+    return "\n".join(lines)
+
+
+def _gen_class(objc_name, cls, module_classes, all_results, module_name, class_enums=None, class_options=None):
     """Generate one class struct."""
     swift_name = cls["swift_name"]
     method_entries = []
@@ -1143,6 +1285,12 @@ def _gen_class(objc_name, cls, module_classes, all_results, module_name, class_e
         lines.append("")
         for info in sorted(class_enums, key=lambda e: e["swift_name"]):
             lines.append(_gen_enum_decl(info["swift_name"], info["cases"], indent="    "))
+
+    # Class-owned options (NS_OPTIONS)
+    if class_options:
+        lines.append("")
+        for info in sorted(class_options, key=lambda e: e["swift_name"]):
+            lines.append(_gen_options_decl(info["swift_name"], info["flags"], indent="    "))
 
     lines.append("};")
     return "\n".join(lines)
@@ -1260,11 +1408,11 @@ def main():
     targets = sys.argv[1:] if len(sys.argv) > 1 else ["AppKit", "Accessibility", "WebKit"]
     print("Generating Zig bindings from Swift symbol graphs...", file=sys.stderr)
 
-    all_results, enum_map, proto_type_maps = parse_all_modules(targets)
+    all_results, enum_map, options_map, proto_type_maps = parse_all_modules(targets)
 
     out_paths = []
     for mod, classes in sorted(all_results.items()):
-        output = generate_zig(mod, classes, all_results, enum_map, proto_type_maps.get(mod, {}))
+        output = generate_zig(mod, classes, all_results, enum_map, options_map, proto_type_maps.get(mod, {}))
         output = post_process(mod, output)
         out_path = PROJECT_DIR / "src" / f"{mod}.zig"
         out_path.write_text(output)

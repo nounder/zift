@@ -171,6 +171,31 @@ pub const WebViewInsertAction = enum(i64) {
     dropped = 2,
 };
 
+pub const WKAudiovisualMediaTypes = struct {
+    pub const audio: i64 = 1;
+    pub const video: i64 = 2;
+    pub const all: i64 = 18446744073709551615;
+};
+
+pub const WKWebViewDataType = struct {
+    pub const sessionStorage: i64 = 1;
+};
+
+pub const WebDragDestinationAction = struct {
+    pub const DHTML: i64 = 1;
+    pub const edit: i64 = 2;
+    pub const load: i64 = 4;
+    pub const any: i64 = 4294967295;
+};
+
+pub const WebDragSourceAction = struct {
+    pub const DHTML: i64 = 1;
+    pub const image: i64 = 2;
+    pub const link: i64 = 4;
+    pub const selection: i64 = 8;
+    pub const any: i64 = 4294967295;
+};
+
 pub const DOMEventListener = *anyopaque;
 pub const DOMEventTarget = *anyopaque;
 pub const DOMNodeFilter = *anyopaque;
@@ -3126,6 +3151,18 @@ pub const WKWebExtension = struct {
         normal = 0,
         popup = 1,
     };
+
+    pub const TabChangedProperties = struct {
+        pub const loading: i64 = 2;
+        pub const muted: i64 = 4;
+        pub const pinned: i64 = 8;
+        pub const playingAudio: i64 = 16;
+        pub const readerMode: i64 = 32;
+        pub const size: i64 = 64;
+        pub const title: i64 = 128;
+        pub const URL: i64 = 256;
+        pub const zoomFactor: i64 = 512;
+    };
 };
 
 pub const WKWebExtensionAction = struct {
@@ -3364,6 +3401,12 @@ pub const WKWebExtensionMatchPattern = struct {
         .{ "allHostsAndSchemesMatchPattern", ?*anyopaque, .{} },
         .{ "allURLsMatchPattern", ?*anyopaque, .{} },
         .{ "registerCustomURLScheme:", void, .{objc.NSString} },
+    };
+
+    pub const Options = struct {
+        pub const ignoreSchemes: i64 = 1;
+        pub const ignorePaths: i64 = 2;
+        pub const matchBidirectionally: i64 = 4;
     };
 };
 

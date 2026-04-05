@@ -274,10 +274,11 @@ fn toolbarDefaultIdentifiers(_: Object, _: objc.Sel, _: Object) callconv(cc) Obj
 // ── UI construction ────────────────────────────────────────────────────
 
 fn buildUI() void {
+    const style = AppKit.NSWindow.StyleMask;
     main_window = AppKit.NSWindow.static("alloc", .{}).send("initWithContentRect:styleMask:backing:defer:", .{
         AppKit.NSRect.make(200, 200, 560, 680),
-        (1 << 0) | (1 << 1) | (1 << 2) | (1 << 3), // titled|closable|miniaturizable|resizable
-        2, // buffered
+        style.titled | style.closable | style.miniaturizable | style.resizable,
+        AppKit.NSWindow.BackingStoreType.buffered,
         false,
     });
     main_window.send("setTitle:", .{"Todoz"});
