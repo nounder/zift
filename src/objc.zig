@@ -564,6 +564,9 @@ fn coerceArgs(comptime Expected: type, args: anytype) Expected {
         } else if (@typeInfo(ValType) == .comptime_int) {
             // Comptime int → target integer type
             @field(result, field.name) = val;
+        } else if (@typeInfo(ValType) == .int and @typeInfo(ExpType) == .int) {
+            // int → int (e.g. u64 → i64)
+            @field(result, field.name) = @intCast(val);
         } else if (@typeInfo(ValType) == .comptime_float) {
             // Comptime float → target float type
             @field(result, field.name) = val;
