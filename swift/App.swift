@@ -1,9 +1,71 @@
 import SwiftUI
 
+// ── Model ──────────────────────────────────────────────────────────────
+
+struct TodoItem: Identifiable, Equatable {
+    let id: UInt64
+    var title: String
+    var completed: Bool
+}
+
+// ── Store ──────────────────────────────────────────────────────────────
+
+@Observable
+class TodoStore {
+    var todos: [TodoItem] = []
+    var completedCount: Int { todos.filter(\.completed).count }
+    var pendingCount: Int { todos.filter { !$0.completed }.count }
+
+    private var nextId: UInt64 = 1
+
+    func addTodo(title: String) {
+        guard !title.isEmpty else { return }
+        let id = nextId
+        nextId += 1
+        todos.append(TodoItem(id: id, title: title, completed: false))
+    }
+
+    func removeTodo(id: UInt64) {
+        todos.removeAll { $0.id == id }
+    }
+
+    func toggleTodo(id: UInt64) {
+        guard let idx = todos.firstIndex(where: { $0.id == id }) else { return }
+        todos[idx].completed.toggle()
+    }
+
+    func updateTitle(id: UInt64, title: String) {
+        guard !title.isEmpty,
+              let idx = todos.firstIndex(where: { $0.id == id }) else { return }
+        todos[idx].title = title
+    }
+
+    func clearCompleted() {
+        todos.removeAll { $0.completed }
+    }
+}
+
+// ── App ────────────────────────────────────────────────────────────────
+
+@main
+struct TodozApp: App {
+    @State private var store = TodoStore()
+
+    var body: some Scene {
+        WindowGroup {
+            ContentView()
+                .environment(store)
+                .frame(minWidth: 500, minHeight: 560)
+        }
+        .defaultSize(width: 560, height: 680)
+    }
+}
+
+// ── Content View ───────────────────────────────────────────────────────
+
 struct ContentView: View {
     @Environment(TodoStore.self) var store
     @State private var newTitle = ""
-    @State private var newPriority: TodoItem.Priority = .medium
     @State private var filter: Filter = .all
 
     enum Filter: String, CaseIterable, Identifiable {
@@ -29,21 +91,11 @@ struct ContentView: View {
                 todoList
                     .frame(maxHeight: .infinity)
             }
-            .navigationTitle("Zift")
+            .navigationTitle("Todoz")
             .navigationSubtitle("\(store.pendingCount) pending · \(store.completedCount) done")
             .toolbar {
-                ToolbarItemGroup(placement: .primaryAction) {
+                ToolbarItem(placement: .principal) {
                     filterPicker
-                    addButton
-                }
-
-                ToolbarItem(placement: .automatic) {
-                    if store.completedCount > 0 {
-                        Button("Clear Completed", systemImage: "trash") {
-                            withAnimation { store.clearCompleted() }
-                        }
-                        .tint(.red)
-                    }
                 }
             }
         }
@@ -57,24 +109,9 @@ struct ContentView: View {
                 .textFieldStyle(.roundedBorder)
                 .font(.body)
                 .onSubmit(addTodo)
-
-            Picker("Priority", selection: $newPriority) {
-                ForEach(TodoItem.Priority.allCases) { p in
-                    Text(p.label).tag(p)
-                }
-            }
-            .pickerStyle(.segmented)
-            .labelsHidden()
-            .frame(width: 180)
         }
         .padding(.horizontal)
         .padding(.vertical, 10)
-    }
-
-    private var addButton: some View {
-        Button("Add", systemImage: "plus.circle.fill") { addTodo() }
-            .disabled(newTitle.trimmingCharacters(in: .whitespaces).isEmpty)
-            .tint(.blue)
     }
 
     private var filterPicker: some View {
@@ -103,28 +140,20 @@ struct ContentView: View {
                          : "Try changing the filter.")
                 }
             } else {
-                List {
-                    ForEach(filteredTodos) { todo in
-                        TodoRowView(todo: todo)
+                ScrollView {
+                    LazyVStack(spacing: 0) {
+                        ForEach(Array(filteredTodos.enumerated()), id: \.element.id) { index, todo in
+                            TodoRowView(todo: todo)
+                                .padding(.horizontal, 16)
+                                .padding(.vertical, 10)
+                                .background(index % 2 == 0
+                                    ? Color.gray.opacity(0.08)
+                                    : Color.gray.opacity(0.16))
+                        }
                     }
-                    .onDelete(perform: deleteTodos)
                 }
-                .listStyle(.inset(alternatesRowBackgrounds: true))
             }
         }
-    }
-
-    // MARK: - Footer
-
-    private var footerView: some View {
-        HStack {
-            Text("\(store.todos.count) item\(store.todos.count == 1 ? "" : "s")")
-                .font(.caption)
-                .foregroundStyle(.secondary)
-            Spacer()
-        }
-        .padding(.horizontal)
-        .padding(.vertical, 8)
     }
 
     // MARK: - Actions
@@ -133,20 +162,13 @@ struct ContentView: View {
         let trimmed = newTitle.trimmingCharacters(in: .whitespaces)
         guard !trimmed.isEmpty else { return }
         withAnimation {
-            store.addTodo(title: trimmed, priority: newPriority)
+            store.addTodo(title: trimmed)
         }
         newTitle = ""
     }
-
-    private func deleteTodos(at offsets: IndexSet) {
-        let todos = filteredTodos
-        for index in offsets {
-            store.removeTodo(id: todos[index].id)
-        }
-    }
 }
 
-// MARK: - Row
+// ── Row View ───────────────────────────────────────────────────────────
 
 struct TodoRowView: View {
     @Environment(TodoStore.self) var store
@@ -168,12 +190,6 @@ struct TodoRowView: View {
             .buttonStyle(.borderless)
             .accessibilityLabel(todo.completed ? "Mark incomplete" : "Mark complete")
 
-            // Priority indicator
-            Image(systemName: todo.priority.symbol)
-                .font(.caption)
-                .foregroundStyle(todo.priority.tint)
-                .accessibilityLabel("\(todo.priority.label) priority")
-
             // Title
             if isEditing {
                 TextField("Title", text: $editTitle)
@@ -193,19 +209,6 @@ struct TodoRowView: View {
                     .accessibilityHint("Double-tap to edit")
             }
 
-            // Priority picker
-            Picker("Priority", selection: Binding(
-                get: { todo.priority },
-                set: { store.setPriority(id: todo.id, priority: $0) }
-            )) {
-                ForEach(TodoItem.Priority.allCases) { p in
-                    Label(p.label, systemImage: p.symbol).tag(p)
-                }
-            }
-            .pickerStyle(.menu)
-            .frame(width: 90)
-            .accessibilityLabel("Change priority")
-
             // Delete
             Button {
                 withAnimation { store.removeTodo(id: todo.id) }
@@ -216,7 +219,6 @@ struct TodoRowView: View {
             .buttonStyle(.borderless)
             .accessibilityLabel("Delete \(todo.title)")
         }
-        .padding(.vertical, 4)
     }
 
     private func startEditing() {

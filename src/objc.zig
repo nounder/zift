@@ -200,12 +200,18 @@ pub fn autoreleasePoolPop(ctx: ?*anyopaque) void {
 ///       return objc.typedSend(table, self.obj, selector, args);
 ///   }
 pub fn typedSend(comptime table: anytype, target: Object, comptime selector: [*:0]const u8, args: anytype) SendReturn(table, selector) {
-    return msgSend(SendReturn(table, selector), target, selector, coerceArgs(SendArgTypes(table, selector), args));
+    const Ret = SendReturn(table, selector);
+    const AbiArgs = AbiArgTypes(SendArgTypes(table, selector));
+    const raw = msgSend(AbiType(Ret), target, selector, coerceArgs(AbiArgs, args));
+    return wrapReturn(Ret, raw);
 }
 
 /// Type-checked class-level send. For class methods (like [NSColor systemRedColor]).
 pub fn typedClassSend(comptime class_name: [*:0]const u8, comptime table: anytype, comptime selector: [*:0]const u8, args: anytype) SendReturn(table, selector) {
-    return msgSendClass(SendReturn(table, selector), class_name, selector, coerceArgs(SendArgTypes(table, selector), args));
+    const Ret = SendReturn(table, selector);
+    const AbiArgs = AbiArgTypes(SendArgTypes(table, selector));
+    const raw = msgSendClass(AbiType(Ret), class_name, selector, coerceArgs(AbiArgs, args));
+    return wrapReturn(Ret, raw);
 }
 
 /// Look up selector in a single method table. Returns the entry index or null.
@@ -252,7 +258,9 @@ fn SendArgTypesChain(comptime Cls: type, comptime selector: [*:0]const u8) type 
 pub fn typedSendChain(comptime Cls: type, target: Object, comptime selector: [*:0]const u8, args: anytype) SendReturnChain(Cls, selector) {
     const RetType = SendReturnChain(Cls, selector);
     const ArgTypes = SendArgTypesChain(Cls, selector);
-    return msgSend(RetType, target, selector, coerceArgs(ArgTypes, args));
+    const AbiArgs = AbiArgTypes(ArgTypes);
+    const raw = msgSend(AbiType(RetType), target, selector, coerceArgs(AbiArgs, args));
+    return wrapReturn(RetType, raw);
 }
 
 /// Look up the return type for a selector in the table. Compile error if not found.
@@ -311,6 +319,55 @@ fn ArgTuple(comptime type_list: anytype) type {
 /// - bool → u8 (ObjC BOOL)
 /// - [*:0]const u8 → Object (NSString via nsString())
 /// - enum → its integer tag (i64 or c_ulong)
+/// Wrap a raw ABI return value back into its semantic type.
+/// E.g. Object → NSView{.obj = raw}, ?Object → ?NSView.
+fn wrapReturn(comptime Semantic: type, raw: AbiType(Semantic)) Semantic {
+    if (comptime isObjcStruct(Semantic)) {
+        return .{ .obj = raw };
+    }
+    if (@typeInfo(Semantic) == .optional) {
+        const Child = @typeInfo(Semantic).optional.child;
+        if (comptime isObjcStruct(Child)) {
+            if (raw) |obj| return .{ .obj = obj };
+            return null;
+        }
+    }
+    return raw;
+}
+
+/// Check if a type is an ObjC wrapper struct (has `obj: Object` field).
+fn isObjcStruct(comptime T: type) bool {
+    if (@typeInfo(T) != .@"struct") return false;
+    return @hasField(T, "obj");
+}
+
+/// Convert a semantic type from a method table to its C ABI type.
+/// Wrapper structs (NSView, NSWindow, etc.) → Object, nullable wrappers → ?Object.
+fn AbiType(comptime T: type) type {
+    if (isObjcStruct(T)) return Object;
+    if (@typeInfo(T) == .optional) {
+        const Child = @typeInfo(T).optional.child;
+        if (isObjcStruct(Child)) return ?Object;
+    }
+    return T;
+}
+
+/// Convert a full args tuple's types to ABI types.
+fn AbiArgTypes(comptime Expected: type) type {
+    const fields = @typeInfo(Expected).@"struct".fields;
+    var new_fields: [fields.len]std.builtin.Type.StructField = undefined;
+    for (fields, 0..) |f, i| {
+        new_fields[i] = f;
+        new_fields[i].type = AbiType(f.type);
+    }
+    return @Type(.{ .@"struct" = .{
+        .layout = .auto,
+        .fields = &new_fields,
+        .decls = &.{},
+        .is_tuple = true,
+    } });
+}
+
 fn coerceArgs(comptime Expected: type, args: anytype) Expected {
     const exp_fields = @typeInfo(Expected).@"struct".fields;
     const arg_fields = @typeInfo(@TypeOf(args)).@"struct".fields;
@@ -339,26 +396,47 @@ fn coerceArgs(comptime Expected: type, args: anytype) Expected {
         } else if (ExpType == Object and comptime isStringLiteral(ValType)) {
             // String literal (*const [N:0]u8) → NSString
             @field(result, field.name) = nsString(@as([*:0]const u8, val));
-        } else if (ExpType == Object and @typeInfo(ValType) == .pointer) {
-            // Any other pointer → Object
+        } else if ((ExpType == Object or ExpType == *anyopaque) and comptime isObjcStruct(ValType)) {
+            // ObjC wrapper struct → Object/*anyopaque (extract .obj)
+            @field(result, field.name) = @ptrCast(val.obj);
+        } else if ((ExpType == Object or ExpType == *anyopaque) and @typeInfo(ValType) == .pointer) {
+            // Any pointer → Object/*anyopaque
             @field(result, field.name) = @ptrCast(@constCast(val));
         } else if (@typeInfo(ValType) == .@"enum" and (ExpType == i64 or ExpType == c_ulong)) {
             // Zig enum → integer
             @field(result, field.name) = @intFromEnum(val);
+        } else if (@typeInfo(ExpType) == .@"enum" and @typeInfo(ValType) == .int) {
+            // integer → Zig enum (e.g. @as(i64, 0) → ActivationPolicy)
+            @field(result, field.name) = @enumFromInt(val);
+        } else if (@typeInfo(ExpType) == .@"enum" and @typeInfo(ValType) == .comptime_int) {
+            // comptime int → Zig enum
+            @field(result, field.name) = @enumFromInt(val);
         } else if (@typeInfo(ValType) == .comptime_int) {
             // Comptime int → target integer type
             @field(result, field.name) = val;
         } else if (@typeInfo(ValType) == .comptime_float) {
             // Comptime float → target float type
             @field(result, field.name) = val;
-        } else if (@typeInfo(ValType) == .@"struct") {
+        } else if (@typeInfo(ValType) == .@"struct" and @typeInfo(ExpType) == .@"struct") {
             // Struct → struct (e.g. Size, Rect)
+            @field(result, field.name) = val;
+        } else if (ExpType == ?Object and comptime isObjcStruct(ValType)) {
+            // ObjC wrapper struct → ?Object
+            @field(result, field.name) = val.obj;
+        } else if (ExpType == ?Object and ValType == Object) {
+            // Object → ?Object
+            @field(result, field.name) = val;
+        } else if (ExpType == ?*anyopaque and comptime isObjcStruct(ValType)) {
+            // ObjC wrapper struct → ?*anyopaque (protocol-typed params)
+            @field(result, field.name) = val.obj;
+        } else if (ExpType == ?*anyopaque and ValType == Object) {
+            // Object → ?*anyopaque
             @field(result, field.name) = val;
         } else if (ExpType == ?*anyopaque and @typeInfo(ValType) == .pointer) {
             // Any pointer → ?*anyopaque
             @field(result, field.name) = @ptrCast(@constCast(val));
         } else if (@typeInfo(ValType) == .optional and ExpType == ?*anyopaque) {
-            // Optional pointer
+            // Optional → ?*anyopaque
             @field(result, field.name) = val;
         } else if (ExpType == Object and ValType == ?*anyopaque) {
             // ?*anyopaque → Object (unsafe but needed for generated bindings)
