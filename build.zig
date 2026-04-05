@@ -16,6 +16,7 @@ pub fn build(b: *std.Build) void {
     zift.linkFramework("WebKit", .{});
     zift.linkFramework("CoreGraphics", .{});
     zift.linkFramework("Accessibility", .{});
+    zift.linkFramework("ApplicationServices", .{});
     zift.linkSystemLibrary("objc", .{});
 
     // ── Todoz app ─────────────────────────────────────────────────────
@@ -32,6 +33,7 @@ pub fn build(b: *std.Build) void {
     exe.root_module.linkFramework("AppKit", .{});
     exe.root_module.linkFramework("CoreGraphics", .{});
     exe.root_module.linkFramework("Accessibility", .{});
+    exe.root_module.linkFramework("ApplicationServices", .{});
     exe.root_module.linkSystemLibrary("objc", .{});
 
     // ── App bundle (Zig) ───────────────────────────────────────────────
@@ -133,6 +135,7 @@ fn addExample(
     example.root_module.linkFramework("WebKit", .{});
     example.root_module.linkFramework("CoreGraphics", .{});
     example.root_module.linkFramework("Accessibility", .{});
+    example.root_module.linkFramework("ApplicationServices", .{});
     example.root_module.linkSystemLibrary("objc", .{});
 
     const run = b.addRunArtifact(example);
