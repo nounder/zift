@@ -103,59 +103,74 @@ extern "c" fn objc_msgSend() void;
 extern "c" fn objc_msgSend_stret() void;
 
 /// Send a message to an ObjC object/class.
-///   const result = msgSend(ReturnType, target, "selectorName:", .{ arg1, arg2 });
-pub fn msgSend(comptime ReturnType: type, target: anytype, comptime selector: [*:0]const u8, args: anytype) ReturnType {
-    return msgSendSel(ReturnType, target, sel(selector), args);
+///   const result = send(ReturnType, target, "selectorName:", .{ arg1, arg2 });
+pub fn send(comptime ReturnType: type, target: anytype, comptime selector: [*:0]const u8, args: anytype) ReturnType {
+    return sendSel(ReturnType, target, sel(selector), args);
 }
 
 /// Send with a pre-resolved selector.
-pub fn msgSendSel(comptime ReturnType: type, target: anytype, _sel: Sel, args: anytype) ReturnType {
+pub fn sendSel(comptime ReturnType: type, target: anytype, _sel: Sel, args: anytype) ReturnType {
     const target_ptr = objcPtr(target);
     const FnType = MsgSendFn(ReturnType, @TypeOf(args));
     const func: *const FnType = @ptrCast(&objc_msgSend);
     return @call(.auto, func, .{ target_ptr, _sel } ++ args);
 }
 
+/// Alloc an ObjC class by name, returning a chainable Id.
+///   objc.alloc("NSAttributedString").send(Object, "initWithHTML:options:", .{ data, opts })
+pub fn alloc(comptime T: type) Id {
+    const cls = getClass(T.name) orelse @panic("class not found: " ++ T.name);
+    return .{ .id = send(Object, cls, "alloc", .{}) };
+}
+
+pub const Id = struct {
+    id: Object,
+
+    pub fn send(self: Id, comptime R: type, comptime selector: [*:0]const u8, args: anytype) R {
+        return sendSel(R, self.id, sel(selector), args);
+    }
+};
+
 /// Send a message to an ObjC class by name.
-///   const result = msgSendClass(ReturnType, "NSObject", "alloc", .{});
-pub fn msgSendClass(comptime ReturnType: type, comptime class_name: [*:0]const u8, comptime selector: [*:0]const u8, args: anytype) ReturnType {
+///   const result = class(ReturnType, "NSObject", "alloc", .{});
+pub fn class(comptime ReturnType: type, comptime class_name: [*:0]const u8, comptime selector: [*:0]const u8, args: anytype) ReturnType {
     const cls = getClass(class_name) orelse @panic("class not found");
-    return msgSend(ReturnType, cls, selector, args);
+    return send(ReturnType, cls, selector, args);
 }
 
 // ── NSString helpers ───────────────────────────────────────────────────
 
 pub fn nsString(str: [*:0]const u8) Object {
-    return msgSendClass(Object, "NSString", "stringWithUTF8String:", .{str});
+    return class(Object, "NSString", "stringWithUTF8String:", .{str});
 }
 
 pub fn nsStringFromSlice(bytes: []const u8) Object {
-    return msgSend(Object, getClass("NSString").?, "stringWithUTF8String:", .{bytes.ptr});
+    return send(Object, getClass("NSString").?, "stringWithUTF8String:", .{bytes.ptr});
 }
 
 pub fn toZigString(ns_str: Object) ?[*:0]const u8 {
-    return msgSend(?[*:0]const u8, ns_str, "UTF8String", .{});
+    return send(?[*:0]const u8, ns_str, "UTF8String", .{});
 }
 
 // ── NSNumber helpers ───────────────────────────────────────────────────
 
 pub fn nsNumberWithInt(val: c_int) Object {
-    return msgSendClass(Object, "NSNumber", "numberWithInt:", .{val});
+    return class(Object, "NSNumber", "numberWithInt:", .{val});
 }
 
 pub fn nsNumberWithBool(val: bool) Object {
     const byte: u8 = if (val) 1 else 0;
-    return msgSendClass(Object, "NSNumber", "numberWithBool:", .{byte});
+    return class(Object, "NSNumber", "numberWithBool:", .{byte});
 }
 
 // ── NSValue helpers (for wrapping pointers) ────────────────────────────
 
 pub fn nsValueWithPointer(ptr: *anyopaque) Object {
-    return msgSendClass(Object, "NSValue", "valueWithPointer:", .{ptr});
+    return class(Object, "NSValue", "valueWithPointer:", .{ptr});
 }
 
 pub fn pointerFromNSValue(val: Object) ?*anyopaque {
-    return msgSend(?*anyopaque, val, "pointerValue", .{});
+    return send(?*anyopaque, val, "pointerValue", .{});
 }
 
 // ── Autorelease pool ───────────────────────────────────────────────────
@@ -208,11 +223,11 @@ pub fn typedSendFor(comptime Cls: type, comptime table: anytype, target: Object,
     const sel_s = comptime selStr(selector);
     // Implicit NSObject selectors have no table entry for arg types — they take no args
     if (Cls != void and comptime isObjcStruct(Cls) and findInTable(table, sel_s) == null) {
-        const raw = msgSend(AbiType(Ret), target, selector, .{});
+        const raw = send(AbiType(Ret), target, selector, .{});
         return wrapReturn(Ret, raw);
     }
     const AbiArgs = AbiArgTypes(SendArgTypes(table, selector));
-    const raw = msgSend(AbiType(Ret), target, selector, coerceArgs(AbiArgs, args));
+    const raw = send(AbiType(Ret), target, selector, coerceArgs(AbiArgs, args));
     return wrapReturn(Ret, raw);
 }
 
@@ -226,11 +241,11 @@ pub fn typedClassSendFor(comptime Cls: type, comptime class_name: [*:0]const u8,
     const sel_s = comptime selStr(selector);
     // Implicit NSObject selectors have no table entry for arg types — they take no args
     if (Cls != void and comptime isObjcStruct(Cls) and findInTable(table, sel_s) == null) {
-        const raw = msgSendClass(AbiType(Ret), class_name, selector, .{});
+        const raw = class(AbiType(Ret), class_name, selector, .{});
         return wrapReturn(Ret, raw);
     }
     const AbiArgs = AbiArgTypes(SendArgTypes(table, selector));
-    const raw = msgSendClass(AbiType(Ret), class_name, selector, coerceArgs(AbiArgs, args));
+    const raw = class(AbiType(Ret), class_name, selector, coerceArgs(AbiArgs, args));
     return wrapReturn(Ret, raw);
 }
 
@@ -303,7 +318,7 @@ pub fn typedSendChain(comptime Cls: type, target: Object, comptime selector: [*:
     const RetType = SendReturnChain(Cls, selector);
     const ArgTypes = SendArgTypesChain(Cls, selector);
     const AbiArgs = AbiArgTypes(ArgTypes);
-    const raw = msgSend(AbiType(RetType), target, selector, coerceArgs(AbiArgs, args));
+    const raw = send(AbiType(RetType), target, selector, coerceArgs(AbiArgs, args));
     return wrapReturn(RetType, raw);
 }
 
@@ -323,6 +338,17 @@ pub fn InstanceDispatch(comptime Self: type) type {
     return struct {
         pub fn invoke(self: Self, comptime selector: [*:0]const u8, args: anytype) InstanceReturn(Self, selector) {
             return instanceSend(Self, self.id, selector, args);
+        }
+    };
+}
+
+/// Untyped message send — bypasses the method table.
+/// Allows chaining on any typed struct for selectors not in the generated bindings.
+///   obj.raw(ReturnType, "initWithHTML:options:", .{ data, opts })
+pub fn RawDispatch(comptime Self: type) type {
+    return struct {
+        pub fn invoke(self: Self, comptime ReturnType: type, comptime selector: [*:0]const u8, args: anytype) ReturnType {
+            return send(ReturnType, self.id, selector, args);
         }
     };
 }
@@ -366,7 +392,7 @@ fn instanceSend(comptime Cls: type, target: Object, comptime selector: [*:0]cons
     if (@hasDecl(Cls, "Super")) {
         const ArgTypes = SendArgTypesChain(Cls, selector);
         const AbiArgs = AbiArgTypes(ArgTypes);
-        const raw = msgSend(AbiType(Ret), target, selector, coerceArgs(AbiArgs, args));
+        const raw = send(AbiType(Ret), target, selector, coerceArgs(AbiArgs, args));
         return wrapReturn(Ret, raw);
     }
 
@@ -374,13 +400,13 @@ fn instanceSend(comptime Cls: type, target: Object, comptime selector: [*:0]cons
     if (@hasDecl(Cls, "methods")) {
         if (comptime findInTable(Cls.methods, sel_s)) |_| {
             const AbiArgs = AbiArgTypes(SendArgTypes(Cls.methods, selector));
-            const raw = msgSend(AbiType(Ret), target, selector, coerceArgs(AbiArgs, args));
+            const raw = send(AbiType(Ret), target, selector, coerceArgs(AbiArgs, args));
             return wrapReturn(Ret, raw);
         }
     }
 
     // Implicit NSObject (init, alloc) — no args
-    const raw = msgSend(AbiType(Ret), target, selector, .{});
+    const raw = send(AbiType(Ret), target, selector, .{});
     return wrapReturn(Ret, raw);
 }
 
@@ -393,12 +419,12 @@ fn classSend(comptime Cls: type, comptime selector: [*:0]const u8, args: anytype
 
     if (comptime findInTable(table, sel_s)) |_| {
         const AbiArgs = AbiArgTypes(SendArgTypes(table, selector));
-        const raw = msgSendClass(AbiType(Ret), class_name, selector, coerceArgs(AbiArgs, args));
+        const raw = class(AbiType(Ret), class_name, selector, coerceArgs(AbiArgs, args));
         return wrapReturn(Ret, raw);
     }
 
     // Implicit NSObject (alloc) — no args
-    const raw = msgSendClass(AbiType(Ret), class_name, selector, .{});
+    const raw = class(AbiType(Ret), class_name, selector, .{});
     return wrapReturn(Ret, raw);
 }
 
@@ -634,6 +660,9 @@ fn isStringLiteral(comptime T: type) bool {
 /// Convert any ObjC-compatible pointer to a raw pointer for msgSend.
 fn objcPtr(val: anytype) *anyopaque {
     const T = @TypeOf(val);
+    if (@typeInfo(T) == .@"struct") {
+        if (@hasField(T, "id")) return @ptrCast(@constCast(val.id));
+    }
     return switch (@typeInfo(T)) {
         .pointer => @ptrCast(@constCast(val)),
         .optional => if (val) |v| @ptrCast(@constCast(v)) else @as(*anyopaque, @ptrFromInt(0)),

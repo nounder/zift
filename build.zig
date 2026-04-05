@@ -88,6 +88,7 @@ pub fn build(b: *std.Build) void {
     // ── Examples ───────────────────────────────────────────────────────
 
     addExample(b, zift, target, optimize, "floating_webview");
+    addExample(b, zift, target, optimize, "html_textview");
 
     // ── Default: build both apps ──────────────────────────────────────
 

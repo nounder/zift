@@ -66,7 +66,7 @@ fn buildUI() void {
     const request = Foundation.NSURLRequest.class("alloc", .{}).send("initWithURL:", .{url});
     _ = webview.send("loadRequest:", .{request});
 
-    panel.send("setContentView:", .{webview.obj});
+    panel.send("setContentView:", .{webview.id});
     panel.send("center", .{});
-    objc.msgSend(void, panel.obj, "makeKeyAndOrderFront:", .{@as(?*anyopaque, null)});
+    objc.send(void, panel, "makeKeyAndOrderFront:", .{@as(?*anyopaque, null)});
 }

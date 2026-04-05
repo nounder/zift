@@ -302,7 +302,7 @@ fn buildUI() void {
         input_field = AppKit.NSTextField.class("alloc", .{}).send("initWithFrame:", .{AppKit.NSRect.make(0, 0, 200, 24)});
         input_field.send("setPlaceholderString:", .{"What needs to be done?"});
         input_field.send("setTranslatesAutoresizingMaskIntoConstraints:", .{false});
-        objc.msgSend(void, input_field.id, "setAccessibilityLabel:", .{objc.nsString("New todo title")});
+        objc.send(void, input_field.id, "setAccessibilityLabel:", .{objc.nsString("New todo title")});
         input_field.send("setFont:", .{AppKit.NSFont.class("systemFontOfSize:", .{13})});
         input_field.send("setContentHuggingPriority:forOrientation:", .{ 249, 0 });
 
@@ -335,7 +335,7 @@ fn buildUI() void {
         todo_list_stack.send("setOrientation:", .{AppKit.NSUserInterfaceLayoutOrientation.vertical});
         todo_list_stack.send("setSpacing:", .{0});
 
-        const fclip = objc.msgSend(Object, objc.msgSendClass(Object, "TodozFlippedClipView", "alloc", .{}), "initWithFrame:", .{AppKit.NSRect.make(0, 0, 0, 0)});
+        const fclip = objc.send(Object, objc.class(Object, "TodozFlippedClipView", "alloc", .{}), "initWithFrame:", .{AppKit.NSRect.make(0, 0, 0, 0)});
         scroll_view.send("setContentView:", .{fclip});
         scroll_view.send("setDocumentView:", .{todo_list_stack.id});
 
@@ -387,7 +387,7 @@ fn buildUI() void {
     AppKit.NSLayoutConstraint.pinWidthEqual(scroll_view.id, root.id);
 
     refreshTodozList();
-    objc.msgSend(void, main_window.id, "makeKeyAndOrderFront:", .{null});
+    objc.send(void, main_window.id, "makeKeyAndOrderFront:", .{null});
     AppKit.NSApplication.class("sharedApplication", .{}).send("activateIgnoringOtherApps:", .{true});
 }
 
@@ -521,7 +521,7 @@ fn buildTodozRow(t: *const Todoz, idx: usize) AppKit.NSStackView {
         if (t.completed) {
             label.send("setTextColor:", .{AppKit.NSColor.class("secondaryLabelColor", .{})});
             const str_val = label.send("stringValue", .{});
-            const str_len = objc.msgSend(c_ulong, str_val, "length", .{});
+            const str_len = objc.send(c_ulong, str_val, "length", .{});
             const attr = Foundation.NSMutableAttributedString.class("alloc", .{}).send("initWithString:", .{str_val});
             attr.send("addAttribute:value:range:", .{
                 objc.nsString("NSStrikethrough"),                   objc.nsNumberWithInt(1),
@@ -531,8 +531,8 @@ fn buildTodozRow(t: *const Todoz, idx: usize) AppKit.NSStackView {
         }
         label.send("setContentHuggingPriority:forOrientation:", .{ 249, 0 });
         label.send("setContentCompressionResistancePriority:forOrientation:", .{ 749, 0 });
-        const cell = objc.msgSend(Object, label.id, "cell", .{});
-        objc.msgSend(void, cell, "setLineBreakMode:", .{4});
+        const cell = objc.send(Object, label.id, "cell", .{});
+        objc.send(void, cell, "setLineBreakMode:", .{4});
         row.send("addArrangedSubview:", .{label.id});
     }
 

@@ -17,7 +17,6 @@ pub const UnsafePointer = *const anyopaque;
 pub const TimeInterval = f64;
 pub const pid_t = std.c_int;
 
-pub const Accessibility = @import("Accessibility.zig");
 pub const AppKit = @import("AppKit.zig");
 pub const Foundation = @import("Foundation.zig");
 
@@ -4096,12 +4095,12 @@ pub fn viewObj(val: anytype) Object {
 }
 
 pub fn init(comptime class_name: [*:0]const u8) Object {
-    return objc.msgSend(Object, objc.msgSendClass(Object, class_name, "alloc", .{}), "init", .{});
+    return objc.send(Object, objc.class(Object, class_name, "alloc", .{}), "init", .{});
 }
 
 pub fn nsArray(items: []const Object) Object {
-    const arr = objc.msgSendClass(Object, "NSMutableArray", "arrayWithCapacity:", .{@as(c_ulong, items.len)});
-    for (items) |item| objc.msgSend(void, arr, "addObject:", .{item});
+    const arr = objc.class(Object, "NSMutableArray", "arrayWithCapacity:", .{@as(c_ulong, items.len)});
+    for (items) |item| objc.send(void, arr, "addObject:", .{item});
     return arr;
 }
 

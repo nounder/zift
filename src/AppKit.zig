@@ -17,7 +17,6 @@ pub const UnsafePointer = *const anyopaque;
 pub const TimeInterval = f64;
 pub const pid_t = std.c_int;
 
-pub const Accessibility = @import("Accessibility.zig");
 pub const Foundation = @import("Foundation.zig");
 pub const WebKit = @import("WebKit.zig");
 
@@ -5321,12 +5320,12 @@ pub const NSLayoutConstraint = struct {
     };
 
     pub fn make(item: Object, attr: Attribute, rel: Relation, to_item: ?Object, to_attr: Attribute, mult: f64, constant: f64) Object {
-        return objc.msgSendClass(Object, "NSLayoutConstraint", "constraintWithItem:attribute:relatedBy:toItem:attribute:multiplier:constant:", .{ item, @intFromEnum(attr), @intFromEnum(rel), @as(?*anyopaque, if (to_item) |t| @ptrCast(t) else null), @intFromEnum(to_attr), mult, constant });
+        return objc.class(Object, "NSLayoutConstraint", "constraintWithItem:attribute:relatedBy:toItem:attribute:multiplier:constant:", .{ item, @intFromEnum(attr), @intFromEnum(rel), @as(?*anyopaque, if (to_item) |t| @ptrCast(t) else null), @intFromEnum(to_attr), mult, constant });
     }
     pub fn activate(constraints: []const Object) void {
-        const arr = objc.msgSendClass(Object, "NSMutableArray", "arrayWithCapacity:", .{@as(c_ulong, constraints.len)});
-        for (constraints) |c| objc.msgSend(void, arr, "addObject:", .{c});
-        objc.msgSend(void, objc.getClass("NSLayoutConstraint").?, "activateConstraints:", .{arr});
+        const arr = objc.class(Object, "NSMutableArray", "arrayWithCapacity:", .{@as(c_ulong, constraints.len)});
+        for (constraints) |c| objc.send(void, arr, "addObject:", .{c});
+        objc.send(void, objc.getClass("NSLayoutConstraint").?, "activateConstraints:", .{arr});
     }
     pub fn pinWidthEqual(child: Object, parent: Object) void {
         activate(&.{make(child, .width, .equal, parent, .width, 1.0, 0.0)});
@@ -12900,12 +12899,12 @@ pub fn viewObj(val: anytype) Object {
 }
 
 pub fn init(comptime class_name: [*:0]const u8) Object {
-    return objc.msgSend(Object, objc.msgSendClass(Object, class_name, "alloc", .{}), "init", .{});
+    return objc.send(Object, objc.class(Object, class_name, "alloc", .{}), "init", .{});
 }
 
 pub fn nsArray(items: []const Object) Object {
-    const arr = objc.msgSendClass(Object, "NSMutableArray", "arrayWithCapacity:", .{@as(c_ulong, items.len)});
-    for (items) |item| objc.msgSend(void, arr, "addObject:", .{item});
+    const arr = objc.class(Object, "NSMutableArray", "arrayWithCapacity:", .{@as(c_ulong, items.len)});
+    for (items) |item| objc.send(void, arr, "addObject:", .{item});
     return arr;
 }
 

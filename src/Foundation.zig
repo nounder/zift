@@ -18,8 +18,6 @@ pub const TimeInterval = f64;
 pub const pid_t = std.c_int;
 
 pub const Accessibility = @import("Accessibility.zig");
-pub const AppKit = @import("AppKit.zig");
-pub const WebKit = @import("WebKit.zig");
 
 pub const NSPoint = extern struct { x: f64 = 0, y: f64 = 0 };
 pub const NSSize = extern struct { width: f64 = 0, height: f64 = 0 };
@@ -6672,7 +6670,7 @@ pub const NSUserNotification = struct {
         .{ "actualDeliveryDate", ?NSDate, .{} },
         .{ "additionalActions", ?*anyopaque, .{} },
         .{ "additionalActivationAction", ?NSUserNotificationAction, .{} },
-        .{ "contentImage", ?AppKit.NSImage, .{} },
+        .{ "contentImage", ?*anyopaque, .{} },
         .{ "deliveryDate", ?NSDate, .{} },
         .{ "deliveryRepeatInterval", ?NSDateComponents, .{} },
         .{ "deliveryTimeZone", ?NSTimeZone, .{} },
@@ -6687,7 +6685,7 @@ pub const NSUserNotification = struct {
         .{ "responsePlaceholder", ?objc.NSString, .{} },
         .{ "setActionButtonTitle:", void, .{objc.NSString} },
         .{ "setAdditionalActions:", void, .{?*anyopaque} },
-        .{ "setContentImage:", void, .{?AppKit.NSImage} },
+        .{ "setContentImage:", void, .{?*anyopaque} },
         .{ "setDeliveryDate:", void, .{?NSDate} },
         .{ "setDeliveryRepeatInterval:", void, .{?NSDateComponents} },
         .{ "setDeliveryTimeZone:", void, .{?NSTimeZone} },
@@ -7366,12 +7364,12 @@ pub fn viewObj(val: anytype) Object {
 }
 
 pub fn init(comptime class_name: [*:0]const u8) Object {
-    return objc.msgSend(Object, objc.msgSendClass(Object, class_name, "alloc", .{}), "init", .{});
+    return objc.send(Object, objc.class(Object, class_name, "alloc", .{}), "init", .{});
 }
 
 pub fn nsArray(items: []const Object) Object {
-    const arr = objc.msgSendClass(Object, "NSMutableArray", "arrayWithCapacity:", .{@as(c_ulong, items.len)});
-    for (items) |item| objc.msgSend(void, arr, "addObject:", .{item});
+    const arr = objc.class(Object, "NSMutableArray", "arrayWithCapacity:", .{@as(c_ulong, items.len)});
+    for (items) |item| objc.send(void, arr, "addObject:", .{item});
     return arr;
 }
 
