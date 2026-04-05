@@ -206,28 +206,24 @@ pub const WebResourceLoadDelegate = *anyopaque;
 pub const WebUIDelegate = *anyopaque;
 
 pub const DOMAbstractView = struct {
-    obj: Object,
-
     pub const Super = DOMObject;
+    pub const name = "DOMAbstractView";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "document", DOMDocument, .{} },
     };
-
-    pub fn send(self: DOMAbstractView, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMAbstractView", class_methods, selector, args);
-    }
 };
 
 pub const DOMAttr = struct {
-    obj: Object,
-
     pub const Super = DOMNode;
+    pub const name = "DOMAttr";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "name", objc.NSString, .{} },
         .{ "ownerElement", DOMElement, .{} },
@@ -236,143 +232,94 @@ pub const DOMAttr = struct {
         .{ "style", DOMCSSStyleDeclaration, .{} },
         .{ "value", objc.NSString, .{} },
     };
-
-    pub fn send(self: DOMAttr, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMAttr", class_methods, selector, args);
-    }
 };
 
 pub const DOMBlob = struct {
-    obj: Object,
-
     pub const Super = DOMObject;
+    pub const name = "DOMBlob";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "size", u64, .{} },
     };
-
-    pub fn send(self: DOMBlob, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMBlob", class_methods, selector, args);
-    }
 };
 
 pub const DOMCSSCharsetRule = struct {
-    obj: Object,
-
     pub const Super = DOMCSSRule;
+    pub const name = "DOMCSSCharsetRule";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "encoding", objc.NSString, .{} },
     };
-
-    pub fn send(self: DOMCSSCharsetRule, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMCSSCharsetRule", class_methods, selector, args);
-    }
 };
 
 pub const DOMCSSFontFaceRule = struct {
-    obj: Object,
-
     pub const Super = DOMCSSRule;
+    pub const name = "DOMCSSFontFaceRule";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "style", DOMCSSStyleDeclaration, .{} },
     };
-
-    pub fn send(self: DOMCSSFontFaceRule, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMCSSFontFaceRule", class_methods, selector, args);
-    }
 };
 
 pub const DOMCSSImportRule = struct {
-    obj: Object,
-
     pub const Super = DOMCSSRule;
+    pub const name = "DOMCSSImportRule";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "href", objc.NSString, .{} },
         .{ "media", DOMMediaList, .{} },
         .{ "styleSheet", DOMCSSStyleSheet, .{} },
     };
-
-    pub fn send(self: DOMCSSImportRule, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMCSSImportRule", class_methods, selector, args);
-    }
 };
 
 pub const DOMCSSMediaRule = struct {
-    obj: Object,
-
     pub const Super = DOMCSSRule;
+    pub const name = "DOMCSSMediaRule";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "cssRules", DOMCSSRuleList, .{} },
         .{ "deleteRule:", void, .{u32} },
         .{ "insertRule:index:", u32, .{ objc.NSString, u32 } },
         .{ "media", DOMMediaList, .{} },
     };
-
-    pub fn send(self: DOMCSSMediaRule, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMCSSMediaRule", class_methods, selector, args);
-    }
 };
 
 pub const DOMCSSPageRule = struct {
-    obj: Object,
-
     pub const Super = DOMCSSRule;
+    pub const name = "DOMCSSPageRule";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "selectorText", objc.NSString, .{} },
         .{ "setSelectorText:", void, .{objc.NSString} },
         .{ "style", DOMCSSStyleDeclaration, .{} },
     };
-
-    pub fn send(self: DOMCSSPageRule, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMCSSPageRule", class_methods, selector, args);
-    }
 };
 
 pub const DOMCSSPrimitiveValue = struct {
-    obj: Object,
-
     pub const Super = DOMCSSValue;
+    pub const name = "DOMCSSPrimitiveValue";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "getCounterValue", ?DOMCounter, .{} },
         .{ "getFloatValue:", f32, .{u16} },
@@ -383,22 +330,15 @@ pub const DOMCSSPrimitiveValue = struct {
         .{ "setFloatValue:floatValue:", void, .{ u16, f32 } },
         .{ "setStringValue:stringValue:", void, .{ u16, objc.NSString } },
     };
-
-    pub fn send(self: DOMCSSPrimitiveValue, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMCSSPrimitiveValue", class_methods, selector, args);
-    }
 };
 
 pub const DOMCSSRule = struct {
-    obj: Object,
-
     pub const Super = DOMObject;
+    pub const name = "DOMCSSRule";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "cssText", objc.NSString, .{} },
         .{ "parentRule", DOMCSSRule, .{} },
@@ -406,42 +346,28 @@ pub const DOMCSSRule = struct {
         .{ "setCssText:", void, .{objc.NSString} },
         .{ "type", u16, .{} },
     };
-
-    pub fn send(self: DOMCSSRule, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMCSSRule", class_methods, selector, args);
-    }
 };
 
 pub const DOMCSSRuleList = struct {
-    obj: Object,
-
     pub const Super = DOMObject;
+    pub const name = "DOMCSSRuleList";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "item:", ?DOMCSSRule, .{u32} },
         .{ "length", u32, .{} },
     };
-
-    pub fn send(self: DOMCSSRuleList, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMCSSRuleList", class_methods, selector, args);
-    }
 };
 
 pub const DOMCSSStyleDeclaration = struct {
-    obj: Object,
-
     pub const Super = DOMObject;
+    pub const name = "DOMCSSStyleDeclaration";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "azimuth", ?objc.NSString, .{} },
         .{ "background", ?objc.NSString, .{} },
@@ -699,43 +625,29 @@ pub const DOMCSSStyleDeclaration = struct {
         .{ "wordSpacing", ?objc.NSString, .{} },
         .{ "zIndex", ?objc.NSString, .{} },
     };
-
-    pub fn send(self: DOMCSSStyleDeclaration, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMCSSStyleDeclaration", class_methods, selector, args);
-    }
 };
 
 pub const DOMCSSStyleRule = struct {
-    obj: Object,
-
     pub const Super = DOMCSSRule;
+    pub const name = "DOMCSSStyleRule";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "selectorText", objc.NSString, .{} },
         .{ "setSelectorText:", void, .{objc.NSString} },
         .{ "style", DOMCSSStyleDeclaration, .{} },
     };
-
-    pub fn send(self: DOMCSSStyleRule, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMCSSStyleRule", class_methods, selector, args);
-    }
 };
 
 pub const DOMCSSStyleSheet = struct {
-    obj: Object,
-
     pub const Super = DOMStyleSheet;
+    pub const name = "DOMCSSStyleSheet";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "addRule:style:index:", i32, .{ objc.NSString, objc.NSString, u32 } },
         .{ "cssRules", DOMCSSRuleList, .{} },
@@ -745,63 +657,42 @@ pub const DOMCSSStyleSheet = struct {
         .{ "removeRule:", void, .{u32} },
         .{ "rules", DOMCSSRuleList, .{} },
     };
-
-    pub fn send(self: DOMCSSStyleSheet, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMCSSStyleSheet", class_methods, selector, args);
-    }
 };
 
 pub const DOMCSSValue = struct {
-    obj: Object,
-
     pub const Super = DOMObject;
+    pub const name = "DOMCSSValue";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "cssText", objc.NSString, .{} },
         .{ "cssValueType", u16, .{} },
         .{ "setCssText:", void, .{objc.NSString} },
     };
-
-    pub fn send(self: DOMCSSValue, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMCSSValue", class_methods, selector, args);
-    }
 };
 
 pub const DOMCSSValueList = struct {
-    obj: Object,
-
     pub const Super = DOMCSSValue;
+    pub const name = "DOMCSSValueList";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "item:", ?DOMCSSValue, .{u32} },
         .{ "length", u32, .{} },
     };
-
-    pub fn send(self: DOMCSSValueList, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMCSSValueList", class_methods, selector, args);
-    }
 };
 
 pub const DOMCharacterData = struct {
-    obj: Object,
-
     pub const Super = DOMNode;
+    pub const name = "DOMCharacterData";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "appendData:", void, .{objc.NSString} },
         .{ "data", objc.NSString, .{} },
@@ -812,43 +703,29 @@ pub const DOMCharacterData = struct {
         .{ "setData:", void, .{objc.NSString} },
         .{ "substringData:length:", ?objc.NSString, .{ u32, u32 } },
     };
-
-    pub fn send(self: DOMCharacterData, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMCharacterData", class_methods, selector, args);
-    }
 };
 
 pub const DOMCounter = struct {
-    obj: Object,
-
     pub const Super = DOMObject;
+    pub const name = "DOMCounter";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "identifier", objc.NSString, .{} },
         .{ "listStyle", objc.NSString, .{} },
         .{ "separator", objc.NSString, .{} },
     };
-
-    pub fn send(self: DOMCounter, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMCounter", class_methods, selector, args);
-    }
 };
 
 pub const DOMDocument = struct {
-    obj: Object,
-
     pub const Super = DOMNode;
+    pub const name = "DOMDocument";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "URL", objc.NSString, .{} },
         .{ "URLWithAttributeString:", ?Foundation.NSURL, .{objc.NSString} },
@@ -933,22 +810,15 @@ pub const DOMDocument = struct {
         .{ "xmlStandalone", objc.BOOL, .{} },
         .{ "xmlVersion", objc.NSString, .{} },
     };
-
-    pub fn send(self: DOMDocument, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMDocument", class_methods, selector, args);
-    }
 };
 
 pub const DOMDocumentType = struct {
-    obj: Object,
-
     pub const Super = DOMNode;
+    pub const name = "DOMDocumentType";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "entities", DOMNamedNodeMap, .{} },
         .{ "internalSubset", objc.NSString, .{} },
@@ -958,22 +828,15 @@ pub const DOMDocumentType = struct {
         .{ "setInternalSubset:", void, .{objc.NSString} },
         .{ "systemId", objc.NSString, .{} },
     };
-
-    pub fn send(self: DOMDocumentType, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMDocumentType", class_methods, selector, args);
-    }
 };
 
 pub const DOMElement = struct {
-    obj: Object,
-
     pub const Super = DOMNode;
+    pub const name = "DOMElement";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "blur", void, .{} },
         .{ "childElementCount", u32, .{} },
@@ -1036,43 +899,29 @@ pub const DOMElement = struct {
         .{ "tagName", objc.NSString, .{} },
         .{ "webkitRequestFullScreen:", void, .{u16} },
     };
-
-    pub fn send(self: DOMElement, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMElement", class_methods, selector, args);
-    }
 };
 
 pub const DOMEntity = struct {
-    obj: Object,
-
     pub const Super = DOMNode;
+    pub const name = "DOMEntity";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "notationName", objc.NSString, .{} },
         .{ "publicId", objc.NSString, .{} },
         .{ "systemId", objc.NSString, .{} },
     };
-
-    pub fn send(self: DOMEntity, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMEntity", class_methods, selector, args);
-    }
 };
 
 pub const DOMEvent = struct {
-    obj: Object,
-
     pub const Super = DOMObject;
+    pub const name = "DOMEvent";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "bubbles", objc.BOOL, .{} },
         .{ "cancelBubble", objc.BOOL, .{} },
@@ -1090,61 +939,40 @@ pub const DOMEvent = struct {
         .{ "timeStamp", u64, .{} },
         .{ "type", objc.NSString, .{} },
     };
-
-    pub fn send(self: DOMEvent, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMEvent", class_methods, selector, args);
-    }
 };
 
 pub const DOMFile = struct {
-    obj: Object,
-
     pub const Super = DOMBlob;
+    pub const name = "DOMFile";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "name", objc.NSString, .{} },
     };
-
-    pub fn send(self: DOMFile, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMFile", class_methods, selector, args);
-    }
 };
 
 pub const DOMFileList = struct {
-    obj: Object,
-
     pub const Super = DOMObject;
+    pub const name = "DOMFileList";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "item:", ?DOMFile, .{u32} },
         .{ "length", u32, .{} },
     };
-
-    pub fn send(self: DOMFileList, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMFileList", class_methods, selector, args);
-    }
 };
 
 pub const DOMHTMLAnchorElement = struct {
-    obj: Object,
-
     pub const Super = DOMHTMLElement;
+    pub const name = "DOMHTMLAnchorElement";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "absoluteLinkURL", Foundation.NSURL, .{} },
         .{ "charset", objc.NSString, .{} },
@@ -1176,22 +1004,15 @@ pub const DOMHTMLAnchorElement = struct {
         .{ "text", objc.NSString, .{} },
         .{ "type", objc.NSString, .{} },
     };
-
-    pub fn send(self: DOMHTMLAnchorElement, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMHTMLAnchorElement", class_methods, selector, args);
-    }
 };
 
 pub const DOMHTMLAppletElement = struct {
-    obj: Object,
-
     pub const Super = DOMHTMLElement;
+    pub const name = "DOMHTMLAppletElement";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "align", objc.NSString, .{} },
         .{ "alt", objc.NSString, .{} },
@@ -1216,22 +1037,15 @@ pub const DOMHTMLAppletElement = struct {
         .{ "vspace", i32, .{} },
         .{ "width", objc.NSString, .{} },
     };
-
-    pub fn send(self: DOMHTMLAppletElement, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMHTMLAppletElement", class_methods, selector, args);
-    }
 };
 
 pub const DOMHTMLAreaElement = struct {
-    obj: Object,
-
     pub const Super = DOMHTMLElement;
+    pub const name = "DOMHTMLAreaElement";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "absoluteLinkURL", Foundation.NSURL, .{} },
         .{ "alt", objc.NSString, .{} },
@@ -1254,64 +1068,43 @@ pub const DOMHTMLAreaElement = struct {
         .{ "shape", objc.NSString, .{} },
         .{ "target", objc.NSString, .{} },
     };
-
-    pub fn send(self: DOMHTMLAreaElement, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMHTMLAreaElement", class_methods, selector, args);
-    }
 };
 
 pub const DOMHTMLBRElement = struct {
-    obj: Object,
-
     pub const Super = DOMHTMLElement;
+    pub const name = "DOMHTMLBRElement";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "clear", objc.NSString, .{} },
         .{ "setClear:", void, .{objc.NSString} },
     };
-
-    pub fn send(self: DOMHTMLBRElement, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMHTMLBRElement", class_methods, selector, args);
-    }
 };
 
 pub const DOMHTMLBaseElement = struct {
-    obj: Object,
-
     pub const Super = DOMHTMLElement;
+    pub const name = "DOMHTMLBaseElement";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "href", objc.NSString, .{} },
         .{ "setHref:", void, .{objc.NSString} },
         .{ "setTarget:", void, .{objc.NSString} },
         .{ "target", objc.NSString, .{} },
     };
-
-    pub fn send(self: DOMHTMLBaseElement, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMHTMLBaseElement", class_methods, selector, args);
-    }
 };
 
 pub const DOMHTMLBaseFontElement = struct {
-    obj: Object,
-
     pub const Super = DOMHTMLElement;
+    pub const name = "DOMHTMLBaseFontElement";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "color", objc.NSString, .{} },
         .{ "face", objc.NSString, .{} },
@@ -1320,22 +1113,15 @@ pub const DOMHTMLBaseFontElement = struct {
         .{ "setSize:", void, .{objc.NSString} },
         .{ "size", objc.NSString, .{} },
     };
-
-    pub fn send(self: DOMHTMLBaseFontElement, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMHTMLBaseFontElement", class_methods, selector, args);
-    }
 };
 
 pub const DOMHTMLBodyElement = struct {
-    obj: Object,
-
     pub const Super = DOMHTMLElement;
+    pub const name = "DOMHTMLBodyElement";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "aLink", objc.NSString, .{} },
         .{ "background", objc.NSString, .{} },
@@ -1350,22 +1136,15 @@ pub const DOMHTMLBodyElement = struct {
         .{ "text", objc.NSString, .{} },
         .{ "vLink", objc.NSString, .{} },
     };
-
-    pub fn send(self: DOMHTMLBodyElement, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMHTMLBodyElement", class_methods, selector, args);
-    }
 };
 
 pub const DOMHTMLButtonElement = struct {
-    obj: Object,
-
     pub const Super = DOMHTMLElement;
+    pub const name = "DOMHTMLButtonElement";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "autofocus", objc.BOOL, .{} },
         .{ "click", void, .{} },
@@ -1381,104 +1160,69 @@ pub const DOMHTMLButtonElement = struct {
         .{ "value", objc.NSString, .{} },
         .{ "willValidate", objc.BOOL, .{} },
     };
-
-    pub fn send(self: DOMHTMLButtonElement, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMHTMLButtonElement", class_methods, selector, args);
-    }
 };
 
 pub const DOMHTMLCollection = struct {
-    obj: Object,
-
     pub const Super = DOMObject;
+    pub const name = "DOMHTMLCollection";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "item:", ?DOMNode, .{u32} },
         .{ "length", u32, .{} },
         .{ "namedItem:", ?DOMNode, .{objc.NSString} },
         .{ "tags:", ?DOMNodeList, .{objc.NSString} },
     };
-
-    pub fn send(self: DOMHTMLCollection, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMHTMLCollection", class_methods, selector, args);
-    }
 };
 
 pub const DOMHTMLDListElement = struct {
-    obj: Object,
-
     pub const Super = DOMHTMLElement;
+    pub const name = "DOMHTMLDListElement";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "compact", objc.BOOL, .{} },
         .{ "setCompact:", void, .{objc.BOOL} },
     };
-
-    pub fn send(self: DOMHTMLDListElement, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMHTMLDListElement", class_methods, selector, args);
-    }
 };
 
 pub const DOMHTMLDirectoryElement = struct {
-    obj: Object,
-
     pub const Super = DOMHTMLElement;
+    pub const name = "DOMHTMLDirectoryElement";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "compact", objc.BOOL, .{} },
         .{ "setCompact:", void, .{objc.BOOL} },
     };
-
-    pub fn send(self: DOMHTMLDirectoryElement, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMHTMLDirectoryElement", class_methods, selector, args);
-    }
 };
 
 pub const DOMHTMLDivElement = struct {
-    obj: Object,
-
     pub const Super = DOMHTMLElement;
+    pub const name = "DOMHTMLDivElement";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "align", objc.NSString, .{} },
         .{ "setAlign:", void, .{objc.NSString} },
     };
-
-    pub fn send(self: DOMHTMLDivElement, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMHTMLDivElement", class_methods, selector, args);
-    }
 };
 
 pub const DOMHTMLDocument = struct {
-    obj: Object,
-
     pub const Super = DOMDocument;
+    pub const name = "DOMHTMLDocument";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "alinkColor", objc.NSString, .{} },
         .{ "bgColor", objc.NSString, .{} },
@@ -1510,22 +1254,15 @@ pub const DOMHTMLDocument = struct {
         .{ "write:", void, .{objc.NSString} },
         .{ "writeln:", void, .{objc.NSString} },
     };
-
-    pub fn send(self: DOMHTMLDocument, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMHTMLDocument", class_methods, selector, args);
-    }
 };
 
 pub const DOMHTMLElement = struct {
-    obj: Object,
-
     pub const Super = DOMElement;
+    pub const name = "DOMHTMLElement";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "accessKey", objc.NSString, .{} },
         .{ "children", DOMHTMLCollection, .{} },
@@ -1550,22 +1287,15 @@ pub const DOMHTMLElement = struct {
         .{ "title", objc.NSString, .{} },
         .{ "titleDisplayString", objc.NSString, .{} },
     };
-
-    pub fn send(self: DOMHTMLElement, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMHTMLElement", class_methods, selector, args);
-    }
 };
 
 pub const DOMHTMLEmbedElement = struct {
-    obj: Object,
-
     pub const Super = DOMHTMLElement;
+    pub const name = "DOMHTMLEmbedElement";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "align", objc.NSString, .{} },
         .{ "height", i32, .{} },
@@ -1580,41 +1310,27 @@ pub const DOMHTMLEmbedElement = struct {
         .{ "type", objc.NSString, .{} },
         .{ "width", i32, .{} },
     };
-
-    pub fn send(self: DOMHTMLEmbedElement, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMHTMLEmbedElement", class_methods, selector, args);
-    }
 };
 
 pub const DOMHTMLFieldSetElement = struct {
-    obj: Object,
-
     pub const Super = DOMHTMLElement;
+    pub const name = "DOMHTMLFieldSetElement";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "form", DOMHTMLFormElement, .{} },
     };
-
-    pub fn send(self: DOMHTMLFieldSetElement, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMHTMLFieldSetElement", class_methods, selector, args);
-    }
 };
 
 pub const DOMHTMLFontElement = struct {
-    obj: Object,
-
     pub const Super = DOMHTMLElement;
+    pub const name = "DOMHTMLFontElement";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "color", objc.NSString, .{} },
         .{ "face", objc.NSString, .{} },
@@ -1623,22 +1339,15 @@ pub const DOMHTMLFontElement = struct {
         .{ "setSize:", void, .{objc.NSString} },
         .{ "size", objc.NSString, .{} },
     };
-
-    pub fn send(self: DOMHTMLFontElement, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMHTMLFontElement", class_methods, selector, args);
-    }
 };
 
 pub const DOMHTMLFormElement = struct {
-    obj: Object,
-
     pub const Super = DOMHTMLElement;
+    pub const name = "DOMHTMLFormElement";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "acceptCharset", objc.NSString, .{} },
         .{ "action", objc.NSString, .{} },
@@ -1659,22 +1368,15 @@ pub const DOMHTMLFormElement = struct {
         .{ "submit", void, .{} },
         .{ "target", objc.NSString, .{} },
     };
-
-    pub fn send(self: DOMHTMLFormElement, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMHTMLFormElement", class_methods, selector, args);
-    }
 };
 
 pub const DOMHTMLFrameElement = struct {
-    obj: Object,
-
     pub const Super = DOMHTMLElement;
+    pub const name = "DOMHTMLFrameElement";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "contentDocument", DOMDocument, .{} },
         .{ "contentFrame", WebFrame, .{} },
@@ -1700,44 +1402,30 @@ pub const DOMHTMLFrameElement = struct {
         .{ "src", objc.NSString, .{} },
         .{ "width", i32, .{} },
     };
-
-    pub fn send(self: DOMHTMLFrameElement, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMHTMLFrameElement", class_methods, selector, args);
-    }
 };
 
 pub const DOMHTMLFrameSetElement = struct {
-    obj: Object,
-
     pub const Super = DOMHTMLElement;
+    pub const name = "DOMHTMLFrameSetElement";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "cols", objc.NSString, .{} },
         .{ "rows", objc.NSString, .{} },
         .{ "setCols:", void, .{objc.NSString} },
         .{ "setRows:", void, .{objc.NSString} },
     };
-
-    pub fn send(self: DOMHTMLFrameSetElement, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMHTMLFrameSetElement", class_methods, selector, args);
-    }
 };
 
 pub const DOMHTMLHRElement = struct {
-    obj: Object,
-
     pub const Super = DOMHTMLElement;
+    pub const name = "DOMHTMLHRElement";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "align", objc.NSString, .{} },
         .{ "noShade", objc.BOOL, .{} },
@@ -1748,82 +1436,54 @@ pub const DOMHTMLHRElement = struct {
         .{ "size", objc.NSString, .{} },
         .{ "width", objc.NSString, .{} },
     };
-
-    pub fn send(self: DOMHTMLHRElement, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMHTMLHRElement", class_methods, selector, args);
-    }
 };
 
 pub const DOMHTMLHeadElement = struct {
-    obj: Object,
-
     pub const Super = DOMHTMLElement;
+    pub const name = "DOMHTMLHeadElement";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "profile", objc.NSString, .{} },
         .{ "setProfile:", void, .{objc.NSString} },
     };
-
-    pub fn send(self: DOMHTMLHeadElement, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMHTMLHeadElement", class_methods, selector, args);
-    }
 };
 
 pub const DOMHTMLHeadingElement = struct {
-    obj: Object,
-
     pub const Super = DOMHTMLElement;
+    pub const name = "DOMHTMLHeadingElement";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "align", objc.NSString, .{} },
         .{ "setAlign:", void, .{objc.NSString} },
     };
-
-    pub fn send(self: DOMHTMLHeadingElement, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMHTMLHeadingElement", class_methods, selector, args);
-    }
 };
 
 pub const DOMHTMLHtmlElement = struct {
-    obj: Object,
-
     pub const Super = DOMHTMLElement;
+    pub const name = "DOMHTMLHtmlElement";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "setVersion:", void, .{objc.NSString} },
         .{ "version", objc.NSString, .{} },
     };
-
-    pub fn send(self: DOMHTMLHtmlElement, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMHTMLHtmlElement", class_methods, selector, args);
-    }
 };
 
 pub const DOMHTMLIFrameElement = struct {
-    obj: Object,
-
     pub const Super = DOMHTMLElement;
+    pub const name = "DOMHTMLIFrameElement";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "align", objc.NSString, .{} },
         .{ "contentDocument", DOMDocument, .{} },
@@ -1849,22 +1509,15 @@ pub const DOMHTMLIFrameElement = struct {
         .{ "src", objc.NSString, .{} },
         .{ "width", objc.NSString, .{} },
     };
-
-    pub fn send(self: DOMHTMLIFrameElement, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMHTMLIFrameElement", class_methods, selector, args);
-    }
 };
 
 pub const DOMHTMLImageElement = struct {
-    obj: Object,
-
     pub const Super = DOMHTMLElement;
+    pub const name = "DOMHTMLImageElement";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "absoluteImageURL", Foundation.NSURL, .{} },
         .{ "align", objc.NSString, .{} },
@@ -1900,22 +1553,15 @@ pub const DOMHTMLImageElement = struct {
         .{ "x", i32, .{} },
         .{ "y", i32, .{} },
     };
-
-    pub fn send(self: DOMHTMLImageElement, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMHTMLImageElement", class_methods, selector, args);
-    }
 };
 
 pub const DOMHTMLInputElement = struct {
-    obj: Object,
-
     pub const Super = DOMHTMLElement;
+    pub const name = "DOMHTMLInputElement";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "absoluteImageURL", Foundation.NSURL, .{} },
         .{ "accept", objc.NSString, .{} },
@@ -1967,86 +1613,58 @@ pub const DOMHTMLInputElement = struct {
         .{ "value", objc.NSString, .{} },
         .{ "willValidate", objc.BOOL, .{} },
     };
-
-    pub fn send(self: DOMHTMLInputElement, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMHTMLInputElement", class_methods, selector, args);
-    }
 };
 
 pub const DOMHTMLLIElement = struct {
-    obj: Object,
-
     pub const Super = DOMHTMLElement;
+    pub const name = "DOMHTMLLIElement";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "setType:", void, .{objc.NSString} },
         .{ "setValue:", void, .{i32} },
         .{ "type", objc.NSString, .{} },
         .{ "value", i32, .{} },
     };
-
-    pub fn send(self: DOMHTMLLIElement, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMHTMLLIElement", class_methods, selector, args);
-    }
 };
 
 pub const DOMHTMLLabelElement = struct {
-    obj: Object,
-
     pub const Super = DOMHTMLElement;
+    pub const name = "DOMHTMLLabelElement";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "form", DOMHTMLFormElement, .{} },
         .{ "htmlFor", objc.NSString, .{} },
         .{ "setHtmlFor:", void, .{objc.NSString} },
     };
-
-    pub fn send(self: DOMHTMLLabelElement, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMHTMLLabelElement", class_methods, selector, args);
-    }
 };
 
 pub const DOMHTMLLegendElement = struct {
-    obj: Object,
-
     pub const Super = DOMHTMLElement;
+    pub const name = "DOMHTMLLegendElement";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "align", objc.NSString, .{} },
         .{ "form", DOMHTMLFormElement, .{} },
         .{ "setAlign:", void, .{objc.NSString} },
     };
-
-    pub fn send(self: DOMHTMLLegendElement, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMHTMLLegendElement", class_methods, selector, args);
-    }
 };
 
 pub const DOMHTMLLinkElement = struct {
-    obj: Object,
-
     pub const Super = DOMHTMLElement;
+    pub const name = "DOMHTMLLinkElement";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "absoluteLinkURL", Foundation.NSURL, .{} },
         .{ "charset", objc.NSString, .{} },
@@ -2069,83 +1687,55 @@ pub const DOMHTMLLinkElement = struct {
         .{ "target", objc.NSString, .{} },
         .{ "type", objc.NSString, .{} },
     };
-
-    pub fn send(self: DOMHTMLLinkElement, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMHTMLLinkElement", class_methods, selector, args);
-    }
 };
 
 pub const DOMHTMLMapElement = struct {
-    obj: Object,
-
     pub const Super = DOMHTMLElement;
+    pub const name = "DOMHTMLMapElement";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "areas", DOMHTMLCollection, .{} },
         .{ "name", objc.NSString, .{} },
         .{ "setName:", void, .{objc.NSString} },
     };
-
-    pub fn send(self: DOMHTMLMapElement, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMHTMLMapElement", class_methods, selector, args);
-    }
 };
 
 pub const DOMHTMLMarqueeElement = struct {
-    obj: Object,
-
     pub const Super = DOMHTMLElement;
+    pub const name = "DOMHTMLMarqueeElement";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "start", void, .{} },
         .{ "stop", void, .{} },
     };
-
-    pub fn send(self: DOMHTMLMarqueeElement, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMHTMLMarqueeElement", class_methods, selector, args);
-    }
 };
 
 pub const DOMHTMLMenuElement = struct {
-    obj: Object,
-
     pub const Super = DOMHTMLElement;
+    pub const name = "DOMHTMLMenuElement";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "compact", objc.BOOL, .{} },
         .{ "setCompact:", void, .{objc.BOOL} },
     };
-
-    pub fn send(self: DOMHTMLMenuElement, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMHTMLMenuElement", class_methods, selector, args);
-    }
 };
 
 pub const DOMHTMLMetaElement = struct {
-    obj: Object,
-
     pub const Super = DOMHTMLElement;
+    pub const name = "DOMHTMLMetaElement";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "content", objc.NSString, .{} },
         .{ "httpEquiv", objc.NSString, .{} },
@@ -2156,44 +1746,30 @@ pub const DOMHTMLMetaElement = struct {
         .{ "setName:", void, .{objc.NSString} },
         .{ "setScheme:", void, .{objc.NSString} },
     };
-
-    pub fn send(self: DOMHTMLMetaElement, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMHTMLMetaElement", class_methods, selector, args);
-    }
 };
 
 pub const DOMHTMLModElement = struct {
-    obj: Object,
-
     pub const Super = DOMHTMLElement;
+    pub const name = "DOMHTMLModElement";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "cite", objc.NSString, .{} },
         .{ "dateTime", objc.NSString, .{} },
         .{ "setCite:", void, .{objc.NSString} },
         .{ "setDateTime:", void, .{objc.NSString} },
     };
-
-    pub fn send(self: DOMHTMLModElement, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMHTMLModElement", class_methods, selector, args);
-    }
 };
 
 pub const DOMHTMLOListElement = struct {
-    obj: Object,
-
     pub const Super = DOMHTMLElement;
+    pub const name = "DOMHTMLOListElement";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "compact", objc.BOOL, .{} },
         .{ "setCompact:", void, .{objc.BOOL} },
@@ -2202,22 +1778,15 @@ pub const DOMHTMLOListElement = struct {
         .{ "start", i32, .{} },
         .{ "type", objc.NSString, .{} },
     };
-
-    pub fn send(self: DOMHTMLOListElement, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMHTMLOListElement", class_methods, selector, args);
-    }
 };
 
 pub const DOMHTMLObjectElement = struct {
-    obj: Object,
-
     pub const Super = DOMHTMLElement;
+    pub const name = "DOMHTMLObjectElement";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "absoluteImageURL", Foundation.NSURL, .{} },
         .{ "align", objc.NSString, .{} },
@@ -2256,44 +1825,30 @@ pub const DOMHTMLObjectElement = struct {
         .{ "vspace", i32, .{} },
         .{ "width", objc.NSString, .{} },
     };
-
-    pub fn send(self: DOMHTMLObjectElement, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMHTMLObjectElement", class_methods, selector, args);
-    }
 };
 
 pub const DOMHTMLOptGroupElement = struct {
-    obj: Object,
-
     pub const Super = DOMHTMLElement;
+    pub const name = "DOMHTMLOptGroupElement";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "disabled", objc.BOOL, .{} },
         .{ "label", objc.NSString, .{} },
         .{ "setDisabled:", void, .{objc.BOOL} },
         .{ "setLabel:", void, .{objc.NSString} },
     };
-
-    pub fn send(self: DOMHTMLOptGroupElement, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMHTMLOptGroupElement", class_methods, selector, args);
-    }
 };
 
 pub const DOMHTMLOptionElement = struct {
-    obj: Object,
-
     pub const Super = DOMHTMLElement;
+    pub const name = "DOMHTMLOptionElement";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "defaultSelected", objc.BOOL, .{} },
         .{ "disabled", objc.BOOL, .{} },
@@ -2309,22 +1864,15 @@ pub const DOMHTMLOptionElement = struct {
         .{ "text", objc.NSString, .{} },
         .{ "value", objc.NSString, .{} },
     };
-
-    pub fn send(self: DOMHTMLOptionElement, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMHTMLOptionElement", class_methods, selector, args);
-    }
 };
 
 pub const DOMHTMLOptionsCollection = struct {
-    obj: Object,
-
     pub const Super = DOMObject;
+    pub const name = "DOMHTMLOptionsCollection";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "add:index:", void, .{ DOMHTMLOptionElement, u32 } },
         .{ "item:", ?DOMNode, .{u32} },
@@ -2335,42 +1883,28 @@ pub const DOMHTMLOptionsCollection = struct {
         .{ "setLength:", void, .{u32} },
         .{ "setSelectedIndex:", void, .{i32} },
     };
-
-    pub fn send(self: DOMHTMLOptionsCollection, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMHTMLOptionsCollection", class_methods, selector, args);
-    }
 };
 
 pub const DOMHTMLParagraphElement = struct {
-    obj: Object,
-
     pub const Super = DOMHTMLElement;
+    pub const name = "DOMHTMLParagraphElement";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "align", objc.NSString, .{} },
         .{ "setAlign:", void, .{objc.NSString} },
     };
-
-    pub fn send(self: DOMHTMLParagraphElement, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMHTMLParagraphElement", class_methods, selector, args);
-    }
 };
 
 pub const DOMHTMLParamElement = struct {
-    obj: Object,
-
     pub const Super = DOMHTMLElement;
+    pub const name = "DOMHTMLParamElement";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "name", objc.NSString, .{} },
         .{ "setName:", void, .{objc.NSString} },
@@ -2381,64 +1915,43 @@ pub const DOMHTMLParamElement = struct {
         .{ "value", objc.NSString, .{} },
         .{ "valueType", objc.NSString, .{} },
     };
-
-    pub fn send(self: DOMHTMLParamElement, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMHTMLParamElement", class_methods, selector, args);
-    }
 };
 
 pub const DOMHTMLPreElement = struct {
-    obj: Object,
-
     pub const Super = DOMHTMLElement;
+    pub const name = "DOMHTMLPreElement";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "setWidth:", void, .{i32} },
         .{ "setWrap:", void, .{objc.BOOL} },
         .{ "width", i32, .{} },
         .{ "wrap", objc.BOOL, .{} },
     };
-
-    pub fn send(self: DOMHTMLPreElement, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMHTMLPreElement", class_methods, selector, args);
-    }
 };
 
 pub const DOMHTMLQuoteElement = struct {
-    obj: Object,
-
     pub const Super = DOMHTMLElement;
+    pub const name = "DOMHTMLQuoteElement";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "cite", objc.NSString, .{} },
         .{ "setCite:", void, .{objc.NSString} },
     };
-
-    pub fn send(self: DOMHTMLQuoteElement, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMHTMLQuoteElement", class_methods, selector, args);
-    }
 };
 
 pub const DOMHTMLScriptElement = struct {
-    obj: Object,
-
     pub const Super = DOMHTMLElement;
+    pub const name = "DOMHTMLScriptElement";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "charset", objc.NSString, .{} },
         .{ "defer", objc.BOOL, .{} },
@@ -2455,22 +1968,15 @@ pub const DOMHTMLScriptElement = struct {
         .{ "text", objc.NSString, .{} },
         .{ "type", objc.NSString, .{} },
     };
-
-    pub fn send(self: DOMHTMLScriptElement, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMHTMLScriptElement", class_methods, selector, args);
-    }
 };
 
 pub const DOMHTMLSelectElement = struct {
-    obj: Object,
-
     pub const Super = DOMHTMLElement;
+    pub const name = "DOMHTMLSelectElement";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "add:before:", void, .{ DOMHTMLElement, DOMHTMLElement } },
         .{ "autofocus", objc.BOOL, .{} },
@@ -2496,22 +2002,15 @@ pub const DOMHTMLSelectElement = struct {
         .{ "value", objc.NSString, .{} },
         .{ "willValidate", objc.BOOL, .{} },
     };
-
-    pub fn send(self: DOMHTMLSelectElement, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMHTMLSelectElement", class_methods, selector, args);
-    }
 };
 
 pub const DOMHTMLStyleElement = struct {
-    obj: Object,
-
     pub const Super = DOMHTMLElement;
+    pub const name = "DOMHTMLStyleElement";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "disabled", objc.BOOL, .{} },
         .{ "media", objc.NSString, .{} },
@@ -2521,42 +2020,28 @@ pub const DOMHTMLStyleElement = struct {
         .{ "sheet", DOMStyleSheet, .{} },
         .{ "type", objc.NSString, .{} },
     };
-
-    pub fn send(self: DOMHTMLStyleElement, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMHTMLStyleElement", class_methods, selector, args);
-    }
 };
 
 pub const DOMHTMLTableCaptionElement = struct {
-    obj: Object,
-
     pub const Super = DOMHTMLElement;
+    pub const name = "DOMHTMLTableCaptionElement";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "align", objc.NSString, .{} },
         .{ "setAlign:", void, .{objc.NSString} },
     };
-
-    pub fn send(self: DOMHTMLTableCaptionElement, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMHTMLTableCaptionElement", class_methods, selector, args);
-    }
 };
 
 pub const DOMHTMLTableCellElement = struct {
-    obj: Object,
-
     pub const Super = DOMHTMLElement;
+    pub const name = "DOMHTMLTableCellElement";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "abbr", objc.NSString, .{} },
         .{ "align", objc.NSString, .{} },
@@ -2588,22 +2073,15 @@ pub const DOMHTMLTableCellElement = struct {
         .{ "vAlign", objc.NSString, .{} },
         .{ "width", objc.NSString, .{} },
     };
-
-    pub fn send(self: DOMHTMLTableCellElement, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMHTMLTableCellElement", class_methods, selector, args);
-    }
 };
 
 pub const DOMHTMLTableColElement = struct {
-    obj: Object,
-
     pub const Super = DOMHTMLElement;
+    pub const name = "DOMHTMLTableColElement";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "align", objc.NSString, .{} },
         .{ "ch", objc.NSString, .{} },
@@ -2618,22 +2096,15 @@ pub const DOMHTMLTableColElement = struct {
         .{ "vAlign", objc.NSString, .{} },
         .{ "width", objc.NSString, .{} },
     };
-
-    pub fn send(self: DOMHTMLTableColElement, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMHTMLTableColElement", class_methods, selector, args);
-    }
 };
 
 pub const DOMHTMLTableElement = struct {
-    obj: Object,
-
     pub const Super = DOMHTMLElement;
+    pub const name = "DOMHTMLTableElement";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "align", objc.NSString, .{} },
         .{ "bgColor", objc.NSString, .{} },
@@ -2670,22 +2141,15 @@ pub const DOMHTMLTableElement = struct {
         .{ "tHead", DOMHTMLTableSectionElement, .{} },
         .{ "width", objc.NSString, .{} },
     };
-
-    pub fn send(self: DOMHTMLTableElement, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMHTMLTableElement", class_methods, selector, args);
-    }
 };
 
 pub const DOMHTMLTableRowElement = struct {
-    obj: Object,
-
     pub const Super = DOMHTMLElement;
+    pub const name = "DOMHTMLTableRowElement";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "align", objc.NSString, .{} },
         .{ "bgColor", objc.NSString, .{} },
@@ -2703,22 +2167,15 @@ pub const DOMHTMLTableRowElement = struct {
         .{ "setVAlign:", void, .{objc.NSString} },
         .{ "vAlign", objc.NSString, .{} },
     };
-
-    pub fn send(self: DOMHTMLTableRowElement, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMHTMLTableRowElement", class_methods, selector, args);
-    }
 };
 
 pub const DOMHTMLTableSectionElement = struct {
-    obj: Object,
-
     pub const Super = DOMHTMLElement;
+    pub const name = "DOMHTMLTableSectionElement";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "align", objc.NSString, .{} },
         .{ "ch", objc.NSString, .{} },
@@ -2732,22 +2189,15 @@ pub const DOMHTMLTableSectionElement = struct {
         .{ "setVAlign:", void, .{objc.NSString} },
         .{ "vAlign", objc.NSString, .{} },
     };
-
-    pub fn send(self: DOMHTMLTableSectionElement, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMHTMLTableSectionElement", class_methods, selector, args);
-    }
 };
 
 pub const DOMHTMLTextAreaElement = struct {
-    obj: Object,
-
     pub const Super = DOMHTMLElement;
+    pub const name = "DOMHTMLTextAreaElement";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "autofocus", objc.BOOL, .{} },
         .{ "cols", i32, .{} },
@@ -2775,64 +2225,43 @@ pub const DOMHTMLTextAreaElement = struct {
         .{ "value", objc.NSString, .{} },
         .{ "willValidate", objc.BOOL, .{} },
     };
-
-    pub fn send(self: DOMHTMLTextAreaElement, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMHTMLTextAreaElement", class_methods, selector, args);
-    }
 };
 
 pub const DOMHTMLTitleElement = struct {
-    obj: Object,
-
     pub const Super = DOMHTMLElement;
+    pub const name = "DOMHTMLTitleElement";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "setText:", void, .{objc.NSString} },
         .{ "text", objc.NSString, .{} },
     };
-
-    pub fn send(self: DOMHTMLTitleElement, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMHTMLTitleElement", class_methods, selector, args);
-    }
 };
 
 pub const DOMHTMLUListElement = struct {
-    obj: Object,
-
     pub const Super = DOMHTMLElement;
+    pub const name = "DOMHTMLUListElement";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "compact", objc.BOOL, .{} },
         .{ "setCompact:", void, .{objc.BOOL} },
         .{ "setType:", void, .{objc.NSString} },
         .{ "type", objc.NSString, .{} },
     };
-
-    pub fn send(self: DOMHTMLUListElement, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMHTMLUListElement", class_methods, selector, args);
-    }
 };
 
 pub const DOMImplementation = struct {
-    obj: Object,
-
     pub const Super = DOMObject;
+    pub const name = "DOMImplementation";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "createCSSStyleSheet:media:", ?DOMCSSStyleSheet, .{ objc.NSString, objc.NSString } },
         .{ "createDocument:qualifiedName:doctype:", ?DOMDocument, .{ objc.NSString, objc.NSString, DOMDocumentType } },
@@ -2840,22 +2269,15 @@ pub const DOMImplementation = struct {
         .{ "createHTMLDocument:", ?DOMHTMLDocument, .{objc.NSString} },
         .{ "hasFeature:version:", objc.BOOL, .{ objc.NSString, objc.NSString } },
     };
-
-    pub fn send(self: DOMImplementation, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMImplementation", class_methods, selector, args);
-    }
 };
 
 pub const DOMKeyboardEvent = struct {
-    obj: Object,
-
     pub const Super = DOMUIEvent;
+    pub const name = "DOMKeyboardEvent";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "altGraphKey", objc.BOOL, .{} },
         .{ "altKey", objc.BOOL, .{} },
@@ -2870,22 +2292,15 @@ pub const DOMKeyboardEvent = struct {
         .{ "metaKey", objc.BOOL, .{} },
         .{ "shiftKey", objc.BOOL, .{} },
     };
-
-    pub fn send(self: DOMKeyboardEvent, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMKeyboardEvent", class_methods, selector, args);
-    }
 };
 
 pub const DOMMediaList = struct {
-    obj: Object,
-
     pub const Super = DOMObject;
+    pub const name = "DOMMediaList";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "appendMedium:", void, .{objc.NSString} },
         .{ "deleteMedium:", void, .{objc.NSString} },
@@ -2894,22 +2309,15 @@ pub const DOMMediaList = struct {
         .{ "mediaText", objc.NSString, .{} },
         .{ "setMediaText:", void, .{objc.NSString} },
     };
-
-    pub fn send(self: DOMMediaList, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMMediaList", class_methods, selector, args);
-    }
 };
 
 pub const DOMMouseEvent = struct {
-    obj: Object,
-
     pub const Super = DOMUIEvent;
+    pub const name = "DOMMouseEvent";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "altKey", objc.BOOL, .{} },
         .{ "button", i16, .{} },
@@ -2931,22 +2339,15 @@ pub const DOMMouseEvent = struct {
         .{ "x", i32, .{} },
         .{ "y", i32, .{} },
     };
-
-    pub fn send(self: DOMMouseEvent, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMMouseEvent", class_methods, selector, args);
-    }
 };
 
 pub const DOMMutationEvent = struct {
-    obj: Object,
-
     pub const Super = DOMEvent;
+    pub const name = "DOMMutationEvent";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "attrChange", u16, .{} },
         .{ "attrName", objc.NSString, .{} },
@@ -2955,22 +2356,15 @@ pub const DOMMutationEvent = struct {
         .{ "prevValue", objc.NSString, .{} },
         .{ "relatedNode", DOMNode, .{} },
     };
-
-    pub fn send(self: DOMMutationEvent, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMMutationEvent", class_methods, selector, args);
-    }
 };
 
 pub const DOMNamedNodeMap = struct {
-    obj: Object,
-
     pub const Super = DOMObject;
+    pub const name = "DOMNamedNodeMap";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "getNamedItem:", ?DOMNode, .{objc.NSString} },
         .{ "getNamedItemNS:localName:", ?DOMNode, .{ objc.NSString, objc.NSString } },
@@ -2981,22 +2375,15 @@ pub const DOMNamedNodeMap = struct {
         .{ "setNamedItem:", ?DOMNode, .{DOMNode} },
         .{ "setNamedItemNS:", ?DOMNode, .{DOMNode} },
     };
-
-    pub fn send(self: DOMNamedNodeMap, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMNamedNodeMap", class_methods, selector, args);
-    }
 };
 
 pub const DOMNode = struct {
-    obj: Object,
-
     pub const Super = DOMObject;
+    pub const name = "DOMNode";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "appendChild:", ?DOMNode, .{DOMNode} },
         .{ "attributes", DOMNamedNodeMap, .{} },
@@ -3039,22 +2426,15 @@ pub const DOMNode = struct {
         .{ "textContent", objc.NSString, .{} },
         .{ "webArchive", WebArchive, .{} },
     };
-
-    pub fn send(self: DOMNode, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMNode", class_methods, selector, args);
-    }
 };
 
 pub const DOMNodeIterator = struct {
-    obj: Object,
-
     pub const Super = DOMObject;
+    pub const name = "DOMNodeIterator";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "detach", void, .{} },
         .{ "expandEntityReferences", objc.BOOL, .{} },
@@ -3066,124 +2446,82 @@ pub const DOMNodeIterator = struct {
         .{ "root", DOMNode, .{} },
         .{ "whatToShow", u32, .{} },
     };
-
-    pub fn send(self: DOMNodeIterator, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMNodeIterator", class_methods, selector, args);
-    }
 };
 
 pub const DOMNodeList = struct {
-    obj: Object,
-
     pub const Super = DOMObject;
+    pub const name = "DOMNodeList";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "item:", ?DOMNode, .{u32} },
         .{ "length", u32, .{} },
     };
-
-    pub fn send(self: DOMNodeList, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMNodeList", class_methods, selector, args);
-    }
 };
 
 pub const DOMObject = struct {
-    obj: Object,
-
     pub const Super = WebScriptObject;
+    pub const name = "DOMObject";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "sheet", DOMStyleSheet, .{} },
     };
-
-    pub fn send(self: DOMObject, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMObject", class_methods, selector, args);
-    }
 };
 
 pub const DOMOverflowEvent = struct {
-    obj: Object,
-
     pub const Super = DOMEvent;
+    pub const name = "DOMOverflowEvent";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "horizontalOverflow", objc.BOOL, .{} },
         .{ "initOverflowEvent:horizontalOverflow:verticalOverflow:", void, .{ u16, objc.BOOL, objc.BOOL } },
         .{ "orient", u16, .{} },
         .{ "verticalOverflow", objc.BOOL, .{} },
     };
-
-    pub fn send(self: DOMOverflowEvent, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMOverflowEvent", class_methods, selector, args);
-    }
 };
 
 pub const DOMProcessingInstruction = struct {
-    obj: Object,
-
     pub const Super = DOMCharacterData;
+    pub const name = "DOMProcessingInstruction";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "sheet", DOMStyleSheet, .{} },
         .{ "target", objc.NSString, .{} },
     };
-
-    pub fn send(self: DOMProcessingInstruction, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMProcessingInstruction", class_methods, selector, args);
-    }
 };
 
 pub const DOMProgressEvent = struct {
-    obj: Object,
-
     pub const Super = DOMEvent;
+    pub const name = "DOMProgressEvent";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "lengthComputable", objc.BOOL, .{} },
         .{ "loaded", u64, .{} },
         .{ "total", u64, .{} },
     };
-
-    pub fn send(self: DOMProgressEvent, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMProgressEvent", class_methods, selector, args);
-    }
 };
 
 pub const DOMRGBColor = struct {
-    obj: Object,
-
     pub const Super = DOMObject;
+    pub const name = "DOMRGBColor";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "alpha", DOMCSSPrimitiveValue, .{} },
         .{ "blue", DOMCSSPrimitiveValue, .{} },
@@ -3191,22 +2529,15 @@ pub const DOMRGBColor = struct {
         .{ "green", DOMCSSPrimitiveValue, .{} },
         .{ "red", DOMCSSPrimitiveValue, .{} },
     };
-
-    pub fn send(self: DOMRGBColor, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMRGBColor", class_methods, selector, args);
-    }
 };
 
 pub const DOMRange = struct {
-    obj: Object,
-
     pub const Super = DOMObject;
+    pub const name = "DOMRange";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "cloneContents", ?*anyopaque, .{} },
         .{ "cloneRange", ?DOMRange, .{} },
@@ -3243,44 +2574,30 @@ pub const DOMRange = struct {
         .{ "toString", ?objc.NSString, .{} },
         .{ "webArchive", WebArchive, .{} },
     };
-
-    pub fn send(self: DOMRange, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMRange", class_methods, selector, args);
-    }
 };
 
 pub const DOMRect = struct {
-    obj: Object,
-
     pub const Super = DOMObject;
+    pub const name = "DOMRect";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "bottom", DOMCSSPrimitiveValue, .{} },
         .{ "left", DOMCSSPrimitiveValue, .{} },
         .{ "right", DOMCSSPrimitiveValue, .{} },
         .{ "top", DOMCSSPrimitiveValue, .{} },
     };
-
-    pub fn send(self: DOMRect, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMRect", class_methods, selector, args);
-    }
 };
 
 pub const DOMStyleSheet = struct {
-    obj: Object,
-
     pub const Super = DOMObject;
+    pub const name = "DOMStyleSheet";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "disabled", objc.BOOL, .{} },
         .{ "href", objc.NSString, .{} },
@@ -3291,63 +2608,42 @@ pub const DOMStyleSheet = struct {
         .{ "title", objc.NSString, .{} },
         .{ "type", objc.NSString, .{} },
     };
-
-    pub fn send(self: DOMStyleSheet, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMStyleSheet", class_methods, selector, args);
-    }
 };
 
 pub const DOMStyleSheetList = struct {
-    obj: Object,
-
     pub const Super = DOMObject;
+    pub const name = "DOMStyleSheetList";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "item:", ?DOMStyleSheet, .{u32} },
         .{ "length", u32, .{} },
     };
-
-    pub fn send(self: DOMStyleSheetList, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMStyleSheetList", class_methods, selector, args);
-    }
 };
 
 pub const DOMText = struct {
-    obj: Object,
-
     pub const Super = DOMCharacterData;
+    pub const name = "DOMText";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "replaceWholeText:", ?DOMText, .{objc.NSString} },
         .{ "splitText:", ?DOMText, .{u32} },
         .{ "wholeText", objc.NSString, .{} },
     };
-
-    pub fn send(self: DOMText, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMText", class_methods, selector, args);
-    }
 };
 
 pub const DOMTreeWalker = struct {
-    obj: Object,
-
     pub const Super = DOMObject;
+    pub const name = "DOMTreeWalker";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "currentNode", DOMNode, .{} },
         .{ "expandEntityReferences", objc.BOOL, .{} },
@@ -3363,22 +2659,15 @@ pub const DOMTreeWalker = struct {
         .{ "setCurrentNode:", void, .{DOMNode} },
         .{ "whatToShow", u32, .{} },
     };
-
-    pub fn send(self: DOMTreeWalker, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMTreeWalker", class_methods, selector, args);
-    }
 };
 
 pub const DOMUIEvent = struct {
-    obj: Object,
-
     pub const Super = DOMEvent;
+    pub const name = "DOMUIEvent";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "charCode", i32, .{} },
         .{ "detail", i32, .{} },
@@ -3389,22 +2678,15 @@ pub const DOMUIEvent = struct {
         .{ "view", DOMAbstractView, .{} },
         .{ "which", i32, .{} },
     };
-
-    pub fn send(self: DOMUIEvent, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMUIEvent", class_methods, selector, args);
-    }
 };
 
 pub const DOMWheelEvent = struct {
-    obj: Object,
-
     pub const Super = DOMMouseEvent;
+    pub const name = "DOMWheelEvent";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "initWheelEvent:wheelDeltaY:view:screenX:screenY:clientX:clientY:ctrlKey:altKey:shiftKey:metaKey:", void, .{ i32, i32, DOMAbstractView, i32, i32, i32, i32, objc.BOOL, objc.BOOL, objc.BOOL, objc.BOOL } },
         .{ "isHorizontal", objc.BOOL, .{} },
@@ -3412,41 +2694,27 @@ pub const DOMWheelEvent = struct {
         .{ "wheelDeltaX", i32, .{} },
         .{ "wheelDeltaY", i32, .{} },
     };
-
-    pub fn send(self: DOMWheelEvent, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMWheelEvent", class_methods, selector, args);
-    }
 };
 
 pub const DOMXPathExpression = struct {
-    obj: Object,
-
     pub const Super = DOMObject;
+    pub const name = "DOMXPathExpression";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "evaluate:type:inResult:", ?DOMXPathResult, .{ DOMNode, u16, DOMXPathResult } },
     };
-
-    pub fn send(self: DOMXPathExpression, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMXPathExpression", class_methods, selector, args);
-    }
 };
 
 pub const DOMXPathResult = struct {
-    obj: Object,
-
     pub const Super = DOMObject;
+    pub const name = "DOMXPathResult";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "booleanValue", objc.BOOL, .{} },
         .{ "invalidIteratorState", objc.BOOL, .{} },
@@ -3458,20 +2726,13 @@ pub const DOMXPathResult = struct {
         .{ "snapshotLength", u32, .{} },
         .{ "stringValue", objc.NSString, .{} },
     };
-
-    pub fn send(self: DOMXPathResult, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "DOMXPathResult", class_methods, selector, args);
-    }
 };
 
 pub const WKBackForwardList = struct {
-    obj: Object,
+    pub const name = "WKBackForwardList";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
 
     pub const methods = .{
         .{ "backItem", ?WKBackForwardListItem, .{} },
@@ -3481,58 +2742,37 @@ pub const WKBackForwardList = struct {
         .{ "forwardList", Object, .{} },
         .{ "itemAtIndex:", ?WKBackForwardListItem, .{objc.NSInteger} },
     };
-
-    pub fn send(self: WKBackForwardList, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
-        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "WKBackForwardList", class_methods, selector, args);
-    }
 };
 
 pub const WKBackForwardListItem = struct {
-    obj: Object,
+    pub const name = "WKBackForwardListItem";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
 
     pub const methods = .{
         .{ "URL", Foundation.NSURL, .{} },
         .{ "initialURL", Foundation.NSURL, .{} },
         .{ "title", ?objc.NSString, .{} },
     };
-
-    pub fn send(self: WKBackForwardListItem, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
-        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "WKBackForwardListItem", class_methods, selector, args);
-    }
 };
 
 pub const WKContentRuleList = struct {
-    obj: Object,
+    pub const name = "WKContentRuleList";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
 
     pub const methods = .{
         .{ "identifier", objc.NSString, .{} },
     };
-
-    pub fn send(self: WKContentRuleList, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
-        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "WKContentRuleList", class_methods, selector, args);
-    }
 };
 
 pub const WKContentRuleListStore = struct {
-    obj: Object,
+    pub const name = "WKContentRuleListStore";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
 
     pub const methods = .{
         .{ "compileContentRuleListForIdentifier:encodedContentRuleList:completionHandler:", void, .{ objc.NSString, objc.NSString, ?*anyopaque } },
@@ -3541,44 +2781,34 @@ pub const WKContentRuleListStore = struct {
         .{ "removeContentRuleListForIdentifier:completionHandler:", void, .{ objc.NSString, ?*anyopaque } },
     };
 
-    pub fn send(self: WKContentRuleListStore, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
-        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
-    }
-
     pub const class_methods = .{
         .{ "defaultStore", ?*anyopaque, .{} },
         .{ "storeWithURL:", Object, .{Foundation.NSURL} },
     };
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "WKContentRuleListStore", class_methods, selector, args);
-    }
 };
 
 pub const WKContentWorld = struct {
-    obj: Object,
+    pub const name = "WKContentWorld";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
 
     pub const methods = .{
         .{ "name", ?objc.NSString, .{} },
     };
-
-    pub fn send(self: WKContentWorld, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
-        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
-    }
 
     pub const class_methods = .{
         .{ "defaultClientWorld", WKContentWorld, .{} },
         .{ "pageWorld", WKContentWorld, .{} },
         .{ "worldWithName:", WKContentWorld, .{objc.NSString} },
     };
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "WKContentWorld", class_methods, selector, args);
-    }
 };
 
 pub const WKDownload = struct {
-    obj: Object,
+    pub const name = "WKDownload";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
 
     pub const methods = .{
         .{ "cancel:", void, .{?*anyopaque} },
@@ -3589,16 +2819,6 @@ pub const WKDownload = struct {
         .{ "userInitiated", objc.BOOL, .{} },
         .{ "webView", ?WKWebView, .{} },
     };
-
-    pub fn send(self: WKDownload, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
-        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "WKDownload", class_methods, selector, args);
-    }
 
     pub const PlaceholderPolicy = enum(i64) {
         disable = 0,
@@ -3611,7 +2831,10 @@ pub const WKDownload = struct {
 };
 
 pub const WKFindConfiguration = struct {
-    obj: Object,
+    pub const name = "WKFindConfiguration";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
 
     pub const methods = .{
         .{ "backwards", objc.BOOL, .{} },
@@ -3621,38 +2844,24 @@ pub const WKFindConfiguration = struct {
         .{ "setWraps:", void, .{objc.BOOL} },
         .{ "wraps", objc.BOOL, .{} },
     };
-
-    pub fn send(self: WKFindConfiguration, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
-        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "WKFindConfiguration", class_methods, selector, args);
-    }
 };
 
 pub const WKFindResult = struct {
-    obj: Object,
+    pub const name = "WKFindResult";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
 
     pub const methods = .{
         .{ "matchFound", objc.BOOL, .{} },
     };
-
-    pub fn send(self: WKFindResult, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
-        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "WKFindResult", class_methods, selector, args);
-    }
 };
 
 pub const WKFrameInfo = struct {
-    obj: Object,
+    pub const name = "WKFrameInfo";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
 
     pub const methods = .{
         .{ "mainFrame", objc.BOOL, .{} },
@@ -3660,20 +2869,13 @@ pub const WKFrameInfo = struct {
         .{ "securityOrigin", WKSecurityOrigin, .{} },
         .{ "webView", ?WKWebView, .{} },
     };
-
-    pub fn send(self: WKFrameInfo, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
-        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "WKFrameInfo", class_methods, selector, args);
-    }
 };
 
 pub const WKHTTPCookieStore = struct {
-    obj: Object,
+    pub const name = "WKHTTPCookieStore";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
 
     pub const methods = .{
         .{ "addObserver:", void, .{WKHTTPCookieStoreObserver} },
@@ -3686,16 +2888,6 @@ pub const WKHTTPCookieStore = struct {
         .{ "setCookies:completionHandler:", void, .{ Object, ?*anyopaque } },
     };
 
-    pub fn send(self: WKHTTPCookieStore, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
-        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "WKHTTPCookieStore", class_methods, selector, args);
-    }
-
     pub const CookiePolicy = enum(i64) {
         allow = 0,
         disallow = 1,
@@ -3703,25 +2895,21 @@ pub const WKHTTPCookieStore = struct {
 };
 
 pub const WKNavigation = struct {
-    obj: Object,
+    pub const name = "WKNavigation";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
 
     pub const methods = .{
         .{ "effectiveContentMode", WKWebpagePreferences.ContentMode, .{} },
     };
-
-    pub fn send(self: WKNavigation, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
-        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "WKNavigation", class_methods, selector, args);
-    }
 };
 
 pub const WKNavigationAction = struct {
-    obj: Object,
+    pub const name = "WKNavigationAction";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
 
     pub const methods = .{
         .{ "buttonNumber", objc.NSInteger, .{} },
@@ -3733,78 +2921,50 @@ pub const WKNavigationAction = struct {
         .{ "sourceFrame", WKFrameInfo, .{} },
         .{ "targetFrame", ?WKFrameInfo, .{} },
     };
-
-    pub fn send(self: WKNavigationAction, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
-        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "WKNavigationAction", class_methods, selector, args);
-    }
 };
 
 pub const WKNavigationResponse = struct {
-    obj: Object,
+    pub const name = "WKNavigationResponse";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
 
     pub const methods = .{
         .{ "canShowMIMEType", objc.BOOL, .{} },
         .{ "forMainFrame", objc.BOOL, .{} },
         .{ "response", Foundation.URLResponse, .{} },
     };
-
-    pub fn send(self: WKNavigationResponse, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
-        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "WKNavigationResponse", class_methods, selector, args);
-    }
 };
 
 pub const WKOpenPanelParameters = struct {
-    obj: Object,
+    pub const name = "WKOpenPanelParameters";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
 
     pub const methods = .{
         .{ "allowsDirectories", objc.BOOL, .{} },
         .{ "allowsMultipleSelection", objc.BOOL, .{} },
     };
-
-    pub fn send(self: WKOpenPanelParameters, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
-        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "WKOpenPanelParameters", class_methods, selector, args);
-    }
 };
 
 pub const WKPDFConfiguration = struct {
-    obj: Object,
+    pub const name = "WKPDFConfiguration";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
 
     pub const methods = .{
         .{ "allowTransparentBackground", objc.BOOL, .{} },
         .{ "setAllowTransparentBackground:", void, .{objc.BOOL} },
     };
-
-    pub fn send(self: WKPDFConfiguration, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
-        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "WKPDFConfiguration", class_methods, selector, args);
-    }
 };
 
 pub const WKPreferences = struct {
-    obj: Object,
+    pub const name = "WKPreferences";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
 
     pub const methods = .{
         .{ "elementFullscreenEnabled", objc.BOOL, .{} },
@@ -3833,16 +2993,6 @@ pub const WKPreferences = struct {
         .{ "textInteractionEnabled", objc.BOOL, .{} },
     };
 
-    pub fn send(self: WKPreferences, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
-        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "WKPreferences", class_methods, selector, args);
-    }
-
     pub const InactiveSchedulingPolicy = enum(i64) {
         @"suspend" = 0,
         throttle = 1,
@@ -3851,7 +3001,10 @@ pub const WKPreferences = struct {
 };
 
 pub const WKScriptMessage = struct {
-    obj: Object,
+    pub const name = "WKScriptMessage";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
 
     pub const methods = .{
         .{ "body", Any, .{} },
@@ -3860,40 +3013,26 @@ pub const WKScriptMessage = struct {
         .{ "webView", ?WKWebView, .{} },
         .{ "world", WKContentWorld, .{} },
     };
-
-    pub fn send(self: WKScriptMessage, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
-        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "WKScriptMessage", class_methods, selector, args);
-    }
 };
 
 pub const WKSecurityOrigin = struct {
-    obj: Object,
+    pub const name = "WKSecurityOrigin";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
 
     pub const methods = .{
         .{ "host", objc.NSString, .{} },
         .{ "port", objc.NSInteger, .{} },
         .{ "protocol", objc.NSString, .{} },
     };
-
-    pub fn send(self: WKSecurityOrigin, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
-        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "WKSecurityOrigin", class_methods, selector, args);
-    }
 };
 
 pub const WKSnapshotConfiguration = struct {
-    obj: Object,
+    pub const name = "WKSnapshotConfiguration";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
 
     pub const methods = .{
         .{ "afterScreenUpdates", objc.BOOL, .{} },
@@ -3903,20 +3042,13 @@ pub const WKSnapshotConfiguration = struct {
         .{ "setSnapshotWidth:", void, .{?Foundation.NSNumber} },
         .{ "snapshotWidth", ?Foundation.NSNumber, .{} },
     };
-
-    pub fn send(self: WKSnapshotConfiguration, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
-        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "WKSnapshotConfiguration", class_methods, selector, args);
-    }
 };
 
 pub const WKUserContentController = struct {
-    obj: Object,
+    pub const name = "WKUserContentController";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
 
     pub const methods = .{
         .{ "addContentRuleList:", void, .{WKContentRuleList} },
@@ -3933,20 +3065,13 @@ pub const WKUserContentController = struct {
         .{ "removeScriptMessageHandlerForName:contentWorld:", void, .{ objc.NSString, WKContentWorld } },
         .{ "userScripts", Object, .{} },
     };
-
-    pub fn send(self: WKUserContentController, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
-        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "WKUserContentController", class_methods, selector, args);
-    }
 };
 
 pub const WKUserScript = struct {
-    obj: Object,
+    pub const name = "WKUserScript";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
 
     pub const methods = .{
         .{ "forMainFrameOnly", objc.BOOL, .{} },
@@ -3955,20 +3080,13 @@ pub const WKUserScript = struct {
         .{ "injectionTime", WKUserScriptInjectionTime, .{} },
         .{ "source", objc.NSString, .{} },
     };
-
-    pub fn send(self: WKUserScript, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
-        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "WKUserScript", class_methods, selector, args);
-    }
 };
 
 pub const WKWebExtension = struct {
-    obj: Object,
+    pub const name = "WKWebExtension";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
 
     pub const methods = .{
         .{ "actionIconForSize:", ?AppKit.NSImage, .{NSSize} },
@@ -3998,16 +3116,6 @@ pub const WKWebExtension = struct {
         .{ "version", ?objc.NSString, .{} },
     };
 
-    pub fn send(self: WKWebExtension, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
-        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "WKWebExtension", class_methods, selector, args);
-    }
-
     pub const WindowState = enum(i64) {
         normal = 0,
         minimized = 1,
@@ -4021,7 +3129,10 @@ pub const WKWebExtension = struct {
 };
 
 pub const WKWebExtensionAction = struct {
-    obj: Object,
+    pub const name = "WKWebExtensionAction";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
 
     pub const methods = .{
         .{ "associatedTab", ?WKWebExtensionTab, .{} },
@@ -4040,20 +3151,13 @@ pub const WKWebExtensionAction = struct {
         .{ "setInspectionName:", void, .{?objc.NSString} },
         .{ "webExtensionContext", ?WKWebExtensionContext, .{} },
     };
-
-    pub fn send(self: WKWebExtensionAction, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
-        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "WKWebExtensionAction", class_methods, selector, args);
-    }
 };
 
 pub const WKWebExtensionCommand = struct {
-    obj: Object,
+    pub const name = "WKWebExtensionCommand";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
 
     pub const methods = .{
         .{ "activationKey", ?objc.NSString, .{} },
@@ -4065,20 +3169,13 @@ pub const WKWebExtensionCommand = struct {
         .{ "title", objc.NSString, .{} },
         .{ "webExtensionContext", ?WKWebExtensionContext, .{} },
     };
-
-    pub fn send(self: WKWebExtensionCommand, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
-        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "WKWebExtensionCommand", class_methods, selector, args);
-    }
 };
 
 pub const WKWebExtensionContext = struct {
-    obj: Object,
+    pub const name = "WKWebExtensionContext";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
 
     pub const methods = .{
         .{ "actionForTab:", ?WKWebExtensionAction, .{?WKWebExtensionTab} },
@@ -4158,16 +3255,6 @@ pub const WKWebExtensionContext = struct {
         .{ "webViewConfiguration", ?WKWebViewConfiguration, .{} },
     };
 
-    pub fn send(self: WKWebExtensionContext, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
-        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "WKWebExtensionContext", class_methods, selector, args);
-    }
-
     pub const PermissionStatus = enum(i64) {
         deniedExplicitly = -3,
         deniedImplicitly = -2,
@@ -4180,7 +3267,10 @@ pub const WKWebExtensionContext = struct {
 };
 
 pub const WKWebExtensionController = struct {
-    obj: Object,
+    pub const name = "WKWebExtensionController";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
 
     pub const methods = .{
         .{ "configuration", WKWebExtensionControllerConfiguration, .{} },
@@ -4206,21 +3296,16 @@ pub const WKWebExtensionController = struct {
         .{ "unloadExtensionContext:error:", void, .{WKWebExtensionContext} },
     };
 
-    pub fn send(self: WKWebExtensionController, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
-        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
-    }
-
     pub const class_methods = .{
         .{ "allExtensionDataTypes", objc.NSString, .{} },
     };
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "WKWebExtensionController", class_methods, selector, args);
-    }
 };
 
 pub const WKWebExtensionControllerConfiguration = struct {
-    obj: Object,
+    pub const name = "WKWebExtensionControllerConfiguration";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
 
     pub const methods = .{
         .{ "defaultWebsiteDataStore", WKWebsiteDataStore, .{} },
@@ -4231,23 +3316,18 @@ pub const WKWebExtensionControllerConfiguration = struct {
         .{ "webViewConfiguration", WKWebViewConfiguration, .{} },
     };
 
-    pub fn send(self: WKWebExtensionControllerConfiguration, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
-        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
-    }
-
     pub const class_methods = .{
         .{ "configurationWithIdentifier:", Object, .{Foundation.NSUUID} },
         .{ "defaultConfiguration", ?*anyopaque, .{} },
         .{ "nonPersistentConfiguration", ?*anyopaque, .{} },
     };
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "WKWebExtensionControllerConfiguration", class_methods, selector, args);
-    }
 };
 
 pub const WKWebExtensionDataRecord = struct {
-    obj: Object,
+    pub const name = "WKWebExtensionDataRecord";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
 
     pub const methods = .{
         .{ "containedDataTypes", objc.NSString, .{} },
@@ -4257,20 +3337,13 @@ pub const WKWebExtensionDataRecord = struct {
         .{ "totalSizeInBytes", objc.NSInteger, .{} },
         .{ "uniqueIdentifier", objc.NSString, .{} },
     };
-
-    pub fn send(self: WKWebExtensionDataRecord, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
-        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "WKWebExtensionDataRecord", class_methods, selector, args);
-    }
 };
 
 pub const WKWebExtensionMatchPattern = struct {
-    obj: Object,
+    pub const name = "WKWebExtensionMatchPattern";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
 
     pub const methods = .{
         .{ "host", ?objc.NSString, .{} },
@@ -4287,23 +3360,18 @@ pub const WKWebExtensionMatchPattern = struct {
         .{ "string", objc.NSString, .{} },
     };
 
-    pub fn send(self: WKWebExtensionMatchPattern, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
-        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
-    }
-
     pub const class_methods = .{
         .{ "allHostsAndSchemesMatchPattern", ?*anyopaque, .{} },
         .{ "allURLsMatchPattern", ?*anyopaque, .{} },
         .{ "registerCustomURLScheme:", void, .{objc.NSString} },
     };
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "WKWebExtensionMatchPattern", class_methods, selector, args);
-    }
 };
 
 pub const WKWebExtensionMessagePort = struct {
-    obj: Object,
+    pub const name = "WKWebExtensionMessagePort";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
 
     pub const methods = .{
         .{ "applicationIdentifier", ?objc.NSString, .{} },
@@ -4316,20 +3384,13 @@ pub const WKWebExtensionMessagePort = struct {
         .{ "setDisconnectHandler:", void, .{void} },
         .{ "setMessageHandler:", void, .{void} },
     };
-
-    pub fn send(self: WKWebExtensionMessagePort, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
-        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "WKWebExtensionMessagePort", class_methods, selector, args);
-    }
 };
 
 pub const WKWebExtensionTabConfiguration = struct {
-    obj: Object,
+    pub const name = "WKWebExtensionTabConfiguration";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
 
     pub const methods = .{
         .{ "index", objc.NSInteger, .{} },
@@ -4342,20 +3403,13 @@ pub const WKWebExtensionTabConfiguration = struct {
         .{ "url", ?Foundation.NSURL, .{} },
         .{ "window", ?WKWebExtensionWindow, .{} },
     };
-
-    pub fn send(self: WKWebExtensionTabConfiguration, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
-        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "WKWebExtensionTabConfiguration", class_methods, selector, args);
-    }
 };
 
 pub const WKWebExtensionWindowConfiguration = struct {
-    obj: Object,
+    pub const name = "WKWebExtensionWindowConfiguration";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
 
     pub const methods = .{
         .{ "frame", NSRect, .{} },
@@ -4366,22 +3420,15 @@ pub const WKWebExtensionWindowConfiguration = struct {
         .{ "windowState", WKWebExtension.WindowState, .{} },
         .{ "windowType", WKWebExtension.WindowType, .{} },
     };
-
-    pub fn send(self: WKWebExtensionWindowConfiguration, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
-        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "WKWebExtensionWindowConfiguration", class_methods, selector, args);
-    }
 };
 
 pub const WKWebView = struct {
-    obj: Object,
-
     pub const Super = AppKit.NSView;
+    pub const name = "WKWebView";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "UIDelegate", ?WKUIDelegate, .{} },
         .{ "URL", ?Foundation.NSURL, .{} },
@@ -4470,17 +3517,9 @@ pub const WKWebView = struct {
         .{ "writingToolsActive", objc.BOOL, .{} },
     };
 
-    pub fn send(self: WKWebView, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
     pub const class_methods = .{
         .{ "handlesURLScheme:", objc.BOOL, .{objc.NSString} },
     };
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "WKWebView", class_methods, selector, args);
-    }
 
     pub const FullscreenState = enum(i64) {
         notInFullscreen = 0,
@@ -4491,7 +3530,10 @@ pub const WKWebView = struct {
 };
 
 pub const WKWebViewConfiguration = struct {
-    obj: Object,
+    pub const name = "WKWebViewConfiguration";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
 
     pub const methods = .{
         .{ "allowsAirPlayForMediaPlayback", objc.BOOL, .{} },
@@ -4529,20 +3571,13 @@ pub const WKWebViewConfiguration = struct {
         .{ "webExtensionController", ?WKWebExtensionController, .{} },
         .{ "websiteDataStore", WKWebsiteDataStore, .{} },
     };
-
-    pub fn send(self: WKWebViewConfiguration, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
-        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "WKWebViewConfiguration", class_methods, selector, args);
-    }
 };
 
 pub const WKWebpagePreferences = struct {
-    obj: Object,
+    pub const name = "WKWebpagePreferences";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
 
     pub const methods = .{
         .{ "allowsContentJavaScript", objc.BOOL, .{} },
@@ -4554,16 +3589,6 @@ pub const WKWebpagePreferences = struct {
         .{ "setPreferredContentMode:", void, .{WKWebpagePreferences.ContentMode} },
         .{ "setPreferredHTTPSNavigationPolicy:", void, .{WKWebpagePreferences.UpgradeToHTTPSPolicy} },
     };
-
-    pub fn send(self: WKWebpagePreferences, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
-        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "WKWebpagePreferences", class_methods, selector, args);
-    }
 
     pub const ContentMode = enum(i64) {
         recommended = 0,
@@ -4579,26 +3604,22 @@ pub const WKWebpagePreferences = struct {
 };
 
 pub const WKWebsiteDataRecord = struct {
-    obj: Object,
+    pub const name = "WKWebsiteDataRecord";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
 
     pub const methods = .{
         .{ "dataTypes", objc.NSString, .{} },
         .{ "displayName", objc.NSString, .{} },
     };
-
-    pub fn send(self: WKWebsiteDataRecord, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
-        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "WKWebsiteDataRecord", class_methods, selector, args);
-    }
 };
 
 pub const WKWebsiteDataStore = struct {
-    obj: Object,
+    pub const name = "WKWebsiteDataStore";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
 
     pub const methods = .{
         .{ "fetchDataOfTypes:completionHandler:", void, .{ objc.NSString, ?*anyopaque } },
@@ -4611,10 +3632,6 @@ pub const WKWebsiteDataStore = struct {
         .{ "restoreData:completionHandler:", void, .{ Foundation.NSData, ?*anyopaque } },
     };
 
-    pub fn send(self: WKWebsiteDataStore, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
-        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
-    }
-
     pub const class_methods = .{
         .{ "allWebsiteDataTypes", objc.NSString, .{} },
         .{ "dataStoreForIdentifier:", Object, .{Foundation.NSUUID} },
@@ -4623,14 +3640,13 @@ pub const WKWebsiteDataStore = struct {
         .{ "nonPersistentDataStore", WKWebsiteDataStore, .{} },
         .{ "removeDataStoreForIdentifier:completionHandler:", void, .{ Foundation.NSUUID, ?*anyopaque } },
     };
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "WKWebsiteDataStore", class_methods, selector, args);
-    }
 };
 
 pub const WKWindowFeatures = struct {
-    obj: Object,
+    pub const name = "WKWindowFeatures";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
 
     pub const methods = .{
         .{ "allowsResizing", ?Foundation.NSNumber, .{} },
@@ -4642,20 +3658,13 @@ pub const WKWindowFeatures = struct {
         .{ "x", ?Foundation.NSNumber, .{} },
         .{ "y", ?Foundation.NSNumber, .{} },
     };
-
-    pub fn send(self: WKWindowFeatures, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
-        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "WKWindowFeatures", class_methods, selector, args);
-    }
 };
 
 pub const WebArchive = struct {
-    obj: Object,
+    pub const name = "WebArchive";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
 
     pub const methods = .{
         .{ "data", Foundation.NSData, .{} },
@@ -4665,20 +3674,13 @@ pub const WebArchive = struct {
         .{ "subframeArchives", Object, .{} },
         .{ "subresources", Object, .{} },
     };
-
-    pub fn send(self: WebArchive, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
-        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "WebArchive", class_methods, selector, args);
-    }
 };
 
 pub const WebBackForwardList = struct {
-    obj: Object,
+    pub const name = "WebBackForwardList";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
 
     pub const methods = .{
         .{ "addItem:", void, .{WebHistoryItem} },
@@ -4699,20 +3701,13 @@ pub const WebBackForwardList = struct {
         .{ "setCapacity:", void, .{i32} },
         .{ "setPageCacheSize:", void, .{objc.NSInteger} },
     };
-
-    pub fn send(self: WebBackForwardList, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
-        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "WebBackForwardList", class_methods, selector, args);
-    }
 };
 
 pub const WebDataSource = struct {
-    obj: Object,
+    pub const name = "WebDataSource";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
 
     pub const methods = .{
         .{ "addSubresource:", void, .{WebResource} },
@@ -4732,20 +3727,13 @@ pub const WebDataSource = struct {
         .{ "webArchive", WebArchive, .{} },
         .{ "webFrame", WebFrame, .{} },
     };
-
-    pub fn send(self: WebDataSource, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
-        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "WebDataSource", class_methods, selector, args);
-    }
 };
 
 pub const WebFrame = struct {
-    obj: Object,
+    pub const name = "WebFrame";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
 
     pub const methods = .{
         .{ "DOMDocument", DOMDocument, .{} },
@@ -4771,22 +3759,15 @@ pub const WebFrame = struct {
         .{ "webView", WebView, .{} },
         .{ "windowObject", WebScriptObject, .{} },
     };
-
-    pub fn send(self: WebFrame, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
-        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "WebFrame", class_methods, selector, args);
-    }
 };
 
 pub const WebFrameView = struct {
-    obj: Object,
-
     pub const Super = AppKit.NSView;
+    pub const name = "WebFrameView";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "allowsScrolling", objc.BOOL, .{} },
         .{ "canPrintHeadersAndFooters", objc.BOOL, .{} },
@@ -4797,20 +3778,13 @@ pub const WebFrameView = struct {
         .{ "setAllowsScrolling:", void, .{objc.BOOL} },
         .{ "webFrame", WebFrame, .{} },
     };
-
-    pub fn send(self: WebFrameView, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "WebFrameView", class_methods, selector, args);
-    }
 };
 
 pub const WebHistory = struct {
-    obj: Object,
+    pub const name = "WebHistory";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
 
     pub const methods = .{
         .{ "addItems:", void, .{Object} },
@@ -4827,22 +3801,17 @@ pub const WebHistory = struct {
         .{ "setHistoryItemLimit:", void, .{i32} },
     };
 
-    pub fn send(self: WebHistory, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
-        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
-    }
-
     pub const class_methods = .{
         .{ "optionalSharedHistory", ?WebHistory, .{} },
         .{ "setOptionalSharedHistory:", void, .{WebHistory} },
     };
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "WebHistory", class_methods, selector, args);
-    }
 };
 
 pub const WebHistoryItem = struct {
-    obj: Object,
+    pub const name = "WebHistoryItem";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
 
     pub const methods = .{
         .{ "URLString", objc.NSString, .{} },
@@ -4854,20 +3823,13 @@ pub const WebHistoryItem = struct {
         .{ "setAlternateTitle:", void, .{objc.NSString} },
         .{ "title", objc.NSString, .{} },
     };
-
-    pub fn send(self: WebHistoryItem, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
-        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "WebHistoryItem", class_methods, selector, args);
-    }
 };
 
 pub const WebPreferences = struct {
-    obj: Object,
+    pub const name = "WebPreferences";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
 
     pub const methods = .{
         .{ "allowsAirPlayForMediaPlayback", objc.BOOL, .{} },
@@ -4930,21 +3892,16 @@ pub const WebPreferences = struct {
         .{ "usesPageCache", objc.BOOL, .{} },
     };
 
-    pub fn send(self: WebPreferences, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
-        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
-    }
-
     pub const class_methods = .{
         .{ "standardPreferences", ?WebPreferences, .{} },
     };
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "WebPreferences", class_methods, selector, args);
-    }
 };
 
 pub const WebResource = struct {
-    obj: Object,
+    pub const name = "WebResource";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
 
     pub const methods = .{
         .{ "MIMEType", objc.NSString, .{} },
@@ -4954,20 +3911,13 @@ pub const WebResource = struct {
         .{ "initWithData:URL:MIMEType:textEncodingName:frameName:", WebResource, .{ Foundation.NSData, Foundation.NSURL, objc.NSString, objc.NSString, objc.NSString } },
         .{ "textEncodingName", objc.NSString, .{} },
     };
-
-    pub fn send(self: WebResource, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
-        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
-    }
-
-    pub const class_methods = .{};
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "WebResource", class_methods, selector, args);
-    }
 };
 
 pub const WebScriptObject = struct {
-    obj: Object,
+    pub const name = "WebScriptObject";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
 
     pub const methods = .{
         .{ "JSObject", ?*anyopaque, .{} },
@@ -4981,23 +3931,18 @@ pub const WebScriptObject = struct {
         .{ "webScriptValueAtIndex:", ?Any, .{u32} },
     };
 
-    pub fn send(self: WebScriptObject, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {
-        return objc.typedSendFor(@This(), methods, self.obj, selector, args);
-    }
-
     pub const class_methods = .{
         .{ "throwException:", objc.BOOL, .{objc.NSString} },
     };
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "WebScriptObject", class_methods, selector, args);
-    }
 };
 
 pub const WebView = struct {
-    obj: Object,
-
     pub const Super = AppKit.NSView;
+    pub const name = "WebView";
+    pub const send = objc.InstanceDispatch(@This()).invoke;
+    pub const class = objc.ClassDispatch(@This()).invoke;
+    id: Object,
+
     pub const methods = .{
         .{ "UIDelegate", WebUIDelegate, .{} },
         .{ "alignCenter:", void, .{?Any} },
@@ -5131,10 +4076,6 @@ pub const WebView = struct {
         .{ "writeSelectionWithPasteboardTypes:toPasteboard:", void, .{ Object, AppKit.NSPasteboard } },
     };
 
-    pub fn send(self: WebView, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
-        return objc.typedSendChain(@This(), self.obj, selector, args);
-    }
-
     pub const class_methods = .{
         .{ "MIMETypesShownAsHTML", ?*anyopaque, .{} },
         .{ "URLFromPasteboard:", ?Foundation.NSURL, .{AppKit.NSPasteboard} },
@@ -5145,16 +4086,12 @@ pub const WebView = struct {
         .{ "registerViewClass:representationClass:forMIMEType:", void, .{ AnyClass, AnyClass, objc.NSString } },
         .{ "setMIMETypesShownAsHTML:", void, .{Object} },
     };
-
-    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {
-        return objc.typedClassSendFor(@This(), "WebView", class_methods, selector, args);
-    }
 };
 
 pub fn viewObj(val: anytype) Object {
     const T = @TypeOf(val);
     if (T == Object) return val;
-    if (@hasField(T, "obj")) return val.obj;
+    if (@hasField(T, "id")) return val.id;
     @compileError("cannot extract obj from " ++ @typeName(T));
 }
 

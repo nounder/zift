@@ -149,8 +149,8 @@ fn setupMenu(app: AppKit.NSApplication) void {
         _ = menu.send("addItemWithTitle:action:keyEquivalent:", .{ "Hide Others", objc.sel("hideOtherApplications:"), "" });
         menu.send("addItem:", .{AppKit.NSMenuItem.class("separatorItem", .{})});
         _ = menu.send("addItemWithTitle:action:keyEquivalent:", .{ "Quit Todoz", objc.sel("terminate:"), "q" });
-        item.send("setSubmenu:", .{menu.obj});
-        bar.send("addItem:", .{item.obj});
+        item.send("setSubmenu:", .{menu.id});
+        bar.send("addItem:", .{item.id});
     }
 
     { // Edit menu
@@ -163,8 +163,8 @@ fn setupMenu(app: AppKit.NSApplication) void {
         _ = menu.send("addItemWithTitle:action:keyEquivalent:", .{ "Copy", objc.sel("copy:"), "c" });
         _ = menu.send("addItemWithTitle:action:keyEquivalent:", .{ "Paste", objc.sel("paste:"), "v" });
         _ = menu.send("addItemWithTitle:action:keyEquivalent:", .{ "Select All", objc.sel("selectAll:"), "a" });
-        item.send("setSubmenu:", .{menu.obj});
-        bar.send("addItem:", .{item.obj});
+        item.send("setSubmenu:", .{menu.id});
+        bar.send("addItem:", .{item.id});
     }
 
     { // Window menu
@@ -173,12 +173,12 @@ fn setupMenu(app: AppKit.NSApplication) void {
         _ = menu.send("addItemWithTitle:action:keyEquivalent:", .{ "Close", objc.sel("performClose:"), "w" });
         _ = menu.send("addItemWithTitle:action:keyEquivalent:", .{ "Minimize", objc.sel("performMiniaturize:"), "m" });
         _ = menu.send("addItemWithTitle:action:keyEquivalent:", .{ "Zoom", objc.sel("performZoom:"), "" });
-        item.send("setSubmenu:", .{menu.obj});
-        bar.send("addItem:", .{item.obj});
-        app.send("setWindowsMenu:", .{menu.obj});
+        item.send("setSubmenu:", .{menu.id});
+        bar.send("addItem:", .{item.id});
+        app.send("setWindowsMenu:", .{menu.id});
     }
 
-    app.send("setMainMenu:", .{bar.obj});
+    app.send("setMainMenu:", .{bar.id});
 }
 
 // ── ObjC class registration ────────────────────────────────────────────
@@ -252,8 +252,8 @@ fn toolbarItemForIdentifier(_: Object, _: objc.Sel, _: Object, ident: Object, _:
         filter_seg.send("setTarget:", .{handler});
         filter_seg.send("setAction:", .{objc.sel("filterChanged:")});
 
-        item.send("setView:", .{filter_seg.obj});
-        return item.obj;
+        item.send("setView:", .{filter_seg.id});
+        return item.id;
     }
 
     return null;
@@ -290,7 +290,7 @@ fn buildUI() void {
         toolbar_delegate_inst = AppKit.init("TodozToolbarDelegate");
         toolbar.send("setDelegate:", .{toolbar_delegate_inst});
         toolbar.send("setDisplayMode:", .{AppKit.NSToolbar.DisplayMode.iconOnly});
-        main_window.send("setToolbar:", .{toolbar.obj});
+        main_window.send("setToolbar:", .{toolbar.id});
         main_window.send("setToolbarStyle:", .{AppKit.NSWindow.ToolbarStyle.unified});
     }
 
@@ -302,7 +302,7 @@ fn buildUI() void {
         input_field = AppKit.NSTextField.class("alloc", .{}).send("initWithFrame:", .{AppKit.NSRect.make(0, 0, 200, 24)});
         input_field.send("setPlaceholderString:", .{"What needs to be done?"});
         input_field.send("setTranslatesAutoresizingMaskIntoConstraints:", .{false});
-        objc.msgSend(void, input_field.obj, "setAccessibilityLabel:", .{objc.nsString("New todo title")});
+        objc.msgSend(void, input_field.id, "setAccessibilityLabel:", .{objc.nsString("New todo title")});
         input_field.send("setFont:", .{AppKit.NSFont.class("systemFontOfSize:", .{@as(f64, 13)})});
         input_field.send("setContentHuggingPriority:forOrientation:", .{ @as(f32, 249), @as(i64, 0) });
 
@@ -313,15 +313,15 @@ fn buildUI() void {
         bar.send("setOrientation:", .{AppKit.NSUserInterfaceLayoutOrientation.horizontal});
         bar.send("setSpacing:", .{@as(f64, 10)});
         bar.send("setEdgeInsets:", .{AppKit.NSEdgeInsets{ .top = 10, .left = 16, .bottom = 10, .right = 16 }});
-        bar.send("addArrangedSubview:", .{input_field.obj});
-        root.send("addArrangedSubview:", .{bar.obj});
+        bar.send("addArrangedSubview:", .{input_field.id});
+        root.send("addArrangedSubview:", .{bar.id});
     }
 
     { // Separator
         const sep = AppKit.NSBox.class("alloc", .{}).send("initWithFrame:", .{AppKit.NSRect.make(0, 0, 0, 1)});
         sep.send("setBoxType:", .{@as(i64, 2)});
         sep.send("setTranslatesAutoresizingMaskIntoConstraints:", .{false});
-        root.send("addArrangedSubview:", .{sep.obj});
+        root.send("addArrangedSubview:", .{sep.id});
     }
 
     { // Scroll view + todo list
@@ -337,13 +337,13 @@ fn buildUI() void {
 
         const fclip = objc.msgSend(Object, objc.msgSendClass(Object, "TodozFlippedClipView", "alloc", .{}), "initWithFrame:", .{AppKit.NSRect.make(0, 0, 0, 0)});
         scroll_view.send("setContentView:", .{fclip});
-        scroll_view.send("setDocumentView:", .{todo_list_stack.obj});
+        scroll_view.send("setDocumentView:", .{todo_list_stack.id});
 
         todo_list_stack.send("setTranslatesAutoresizingMaskIntoConstraints:", .{false});
         const clip_view = scroll_view.send("contentView", .{});
-        AppKit.NSLayoutConstraint.pinWidthEqual(todo_list_stack.obj, clip_view.obj);
+        AppKit.NSLayoutConstraint.pinWidthEqual(todo_list_stack.id, clip_view.id);
 
-        root.send("addArrangedSubview:", .{scroll_view.obj});
+        root.send("addArrangedSubview:", .{scroll_view.id});
         scroll_view.send("setContentHuggingPriority:forOrientation:", .{ @as(f32, 249), @as(i64, 1) });
     }
 
@@ -355,39 +355,39 @@ fn buildUI() void {
         empty_container.send("setAlignment:", .{@as(i64, 9)}); // centerX
 
         const img = AppKit.NSImage.class("imageWithSystemSymbolName:accessibilityDescription:", .{ "checkmark.circle", "No todos" });
-        const icon: AppKit.NSImageView = .{ .obj = AppKit.NSImageView.class("imageViewWithImage:", .{img}) };
+        const icon: AppKit.NSImageView = .{ .id = AppKit.NSImageView.class("imageViewWithImage:", .{img}) };
         icon.send("setTranslatesAutoresizingMaskIntoConstraints:", .{false});
         icon.send("setContentTintColor:", .{AppKit.NSColor.class("secondaryLabelColor", .{})});
         icon.send("setSymbolConfiguration:", .{AppKit.NSImageSymbolConfiguration.class("configurationWithPointSize:weight:", .{ @as(f64, 36.0), @as(f64, 0.0) })});
 
-        const title: AppKit.NSTextField = .{ .obj = AppKit.NSTextField.class("labelWithString:", .{"No Todos Yet"}) };
+        const title: AppKit.NSTextField = .{ .id = AppKit.NSTextField.class("labelWithString:", .{"No Todos Yet"}) };
         title.send("setTranslatesAutoresizingMaskIntoConstraints:", .{false});
         title.send("setFont:", .{AppKit.NSFont.class("boldSystemFontOfSize:", .{@as(f64, 17)})});
         title.send("setTextColor:", .{AppKit.NSColor.class("secondaryLabelColor", .{})});
         title.send("setAlignment:", .{@as(i64, 2)});
         title.send("setContentCompressionResistancePriority:forOrientation:", .{ @as(f32, 999), @as(i64, 0) });
 
-        const hint: AppKit.NSTextField = .{ .obj = AppKit.NSTextField.class("labelWithString:", .{"Add one above to get started."}) };
+        const hint: AppKit.NSTextField = .{ .id = AppKit.NSTextField.class("labelWithString:", .{"Add one above to get started."}) };
         hint.send("setTranslatesAutoresizingMaskIntoConstraints:", .{false});
         hint.send("setFont:", .{AppKit.NSFont.class("systemFontOfSize:", .{@as(f64, 13)})});
         hint.send("setTextColor:", .{AppKit.NSColor.class("tertiaryLabelColor", .{})});
         hint.send("setAlignment:", .{@as(i64, 2)});
         hint.send("setContentCompressionResistancePriority:forOrientation:", .{ @as(f32, 999), @as(i64, 0) });
 
-        empty_container.send("addArrangedSubview:", .{icon.obj});
-        empty_container.send("addArrangedSubview:", .{title.obj});
-        empty_container.send("addArrangedSubview:", .{hint.obj});
+        empty_container.send("addArrangedSubview:", .{icon.id});
+        empty_container.send("addArrangedSubview:", .{title.id});
+        empty_container.send("addArrangedSubview:", .{hint.id});
     }
 
     // Set as content view
     root.send("setTranslatesAutoresizingMaskIntoConstraints:", .{true});
-    main_window.send("setContentView:", .{root.obj});
+    main_window.send("setContentView:", .{root.id});
 
     // Pin scroll view width to root
-    AppKit.NSLayoutConstraint.pinWidthEqual(scroll_view.obj, root.obj);
+    AppKit.NSLayoutConstraint.pinWidthEqual(scroll_view.id, root.id);
 
     refreshTodozList();
-    objc.msgSend(void, main_window.obj, "makeKeyAndOrderFront:", .{@as(?*anyopaque, null)});
+    objc.msgSend(void, main_window.id, "makeKeyAndOrderFront:", .{@as(?*anyopaque, null)});
     AppKit.NSApplication.class("sharedApplication", .{}).send("activateIgnoringOtherApps:", .{true});
 }
 
@@ -418,12 +418,12 @@ fn clearCompletedAction(_: Object, _: objc.Sel, _: Object) callconv(cc) void {
     refreshTodozList();
 }
 fn toggleTodozAction(_: Object, _: objc.Sel, sender: Object) callconv(cc) void {
-    const btn: AppKit.NSButton = .{ .obj = sender };
+    const btn: AppKit.NSButton = .{ .id = sender };
     _ = toggleTodozItem(@intCast(btn.send("tag", .{})));
     refreshTodozList();
 }
 fn removeTodozAction(_: Object, _: objc.Sel, sender: Object) callconv(cc) void {
-    const btn: AppKit.NSButton = .{ .obj = sender };
+    const btn: AppKit.NSButton = .{ .id = sender };
     _ = removeTodozItem(@intCast(btn.send("tag", .{})));
     refreshTodozList();
 }
@@ -447,13 +447,13 @@ fn todoPassesFilter(t: *const Todoz) bool {
 
 fn refreshTodozList() void {
     // Remove all arranged subviews
-    const subviews: AppKit.NSArrayObj = .{ .obj = todo_list_stack.send("arrangedSubviews", .{}) };
+    const subviews: AppKit.NSArrayObj = .{ .id = todo_list_stack.send("arrangedSubviews", .{}) };
     var i: c_ulong = subviews.send("count", .{});
     while (i > 0) {
         i -= 1;
         const view = subviews.send("objectAtIndex:", .{i});
         todo_list_stack.send("removeArrangedSubview:", .{view});
-        const v: AppKit.NSView = .{ .obj = view };
+        const v: AppKit.NSView = .{ .id = view };
         v.send("removeFromSuperview", .{});
     }
 
@@ -463,13 +463,13 @@ fn refreshTodozList() void {
     for (0..todo_count) |idx| {
         const t = getTodozItem(@intCast(idx)) orelse continue;
         if (!todoPassesFilter(t)) continue;
-        todo_list_stack.send("addArrangedSubview:", .{buildTodozRow(t, row_idx).obj});
+        todo_list_stack.send("addArrangedSubview:", .{buildTodozRow(t, row_idx).id});
         row_idx += 1;
         visible += 1;
     }
 
     if (visible == 0) {
-        todo_list_stack.send("addArrangedSubview:", .{empty_container.obj});
+        todo_list_stack.send("addArrangedSubview:", .{empty_container.id});
     }
 
     // Update subtitle
@@ -484,11 +484,11 @@ fn buildTodozRow(t: *const Todoz, idx: usize) AppKit.NSStackView {
     row.send("setEdgeInsets:", .{AppKit.NSEdgeInsets{ .top = 10, .left = 16, .bottom = 10, .right = 16 }});
 
     { // Alternating background
-        const rv: AppKit.NSView = .{ .obj = row.obj };
+        const rv: AppKit.NSView = .{ .id = row.id };
         rv.send("setWantsLayer:", .{true});
-        const layer: AppKit.CALayer = .{ .obj = @ptrCast(rv.send("layer", .{}).?) };
+        const layer: AppKit.CALayer = .{ .id = @ptrCast(rv.send("layer", .{}).?) };
         const alpha: f64 = if (idx % 2 == 0) 0.08 else 0.16;
-        const color: AppKit.NSColor = .{ .obj = AppKit.NSColor.class("colorWithRed:green:blue:alpha:", .{ 0.5, 0.5, 0.5, alpha }) };
+        const color: AppKit.NSColor = .{ .id = AppKit.NSColor.class("colorWithRed:green:blue:alpha:", .{ 0.5, 0.5, 0.5, alpha }) };
         layer.send("setBackgroundColor:", .{color.send("CGColor", .{})});
     }
 
@@ -498,7 +498,7 @@ fn buildTodozRow(t: *const Todoz, idx: usize) AppKit.NSStackView {
         const sym_name = if (t.completed) "checkmark.circle.fill" else "circle";
         const sym_desc = if (t.completed) "Mark incomplete" else "Mark complete";
         const img = AppKit.NSImage.class("imageWithSystemSymbolName:accessibilityDescription:", .{ sym_name, sym_desc });
-        const checkbox: AppKit.NSButton = .{ .obj = AppKit.NSButton.class("buttonWithImage:target:action:", .{ img, handler, objc.sel("toggleTodoz:") }) };
+        const checkbox: AppKit.NSButton = .{ .id = AppKit.NSButton.class("buttonWithImage:target:action:", .{ img, handler, objc.sel("toggleTodoz:") }) };
         checkbox.send("setTranslatesAutoresizingMaskIntoConstraints:", .{false});
         checkbox.send("setBordered:", .{false});
         checkbox.send("setTag:", .{@as(i64, @intCast(t.id))});
@@ -507,7 +507,7 @@ fn buildTodozRow(t: *const Todoz, idx: usize) AppKit.NSStackView {
         else
             AppKit.NSColor.class("secondaryLabelColor", .{})});
         checkbox.send("setSymbolConfiguration:", .{AppKit.NSImageSymbolConfiguration.class("configurationWithPointSize:weight:", .{ @as(f64, 18.0), @as(f64, 0.0) })});
-        row.send("addArrangedSubview:", .{checkbox.obj});
+        row.send("addArrangedSubview:", .{checkbox.id});
     }
 
     { // Title
@@ -515,7 +515,7 @@ fn buildTodozRow(t: *const Todoz, idx: usize) AppKit.NSStackView {
         @memcpy(title_buf[0..t.title_len], t.title[0..t.title_len]);
         title_buf[t.title_len] = 0;
 
-        const label: AppKit.NSTextField = .{ .obj = AppKit.NSTextField.class("labelWithString:", .{objc.nsString(@ptrCast(&title_buf))}) };
+        const label: AppKit.NSTextField = .{ .id = AppKit.NSTextField.class("labelWithString:", .{objc.nsString(@ptrCast(&title_buf))}) };
         label.send("setTranslatesAutoresizingMaskIntoConstraints:", .{false});
         label.send("setFont:", .{AppKit.NSFont.class("systemFontOfSize:", .{@as(f64, 13)})});
         if (t.completed) {
@@ -527,24 +527,24 @@ fn buildTodozRow(t: *const Todoz, idx: usize) AppKit.NSStackView {
                 objc.nsString("NSStrikethrough"),                   objc.nsNumberWithInt(1),
                 AppKit.NSRange{ .location = 0, .length = str_len },
             });
-            label.send("setAttributedStringValue:", .{attr.obj});
+            label.send("setAttributedStringValue:", .{attr.id});
         }
         label.send("setContentHuggingPriority:forOrientation:", .{ @as(f32, 249), @as(i64, 0) });
         label.send("setContentCompressionResistancePriority:forOrientation:", .{ @as(f32, 749), @as(i64, 0) });
-        const cell = objc.msgSend(Object, label.obj, "cell", .{});
+        const cell = objc.msgSend(Object, label.id, "cell", .{});
         objc.msgSend(void, cell, "setLineBreakMode:", .{@as(i64, 4)});
-        row.send("addArrangedSubview:", .{label.obj});
+        row.send("addArrangedSubview:", .{label.id});
     }
 
     { // Delete button
         const img = AppKit.NSImage.class("imageWithSystemSymbolName:accessibilityDescription:", .{ "trash", "Delete" });
-        const btn: AppKit.NSButton = .{ .obj = AppKit.NSButton.class("buttonWithImage:target:action:", .{ img, handler, objc.sel("removeTodoz:") }) };
+        const btn: AppKit.NSButton = .{ .id = AppKit.NSButton.class("buttonWithImage:target:action:", .{ img, handler, objc.sel("removeTodoz:") }) };
         btn.send("setTranslatesAutoresizingMaskIntoConstraints:", .{false});
         btn.send("setBordered:", .{false});
         const red = AppKit.NSColor.class("systemRedColor", .{});
         btn.send("setContentTintColor:", .{red.send("colorWithAlphaComponent:", .{@as(f64, 0.7)})});
         btn.send("setTag:", .{@as(i64, @intCast(t.id))});
-        row.send("addArrangedSubview:", .{btn.obj});
+        row.send("addArrangedSubview:", .{btn.id});
     }
 
     return row;

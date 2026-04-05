@@ -197,7 +197,7 @@ pub fn autoreleasePoolPop(ctx: ?*anyopaque) void {
 
 /// Type-checked send. Call from a struct method like:
 ///   pub fn send(self: @This(), comptime selector: [*:0]const u8, args: anytype) ... {
-///       return objc.typedSend(table, self.obj, selector, args);
+///       return objc.typedSend(table, self.id, selector, args);
 ///   }
 pub fn typedSend(comptime table: anytype, target: Object, comptime selector: [*:0]const u8, args: anytype) SendReturn(table, selector) {
     return typedSendFor(void, table, target, selector, args);
@@ -307,6 +307,101 @@ pub fn typedSendChain(comptime Cls: type, target: Object, comptime selector: [*:
     return wrapReturn(RetType, raw);
 }
 
+// ── Unified send dispatch ───────────────────────────────────────────────
+//
+// Generates a single `send` function for each ObjC wrapper struct that
+// works as both a class method and an instance method:
+//
+//   NSWindow.send("alloc", .{})                    // class method
+//   window.send("setTitle:", .{"hello"})            // instance method
+//   NSWindow.send("alloc", .{}).send("init", .{})  // chained
+//
+
+/// Generates instance dispatch for an ObjC wrapper struct.
+/// Usage in generated code: `pub const send = objc.InstanceDispatch(@This()).invoke;`
+pub fn InstanceDispatch(comptime Self: type) type {
+    return struct {
+        pub fn invoke(self: Self, comptime selector: [*:0]const u8, args: anytype) InstanceReturn(Self, selector) {
+            return instanceSend(Self, self.id, selector, args);
+        }
+    };
+}
+
+/// Generates class dispatch for an ObjC wrapper struct.
+/// Usage in generated code: `pub const class = objc.ClassDispatch(@This()).invoke;`
+pub fn ClassDispatch(comptime Self: type) type {
+    return struct {
+        pub fn invoke(comptime selector: [*:0]const u8, args: anytype) ClassReturn(Self, selector) {
+            return classSend(Self, selector, args);
+        }
+    };
+}
+
+/// Resolve return type for an instance send (walks Super chain + implicit init).
+fn InstanceReturn(comptime Cls: type, comptime selector: [*:0]const u8) type {
+    if (@hasDecl(Cls, "Super")) {
+        return SendReturnChain(Cls, selector);
+    }
+    if (@hasDecl(Cls, "methods")) {
+        return SendReturnFor(Cls, Cls.methods, selector);
+    }
+    // Implicit NSObject
+    const sel_s = comptime selStr(selector);
+    if (comptime isInitSelector(sel_s)) return Cls;
+    @compileError("Unknown selector: " ++ sel_s);
+}
+
+/// Resolve return type for a class send.
+fn ClassReturn(comptime Cls: type, comptime selector: [*:0]const u8) type {
+    const table = if (@hasDecl(Cls, "class_methods")) Cls.class_methods else .{};
+    return SendReturnFor(Cls, table, selector);
+}
+
+/// Execute an instance send with full type checking.
+fn instanceSend(comptime Cls: type, target: Object, comptime selector: [*:0]const u8, args: anytype) InstanceReturn(Cls, selector) {
+    const Ret = InstanceReturn(Cls, selector);
+    const sel_s = comptime selStr(selector);
+
+    // Try the chain for classes with Super
+    if (@hasDecl(Cls, "Super")) {
+        const ArgTypes = SendArgTypesChain(Cls, selector);
+        const AbiArgs = AbiArgTypes(ArgTypes);
+        const raw = msgSend(AbiType(Ret), target, selector, coerceArgs(AbiArgs, args));
+        return wrapReturn(Ret, raw);
+    }
+
+    // Single table lookup
+    if (@hasDecl(Cls, "methods")) {
+        if (comptime findInTable(Cls.methods, sel_s)) |_| {
+            const AbiArgs = AbiArgTypes(SendArgTypes(Cls.methods, selector));
+            const raw = msgSend(AbiType(Ret), target, selector, coerceArgs(AbiArgs, args));
+            return wrapReturn(Ret, raw);
+        }
+    }
+
+    // Implicit NSObject (init, alloc) — no args
+    const raw = msgSend(AbiType(Ret), target, selector, .{});
+    return wrapReturn(Ret, raw);
+}
+
+/// Execute a class send with full type checking.
+fn classSend(comptime Cls: type, comptime selector: [*:0]const u8, args: anytype) ClassReturn(Cls, selector) {
+    const Ret = ClassReturn(Cls, selector);
+    const sel_s = comptime selStr(selector);
+    const class_name = Cls.name;
+    const table = if (@hasDecl(Cls, "class_methods")) Cls.class_methods else .{};
+
+    if (comptime findInTable(table, sel_s)) |_| {
+        const AbiArgs = AbiArgTypes(SendArgTypes(table, selector));
+        const raw = msgSendClass(AbiType(Ret), class_name, selector, coerceArgs(AbiArgs, args));
+        return wrapReturn(Ret, raw);
+    }
+
+    // Implicit NSObject (alloc) — no args
+    const raw = msgSendClass(AbiType(Ret), class_name, selector, .{});
+    return wrapReturn(Ret, raw);
+}
+
 /// Look up the return type for a selector in the table. Compile error if not found.
 fn selStr(comptime s: anytype) []const u8 {
     @setEvalBranchQuota(10000);
@@ -378,12 +473,12 @@ fn ArgTuple(comptime type_list: anytype) type {
 /// E.g. Object → NSView{.obj = raw}, ?Object → ?NSView.
 fn wrapReturn(comptime Semantic: type, raw: AbiType(Semantic)) Semantic {
     if (comptime isObjcStruct(Semantic)) {
-        return .{ .obj = raw };
+        return .{ .id = raw };
     }
     if (@typeInfo(Semantic) == .optional) {
         const Child = @typeInfo(Semantic).optional.child;
         if (comptime isObjcStruct(Child)) {
-            if (raw) |obj| return .{ .obj = obj };
+            if (raw) |obj| return .{ .id = obj };
             return null;
         }
     }
@@ -393,7 +488,7 @@ fn wrapReturn(comptime Semantic: type, raw: AbiType(Semantic)) Semantic {
 /// Check if a type is an ObjC wrapper struct (has `obj: Object` field).
 fn isObjcStruct(comptime T: type) bool {
     if (@typeInfo(T) != .@"struct") return false;
-    return @hasField(T, "obj");
+    return @hasField(T, "id");
 }
 
 /// Convert a semantic type from a method table to its C ABI type.
@@ -453,7 +548,7 @@ fn coerceArgs(comptime Expected: type, args: anytype) Expected {
             @field(result, field.name) = nsString(@as([*:0]const u8, val));
         } else if ((ExpType == Object or ExpType == *anyopaque) and comptime isObjcStruct(ValType)) {
             // ObjC wrapper struct → Object/*anyopaque (extract .obj)
-            @field(result, field.name) = @ptrCast(val.obj);
+            @field(result, field.name) = @ptrCast(val.id);
         } else if ((ExpType == Object or ExpType == *anyopaque) and @typeInfo(ValType) == .pointer) {
             // Any pointer → Object/*anyopaque
             @field(result, field.name) = @ptrCast(@constCast(val));
@@ -477,7 +572,7 @@ fn coerceArgs(comptime Expected: type, args: anytype) Expected {
             @field(result, field.name) = val;
         } else if (ExpType == ?Object and comptime isObjcStruct(ValType)) {
             // ObjC wrapper struct → ?Object
-            @field(result, field.name) = val.obj;
+            @field(result, field.name) = val.id;
         } else if (ExpType == ?Object and ValType == Object) {
             // Object → ?Object
             @field(result, field.name) = val;
@@ -492,7 +587,7 @@ fn coerceArgs(comptime Expected: type, args: anytype) Expected {
             @field(result, field.name) = nsString(@as([*:0]const u8, val));
         } else if (ExpType == ?*anyopaque and comptime isObjcStruct(ValType)) {
             // ObjC wrapper struct → ?*anyopaque (protocol-typed params)
-            @field(result, field.name) = val.obj;
+            @field(result, field.name) = val.id;
         } else if (ExpType == ?*anyopaque and ValType == Object) {
             // Object → ?*anyopaque
             @field(result, field.name) = val;

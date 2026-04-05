@@ -915,7 +915,7 @@ def generate_zig(module_name, classes, all_results, enum_map, proto_type_map):
     out.append("pub fn viewObj(val: anytype) Object {")
     out.append("    const T = @TypeOf(val);")
     out.append("    if (T == Object) return val;")
-    out.append('    if (@hasField(T, "obj")) return val.obj;')
+    out.append('    if (@hasField(T, "id")) return val.id;')
     out.append('    @compileError("cannot extract obj from " ++ @typeName(T));')
     out.append("}")
     out.append("")
@@ -1019,20 +1019,20 @@ def _gen_factories(objc_name, swift_name, inits, has_instance_methods=False):
 
         if not arg_types:
             lines.append(f'    pub fn create() {swift_name} {{')
-            lines.append(f'        return .{{ .obj = objc.msgSend(Object, objc.msgSendClass(Object, "{objc_name}", "alloc", .{{}}), "init", .{{}}) }};')
+            lines.append(f'        return .{{ .id = objc.msgSend(Object, objc.msgSendClass(Object, "{objc_name}", "alloc", .{{}}), "init", .{{}}) }};')
             lines.append(f'    }}')
         else:
             params = ", ".join(f"{safe_params[i]}: {arg_types[i]}" for i in range(len(arg_types)))
             args = ", ".join(safe_params)
             lines.append(f'    pub fn {fname}({params}) {swift_name} {{')
-            lines.append(f'        return .{{ .obj = objc.msgSend(Object, objc.msgSendClass(Object, "{objc_name}", "alloc", .{{}}), "{selector}", .{{ {args} }}) }};')
+            lines.append(f'        return .{{ .id = objc.msgSend(Object, objc.msgSendClass(Object, "{objc_name}", "alloc", .{{}}), "{selector}", .{{ {args} }}) }};')
             lines.append(f'    }}')
 
     # Every ObjC class inherits alloc+init from NSObject.
     # If no explicit no-arg init was found, generate a default create().
     if "create" not in seen_names and has_instance_methods:
         lines.append(f'    pub fn create() {swift_name} {{')
-        lines.append(f'        return .{{ .obj = objc.msgSend(Object, objc.msgSendClass(Object, "{objc_name}", "alloc", .{{}}), "init", .{{}}) }};')
+        lines.append(f'        return .{{ .id = objc.msgSend(Object, objc.msgSendClass(Object, "{objc_name}", "alloc", .{{}}), "init", .{{}}) }};')
         lines.append(f'    }}')
 
     return lines
@@ -1120,23 +1120,18 @@ def _gen_class(objc_name, cls, module_classes, all_results, module_name, class_e
             resolved_entries.append((sel, swift_name if ret == "Self" else ret, args))
         method_entries = resolved_entries
 
-        lines.append("    obj: Object,")
-        lines.append("")
         if has_super:
             lines.append(f"    pub const Super = {super_ref};")
+        lines.append(f'    pub const name = "{objc_name}";')
+        lines.append("    pub const send = objc.InstanceDispatch(@This()).invoke;")
+        lines.append("    pub const class = objc.ClassDispatch(@This()).invoke;")
+        lines.append("    id: Object,")
+        lines.append("")
         lines.append("    pub const methods = .{")
         for sel, ret, args in sorted(method_entries):
             a = " " + ", ".join(args) + " " if args else ""
             lines.append(f'        .{{ "{sel}", {ret}, .{{{a}}} }},')
         lines.append("    };")
-        lines.append("")
-        if has_super:
-            lines.append(f"    pub fn send(self: {swift_name}, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {{")
-            lines.append("        return objc.typedSendChain(@This(), self.obj, selector, args);")
-        else:
-            lines.append(f"    pub fn send(self: {swift_name}, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), methods, selector) {{")
-            lines.append("        return objc.typedSendFor(@This(), methods, self.obj, selector, args);")
-        lines.append("    }")
 
     if class_entries:
         lines.append("")
@@ -1145,18 +1140,6 @@ def _gen_class(objc_name, cls, module_classes, all_results, module_name, class_e
             a = " " + ", ".join(args) + " " if args else ""
             lines.append(f'        .{{ "{sel}", {ret}, .{{{a}}} }},')
         lines.append("    };")
-        lines.append("")
-        lines.append(f'    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {{')
-        lines.append(f'        return objc.typedClassSendFor(@This(), "{objc_name}", class_methods, selector, args);')
-        lines.append("    }")
-    elif method_entries:
-        # No class methods, but still need class() for alloc (implicit NSObject)
-        lines.append("")
-        lines.append("    pub const class_methods = .{};")
-        lines.append("")
-        lines.append(f'    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturnFor(@This(), class_methods, selector) {{')
-        lines.append(f'        return objc.typedClassSendFor(@This(), "{objc_name}", class_methods, selector, args);')
-        lines.append("    }")
 
     # Class-owned enums
     if class_enums:
@@ -1188,16 +1171,16 @@ STANDALONE_TYPES = {
     pub const print = "NSToolbarPrintItem";
 };
 pub const NSArrayObj = struct {
-    obj: Object,
+    id: Object,
 
     pub const methods = .{ .{ "count", c_ulong, .{} }, .{ "objectAtIndex:", Object, .{ c_ulong } }, .{ "firstObject", Object, .{} }, .{ "lastObject", Object, .{} }, .{ "containsObject:", objc.BOOL, .{ Object } } };
-    pub fn send(self: NSArrayObj, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) { return objc.typedSend(methods, self.obj, selector, args); }
+    pub fn send(self: NSArrayObj, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) { return objc.typedSend(methods, self.id, selector, args); }
 };
 pub const CALayer = struct {
-    obj: Object,
+    id: Object,
 
     pub const methods = .{ .{ "setBackgroundColor:", void, .{ ?*anyopaque } }, .{ "setBorderColor:", void, .{ ?*anyopaque } }, .{ "setBorderWidth:", void, .{ objc.CGFloat } }, .{ "setCornerRadius:", void, .{ objc.CGFloat } }, .{ "setMasksToBounds:", void, .{ objc.BOOL } }, .{ "setShadowColor:", void, .{ ?*anyopaque } }, .{ "setShadowOpacity:", void, .{ f32 } }, .{ "setShadowRadius:", void, .{ objc.CGFloat } }, .{ "setShadowOffset:", void, .{ NSSize } }, .{ "setOpacity:", void, .{ f32 } }, .{ "setHidden:", void, .{ objc.BOOL } } };
-    pub fn send(self: CALayer, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) { return objc.typedSend(methods, self.obj, selector, args); }
+    pub fn send(self: CALayer, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) { return objc.typedSend(methods, self.id, selector, args); }
 };
 
 """,
