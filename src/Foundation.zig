@@ -17,6 +17,10 @@ pub const UnsafePointer = *const anyopaque;
 pub const TimeInterval = f64;
 pub const pid_t = std.c_int;
 
+pub const Accessibility = @import("Accessibility.zig");
+pub const AppKit = @import("AppKit.zig");
+pub const WebKit = @import("WebKit.zig");
+
 pub const NSPoint = extern struct { x: f64 = 0, y: f64 = 0 };
 pub const NSSize = extern struct { width: f64 = 0, height: f64 = 0 };
 pub const NSRect = extern struct {
@@ -180,6 +184,7 @@ pub const NSSaveOptions = enum(i64) {
 
 pub const NSCacheDelegate = *anyopaque;
 pub const NSCoding = *anyopaque;
+pub const NSCopying = *anyopaque;
 pub const NSDecimalNumberBehaviors = *anyopaque;
 pub const NSDiscardableContent = *anyopaque;
 pub const NSExtensionRequestHandling = *anyopaque;
@@ -196,8 +201,10 @@ pub const NSMetadataQueryDelegate = *anyopaque;
 pub const NSMutableCopying = *anyopaque;
 pub const NetServiceBrowserDelegate = *anyopaque;
 pub const NetServiceDelegate = *anyopaque;
+pub const NSObjectProtocol = *anyopaque;
 pub const PortDelegate = *anyopaque;
 pub const ProgressReporting = *anyopaque;
+pub const NSSecureCoding = *anyopaque;
 pub const NSSpellServerDelegate = *anyopaque;
 pub const StreamDelegate = *anyopaque;
 pub const URLAuthenticationChallengeSender = *anyopaque;
@@ -222,9 +229,9 @@ pub const NSAffineTransform = struct {
     obj: Object,
 
     pub const methods = .{
-        .{ "appendTransform:", void, .{?*anyopaque} },
+        .{ "appendTransform:", void, .{NSAffineTransform} },
         .{ "invert", void, .{} },
-        .{ "prependTransform:", void, .{?*anyopaque} },
+        .{ "prependTransform:", void, .{NSAffineTransform} },
         .{ "rotateByDegrees:", void, .{f64} },
         .{ "rotateByRadians:", void, .{f64} },
         .{ "scaleBy:", void, .{f64} },
@@ -242,7 +249,7 @@ pub const NSAffineTransform = struct {
 
     pub const class_methods = .{
         .{ "init", Object, .{} },
-        .{ "initWithTransform:", Object, .{?*anyopaque} },
+        .{ "initWithTransform:", Object, .{NSAffineTransform} },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -410,36 +417,36 @@ pub const NSArray = struct {
         .{ "addObserver:forKeyPath:options:context:", void, .{ Object, objc.NSString, objc.NSInteger, ?UnsafeMutableRawPointer } },
         .{ "addObserver:toObjectsAtIndexes:forKeyPath:options:context:", void, .{ Object, NSIndexSet, objc.NSString, objc.NSInteger, ?UnsafeMutableRawPointer } },
         .{ "arrayByAddingObject:", Object, .{Any} },
-        .{ "arrayByAddingObjectsFromArray:", Object, .{void} },
+        .{ "arrayByAddingObjectsFromArray:", Object, .{Object} },
         .{ "componentsJoinedByString:", objc.NSString, .{objc.NSString} },
         .{ "containsObject:", objc.BOOL, .{Any} },
         .{ "count", objc.NSInteger, .{} },
         .{ "description", objc.NSString, .{} },
         .{ "descriptionWithLocale:", objc.NSString, .{?Any} },
         .{ "descriptionWithLocale:indent:", objc.NSString, .{ ?Any, objc.NSInteger } },
-        .{ "enumerateObjectsAtIndexes:options:usingBlock:", void, .{ NSIndexSet, objc.NSInteger, void } },
-        .{ "enumerateObjectsUsingBlock:", void, .{void} },
-        .{ "enumerateObjectsWithOptions:usingBlock:", void, .{ objc.NSInteger, void } },
+        .{ "enumerateObjectsAtIndexes:options:usingBlock:", void, .{ NSIndexSet, objc.NSInteger, ?*anyopaque } },
+        .{ "enumerateObjectsUsingBlock:", void, .{?*anyopaque} },
+        .{ "enumerateObjectsWithOptions:usingBlock:", void, .{ objc.NSInteger, ?*anyopaque } },
         .{ "filteredArrayUsingPredicate:", Object, .{NSPredicate} },
         .{ "firstObject", ?Any, .{} },
-        .{ "firstObjectCommonWithArray:", ?Any, .{void} },
+        .{ "firstObjectCommonWithArray:", ?Any, .{Object} },
         .{ "indexOfObject:", objc.NSInteger, .{Any} },
         .{ "indexOfObject:inRange:", objc.NSInteger, .{ Any, NSRange } },
-        .{ "indexOfObject:inSortedRange:options:usingComparator:", objc.NSInteger, .{ Any, NSRange, objc.NSInteger, void } },
-        .{ "indexOfObjectAtIndexes:options:passingTest:", objc.NSInteger, .{ NSIndexSet, objc.NSInteger, void } },
+        .{ "indexOfObject:inSortedRange:options:usingComparator:", objc.NSInteger, .{ Any, NSRange, objc.NSInteger, ?*anyopaque } },
+        .{ "indexOfObjectAtIndexes:options:passingTest:", objc.NSInteger, .{ NSIndexSet, objc.NSInteger, ?*anyopaque } },
         .{ "indexOfObjectIdenticalTo:", objc.NSInteger, .{Any} },
         .{ "indexOfObjectIdenticalTo:inRange:", objc.NSInteger, .{ Any, NSRange } },
-        .{ "indexOfObjectPassingTest:", objc.NSInteger, .{void} },
-        .{ "indexOfObjectWithOptions:passingTest:", objc.NSInteger, .{ objc.NSInteger, void } },
-        .{ "indexesOfObjectsAtIndexes:options:passingTest:", NSIndexSet, .{ NSIndexSet, objc.NSInteger, void } },
-        .{ "indexesOfObjectsPassingTest:", NSIndexSet, .{void} },
-        .{ "indexesOfObjectsWithOptions:passingTest:", NSIndexSet, .{ objc.NSInteger, void } },
-        .{ "isEqualToArray:", objc.BOOL, .{void} },
+        .{ "indexOfObjectPassingTest:", objc.NSInteger, .{?*anyopaque} },
+        .{ "indexOfObjectWithOptions:passingTest:", objc.NSInteger, .{ objc.NSInteger, ?*anyopaque } },
+        .{ "indexesOfObjectsAtIndexes:options:passingTest:", NSIndexSet, .{ NSIndexSet, objc.NSInteger, ?*anyopaque } },
+        .{ "indexesOfObjectsPassingTest:", NSIndexSet, .{?*anyopaque} },
+        .{ "indexesOfObjectsWithOptions:passingTest:", NSIndexSet, .{ objc.NSInteger, ?*anyopaque } },
+        .{ "isEqualToArray:", objc.BOOL, .{Object} },
         .{ "lastObject", ?Any, .{} },
         .{ "objectAtIndex:", Any, .{objc.NSInteger} },
         .{ "objectEnumerator", NSEnumerator, .{} },
         .{ "objectsAtIndexes:", Object, .{NSIndexSet} },
-        .{ "pathsMatchingExtensions:", Object, .{void} },
+        .{ "pathsMatchingExtensions:", Object, .{Object} },
         .{ "removeObserver:forKeyPath:", void, .{ Object, objc.NSString } },
         .{ "removeObserver:forKeyPath:context:", void, .{ Object, objc.NSString, ?UnsafeMutableRawPointer } },
         .{ "removeObserver:fromObjectsAtIndexes:forKeyPath:", void, .{ Object, NSIndexSet, objc.NSString } },
@@ -447,12 +454,12 @@ pub const NSArray = struct {
         .{ "reverseObjectEnumerator", NSEnumerator, .{} },
         .{ "setValue:forKey:", void, .{ ?Any, objc.NSString } },
         .{ "sortedArrayHint", NSData, .{} },
-        .{ "sortedArrayUsingComparator:", Object, .{void} },
-        .{ "sortedArrayUsingDescriptors:", Object, .{void} },
-        .{ "sortedArrayUsingFunction:context:", Object, .{ void, ?UnsafeMutableRawPointer } },
-        .{ "sortedArrayUsingFunction:context:hint:", Object, .{ void, ?UnsafeMutableRawPointer, ?NSData } },
+        .{ "sortedArrayUsingComparator:", Object, .{?*anyopaque} },
+        .{ "sortedArrayUsingDescriptors:", Object, .{Object} },
+        .{ "sortedArrayUsingFunction:context:", Object, .{ ?*anyopaque, ?UnsafeMutableRawPointer } },
+        .{ "sortedArrayUsingFunction:context:hint:", Object, .{ ?*anyopaque, ?UnsafeMutableRawPointer, ?NSData } },
         .{ "sortedArrayUsingSelector:", Object, .{Selector} },
-        .{ "sortedArrayWithOptions:usingComparator:", Object, .{ objc.NSInteger, void } },
+        .{ "sortedArrayWithOptions:usingComparator:", Object, .{ objc.NSInteger, ?*anyopaque } },
         .{ "subarrayWithRange:", Object, .{NSRange} },
         .{ "valueForKey:", Any, .{objc.NSString} },
         .{ "writeToFile:atomically:", objc.BOOL, .{ objc.NSString, objc.BOOL } },
@@ -469,8 +476,8 @@ pub const NSArray = struct {
         .{ "arrayWithObject:", Object, .{Any} },
         .{ "arrayWithObjects:count:", Object, .{ UnsafePointer, objc.NSInteger } },
         .{ "init", Object, .{} },
-        .{ "initWithArray:", Object, .{void} },
-        .{ "initWithArray:copyItems:", Object, .{ void, objc.BOOL } },
+        .{ "initWithArray:", Object, .{Object} },
+        .{ "initWithArray:copyItems:", Object, .{ Object, objc.BOOL } },
         .{ "initWithCoder:", Object, .{NSCoder} },
         .{ "initWithContentsOfFile:", Object, .{objc.NSString} },
         .{ "initWithContentsOfURL:", Object, .{NSURL} },
@@ -503,8 +510,8 @@ pub const NSAttributedString = struct {
         .{ "attributedSubstringFromRange:", NSAttributedString, .{NSRange} },
         .{ "attributesAtIndex:effectiveRange:", Object, .{ objc.NSInteger, NSRange } },
         .{ "attributesAtIndex:longestEffectiveRange:inRange:", Object, .{ objc.NSInteger, NSRange, NSRange } },
-        .{ "enumerateAttribute:inRange:options:usingBlock:", void, .{ objc.NSString, NSRange, objc.NSInteger, void } },
-        .{ "enumerateAttributesInRange:options:usingBlock:", void, .{ NSRange, objc.NSInteger, void } },
+        .{ "enumerateAttribute:inRange:options:usingBlock:", void, .{ objc.NSString, NSRange, objc.NSInteger, ?*anyopaque } },
+        .{ "enumerateAttributesInRange:options:usingBlock:", void, .{ NSRange, objc.NSInteger, ?*anyopaque } },
         .{ "isEqualToAttributedString:", objc.BOOL, .{NSAttributedString} },
         .{ "length", objc.NSInteger, .{} },
         .{ "string", objc.NSString, .{} },
@@ -517,7 +524,7 @@ pub const NSAttributedString = struct {
     pub const class_methods = .{
         .{ "initWithAttributedString:", Object, .{NSAttributedString} },
         .{ "initWithString:", Object, .{objc.NSString} },
-        .{ "initWithString:attributes:", Object, .{ objc.NSString, ?Any } },
+        .{ "initWithString:attributes:", Object, .{ objc.NSString, ?*anyopaque } },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -534,7 +541,7 @@ pub const NSBackgroundActivityScheduler = struct {
         .{ "invalidate", void, .{} },
         .{ "qualityOfService", QualityOfService, .{} },
         .{ "repeats", objc.BOOL, .{} },
-        .{ "scheduleWithBlock:", void, .{void} },
+        .{ "scheduleWithBlock:", void, .{?*anyopaque} },
         .{ "setInterval:", void, .{TimeInterval} },
         .{ "setQualityOfService:", void, .{QualityOfService} },
         .{ "setRepeats:", void, .{objc.BOOL} },
@@ -561,21 +568,21 @@ pub const NSBackgroundActivityScheduler = struct {
     };
 };
 
-pub const NSBlockOperation = struct {
+pub const BlockOperation = struct {
     obj: Object,
 
-    pub const Super = NSOperation;
+    pub const Super = Operation;
     pub const methods = .{
-        .{ "addExecutionBlock:", void, .{void} },
+        .{ "addExecutionBlock:", void, .{?*anyopaque} },
         .{ "executionBlocks", Object, .{} },
     };
 
-    pub fn send(self: NSBlockOperation, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
+    pub fn send(self: BlockOperation, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
         return objc.typedSendChain(@This(), self.obj, selector, args);
     }
 
     pub const class_methods = .{
-        .{ "blockOperationWithBlock:", Object, .{void} },
+        .{ "blockOperationWithBlock:", Object, .{?*anyopaque} },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -583,7 +590,7 @@ pub const NSBlockOperation = struct {
     }
 };
 
-pub const NSBundle = struct {
+pub const Bundle = struct {
     obj: Object,
 
     pub const methods = .{
@@ -632,7 +639,7 @@ pub const NSBundle = struct {
         .{ "unload", objc.BOOL, .{} },
     };
 
-    pub fn send(self: NSBundle, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
+    pub fn send(self: Bundle, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
         return objc.typedSend(methods, self.obj, selector, args);
     }
 
@@ -645,11 +652,11 @@ pub const NSBundle = struct {
         .{ "bundleWithIdentifier:", Object, .{objc.NSString} },
         .{ "initWithPath:", Object, .{objc.NSString} },
         .{ "initWithURL:", Object, .{NSURL} },
-        .{ "mainBundle", NSBundle, .{} },
+        .{ "mainBundle", Bundle, .{} },
         .{ "pathForResource:ofType:inDirectory:", ?objc.NSString, .{ ?objc.NSString, ?objc.NSString, objc.NSString } },
         .{ "pathsForResourcesOfType:inDirectory:", Object, .{ ?objc.NSString, objc.NSString } },
-        .{ "preferredLocalizationsFromArray:", Object, .{void} },
-        .{ "preferredLocalizationsFromArray:forPreferences:", Object, .{ void, void } },
+        .{ "preferredLocalizationsFromArray:", Object, .{Object} },
+        .{ "preferredLocalizationsFromArray:forPreferences:", Object, .{ Object, ?*anyopaque } },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -657,41 +664,41 @@ pub const NSBundle = struct {
     }
 };
 
-pub const NSByteCountFormatter = struct {
+pub const ByteCountFormatter = struct {
     obj: Object,
 
-    pub const Super = NSFormatter;
+    pub const Super = Formatter;
     pub const methods = .{
         .{ "adaptive", objc.BOOL, .{} },
         .{ "allowedUnits", objc.NSInteger, .{} },
         .{ "allowsNonnumericFormatting", objc.BOOL, .{} },
-        .{ "countStyle", NSByteCountFormatter.CountStyle, .{} },
-        .{ "formattingContext", NSFormatter.Context, .{} },
+        .{ "countStyle", ByteCountFormatter.CountStyle, .{} },
+        .{ "formattingContext", Formatter.Context, .{} },
         .{ "includesActualByteCount", objc.BOOL, .{} },
         .{ "includesCount", objc.BOOL, .{} },
         .{ "includesUnit", objc.BOOL, .{} },
         .{ "setAdaptive:", void, .{objc.BOOL} },
         .{ "setAllowedUnits:", void, .{objc.NSInteger} },
         .{ "setAllowsNonnumericFormatting:", void, .{objc.BOOL} },
-        .{ "setCountStyle:", void, .{NSByteCountFormatter.CountStyle} },
-        .{ "setFormattingContext:", void, .{NSFormatter.Context} },
+        .{ "setCountStyle:", void, .{ByteCountFormatter.CountStyle} },
+        .{ "setFormattingContext:", void, .{Formatter.Context} },
         .{ "setIncludesActualByteCount:", void, .{objc.BOOL} },
         .{ "setIncludesCount:", void, .{objc.BOOL} },
         .{ "setIncludesUnit:", void, .{objc.BOOL} },
         .{ "setZeroPadsFractionDigits:", void, .{objc.BOOL} },
         .{ "stringForObjectValue:", ?objc.NSString, .{?Any} },
         .{ "stringFromByteCount:", objc.NSString, .{i64} },
-        .{ "stringFromMeasurement:", objc.NSString, .{NSUnitInformationStorage} },
+        .{ "stringFromMeasurement:", objc.NSString, .{UnitInformationStorage} },
         .{ "zeroPadsFractionDigits", objc.BOOL, .{} },
     };
 
-    pub fn send(self: NSByteCountFormatter, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
+    pub fn send(self: ByteCountFormatter, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
         return objc.typedSendChain(@This(), self.obj, selector, args);
     }
 
     pub const class_methods = .{
-        .{ "stringFromByteCount:countStyle:", objc.NSString, .{ i64, NSByteCountFormatter.CountStyle } },
-        .{ "stringFromMeasurement:countStyle:", objc.NSString, .{ NSUnitInformationStorage, NSByteCountFormatter.CountStyle } },
+        .{ "stringFromByteCount:countStyle:", objc.NSString, .{ i64, ByteCountFormatter.CountStyle } },
+        .{ "stringFromMeasurement:countStyle:", objc.NSString, .{ UnitInformationStorage, ByteCountFormatter.CountStyle } },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -732,23 +739,23 @@ pub const NSCache = struct {
     }
 };
 
-pub const NSCachedURLResponse = struct {
+pub const CachedURLResponse = struct {
     obj: Object,
 
     pub const methods = .{
         .{ "data", NSData, .{} },
-        .{ "response", NSURLResponse, .{} },
-        .{ "storagePolicy", NSURLCache.StoragePolicy, .{} },
+        .{ "response", URLResponse, .{} },
+        .{ "storagePolicy", URLCache.StoragePolicy, .{} },
         .{ "userInfo", ?*anyopaque, .{} },
     };
 
-    pub fn send(self: NSCachedURLResponse, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
+    pub fn send(self: CachedURLResponse, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
         return objc.typedSend(methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
-        .{ "initWithResponse:data:", Object, .{ NSURLResponse, NSData } },
-        .{ "initWithResponse:data:userInfo:storagePolicy:", Object, .{ NSURLResponse, NSData, ?Any, NSURLCache.StoragePolicy } },
+        .{ "initWithResponse:data:", Object, .{ URLResponse, NSData } },
+        .{ "initWithResponse:data:userInfo:storagePolicy:", Object, .{ URLResponse, NSData, ?*anyopaque, URLCache.StoragePolicy } },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -765,19 +772,19 @@ pub const NSCalendar = struct {
         .{ "calendarIdentifier", objc.NSString, .{} },
         .{ "compareDate:toDate:toUnitGranularity:", ComparisonResult, .{ NSDate, NSDate, objc.NSInteger } },
         .{ "component:fromDate:", objc.NSInteger, .{ objc.NSInteger, NSDate } },
-        .{ "components:fromDate:", ?*anyopaque, .{ objc.NSInteger, NSDate } },
-        .{ "components:fromDate:toDate:options:", ?*anyopaque, .{ objc.NSInteger, NSDate, NSDate, objc.NSInteger } },
-        .{ "components:fromDateComponents:toDateComponents:options:", ?*anyopaque, .{ objc.NSInteger, ?*anyopaque, ?*anyopaque, objc.NSInteger } },
-        .{ "componentsInTimeZone:fromDate:", ?*anyopaque, .{ ?*anyopaque, NSDate } },
-        .{ "date:matchesComponents:", objc.BOOL, .{ NSDate, ?*anyopaque } },
-        .{ "dateByAddingComponents:toDate:options:", ?NSDate, .{ ?*anyopaque, NSDate, objc.NSInteger } },
+        .{ "components:fromDate:", NSDateComponents, .{ objc.NSInteger, NSDate } },
+        .{ "components:fromDate:toDate:options:", NSDateComponents, .{ objc.NSInteger, NSDate, NSDate, objc.NSInteger } },
+        .{ "components:fromDateComponents:toDateComponents:options:", NSDateComponents, .{ objc.NSInteger, NSDateComponents, NSDateComponents, objc.NSInteger } },
+        .{ "componentsInTimeZone:fromDate:", NSDateComponents, .{ NSTimeZone, NSDate } },
+        .{ "date:matchesComponents:", objc.BOOL, .{ NSDate, NSDateComponents } },
+        .{ "dateByAddingComponents:toDate:options:", ?NSDate, .{ NSDateComponents, NSDate, objc.NSInteger } },
         .{ "dateByAddingUnit:value:toDate:options:", ?NSDate, .{ objc.NSInteger, objc.NSInteger, NSDate, objc.NSInteger } },
         .{ "dateBySettingHour:minute:second:ofDate:options:", ?NSDate, .{ objc.NSInteger, objc.NSInteger, objc.NSInteger, NSDate, objc.NSInteger } },
         .{ "dateBySettingUnit:value:ofDate:options:", ?NSDate, .{ objc.NSInteger, objc.NSInteger, NSDate, objc.NSInteger } },
-        .{ "dateFromComponents:", ?NSDate, .{?*anyopaque} },
+        .{ "dateFromComponents:", ?NSDate, .{NSDateComponents} },
         .{ "dateWithEra:year:month:day:hour:minute:second:nanosecond:", ?NSDate, .{ objc.NSInteger, objc.NSInteger, objc.NSInteger, objc.NSInteger, objc.NSInteger, objc.NSInteger, objc.NSInteger, objc.NSInteger } },
         .{ "dateWithEra:yearForWeekOfYear:weekOfYear:weekday:hour:minute:second:nanosecond:", ?NSDate, .{ objc.NSInteger, objc.NSInteger, objc.NSInteger, objc.NSInteger, objc.NSInteger, objc.NSInteger, objc.NSInteger, objc.NSInteger } },
-        .{ "enumerateDatesStartingAfterDate:matchingComponents:options:usingBlock:", void, .{ NSDate, ?*anyopaque, objc.NSInteger, void } },
+        .{ "enumerateDatesStartingAfterDate:matchingComponents:options:usingBlock:", void, .{ NSDate, NSDateComponents, objc.NSInteger, ?*anyopaque } },
         .{ "eraSymbols", Object, .{} },
         .{ "firstWeekday", objc.NSInteger, .{} },
         .{ "getEra:year:month:day:fromDate:", void, .{ objc.NSInteger, objc.NSInteger, objc.NSInteger, objc.NSInteger, NSDate } },
@@ -795,7 +802,7 @@ pub const NSCalendar = struct {
         .{ "minimumDaysInFirstWeek", objc.NSInteger, .{} },
         .{ "minimumRangeOfUnit:", NSRange, .{objc.NSInteger} },
         .{ "monthSymbols", Object, .{} },
-        .{ "nextDateAfterDate:matchingComponents:options:", ?NSDate, .{ NSDate, ?*anyopaque, objc.NSInteger } },
+        .{ "nextDateAfterDate:matchingComponents:options:", ?NSDate, .{ NSDate, NSDateComponents, objc.NSInteger } },
         .{ "nextDateAfterDate:matchingHour:minute:second:options:", ?NSDate, .{ NSDate, objc.NSInteger, objc.NSInteger, objc.NSInteger, objc.NSInteger } },
         .{ "nextDateAfterDate:matchingUnit:value:options:", ?NSDate, .{ NSDate, objc.NSInteger, objc.NSInteger, objc.NSInteger } },
         .{ "nextWeekendStartDate:interval:options:afterDate:", objc.BOOL, .{ ?NSDate, TimeInterval, objc.NSInteger, NSDate } },
@@ -807,7 +814,7 @@ pub const NSCalendar = struct {
         .{ "setFirstWeekday:", void, .{objc.NSInteger} },
         .{ "setLocale:", void, .{?NSLocale} },
         .{ "setMinimumDaysInFirstWeek:", void, .{objc.NSInteger} },
-        .{ "setTimeZone:", void, .{?*anyopaque} },
+        .{ "setTimeZone:", void, .{NSTimeZone} },
         .{ "shortMonthSymbols", Object, .{} },
         .{ "shortQuarterSymbols", Object, .{} },
         .{ "shortStandaloneMonthSymbols", Object, .{} },
@@ -818,7 +825,7 @@ pub const NSCalendar = struct {
         .{ "standaloneQuarterSymbols", Object, .{} },
         .{ "standaloneWeekdaySymbols", Object, .{} },
         .{ "startOfDayForDate:", NSDate, .{NSDate} },
-        .{ "timeZone", ?*anyopaque, .{} },
+        .{ "timeZone", NSTimeZone, .{} },
         .{ "veryShortMonthSymbols", Object, .{} },
         .{ "veryShortStandaloneMonthSymbols", Object, .{} },
         .{ "veryShortStandaloneWeekdaySymbols", Object, .{} },
@@ -831,9 +838,9 @@ pub const NSCalendar = struct {
     }
 
     pub const class_methods = .{
-        .{ "autoupdatingCurrentCalendar", ?*anyopaque, .{} },
+        .{ "autoupdatingCurrentCalendar", NSCalendar, .{} },
         .{ "calendarWithIdentifier:", Object, .{objc.NSString} },
-        .{ "currentCalendar", ?*anyopaque, .{} },
+        .{ "currentCalendar", NSCalendar, .{} },
         .{ "initWithCalendarIdentifier:", Object, .{objc.NSString} },
     };
 
@@ -849,8 +856,8 @@ pub const NSCharacterSet = struct {
         .{ "bitmapRepresentation", NSData, .{} },
         .{ "characterIsMember:", objc.BOOL, .{u16} },
         .{ "hasMemberInPlane:", objc.BOOL, .{u8} },
-        .{ "invertedSet", ?*anyopaque, .{} },
-        .{ "isSupersetOfSet:", objc.BOOL, .{?*anyopaque} },
+        .{ "invertedSet", NSCharacterSet, .{} },
+        .{ "isSupersetOfSet:", objc.BOOL, .{NSCharacterSet} },
         .{ "longCharacterIsMember:", objc.BOOL, .{objc.NSString} },
     };
 
@@ -859,32 +866,32 @@ pub const NSCharacterSet = struct {
     }
 
     pub const class_methods = .{
-        .{ "URLFragmentAllowedCharacterSet", ?*anyopaque, .{} },
-        .{ "URLHostAllowedCharacterSet", ?*anyopaque, .{} },
-        .{ "URLPasswordAllowedCharacterSet", ?*anyopaque, .{} },
-        .{ "URLPathAllowedCharacterSet", ?*anyopaque, .{} },
-        .{ "URLQueryAllowedCharacterSet", ?*anyopaque, .{} },
-        .{ "URLUserAllowedCharacterSet", ?*anyopaque, .{} },
-        .{ "alphanumericCharacterSet", ?*anyopaque, .{} },
-        .{ "capitalizedLetterCharacterSet", ?*anyopaque, .{} },
+        .{ "URLFragmentAllowedCharacterSet", NSCharacterSet, .{} },
+        .{ "URLHostAllowedCharacterSet", NSCharacterSet, .{} },
+        .{ "URLPasswordAllowedCharacterSet", NSCharacterSet, .{} },
+        .{ "URLPathAllowedCharacterSet", NSCharacterSet, .{} },
+        .{ "URLQueryAllowedCharacterSet", NSCharacterSet, .{} },
+        .{ "URLUserAllowedCharacterSet", NSCharacterSet, .{} },
+        .{ "alphanumericCharacterSet", NSCharacterSet, .{} },
+        .{ "capitalizedLetterCharacterSet", NSCharacterSet, .{} },
         .{ "characterSetWithBitmapRepresentation:", Object, .{NSData} },
         .{ "characterSetWithCharactersInString:", Object, .{objc.NSString} },
         .{ "characterSetWithContentsOfFile:", Object, .{objc.NSString} },
         .{ "characterSetWithRange:", Object, .{NSRange} },
-        .{ "controlCharacterSet", ?*anyopaque, .{} },
-        .{ "decimalDigitCharacterSet", ?*anyopaque, .{} },
-        .{ "decomposableCharacterSet", ?*anyopaque, .{} },
-        .{ "illegalCharacterSet", ?*anyopaque, .{} },
+        .{ "controlCharacterSet", NSCharacterSet, .{} },
+        .{ "decimalDigitCharacterSet", NSCharacterSet, .{} },
+        .{ "decomposableCharacterSet", NSCharacterSet, .{} },
+        .{ "illegalCharacterSet", NSCharacterSet, .{} },
         .{ "initWithCoder:", Object, .{NSCoder} },
-        .{ "letterCharacterSet", ?*anyopaque, .{} },
-        .{ "lowercaseLetterCharacterSet", ?*anyopaque, .{} },
-        .{ "newlineCharacterSet", ?*anyopaque, .{} },
-        .{ "nonBaseCharacterSet", ?*anyopaque, .{} },
-        .{ "punctuationCharacterSet", ?*anyopaque, .{} },
-        .{ "symbolCharacterSet", ?*anyopaque, .{} },
-        .{ "uppercaseLetterCharacterSet", ?*anyopaque, .{} },
-        .{ "whitespaceAndNewlineCharacterSet", ?*anyopaque, .{} },
-        .{ "whitespaceCharacterSet", ?*anyopaque, .{} },
+        .{ "letterCharacterSet", NSCharacterSet, .{} },
+        .{ "lowercaseLetterCharacterSet", NSCharacterSet, .{} },
+        .{ "newlineCharacterSet", NSCharacterSet, .{} },
+        .{ "nonBaseCharacterSet", NSCharacterSet, .{} },
+        .{ "punctuationCharacterSet", NSCharacterSet, .{} },
+        .{ "symbolCharacterSet", NSCharacterSet, .{} },
+        .{ "uppercaseLetterCharacterSet", NSCharacterSet, .{} },
+        .{ "whitespaceAndNewlineCharacterSet", NSCharacterSet, .{} },
+        .{ "whitespaceCharacterSet", NSCharacterSet, .{} },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -1004,7 +1011,7 @@ pub const NSCoder = struct {
         .{ "encodeSize:forKey:", void, .{ NSSize, objc.NSString } },
         .{ "encodeValueOfObjCType:at:", void, .{ ?*anyopaque, UnsafeRawPointer } },
         .{ "error", ?*anyopaque, .{} },
-        .{ "failWithError:", void, .{void} },
+        .{ "failWithError:", void, .{?*anyopaque} },
         .{ "requiresSecureCoding", objc.BOOL, .{} },
         .{ "systemVersion", u32, .{} },
         .{ "versionForClassName:", objc.NSInteger, .{objc.NSString} },
@@ -1084,11 +1091,11 @@ pub const NSCompoundPredicate = struct {
     }
 
     pub const class_methods = .{
-        .{ "andPredicateWithSubpredicates:", Object, .{void} },
+        .{ "andPredicateWithSubpredicates:", Object, .{Object} },
         .{ "initWithCoder:", Object, .{NSCoder} },
-        .{ "initWithType:subpredicates:", Object, .{ NSCompoundPredicate.LogicalType, void } },
+        .{ "initWithType:subpredicates:", Object, .{ NSCompoundPredicate.LogicalType, Object } },
         .{ "notPredicateWithSubpredicate:", Object, .{NSPredicate} },
-        .{ "orPredicateWithSubpredicates:", Object, .{void} },
+        .{ "orPredicateWithSubpredicates:", Object, .{Object} },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -1163,7 +1170,7 @@ pub const NSCountedSet = struct {
     }
 
     pub const class_methods = .{
-        .{ "initWithArray:", Object, .{void} },
+        .{ "initWithArray:", Object, .{Object} },
         .{ "initWithCapacity:", Object, .{objc.NSInteger} },
         .{ "initWithSet:", Object, .{?*anyopaque} },
     };
@@ -1197,7 +1204,7 @@ pub const NSData = struct {
         .{ "compressedDataUsingAlgorithm:error:", ?*anyopaque, .{NSData.CompressionAlgorithm} },
         .{ "decompressedDataUsingAlgorithm:error:", ?*anyopaque, .{NSData.CompressionAlgorithm} },
         .{ "description", objc.NSString, .{} },
-        .{ "enumerateByteRangesUsingBlock:", void, .{void} },
+        .{ "enumerateByteRangesUsingBlock:", void, .{?*anyopaque} },
         .{ "getBytes:", void, .{UnsafeMutableRawPointer} },
         .{ "getBytes:length:", void, .{ UnsafeMutableRawPointer, objc.NSInteger } },
         .{ "getBytes:range:", void, .{ UnsafeMutableRawPointer, NSRange } },
@@ -1223,7 +1230,7 @@ pub const NSData = struct {
         .{ "initWithBase64EncodedString:options:", Object, .{ objc.NSString, objc.NSInteger } },
         .{ "initWithBytes:length:", Object, .{ ?UnsafeRawPointer, objc.NSInteger } },
         .{ "initWithBytesNoCopy:length:", Object, .{ UnsafeMutableRawPointer, objc.NSInteger } },
-        .{ "initWithBytesNoCopy:length:deallocator:", Object, .{ UnsafeMutableRawPointer, objc.NSInteger, void } },
+        .{ "initWithBytesNoCopy:length:deallocator:", Object, .{ UnsafeMutableRawPointer, objc.NSInteger, ?*anyopaque } },
         .{ "initWithBytesNoCopy:length:freeWhenDone:", Object, .{ UnsafeMutableRawPointer, objc.NSInteger, objc.BOOL } },
         .{ "initWithContentsOfFile:", Object, .{objc.NSString} },
         .{ "initWithContentsOfFile:options:error:", Object, .{ objc.NSString, objc.NSInteger } },
@@ -1272,9 +1279,9 @@ pub const NSDate = struct {
     pub const methods = .{
         .{ "compare:", ComparisonResult, .{NSDate} },
         .{ "dateByAddingTimeInterval:", ?*anyopaque, .{TimeInterval} },
-        .{ "dateWithCalendarFormat:timeZone:", Object, .{ ?objc.NSString, ?*anyopaque } },
+        .{ "dateWithCalendarFormat:timeZone:", Object, .{ ?objc.NSString, ?NSTimeZone } },
         .{ "description", objc.NSString, .{} },
-        .{ "descriptionWithCalendarFormat:timeZone:locale:", ?objc.NSString, .{ ?objc.NSString, ?*anyopaque, ?Any } },
+        .{ "descriptionWithCalendarFormat:timeZone:locale:", ?objc.NSString, .{ ?objc.NSString, ?NSTimeZone, ?Any } },
         .{ "descriptionWithLocale:", objc.NSString, .{?Any} },
         .{ "earlierDate:", NSDate, .{NSDate} },
         .{ "isEqualToDate:", objc.BOOL, .{NSDate} },
@@ -1316,13 +1323,13 @@ pub const NSDateComponents = struct {
     obj: Object,
 
     pub const methods = .{
-        .{ "calendar", ?*anyopaque, .{} },
+        .{ "calendar", ?NSCalendar, .{} },
         .{ "date", ?NSDate, .{} },
         .{ "day", objc.NSInteger, .{} },
         .{ "dayOfYear", objc.NSInteger, .{} },
         .{ "era", objc.NSInteger, .{} },
         .{ "hour", objc.NSInteger, .{} },
-        .{ "isValidDateInCalendar:", objc.BOOL, .{?*anyopaque} },
+        .{ "isValidDateInCalendar:", objc.BOOL, .{NSCalendar} },
         .{ "leapMonth", objc.BOOL, .{} },
         .{ "minute", objc.NSInteger, .{} },
         .{ "month", objc.NSInteger, .{} },
@@ -1330,7 +1337,7 @@ pub const NSDateComponents = struct {
         .{ "quarter", objc.NSInteger, .{} },
         .{ "repeatedDay", objc.BOOL, .{} },
         .{ "second", objc.NSInteger, .{} },
-        .{ "setCalendar:", void, .{?*anyopaque} },
+        .{ "setCalendar:", void, .{?NSCalendar} },
         .{ "setDay:", void, .{objc.NSInteger} },
         .{ "setDayOfYear:", void, .{objc.NSInteger} },
         .{ "setEra:", void, .{objc.NSInteger} },
@@ -1342,7 +1349,7 @@ pub const NSDateComponents = struct {
         .{ "setQuarter:", void, .{objc.NSInteger} },
         .{ "setRepeatedDay:", void, .{objc.BOOL} },
         .{ "setSecond:", void, .{objc.NSInteger} },
-        .{ "setTimeZone:", void, .{?*anyopaque} },
+        .{ "setTimeZone:", void, .{?NSTimeZone} },
         .{ "setValue:forComponent:", void, .{ objc.NSInteger, objc.NSInteger } },
         .{ "setWeekOfMonth:", void, .{objc.NSInteger} },
         .{ "setWeekOfYear:", void, .{objc.NSInteger} },
@@ -1350,7 +1357,7 @@ pub const NSDateComponents = struct {
         .{ "setWeekdayOrdinal:", void, .{objc.NSInteger} },
         .{ "setYear:", void, .{objc.NSInteger} },
         .{ "setYearForWeekOfYear:", void, .{objc.NSInteger} },
-        .{ "timeZone", ?*anyopaque, .{} },
+        .{ "timeZone", ?NSTimeZone, .{} },
         .{ "validDate", objc.BOOL, .{} },
         .{ "valueForComponent:", objc.NSInteger, .{objc.NSInteger} },
         .{ "weekOfMonth", objc.NSInteger, .{} },
@@ -1366,16 +1373,16 @@ pub const NSDateComponents = struct {
     }
 };
 
-pub const NSDateComponentsFormatter = struct {
+pub const DateComponentsFormatter = struct {
     obj: Object,
 
-    pub const Super = NSFormatter;
+    pub const Super = Formatter;
     pub const methods = .{
         .{ "allowedUnits", objc.NSInteger, .{} },
         .{ "allowsFractionalUnits", objc.BOOL, .{} },
-        .{ "calendar", ?*anyopaque, .{} },
+        .{ "calendar", ?NSCalendar, .{} },
         .{ "collapsesLargestUnit", objc.BOOL, .{} },
-        .{ "formattingContext", NSFormatter.Context, .{} },
+        .{ "formattingContext", Formatter.Context, .{} },
         .{ "getObjectValue:forString:errorDescription:", objc.BOOL, .{ ?*anyopaque, objc.NSString, ?objc.NSString } },
         .{ "includesApproximationPhrase", objc.BOOL, .{} },
         .{ "includesTimeRemainingPhrase", objc.BOOL, .{} },
@@ -1383,29 +1390,29 @@ pub const NSDateComponentsFormatter = struct {
         .{ "referenceDate", ?NSDate, .{} },
         .{ "setAllowedUnits:", void, .{objc.NSInteger} },
         .{ "setAllowsFractionalUnits:", void, .{objc.BOOL} },
-        .{ "setCalendar:", void, .{?*anyopaque} },
+        .{ "setCalendar:", void, .{?NSCalendar} },
         .{ "setCollapsesLargestUnit:", void, .{objc.BOOL} },
-        .{ "setFormattingContext:", void, .{NSFormatter.Context} },
+        .{ "setFormattingContext:", void, .{Formatter.Context} },
         .{ "setIncludesApproximationPhrase:", void, .{objc.BOOL} },
         .{ "setIncludesTimeRemainingPhrase:", void, .{objc.BOOL} },
         .{ "setMaximumUnitCount:", void, .{objc.NSInteger} },
         .{ "setReferenceDate:", void, .{?NSDate} },
-        .{ "setUnitsStyle:", void, .{NSDateComponentsFormatter.UnitsStyle} },
+        .{ "setUnitsStyle:", void, .{DateComponentsFormatter.UnitsStyle} },
         .{ "setZeroFormattingBehavior:", void, .{objc.NSInteger} },
         .{ "stringForObjectValue:", ?objc.NSString, .{?Any} },
         .{ "stringFromDate:toDate:", ?objc.NSString, .{ NSDate, NSDate } },
-        .{ "stringFromDateComponents:", ?objc.NSString, .{?*anyopaque} },
+        .{ "stringFromDateComponents:", ?objc.NSString, .{NSDateComponents} },
         .{ "stringFromTimeInterval:", ?objc.NSString, .{TimeInterval} },
-        .{ "unitsStyle", NSDateComponentsFormatter.UnitsStyle, .{} },
+        .{ "unitsStyle", DateComponentsFormatter.UnitsStyle, .{} },
         .{ "zeroFormattingBehavior", objc.NSInteger, .{} },
     };
 
-    pub fn send(self: NSDateComponentsFormatter, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
+    pub fn send(self: DateComponentsFormatter, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
         return objc.typedSendChain(@This(), self.obj, selector, args);
     }
 
     pub const class_methods = .{
-        .{ "localizedStringFromDateComponents:unitsStyle:", ?objc.NSString, .{ ?*anyopaque, NSDateComponentsFormatter.UnitsStyle } },
+        .{ "localizedStringFromDateComponents:unitsStyle:", ?objc.NSString, .{ NSDateComponents, DateComponentsFormatter.UnitsStyle } },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -1422,22 +1429,22 @@ pub const NSDateComponentsFormatter = struct {
     };
 };
 
-pub const NSDateFormatter = struct {
+pub const DateFormatter = struct {
     obj: Object,
 
-    pub const Super = NSFormatter;
+    pub const Super = Formatter;
     pub const methods = .{
         .{ "AMSymbol", objc.NSString, .{} },
         .{ "PMSymbol", objc.NSString, .{} },
-        .{ "calendar", ?*anyopaque, .{} },
+        .{ "calendar", NSCalendar, .{} },
         .{ "dateFormat", objc.NSString, .{} },
         .{ "dateFromString:", ?NSDate, .{objc.NSString} },
-        .{ "dateStyle", NSDateFormatter.Style, .{} },
+        .{ "dateStyle", DateFormatter.Style, .{} },
         .{ "defaultDate", ?NSDate, .{} },
         .{ "doesRelativeDateFormatting", objc.BOOL, .{} },
         .{ "eraSymbols", Object, .{} },
-        .{ "formatterBehavior", NSDateFormatter.Behavior, .{} },
-        .{ "formattingContext", NSFormatter.Context, .{} },
+        .{ "formatterBehavior", DateFormatter.Behavior, .{} },
+        .{ "formattingContext", Formatter.Context, .{} },
         .{ "generatesCalendarDates", objc.BOOL, .{} },
         .{ "getObjectValue:forString:range:error:", void, .{ ?*anyopaque, objc.NSString, NSRange } },
         .{ "gregorianStartDate", ?NSDate, .{} },
@@ -1447,14 +1454,14 @@ pub const NSDateFormatter = struct {
         .{ "monthSymbols", Object, .{} },
         .{ "quarterSymbols", Object, .{} },
         .{ "setAMSymbol:", void, .{objc.NSString} },
-        .{ "setCalendar:", void, .{?*anyopaque} },
+        .{ "setCalendar:", void, .{NSCalendar} },
         .{ "setDateFormat:", void, .{objc.NSString} },
-        .{ "setDateStyle:", void, .{NSDateFormatter.Style} },
+        .{ "setDateStyle:", void, .{DateFormatter.Style} },
         .{ "setDefaultDate:", void, .{?NSDate} },
         .{ "setDoesRelativeDateFormatting:", void, .{objc.BOOL} },
         .{ "setEraSymbols:", void, .{Object} },
-        .{ "setFormatterBehavior:", void, .{NSDateFormatter.Behavior} },
-        .{ "setFormattingContext:", void, .{NSFormatter.Context} },
+        .{ "setFormatterBehavior:", void, .{DateFormatter.Behavior} },
+        .{ "setFormattingContext:", void, .{Formatter.Context} },
         .{ "setGeneratesCalendarDates:", void, .{objc.BOOL} },
         .{ "setGregorianStartDate:", void, .{?NSDate} },
         .{ "setLenient:", void, .{objc.BOOL} },
@@ -1473,8 +1480,8 @@ pub const NSDateFormatter = struct {
         .{ "setStandaloneMonthSymbols:", void, .{Object} },
         .{ "setStandaloneQuarterSymbols:", void, .{Object} },
         .{ "setStandaloneWeekdaySymbols:", void, .{Object} },
-        .{ "setTimeStyle:", void, .{NSDateFormatter.Style} },
-        .{ "setTimeZone:", void, .{?*anyopaque} },
+        .{ "setTimeStyle:", void, .{DateFormatter.Style} },
+        .{ "setTimeZone:", void, .{NSTimeZone} },
         .{ "setTwoDigitStartDate:", void, .{?NSDate} },
         .{ "setVeryShortMonthSymbols:", void, .{Object} },
         .{ "setVeryShortStandaloneMonthSymbols:", void, .{Object} },
@@ -1491,8 +1498,8 @@ pub const NSDateFormatter = struct {
         .{ "standaloneQuarterSymbols", Object, .{} },
         .{ "standaloneWeekdaySymbols", Object, .{} },
         .{ "stringFromDate:", objc.NSString, .{NSDate} },
-        .{ "timeStyle", NSDateFormatter.Style, .{} },
-        .{ "timeZone", ?*anyopaque, .{} },
+        .{ "timeStyle", DateFormatter.Style, .{} },
+        .{ "timeZone", NSTimeZone, .{} },
         .{ "twoDigitStartDate", ?NSDate, .{} },
         .{ "veryShortMonthSymbols", Object, .{} },
         .{ "veryShortStandaloneMonthSymbols", Object, .{} },
@@ -1501,15 +1508,15 @@ pub const NSDateFormatter = struct {
         .{ "weekdaySymbols", Object, .{} },
     };
 
-    pub fn send(self: NSDateFormatter, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
+    pub fn send(self: DateFormatter, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
         return objc.typedSendChain(@This(), self.obj, selector, args);
     }
 
     pub const class_methods = .{
         .{ "dateFormatFromTemplate:options:locale:", ?objc.NSString, .{ objc.NSString, objc.NSInteger, ?NSLocale } },
-        .{ "defaultFormatterBehavior", NSDateFormatter.Behavior, .{} },
-        .{ "localizedStringFromDate:dateStyle:timeStyle:", objc.NSString, .{ NSDate, NSDateFormatter.Style, NSDateFormatter.Style } },
-        .{ "setDefaultFormatterBehavior:", void, .{NSDateFormatter.Behavior} },
+        .{ "defaultFormatterBehavior", DateFormatter.Behavior, .{} },
+        .{ "localizedStringFromDate:dateStyle:timeStyle:", objc.NSString, .{ NSDate, DateFormatter.Style, DateFormatter.Style } },
+        .{ "setDefaultFormatterBehavior:", void, .{DateFormatter.Behavior} },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -1534,13 +1541,13 @@ pub const NSDateInterval = struct {
     obj: Object,
 
     pub const methods = .{
-        .{ "compare:", ComparisonResult, .{?*anyopaque} },
+        .{ "compare:", ComparisonResult, .{NSDateInterval} },
         .{ "containsDate:", objc.BOOL, .{NSDate} },
         .{ "duration", TimeInterval, .{} },
         .{ "endDate", NSDate, .{} },
-        .{ "intersectionWithDateInterval:", ?*anyopaque, .{?*anyopaque} },
-        .{ "intersectsDateInterval:", objc.BOOL, .{?*anyopaque} },
-        .{ "isEqualToDateInterval:", objc.BOOL, .{?*anyopaque} },
+        .{ "intersectionWithDateInterval:", ?NSDateInterval, .{NSDateInterval} },
+        .{ "intersectsDateInterval:", objc.BOOL, .{NSDateInterval} },
+        .{ "isEqualToDateInterval:", objc.BOOL, .{NSDateInterval} },
         .{ "startDate", NSDate, .{} },
     };
 
@@ -1560,28 +1567,28 @@ pub const NSDateInterval = struct {
     }
 };
 
-pub const NSDateIntervalFormatter = struct {
+pub const DateIntervalFormatter = struct {
     obj: Object,
 
-    pub const Super = NSFormatter;
+    pub const Super = Formatter;
     pub const methods = .{
-        .{ "calendar", ?*anyopaque, .{} },
-        .{ "dateStyle", NSDateIntervalFormatter.Style, .{} },
+        .{ "calendar", NSCalendar, .{} },
+        .{ "dateStyle", DateIntervalFormatter.Style, .{} },
         .{ "dateTemplate", objc.NSString, .{} },
         .{ "locale", NSLocale, .{} },
-        .{ "setCalendar:", void, .{?*anyopaque} },
-        .{ "setDateStyle:", void, .{NSDateIntervalFormatter.Style} },
+        .{ "setCalendar:", void, .{NSCalendar} },
+        .{ "setDateStyle:", void, .{DateIntervalFormatter.Style} },
         .{ "setDateTemplate:", void, .{objc.NSString} },
         .{ "setLocale:", void, .{NSLocale} },
-        .{ "setTimeStyle:", void, .{NSDateIntervalFormatter.Style} },
-        .{ "setTimeZone:", void, .{?*anyopaque} },
+        .{ "setTimeStyle:", void, .{DateIntervalFormatter.Style} },
+        .{ "setTimeZone:", void, .{NSTimeZone} },
         .{ "stringFromDate:toDate:", objc.NSString, .{ NSDate, NSDate } },
-        .{ "stringFromDateInterval:", ?objc.NSString, .{?*anyopaque} },
-        .{ "timeStyle", NSDateIntervalFormatter.Style, .{} },
-        .{ "timeZone", ?*anyopaque, .{} },
+        .{ "stringFromDateInterval:", ?objc.NSString, .{NSDateInterval} },
+        .{ "timeStyle", DateIntervalFormatter.Style, .{} },
+        .{ "timeZone", NSTimeZone, .{} },
     };
 
-    pub fn send(self: NSDateIntervalFormatter, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
+    pub fn send(self: DateIntervalFormatter, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
         return objc.typedSendChain(@This(), self.obj, selector, args);
     }
 
@@ -1601,18 +1608,18 @@ pub const NSDecimalNumber = struct {
     pub const methods = .{
         .{ "compare:", ComparisonResult, .{NSNumber} },
         .{ "decimalNumberByAdding:", NSDecimalNumber, .{NSDecimalNumber} },
-        .{ "decimalNumberByAdding:withBehavior:", NSDecimalNumber, .{ NSDecimalNumber, void } },
+        .{ "decimalNumberByAdding:withBehavior:", NSDecimalNumber, .{ NSDecimalNumber, ?NSDecimalNumberBehaviors } },
         .{ "decimalNumberByDividingBy:", NSDecimalNumber, .{NSDecimalNumber} },
-        .{ "decimalNumberByDividingBy:withBehavior:", NSDecimalNumber, .{ NSDecimalNumber, void } },
+        .{ "decimalNumberByDividingBy:withBehavior:", NSDecimalNumber, .{ NSDecimalNumber, ?NSDecimalNumberBehaviors } },
         .{ "decimalNumberByMultiplyingBy:", NSDecimalNumber, .{NSDecimalNumber} },
-        .{ "decimalNumberByMultiplyingBy:withBehavior:", NSDecimalNumber, .{ NSDecimalNumber, void } },
+        .{ "decimalNumberByMultiplyingBy:withBehavior:", NSDecimalNumber, .{ NSDecimalNumber, ?NSDecimalNumberBehaviors } },
         .{ "decimalNumberByMultiplyingByPowerOf10:", NSDecimalNumber, .{i16} },
-        .{ "decimalNumberByMultiplyingByPowerOf10:withBehavior:", NSDecimalNumber, .{ i16, void } },
+        .{ "decimalNumberByMultiplyingByPowerOf10:withBehavior:", NSDecimalNumber, .{ i16, ?NSDecimalNumberBehaviors } },
         .{ "decimalNumberByRaisingToPower:", NSDecimalNumber, .{objc.NSInteger} },
-        .{ "decimalNumberByRaisingToPower:withBehavior:", NSDecimalNumber, .{ objc.NSInteger, void } },
-        .{ "decimalNumberByRoundingAccordingToBehavior:", NSDecimalNumber, .{void} },
+        .{ "decimalNumberByRaisingToPower:withBehavior:", NSDecimalNumber, .{ objc.NSInteger, ?NSDecimalNumberBehaviors } },
+        .{ "decimalNumberByRoundingAccordingToBehavior:", NSDecimalNumber, .{?NSDecimalNumberBehaviors} },
         .{ "decimalNumberBySubtracting:", NSDecimalNumber, .{NSDecimalNumber} },
-        .{ "decimalNumberBySubtracting:withBehavior:", NSDecimalNumber, .{ NSDecimalNumber, void } },
+        .{ "decimalNumberBySubtracting:withBehavior:", NSDecimalNumber, .{ NSDecimalNumber, ?NSDecimalNumberBehaviors } },
         .{ "decimalValue", ?*anyopaque, .{} },
         .{ "descriptionWithLocale:", objc.NSString, .{?Any} },
         .{ "doubleValue", f64, .{} },
@@ -1693,8 +1700,8 @@ pub const NSDictionary = struct {
         .{ "descriptionInStringsFileFormat", objc.NSString, .{} },
         .{ "descriptionWithLocale:", objc.NSString, .{?Any} },
         .{ "descriptionWithLocale:indent:", objc.NSString, .{ ?Any, objc.NSInteger } },
-        .{ "enumerateKeysAndObjectsUsingBlock:", void, .{void} },
-        .{ "enumerateKeysAndObjectsWithOptions:usingBlock:", void, .{ objc.NSInteger, void } },
+        .{ "enumerateKeysAndObjectsUsingBlock:", void, .{?*anyopaque} },
+        .{ "enumerateKeysAndObjectsWithOptions:usingBlock:", void, .{ objc.NSInteger, ?*anyopaque } },
         .{ "fileCreationDate", ?NSDate, .{} },
         .{ "fileExtensionHidden", objc.BOOL, .{} },
         .{ "fileGroupOwnerAccountID", ?NSNumber, .{} },
@@ -1711,16 +1718,16 @@ pub const NSDictionary = struct {
         .{ "fileSystemFileNumber", objc.NSInteger, .{} },
         .{ "fileSystemNumber", objc.NSInteger, .{} },
         .{ "fileType", ?objc.NSString, .{} },
-        .{ "isEqualToDictionary:", objc.BOOL, .{Any} },
+        .{ "isEqualToDictionary:", objc.BOOL, .{Object} },
         .{ "keyEnumerator", NSEnumerator, .{} },
-        .{ "keysOfEntriesPassingTest:", ?*anyopaque, .{void} },
-        .{ "keysOfEntriesWithOptions:passingTest:", ?*anyopaque, .{ objc.NSInteger, void } },
-        .{ "keysSortedByValueUsingComparator:", Object, .{void} },
+        .{ "keysOfEntriesPassingTest:", ?*anyopaque, .{?*anyopaque} },
+        .{ "keysOfEntriesWithOptions:passingTest:", ?*anyopaque, .{ objc.NSInteger, ?*anyopaque } },
+        .{ "keysSortedByValueUsingComparator:", Object, .{?*anyopaque} },
         .{ "keysSortedByValueUsingSelector:", Object, .{Selector} },
-        .{ "keysSortedByValueWithOptions:usingComparator:", Object, .{ objc.NSInteger, void } },
+        .{ "keysSortedByValueWithOptions:usingComparator:", Object, .{ objc.NSInteger, ?*anyopaque } },
         .{ "objectEnumerator", NSEnumerator, .{} },
         .{ "objectForKey:", ?Any, .{Any} },
-        .{ "objectsForKeys:notFoundMarker:", Object, .{ void, Any } },
+        .{ "objectsForKeys:notFoundMarker:", Object, .{ Object, Any } },
         .{ "valueForKey:", ?Any, .{objc.NSString} },
         .{ "writeToFile:atomically:", objc.BOOL, .{ objc.NSString, objc.BOOL } },
         .{ "writeToURL:atomically:", objc.BOOL, .{ NSURL, objc.BOOL } },
@@ -1733,17 +1740,17 @@ pub const NSDictionary = struct {
 
     pub const class_methods = .{
         .{ "dictionaryWithContentsOfURL:", Object, .{NSURL} },
-        .{ "dictionaryWithObject:forKey:", Object, .{ Any, void } },
+        .{ "dictionaryWithObject:forKey:", Object, .{ Any, NSCopying } },
         .{ "init", Object, .{} },
         .{ "initWithCoder:", Object, .{NSCoder} },
         .{ "initWithContentsOfFile:", Object, .{objc.NSString} },
         .{ "initWithContentsOfURL:", Object, .{NSURL} },
         .{ "initWithContentsOfURL:error:", Object, .{ NSURL, void } },
-        .{ "initWithDictionary:", Object, .{Any} },
-        .{ "initWithDictionary:copyItems:", Object, .{ Any, objc.BOOL } },
-        .{ "initWithObjects:forKeys:", Object, .{ void, void } },
-        .{ "initWithObjects:forKeys:count:", Object, .{ ?UnsafePointer, ?*anyopaque, objc.NSInteger } },
-        .{ "sharedKeySetForKeys:", Any, .{void} },
+        .{ "initWithDictionary:", Object, .{Object} },
+        .{ "initWithDictionary:copyItems:", Object, .{ Object, objc.BOOL } },
+        .{ "initWithObjects:forKeys:", Object, .{ Object, Object } },
+        .{ "initWithObjects:forKeys:count:", Object, .{ ?UnsafePointer, ?NSCopying, objc.NSInteger } },
+        .{ "sharedKeySetForKeys:", Any, .{Object} },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -1751,21 +1758,21 @@ pub const NSDictionary = struct {
     }
 };
 
-pub const NSDimension = struct {
+pub const Dimension = struct {
     obj: Object,
 
-    pub const Super = NSUnit;
+    pub const Super = Unit;
     pub const methods = .{
-        .{ "converter", NSUnitConverter, .{} },
+        .{ "converter", UnitConverter, .{} },
     };
 
-    pub fn send(self: NSDimension, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
+    pub fn send(self: Dimension, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
         return objc.typedSendChain(@This(), self.obj, selector, args);
     }
 
     pub const class_methods = .{
         .{ "baseUnit", ?*anyopaque, .{} },
-        .{ "initWithSymbol:converter:", Object, .{ objc.NSString, NSUnitConverter } },
+        .{ "initWithSymbol:converter:", Object, .{ objc.NSString, UnitConverter } },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -1814,29 +1821,29 @@ pub const NSDistributedLock = struct {
     }
 };
 
-pub const NSDistributedNotificationCenter = struct {
+pub const DistributedNotificationCenter = struct {
     obj: Object,
 
-    pub const Super = NSNotificationCenter;
+    pub const Super = NotificationCenter;
     pub const methods = .{
         .{ "addObserver:selector:name:object:", void, .{ Any, Selector, objc.NSString, ?objc.NSString } },
-        .{ "addObserver:selector:name:object:suspensionBehavior:", void, .{ Any, Selector, objc.NSString, ?objc.NSString, NSDistributedNotificationCenter.SuspensionBehavior } },
+        .{ "addObserver:selector:name:object:suspensionBehavior:", void, .{ Any, Selector, objc.NSString, ?objc.NSString, DistributedNotificationCenter.SuspensionBehavior } },
         .{ "postNotificationName:object:", void, .{ objc.NSString, ?objc.NSString } },
-        .{ "postNotificationName:object:userInfo:", void, .{ objc.NSString, ?objc.NSString, ?Any } },
-        .{ "postNotificationName:object:userInfo:deliverImmediately:", void, .{ objc.NSString, ?objc.NSString, ?Any, objc.BOOL } },
-        .{ "postNotificationName:object:userInfo:options:", void, .{ objc.NSString, ?objc.NSString, ?Any, objc.NSInteger } },
+        .{ "postNotificationName:object:userInfo:", void, .{ objc.NSString, ?objc.NSString, ?*anyopaque } },
+        .{ "postNotificationName:object:userInfo:deliverImmediately:", void, .{ objc.NSString, ?objc.NSString, ?*anyopaque, objc.BOOL } },
+        .{ "postNotificationName:object:userInfo:options:", void, .{ objc.NSString, ?objc.NSString, ?*anyopaque, objc.NSInteger } },
         .{ "removeObserver:name:object:", void, .{ Any, objc.NSString, ?objc.NSString } },
         .{ "setSuspended:", void, .{objc.BOOL} },
         .{ "suspended", objc.BOOL, .{} },
     };
 
-    pub fn send(self: NSDistributedNotificationCenter, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
+    pub fn send(self: DistributedNotificationCenter, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
         return objc.typedSendChain(@This(), self.obj, selector, args);
     }
 
     pub const class_methods = .{
-        .{ "defaultCenter", NSDistributedNotificationCenter, .{} },
-        .{ "notificationCenterForType:", NSDistributedNotificationCenter, .{objc.NSString} },
+        .{ "defaultCenter", DistributedNotificationCenter, .{} },
+        .{ "notificationCenterForType:", DistributedNotificationCenter, .{objc.NSString} },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -1851,25 +1858,25 @@ pub const NSDistributedNotificationCenter = struct {
     };
 };
 
-pub const NSEnergyFormatter = struct {
+pub const EnergyFormatter = struct {
     obj: Object,
 
-    pub const Super = NSFormatter;
+    pub const Super = Formatter;
     pub const methods = .{
         .{ "forFoodEnergyUse", objc.BOOL, .{} },
         .{ "getObjectValue:forString:errorDescription:", objc.BOOL, .{ ?*anyopaque, objc.NSString, ?objc.NSString } },
-        .{ "numberFormatter", NSNumberFormatter, .{} },
+        .{ "numberFormatter", NumberFormatter, .{} },
         .{ "setForFoodEnergyUse:", void, .{objc.BOOL} },
-        .{ "setNumberFormatter:", void, .{NSNumberFormatter} },
-        .{ "setUnitStyle:", void, .{NSFormatter.UnitStyle} },
+        .{ "setNumberFormatter:", void, .{NumberFormatter} },
+        .{ "setUnitStyle:", void, .{Formatter.UnitStyle} },
         .{ "stringFromJoules:", objc.NSString, .{f64} },
-        .{ "stringFromValue:unit:", objc.NSString, .{ f64, NSEnergyFormatter.Unit } },
-        .{ "unitStringFromJoules:usedUnit:", objc.NSString, .{ f64, NSEnergyFormatter.Unit } },
-        .{ "unitStringFromValue:unit:", objc.NSString, .{ f64, NSEnergyFormatter.Unit } },
-        .{ "unitStyle", NSFormatter.UnitStyle, .{} },
+        .{ "stringFromValue:unit:", objc.NSString, .{ f64, EnergyFormatter.Unit } },
+        .{ "unitStringFromJoules:usedUnit:", objc.NSString, .{ f64, EnergyFormatter.Unit } },
+        .{ "unitStringFromValue:unit:", objc.NSString, .{ f64, EnergyFormatter.Unit } },
+        .{ "unitStyle", Formatter.UnitStyle, .{} },
     };
 
-    pub fn send(self: NSEnergyFormatter, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
+    pub fn send(self: EnergyFormatter, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
         return objc.typedSendChain(@This(), self.obj, selector, args);
     }
 
@@ -1915,8 +1922,8 @@ pub const NSError = struct {
     }
 
     pub const class_methods = .{
-        .{ "initWithDomain:code:userInfo:", Object, .{ objc.NSString, objc.NSInteger, ?Any } },
-        .{ "setUserInfoValueProviderForDomain:provider:", void, .{ objc.NSString, void } },
+        .{ "initWithDomain:code:userInfo:", Object, .{ objc.NSString, objc.NSInteger, ?*anyopaque } },
+        .{ "setUserInfoValueProviderForDomain:provider:", void, .{ objc.NSString, ?*anyopaque } },
         .{ "userInfoValueProviderForDomain:", ?Any, .{objc.NSString} },
     };
 
@@ -1942,7 +1949,7 @@ pub const NSException = struct {
     }
 
     pub const class_methods = .{
-        .{ "initWithName:reason:userInfo:", Object, .{ objc.NSString, ?objc.NSString, ?Any } },
+        .{ "initWithName:reason:userInfo:", Object, .{ objc.NSString, ?objc.NSString, ?*anyopaque } },
         .{ "raise:format:arguments:", void, .{ objc.NSString, objc.NSString, ?*anyopaque } },
     };
 
@@ -1978,21 +1985,21 @@ pub const NSExpression = struct {
     }
 
     pub const class_methods = .{
-        .{ "expressionForAggregate:", Object, .{void} },
+        .{ "expressionForAggregate:", Object, .{Object} },
         .{ "expressionForAnyKey", NSExpression, .{} },
-        .{ "expressionForBlock:arguments:", Object, .{ void, void } },
+        .{ "expressionForBlock:arguments:", Object, .{ ?*anyopaque, ?*anyopaque } },
         .{ "expressionForConditional:trueExpression:falseExpression:", Object, .{ NSPredicate, NSExpression, NSExpression } },
         .{ "expressionForConstantValue:", Object, .{?Any} },
         .{ "expressionForEvaluatedObject", NSExpression, .{} },
-        .{ "expressionForFunction:arguments:", Object, .{ objc.NSString, void } },
-        .{ "expressionForFunction:selectorName:arguments:", Object, .{ NSExpression, objc.NSString, void } },
+        .{ "expressionForFunction:arguments:", Object, .{ objc.NSString, Object } },
+        .{ "expressionForFunction:selectorName:arguments:", Object, .{ NSExpression, objc.NSString, ?*anyopaque } },
         .{ "expressionForIntersectSet:with:", Object, .{ NSExpression, NSExpression } },
         .{ "expressionForKeyPath:", Object, .{objc.NSString} },
         .{ "expressionForMinusSet:with:", Object, .{ NSExpression, NSExpression } },
         .{ "expressionForSubquery:usingIteratorVariable:predicate:", Object, .{ NSExpression, objc.NSString, NSPredicate } },
         .{ "expressionForUnionSet:with:", Object, .{ NSExpression, NSExpression } },
         .{ "expressionForVariable:", Object, .{objc.NSString} },
-        .{ "expressionWithFormat:argumentArray:", Object, .{ objc.NSString, void } },
+        .{ "expressionWithFormat:argumentArray:", Object, .{ objc.NSString, Object } },
         .{ "expressionWithFormat:arguments:", Object, .{ objc.NSString, ?*anyopaque } },
         .{ "initWithCoder:", Object, .{NSCoder} },
         .{ "initWithExpressionType:", Object, .{NSExpression.ExpressionType} },
@@ -2023,10 +2030,10 @@ pub const NSExtensionContext = struct {
     obj: Object,
 
     pub const methods = .{
-        .{ "cancelRequestWithError:", void, .{void} },
-        .{ "completeRequestReturningItems:completionHandler:", void, .{ void, void } },
+        .{ "cancelRequestWithError:", void, .{?*anyopaque} },
+        .{ "completeRequestReturningItems:completionHandler:", void, .{ ?*anyopaque, ?*anyopaque } },
         .{ "inputItems", Object, .{} },
-        .{ "openURL:completionHandler:", void, .{ NSURL, void } },
+        .{ "openURL:completionHandler:", void, .{ NSURL, ?*anyopaque } },
     };
 
     pub fn send(self: NSExtensionContext, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
@@ -2079,15 +2086,15 @@ pub const NSFileCoordinator = struct {
 
     pub const methods = .{
         .{ "cancel", void, .{} },
-        .{ "coordinateAccessWithIntents:queue:byAccessor:", void, .{ void, NSOperationQueue, void } },
-        .{ "coordinateReadingItemAtURL:options:error:byAccessor:", void, .{ NSURL, objc.NSInteger, Object, void } },
-        .{ "coordinateReadingItemAtURL:options:writingItemAtURL:options:error:byAccessor:", void, .{ NSURL, objc.NSInteger, NSURL, objc.NSInteger, Object, void } },
-        .{ "coordinateWritingItemAtURL:options:error:byAccessor:", void, .{ NSURL, objc.NSInteger, Object, void } },
-        .{ "coordinateWritingItemAtURL:options:writingItemAtURL:options:error:byAccessor:", void, .{ NSURL, objc.NSInteger, NSURL, objc.NSInteger, Object, void } },
+        .{ "coordinateAccessWithIntents:queue:byAccessor:", void, .{ Object, OperationQueue, ?*anyopaque } },
+        .{ "coordinateReadingItemAtURL:options:error:byAccessor:", void, .{ NSURL, objc.NSInteger, Object, ?*anyopaque } },
+        .{ "coordinateReadingItemAtURL:options:writingItemAtURL:options:error:byAccessor:", void, .{ NSURL, objc.NSInteger, NSURL, objc.NSInteger, Object, ?*anyopaque } },
+        .{ "coordinateWritingItemAtURL:options:error:byAccessor:", void, .{ NSURL, objc.NSInteger, Object, ?*anyopaque } },
+        .{ "coordinateWritingItemAtURL:options:writingItemAtURL:options:error:byAccessor:", void, .{ NSURL, objc.NSInteger, NSURL, objc.NSInteger, Object, ?*anyopaque } },
         .{ "itemAtURL:didChangeUbiquityAttributes:", void, .{ NSURL, objc.NSString } },
         .{ "itemAtURL:didMoveToURL:", void, .{ NSURL, NSURL } },
         .{ "itemAtURL:willMoveToURL:", void, .{ NSURL, NSURL } },
-        .{ "prepareForReadingItemsAtURLs:options:writingItemsAtURLs:options:error:byAccessor:", void, .{ void, objc.NSInteger, void, objc.NSInteger, Object, void } },
+        .{ "prepareForReadingItemsAtURLs:options:writingItemsAtURLs:options:error:byAccessor:", void, .{ Object, objc.NSInteger, Object, objc.NSInteger, Object, ?*anyopaque } },
         .{ "purposeIdentifier", objc.NSString, .{} },
         .{ "setPurposeIdentifier:", void, .{objc.NSString} },
     };
@@ -2097,10 +2104,10 @@ pub const NSFileCoordinator = struct {
     }
 
     pub const class_methods = .{
-        .{ "addFilePresenter:", void, .{void} },
+        .{ "addFilePresenter:", void, .{NSFilePresenter} },
         .{ "filePresenters", Object, .{} },
-        .{ "initWithFilePresenter:", Object, .{void} },
-        .{ "removeFilePresenter:", void, .{void} },
+        .{ "initWithFilePresenter:", Object, .{?NSFilePresenter} },
+        .{ "removeFilePresenter:", void, .{NSFilePresenter} },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -2108,12 +2115,12 @@ pub const NSFileCoordinator = struct {
     }
 };
 
-pub const NSFileHandle = struct {
+pub const FileHandle = struct {
     obj: Object,
 
     pub const methods = .{
         .{ "acceptConnectionInBackgroundAndNotify", void, .{} },
-        .{ "acceptConnectionInBackgroundAndNotifyForModes:", void, .{void} },
+        .{ "acceptConnectionInBackgroundAndNotifyForModes:", void, .{?*anyopaque} },
         .{ "availableData", NSData, .{} },
         .{ "closeAndReturnError:", void, .{} },
         .{ "closeFile", void, .{} },
@@ -2122,9 +2129,9 @@ pub const NSFileHandle = struct {
         .{ "readDataOfLength:", NSData, .{objc.NSInteger} },
         .{ "readDataToEndOfFile", NSData, .{} },
         .{ "readInBackgroundAndNotify", void, .{} },
-        .{ "readInBackgroundAndNotifyForModes:", void, .{void} },
+        .{ "readInBackgroundAndNotifyForModes:", void, .{?*anyopaque} },
         .{ "readToEndOfFileInBackgroundAndNotify", void, .{} },
-        .{ "readToEndOfFileInBackgroundAndNotifyForModes:", void, .{void} },
+        .{ "readToEndOfFileInBackgroundAndNotifyForModes:", void, .{?*anyopaque} },
         .{ "readabilityHandler", void, .{} },
         .{ "seekToEndOfFile", u64, .{} },
         .{ "seekToFileOffset:", void, .{u64} },
@@ -2137,12 +2144,12 @@ pub const NSFileHandle = struct {
         .{ "truncateAtOffset:error:", void, .{u64} },
         .{ "truncateFileAtOffset:", void, .{u64} },
         .{ "waitForDataInBackgroundAndNotify", void, .{} },
-        .{ "waitForDataInBackgroundAndNotifyForModes:", void, .{void} },
+        .{ "waitForDataInBackgroundAndNotifyForModes:", void, .{?*anyopaque} },
         .{ "writeData:", void, .{NSData} },
         .{ "writeabilityHandler", void, .{} },
     };
 
-    pub fn send(self: NSFileHandle, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
+    pub fn send(self: FileHandle, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
         return objc.typedSend(methods, self.obj, selector, args);
     }
 
@@ -2153,10 +2160,10 @@ pub const NSFileHandle = struct {
         .{ "fileHandleForUpdatingURL:error:", Object, .{NSURL} },
         .{ "fileHandleForWritingAtPath:", Object, .{objc.NSString} },
         .{ "fileHandleForWritingToURL:error:", Object, .{NSURL} },
-        .{ "fileHandleWithNullDevice", NSFileHandle, .{} },
-        .{ "fileHandleWithStandardError", NSFileHandle, .{} },
-        .{ "fileHandleWithStandardInput", NSFileHandle, .{} },
-        .{ "fileHandleWithStandardOutput", NSFileHandle, .{} },
+        .{ "fileHandleWithNullDevice", FileHandle, .{} },
+        .{ "fileHandleWithStandardError", FileHandle, .{} },
+        .{ "fileHandleWithStandardInput", FileHandle, .{} },
+        .{ "fileHandleWithStandardOutput", FileHandle, .{} },
         .{ "initWithCoder:", Object, .{NSCoder} },
         .{ "initWithFileDescriptor:", Object, .{i32} },
         .{ "initWithFileDescriptor:closeOnDealloc:", Object, .{ i32, objc.BOOL } },
@@ -2167,14 +2174,14 @@ pub const NSFileHandle = struct {
     }
 };
 
-pub const NSFileManager = struct {
+pub const FileManager = struct {
     obj: Object,
 
     pub const methods = .{
-        .{ "URLForDirectory:inDomain:appropriateForURL:create:error:", NSURL, .{ NSFileManager.SearchPathDirectory, objc.NSInteger, ?NSURL, objc.BOOL } },
+        .{ "URLForDirectory:inDomain:appropriateForURL:create:error:", NSURL, .{ FileManager.SearchPathDirectory, objc.NSInteger, ?NSURL, objc.BOOL } },
         .{ "URLForPublishingUbiquitousItemAtURL:expirationDate:error:", NSURL, .{ NSURL, ?NSDate } },
         .{ "URLForUbiquityContainerIdentifier:", ?NSURL, .{?objc.NSString} },
-        .{ "URLsForDirectory:inDomains:", Object, .{ NSFileManager.SearchPathDirectory, objc.NSInteger } },
+        .{ "URLsForDirectory:inDomains:", Object, .{ FileManager.SearchPathDirectory, objc.NSInteger } },
         .{ "attributesOfFileSystemForPath:error:", Object, .{objc.NSString} },
         .{ "attributesOfItemAtPath:error:", Object, .{objc.NSString} },
         .{ "changeCurrentDirectoryPath:", objc.BOOL, .{objc.NSString} },
@@ -2183,12 +2190,12 @@ pub const NSFileManager = struct {
         .{ "contentsAtPath:", ?NSData, .{objc.NSString} },
         .{ "contentsEqualAtPath:andPath:", objc.BOOL, .{ objc.NSString, objc.NSString } },
         .{ "contentsOfDirectoryAtPath:error:", Object, .{objc.NSString} },
-        .{ "contentsOfDirectoryAtURL:includingPropertiesForKeys:options:error:", Object, .{ NSURL, void, objc.NSInteger } },
+        .{ "contentsOfDirectoryAtURL:includingPropertiesForKeys:options:error:", Object, .{ NSURL, ?*anyopaque, objc.NSInteger } },
         .{ "copyItemAtPath:toPath:error:", void, .{ objc.NSString, objc.NSString } },
         .{ "copyItemAtURL:toURL:error:", void, .{ NSURL, NSURL } },
-        .{ "createDirectoryAtPath:withIntermediateDirectories:attributes:error:", void, .{ objc.NSString, objc.BOOL, ?Any } },
-        .{ "createDirectoryAtURL:withIntermediateDirectories:attributes:error:", void, .{ NSURL, objc.BOOL, ?Any } },
-        .{ "createFileAtPath:contents:attributes:", objc.BOOL, .{ objc.NSString, ?NSData, ?Any } },
+        .{ "createDirectoryAtPath:withIntermediateDirectories:attributes:error:", void, .{ objc.NSString, objc.BOOL, ?*anyopaque } },
+        .{ "createDirectoryAtURL:withIntermediateDirectories:attributes:error:", void, .{ NSURL, objc.BOOL, ?*anyopaque } },
+        .{ "createFileAtPath:contents:attributes:", objc.BOOL, .{ objc.NSString, ?NSData, ?*anyopaque } },
         .{ "createSymbolicLinkAtPath:withDestinationPath:error:", void, .{ objc.NSString, objc.NSString } },
         .{ "createSymbolicLinkAtURL:withDestinationURL:error:", void, .{ NSURL, NSURL } },
         .{ "currentDirectoryPath", objc.NSString, .{} },
@@ -2197,13 +2204,13 @@ pub const NSFileManager = struct {
         .{ "displayNameAtPath:", objc.NSString, .{objc.NSString} },
         .{ "enumeratorAtPath:", ?NSDirectoryEnumerator, .{objc.NSString} },
         .{ "evictUbiquitousItemAtURL:error:", void, .{NSURL} },
-        .{ "fetchLatestRemoteVersionOfItemAtURL:completionHandler:", void, .{ NSURL, void } },
+        .{ "fetchLatestRemoteVersionOfItemAtURL:completionHandler:", void, .{ NSURL, ?*anyopaque } },
         .{ "fileExistsAtPath:", objc.BOOL, .{objc.NSString} },
         .{ "fileExistsAtPath:isDirectory:", objc.BOOL, .{ objc.NSString, ?*anyopaque } },
         .{ "fileSystemRepresentationWithPath:", ?*anyopaque, .{objc.NSString} },
-        .{ "getFileProviderServicesForItemAtURL:completionHandler:", void, .{ NSURL, void } },
-        .{ "getRelationship:ofDirectory:inDomain:toItemAtURL:error:", void, .{ NSFileManager.URLRelationship, NSFileManager.SearchPathDirectory, objc.NSInteger, NSURL } },
-        .{ "getRelationship:ofDirectoryAtURL:toItemAtURL:error:", void, .{ NSFileManager.URLRelationship, NSURL, NSURL } },
+        .{ "getFileProviderServicesForItemAtURL:completionHandler:", void, .{ NSURL, ?*anyopaque } },
+        .{ "getRelationship:ofDirectory:inDomain:toItemAtURL:error:", void, .{ FileManager.URLRelationship, FileManager.SearchPathDirectory, objc.NSInteger, NSURL } },
+        .{ "getRelationship:ofDirectoryAtURL:toItemAtURL:error:", void, .{ FileManager.URLRelationship, NSURL, NSURL } },
         .{ "homeDirectoryForCurrentUser", NSURL, .{} },
         .{ "homeDirectoryForUser:", ?NSURL, .{objc.NSString} },
         .{ "isDeletableFileAtPath:", objc.BOOL, .{objc.NSString} },
@@ -2213,15 +2220,15 @@ pub const NSFileManager = struct {
         .{ "isWritableFileAtPath:", objc.BOOL, .{objc.NSString} },
         .{ "linkItemAtPath:toPath:error:", void, .{ objc.NSString, objc.NSString } },
         .{ "linkItemAtURL:toURL:error:", void, .{ NSURL, NSURL } },
-        .{ "mountedVolumeURLsIncludingResourceValuesForKeys:options:", ?*anyopaque, .{ void, objc.NSInteger } },
+        .{ "mountedVolumeURLsIncludingResourceValuesForKeys:options:", ?*anyopaque, .{ ?*anyopaque, objc.NSInteger } },
         .{ "moveItemAtPath:toPath:error:", void, .{ objc.NSString, objc.NSString } },
         .{ "moveItemAtURL:toURL:error:", void, .{ NSURL, NSURL } },
-        .{ "pauseSyncForUbiquitousItemAtURL:completionHandler:", void, .{ NSURL, void } },
+        .{ "pauseSyncForUbiquitousItemAtURL:completionHandler:", void, .{ NSURL, ?*anyopaque } },
         .{ "removeItemAtPath:error:", void, .{objc.NSString} },
         .{ "removeItemAtURL:error:", void, .{NSURL} },
         .{ "replaceItemAtURL:withItemAtURL:backupItemName:options:resultingItemURL:error:", void, .{ NSURL, NSURL, ?objc.NSString, objc.NSInteger, ?NSURL } },
-        .{ "resumeSyncForUbiquitousItemAtURL:withBehavior:completionHandler:", void, .{ NSURL, NSFileManagerResumeSyncBehavior, void } },
-        .{ "setAttributes:ofItemAtPath:error:", void, .{ Any, objc.NSString } },
+        .{ "resumeSyncForUbiquitousItemAtURL:withBehavior:completionHandler:", void, .{ NSURL, NSFileManagerResumeSyncBehavior, ?*anyopaque } },
+        .{ "setAttributes:ofItemAtPath:error:", void, .{ Object, objc.NSString } },
         .{ "setDelegate:", void, .{?FileManagerDelegate} },
         .{ "setUbiquitous:itemAtURL:destinationURL:error:", void, .{ objc.BOOL, NSURL, NSURL } },
         .{ "startDownloadingUbiquitousItemAtURL:error:", void, .{NSURL} },
@@ -2230,17 +2237,17 @@ pub const NSFileManager = struct {
         .{ "subpathsOfDirectoryAtPath:error:", Object, .{objc.NSString} },
         .{ "temporaryDirectory", NSURL, .{} },
         .{ "trashItemAtURL:resultingItemURL:error:", void, .{ NSURL, ?NSURL } },
-        .{ "ubiquityIdentityToken", ?*anyopaque, .{} },
-        .{ "unmountVolumeAtURL:options:completionHandler:", void, .{ NSURL, objc.NSInteger, void } },
-        .{ "uploadLocalVersionOfUbiquitousItemAtURL:withConflictResolutionPolicy:completionHandler:", void, .{ NSURL, NSFileManagerUploadLocalVersionConflictPolicy, void } },
+        .{ "ubiquityIdentityToken", ?NSObjectProtocol, .{} },
+        .{ "unmountVolumeAtURL:options:completionHandler:", void, .{ NSURL, objc.NSInteger, ?*anyopaque } },
+        .{ "uploadLocalVersionOfUbiquitousItemAtURL:withConflictResolutionPolicy:completionHandler:", void, .{ NSURL, NSFileManagerUploadLocalVersionConflictPolicy, ?*anyopaque } },
     };
 
-    pub fn send(self: NSFileManager, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
+    pub fn send(self: FileManager, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
         return objc.typedSend(methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
-        .{ "defaultManager", NSFileManager, .{} },
+        .{ "defaultManager", FileManager, .{} },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -2287,7 +2294,7 @@ pub const NSFileProviderService = struct {
     obj: Object,
 
     pub const methods = .{
-        .{ "getFileProviderConnectionWithCompletionHandler:", void, .{void} },
+        .{ "getFileProviderConnectionWithCompletionHandler:", void, .{?*anyopaque} },
         .{ "name", objc.NSString, .{} },
     };
 
@@ -2318,7 +2325,7 @@ pub const NSFileVersion = struct {
         .{ "localizedName", ?objc.NSString, .{} },
         .{ "localizedNameOfSavingComputer", ?objc.NSString, .{} },
         .{ "modificationDate", ?NSDate, .{} },
-        .{ "originatorNameComponents", ?*anyopaque, .{} },
+        .{ "originatorNameComponents", ?NSPersonNameComponents, .{} },
         .{ "persistentIdentifier", NSCoding, .{} },
         .{ "removeAndReturnError:", void, .{} },
         .{ "replaceItemAtURL:options:error:", NSURL, .{ NSURL, objc.NSInteger } },
@@ -2334,7 +2341,7 @@ pub const NSFileVersion = struct {
     pub const class_methods = .{
         .{ "addVersionOfItemAtURL:withContentsOfURL:options:error:", NSFileVersion, .{ NSURL, NSURL, objc.NSInteger } },
         .{ "currentVersionOfItemAtURL:", ?NSFileVersion, .{NSURL} },
-        .{ "getNonlocalVersionsOfItemAtURL:completionHandler:", void, .{ NSURL, void } },
+        .{ "getNonlocalVersionsOfItemAtURL:completionHandler:", void, .{ NSURL, ?*anyopaque } },
         .{ "otherVersionsOfItemAtURL:", ?*anyopaque, .{NSURL} },
         .{ "removeOtherVersionsOfItemAtURL:error:", void, .{NSURL} },
         .{ "temporaryDirectoryURLForNewVersionOfItemAtURL:", NSURL, .{NSURL} },
@@ -2347,26 +2354,26 @@ pub const NSFileVersion = struct {
     }
 };
 
-pub const NSFileWrapper = struct {
+pub const FileWrapper = struct {
     obj: Object,
 
     pub const methods = .{
         .{ "addFileWithPath:", objc.NSString, .{objc.NSString} },
-        .{ "addFileWrapper:", objc.NSString, .{NSFileWrapper} },
+        .{ "addFileWrapper:", objc.NSString, .{FileWrapper} },
         .{ "addRegularFileWithContents:preferredFilename:", objc.NSString, .{ NSData, objc.NSString } },
         .{ "addSymbolicLinkWithDestination:preferredFilename:", objc.NSString, .{ objc.NSString, objc.NSString } },
         .{ "directory", objc.BOOL, .{} },
         .{ "fileAttributes", Object, .{} },
         .{ "fileWrappers", ?*anyopaque, .{} },
         .{ "filename", ?objc.NSString, .{} },
-        .{ "keyForFileWrapper:", ?objc.NSString, .{NSFileWrapper} },
+        .{ "keyForFileWrapper:", ?objc.NSString, .{FileWrapper} },
         .{ "matchesContentsOfURL:", objc.BOOL, .{NSURL} },
         .{ "needsToBeUpdatedFromPath:", objc.BOOL, .{objc.NSString} },
         .{ "preferredFilename", ?objc.NSString, .{} },
         .{ "readFromURL:options:error:", void, .{ NSURL, objc.NSInteger } },
         .{ "regularFile", objc.BOOL, .{} },
         .{ "regularFileContents", ?NSData, .{} },
-        .{ "removeFileWrapper:", void, .{NSFileWrapper} },
+        .{ "removeFileWrapper:", void, .{FileWrapper} },
         .{ "serializedRepresentation", ?NSData, .{} },
         .{ "setFileAttributes:", void, .{Object} },
         .{ "setFilename:", void, .{?objc.NSString} },
@@ -2379,12 +2386,12 @@ pub const NSFileWrapper = struct {
         .{ "writeToURL:options:originalContentsURL:error:", void, .{ NSURL, objc.NSInteger, ?NSURL } },
     };
 
-    pub fn send(self: NSFileWrapper, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
+    pub fn send(self: FileWrapper, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
         return objc.typedSend(methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
-        .{ "initDirectoryWithFileWrappers:", Object, .{NSFileWrapper} },
+        .{ "initDirectoryWithFileWrappers:", Object, .{Object} },
         .{ "initRegularFileWithContents:", Object, .{NSData} },
         .{ "initSymbolicLinkWithDestination:", Object, .{objc.NSString} },
         .{ "initSymbolicLinkWithDestinationURL:", Object, .{NSURL} },
@@ -2399,11 +2406,11 @@ pub const NSFileWrapper = struct {
     }
 };
 
-pub const NSFormatter = struct {
+pub const Formatter = struct {
     obj: Object,
 
     pub const methods = .{
-        .{ "attributedStringForObjectValue:withDefaultAttributes:", ?NSAttributedString, .{ Any, ?Any } },
+        .{ "attributedStringForObjectValue:withDefaultAttributes:", ?NSAttributedString, .{ Any, ?*anyopaque } },
         .{ "editingStringForObjectValue:", ?objc.NSString, .{Any} },
         .{ "getObjectValue:forString:errorDescription:", objc.BOOL, .{ ?*anyopaque, objc.NSString, ?objc.NSString } },
         .{ "isPartialStringValid:newEditingString:errorDescription:", objc.BOOL, .{ objc.NSString, ?objc.NSString, ?objc.NSString } },
@@ -2411,7 +2418,7 @@ pub const NSFormatter = struct {
         .{ "stringForObjectValue:", ?objc.NSString, .{?Any} },
     };
 
-    pub fn send(self: NSFormatter, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
+    pub fn send(self: Formatter, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
         return objc.typedSend(methods, self.obj, selector, args);
     }
 
@@ -2430,7 +2437,7 @@ pub const NSFormatter = struct {
     };
 };
 
-pub const NSHTTPCookie = struct {
+pub const HTTPCookie = struct {
     obj: Object,
 
     pub const methods = .{
@@ -2450,14 +2457,14 @@ pub const NSHTTPCookie = struct {
         .{ "version", objc.NSInteger, .{} },
     };
 
-    pub fn send(self: NSHTTPCookie, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
+    pub fn send(self: HTTPCookie, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
         return objc.typedSend(methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
-        .{ "cookiesWithResponseHeaderFields:forURL:", Object, .{ objc.NSString, NSURL } },
-        .{ "initWithProperties:", Object, .{Any} },
-        .{ "requestHeaderFieldsWithCookies:", Object, .{void} },
+        .{ "cookiesWithResponseHeaderFields:forURL:", Object, .{ Object, NSURL } },
+        .{ "initWithProperties:", Object, .{Object} },
+        .{ "requestHeaderFieldsWithCookies:", Object, .{Object} },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -2471,30 +2478,30 @@ pub const NSHTTPCookie = struct {
     };
 };
 
-pub const NSHTTPCookieStorage = struct {
+pub const HTTPCookieStorage = struct {
     obj: Object,
 
     pub const methods = .{
-        .{ "cookieAcceptPolicy", NSHTTPCookie.AcceptPolicy, .{} },
+        .{ "cookieAcceptPolicy", HTTPCookie.AcceptPolicy, .{} },
         .{ "cookies", ?*anyopaque, .{} },
         .{ "cookiesForURL:", ?*anyopaque, .{NSURL} },
-        .{ "deleteCookie:", void, .{NSHTTPCookie} },
-        .{ "getCookiesForTask:completionHandler:", void, .{ NSURLSessionTask, void } },
+        .{ "deleteCookie:", void, .{HTTPCookie} },
+        .{ "getCookiesForTask:completionHandler:", void, .{ URLSessionTask, ?*anyopaque } },
         .{ "removeCookiesSinceDate:", void, .{NSDate} },
-        .{ "setCookie:", void, .{NSHTTPCookie} },
-        .{ "setCookieAcceptPolicy:", void, .{NSHTTPCookie.AcceptPolicy} },
-        .{ "setCookies:forURL:mainDocumentURL:", void, .{ void, ?NSURL, ?NSURL } },
-        .{ "sortedCookiesUsingDescriptors:", Object, .{void} },
-        .{ "storeCookies:forTask:", void, .{ void, NSURLSessionTask } },
+        .{ "setCookie:", void, .{HTTPCookie} },
+        .{ "setCookieAcceptPolicy:", void, .{HTTPCookie.AcceptPolicy} },
+        .{ "setCookies:forURL:mainDocumentURL:", void, .{ Object, ?NSURL, ?NSURL } },
+        .{ "sortedCookiesUsingDescriptors:", Object, .{Object} },
+        .{ "storeCookies:forTask:", void, .{ Object, URLSessionTask } },
     };
 
-    pub fn send(self: NSHTTPCookieStorage, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
+    pub fn send(self: HTTPCookieStorage, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
         return objc.typedSend(methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
-        .{ "sharedCookieStorageForGroupContainerIdentifier:", NSHTTPCookieStorage, .{objc.NSString} },
-        .{ "sharedHTTPCookieStorage", NSHTTPCookieStorage, .{} },
+        .{ "sharedCookieStorageForGroupContainerIdentifier:", HTTPCookieStorage, .{objc.NSString} },
+        .{ "sharedHTTPCookieStorage", HTTPCookieStorage, .{} },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -2502,22 +2509,22 @@ pub const NSHTTPCookieStorage = struct {
     }
 };
 
-pub const NSHTTPURLResponse = struct {
+pub const HTTPURLResponse = struct {
     obj: Object,
 
-    pub const Super = NSURLResponse;
+    pub const Super = URLResponse;
     pub const methods = .{
         .{ "allHeaderFields", Object, .{} },
         .{ "statusCode", objc.NSInteger, .{} },
         .{ "valueForHTTPHeaderField:", ?objc.NSString, .{objc.NSString} },
     };
 
-    pub fn send(self: NSHTTPURLResponse, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
+    pub fn send(self: HTTPURLResponse, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
         return objc.typedSendChain(@This(), self.obj, selector, args);
     }
 
     pub const class_methods = .{
-        .{ "initWithURL:statusCode:HTTPVersion:headerFields:", Object, .{ NSURL, objc.NSInteger, ?objc.NSString, ?objc.NSString } },
+        .{ "initWithURL:statusCode:HTTPVersion:headerFields:", Object, .{ NSURL, objc.NSInteger, ?objc.NSString, ?*anyopaque } },
         .{ "localizedStringForStatusCode:", objc.NSString, .{objc.NSInteger} },
     };
 
@@ -2566,19 +2573,19 @@ pub const NSHashTable = struct {
     }
 };
 
-pub const NSHost = struct {
+pub const Host = struct {
     obj: Object,
 
     pub const methods = .{
         .{ "address", ?objc.NSString, .{} },
         .{ "addresses", Object, .{} },
-        .{ "isEqualToHost:", objc.BOOL, .{NSHost} },
+        .{ "isEqualToHost:", objc.BOOL, .{Host} },
         .{ "localizedName", ?objc.NSString, .{} },
         .{ "name", ?objc.NSString, .{} },
         .{ "names", Object, .{} },
     };
 
-    pub fn send(self: NSHost, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
+    pub fn send(self: Host, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
         return objc.typedSend(methods, self.obj, selector, args);
     }
 
@@ -2593,26 +2600,26 @@ pub const NSHost = struct {
     }
 };
 
-pub const NSISO8601DateFormatter = struct {
+pub const ISO8601DateFormatter = struct {
     obj: Object,
 
-    pub const Super = NSFormatter;
+    pub const Super = Formatter;
     pub const methods = .{
         .{ "dateFromString:", ?NSDate, .{objc.NSString} },
         .{ "formatOptions", objc.NSInteger, .{} },
         .{ "setFormatOptions:", void, .{objc.NSInteger} },
-        .{ "setTimeZone:", void, .{?*anyopaque} },
+        .{ "setTimeZone:", void, .{NSTimeZone} },
         .{ "stringFromDate:", objc.NSString, .{NSDate} },
-        .{ "timeZone", ?*anyopaque, .{} },
+        .{ "timeZone", NSTimeZone, .{} },
     };
 
-    pub fn send(self: NSISO8601DateFormatter, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
+    pub fn send(self: ISO8601DateFormatter, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
         return objc.typedSendChain(@This(), self.obj, selector, args);
     }
 
     pub const class_methods = .{
         .{ "init", Object, .{} },
-        .{ "stringFromDate:timeZone:formatOptions:", objc.NSString, .{ NSDate, ?*anyopaque, objc.NSInteger } },
+        .{ "stringFromDate:timeZone:formatOptions:", objc.NSString, .{ NSDate, NSTimeZone, objc.NSInteger } },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -2624,12 +2631,12 @@ pub const NSIndexPath = struct {
     obj: Object,
 
     pub const methods = .{
-        .{ "compare:", ComparisonResult, .{?*anyopaque} },
+        .{ "compare:", ComparisonResult, .{NSIndexPath} },
         .{ "getIndexes:", void, .{objc.NSInteger} },
         .{ "getIndexes:range:", void, .{ objc.NSInteger, NSRange } },
         .{ "indexAtPosition:", objc.NSInteger, .{objc.NSInteger} },
-        .{ "indexPathByAddingIndex:", ?*anyopaque, .{objc.NSInteger} },
-        .{ "indexPathByRemovingLastIndex", ?*anyopaque, .{} },
+        .{ "indexPathByAddingIndex:", NSIndexPath, .{objc.NSInteger} },
+        .{ "indexPathByRemovingLastIndex", NSIndexPath, .{} },
         .{ "length", objc.NSInteger, .{} },
     };
 
@@ -2656,24 +2663,24 @@ pub const NSIndexSet = struct {
         .{ "containsIndexesInRange:", objc.BOOL, .{NSRange} },
         .{ "count", objc.NSInteger, .{} },
         .{ "countOfIndexesInRange:", objc.NSInteger, .{NSRange} },
-        .{ "enumerateIndexesInRange:options:usingBlock:", void, .{ NSRange, objc.NSInteger, void } },
-        .{ "enumerateIndexesUsingBlock:", void, .{void} },
-        .{ "enumerateIndexesWithOptions:usingBlock:", void, .{ objc.NSInteger, void } },
-        .{ "enumerateRangesInRange:options:usingBlock:", void, .{ NSRange, objc.NSInteger, void } },
-        .{ "enumerateRangesUsingBlock:", void, .{void} },
-        .{ "enumerateRangesWithOptions:usingBlock:", void, .{ objc.NSInteger, void } },
+        .{ "enumerateIndexesInRange:options:usingBlock:", void, .{ NSRange, objc.NSInteger, ?*anyopaque } },
+        .{ "enumerateIndexesUsingBlock:", void, .{?*anyopaque} },
+        .{ "enumerateIndexesWithOptions:usingBlock:", void, .{ objc.NSInteger, ?*anyopaque } },
+        .{ "enumerateRangesInRange:options:usingBlock:", void, .{ NSRange, objc.NSInteger, ?*anyopaque } },
+        .{ "enumerateRangesUsingBlock:", void, .{?*anyopaque} },
+        .{ "enumerateRangesWithOptions:usingBlock:", void, .{ objc.NSInteger, ?*anyopaque } },
         .{ "firstIndex", objc.NSInteger, .{} },
         .{ "getIndexes:maxCount:inIndexRange:", objc.NSInteger, .{ objc.NSInteger, objc.NSInteger, NSRange } },
         .{ "indexGreaterThanIndex:", objc.NSInteger, .{objc.NSInteger} },
         .{ "indexGreaterThanOrEqualToIndex:", objc.NSInteger, .{objc.NSInteger} },
-        .{ "indexInRange:options:passingTest:", objc.NSInteger, .{ NSRange, objc.NSInteger, void } },
+        .{ "indexInRange:options:passingTest:", objc.NSInteger, .{ NSRange, objc.NSInteger, ?*anyopaque } },
         .{ "indexLessThanIndex:", objc.NSInteger, .{objc.NSInteger} },
         .{ "indexLessThanOrEqualToIndex:", objc.NSInteger, .{objc.NSInteger} },
-        .{ "indexPassingTest:", objc.NSInteger, .{void} },
-        .{ "indexWithOptions:passingTest:", objc.NSInteger, .{ objc.NSInteger, void } },
-        .{ "indexesInRange:options:passingTest:", NSIndexSet, .{ NSRange, objc.NSInteger, void } },
-        .{ "indexesPassingTest:", NSIndexSet, .{void} },
-        .{ "indexesWithOptions:passingTest:", NSIndexSet, .{ objc.NSInteger, void } },
+        .{ "indexPassingTest:", objc.NSInteger, .{?*anyopaque} },
+        .{ "indexWithOptions:passingTest:", objc.NSInteger, .{ objc.NSInteger, ?*anyopaque } },
+        .{ "indexesInRange:options:passingTest:", NSIndexSet, .{ NSRange, objc.NSInteger, ?*anyopaque } },
+        .{ "indexesPassingTest:", NSIndexSet, .{?*anyopaque} },
+        .{ "indexesWithOptions:passingTest:", NSIndexSet, .{ objc.NSInteger, ?*anyopaque } },
         .{ "intersectsIndexesInRange:", objc.BOOL, .{NSRange} },
         .{ "isEqualToIndexSet:", objc.BOOL, .{NSIndexSet} },
         .{ "lastIndex", objc.NSInteger, .{} },
@@ -2716,17 +2723,17 @@ pub const NSIndexSpecifier = struct {
     }
 };
 
-pub const NSInputStream = struct {
+pub const InputStream = struct {
     obj: Object,
 
-    pub const Super = NSStream;
+    pub const Super = Stream;
     pub const methods = .{
         .{ "getBuffer:length:", objc.BOOL, .{ u8, objc.NSInteger } },
         .{ "hasBytesAvailable", objc.BOOL, .{} },
         .{ "read:maxLength:", objc.NSInteger, .{ u8, objc.NSInteger } },
     };
 
-    pub fn send(self: NSInputStream, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
+    pub fn send(self: InputStream, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
         return objc.typedSendChain(@This(), self.obj, selector, args);
     }
 
@@ -2746,21 +2753,21 @@ pub const NSItemProvider = struct {
     obj: Object,
 
     pub const methods = .{
-        .{ "canLoadObjectOfClass:", objc.BOOL, .{void} },
+        .{ "canLoadObjectOfClass:", objc.BOOL, .{NSItemProviderReading} },
         .{ "hasItemConformingToTypeIdentifier:", objc.BOOL, .{objc.NSString} },
         .{ "hasRepresentationConformingToTypeIdentifier:fileOptions:", objc.BOOL, .{ objc.NSString, objc.NSInteger } },
-        .{ "loadDataRepresentationForTypeIdentifier:completionHandler:", NSProgress, .{ objc.NSString, void } },
-        .{ "loadFileRepresentationForTypeIdentifier:completionHandler:", NSProgress, .{ objc.NSString, void } },
-        .{ "loadInPlaceFileRepresentationForTypeIdentifier:completionHandler:", NSProgress, .{ objc.NSString, void } },
-        .{ "loadItemForTypeIdentifier:options:completionHandler:", void, .{ objc.NSString, ?Any, void } },
-        .{ "loadObjectOfClass:completionHandler:", NSProgress, .{ void, void } },
-        .{ "loadPreviewImageWithOptions:completionHandler:", void, .{ Any, void } },
+        .{ "loadDataRepresentationForTypeIdentifier:completionHandler:", Progress, .{ objc.NSString, ?*anyopaque } },
+        .{ "loadFileRepresentationForTypeIdentifier:completionHandler:", Progress, .{ objc.NSString, ?*anyopaque } },
+        .{ "loadInPlaceFileRepresentationForTypeIdentifier:completionHandler:", Progress, .{ objc.NSString, ?*anyopaque } },
+        .{ "loadItemForTypeIdentifier:options:completionHandler:", void, .{ objc.NSString, ?*anyopaque, void } },
+        .{ "loadObjectOfClass:completionHandler:", Progress, .{ NSItemProviderReading, ?*anyopaque } },
+        .{ "loadPreviewImageWithOptions:completionHandler:", void, .{ Object, void } },
         .{ "previewImageHandler", void, .{} },
-        .{ "registerDataRepresentationForTypeIdentifier:visibility:loadHandler:", void, .{ objc.NSString, NSItemProviderRepresentationVisibility, void } },
-        .{ "registerFileRepresentationForTypeIdentifier:fileOptions:visibility:loadHandler:", void, .{ objc.NSString, objc.NSInteger, NSItemProviderRepresentationVisibility, void } },
+        .{ "registerDataRepresentationForTypeIdentifier:visibility:loadHandler:", void, .{ objc.NSString, NSItemProviderRepresentationVisibility, ?*anyopaque } },
+        .{ "registerFileRepresentationForTypeIdentifier:fileOptions:visibility:loadHandler:", void, .{ objc.NSString, objc.NSInteger, NSItemProviderRepresentationVisibility, ?*anyopaque } },
         .{ "registerItemForTypeIdentifier:loadHandler:", void, .{ objc.NSString, void } },
-        .{ "registerObject:visibility:", void, .{ void, NSItemProviderRepresentationVisibility } },
-        .{ "registerObjectOfClass:visibility:loadHandler:", void, .{ void, NSItemProviderRepresentationVisibility, void } },
+        .{ "registerObject:visibility:", void, .{ NSItemProviderWriting, NSItemProviderRepresentationVisibility } },
+        .{ "registerObjectOfClass:visibility:loadHandler:", void, .{ NSItemProviderWriting, NSItemProviderRepresentationVisibility, ?*anyopaque } },
         .{ "registeredTypeIdentifiers", Object, .{} },
         .{ "registeredTypeIdentifiersWithFileOptions:", Object, .{objc.NSInteger} },
         .{ "setPreviewImageHandler:", void, .{void} },
@@ -2775,8 +2782,8 @@ pub const NSItemProvider = struct {
     pub const class_methods = .{
         .{ "init", Object, .{} },
         .{ "initWithContentsOfURL:", Object, .{NSURL} },
-        .{ "initWithItem:typeIdentifier:", Object, .{ void, ?objc.NSString } },
-        .{ "initWithObject:", Object, .{void} },
+        .{ "initWithItem:typeIdentifier:", Object, .{ ?NSSecureCoding, ?objc.NSString } },
+        .{ "initWithObject:", Object, .{NSItemProviderWriting} },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -2791,13 +2798,13 @@ pub const NSItemProvider = struct {
     };
 };
 
-pub const NSJSONSerialization = struct {
+pub const JSONSerialization = struct {
     pub const class_methods = .{
         .{ "JSONObjectWithData:options:error:", Any, .{ NSData, objc.NSInteger } },
-        .{ "JSONObjectWithStream:options:error:", Any, .{ NSInputStream, objc.NSInteger } },
+        .{ "JSONObjectWithStream:options:error:", Any, .{ InputStream, objc.NSInteger } },
         .{ "dataWithJSONObject:options:error:", NSData, .{ Any, objc.NSInteger } },
         .{ "isValidJSONObject:", objc.BOOL, .{Any} },
-        .{ "writeJSONObject:toStream:options:error:", objc.NSInteger, .{ Any, NSOutputStream, objc.NSInteger, Object } },
+        .{ "writeJSONObject:toStream:options:error:", objc.NSInteger, .{ Any, OutputStream, objc.NSInteger, Object } },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -2843,11 +2850,11 @@ pub const NSKeyedArchiver = struct {
         .{ "encodeObject:forKey:", void, .{ ?Any, objc.NSString } },
         .{ "encodedData", NSData, .{} },
         .{ "finishEncoding", void, .{} },
-        .{ "outputFormat", NSPropertyListSerialization.PropertyListFormat, .{} },
+        .{ "outputFormat", PropertyListSerialization.PropertyListFormat, .{} },
         .{ "requiresSecureCoding", objc.BOOL, .{} },
         .{ "setClassName:forClass:", void, .{ ?objc.NSString, AnyClass } },
         .{ "setDelegate:", void, .{?NSKeyedArchiverDelegate} },
-        .{ "setOutputFormat:", void, .{NSPropertyListSerialization.PropertyListFormat} },
+        .{ "setOutputFormat:", void, .{PropertyListSerialization.PropertyListFormat} },
         .{ "setRequiresSecureCoding:", void, .{objc.BOOL} },
     };
 
@@ -2915,25 +2922,25 @@ pub const NSKeyedUnarchiver = struct {
     }
 };
 
-pub const NSLengthFormatter = struct {
+pub const LengthFormatter = struct {
     obj: Object,
 
-    pub const Super = NSFormatter;
+    pub const Super = Formatter;
     pub const methods = .{
         .{ "forPersonHeightUse", objc.BOOL, .{} },
         .{ "getObjectValue:forString:errorDescription:", objc.BOOL, .{ ?*anyopaque, objc.NSString, ?objc.NSString } },
-        .{ "numberFormatter", NSNumberFormatter, .{} },
+        .{ "numberFormatter", NumberFormatter, .{} },
         .{ "setForPersonHeightUse:", void, .{objc.BOOL} },
-        .{ "setNumberFormatter:", void, .{NSNumberFormatter} },
-        .{ "setUnitStyle:", void, .{NSFormatter.UnitStyle} },
+        .{ "setNumberFormatter:", void, .{NumberFormatter} },
+        .{ "setUnitStyle:", void, .{Formatter.UnitStyle} },
         .{ "stringFromMeters:", objc.NSString, .{f64} },
-        .{ "stringFromValue:unit:", objc.NSString, .{ f64, NSLengthFormatter.Unit } },
-        .{ "unitStringFromMeters:usedUnit:", objc.NSString, .{ f64, NSLengthFormatter.Unit } },
-        .{ "unitStringFromValue:unit:", objc.NSString, .{ f64, NSLengthFormatter.Unit } },
-        .{ "unitStyle", NSFormatter.UnitStyle, .{} },
+        .{ "stringFromValue:unit:", objc.NSString, .{ f64, LengthFormatter.Unit } },
+        .{ "unitStringFromMeters:usedUnit:", objc.NSString, .{ f64, LengthFormatter.Unit } },
+        .{ "unitStringFromValue:unit:", objc.NSString, .{ f64, LengthFormatter.Unit } },
+        .{ "unitStyle", Formatter.UnitStyle, .{} },
     };
 
-    pub fn send(self: NSLengthFormatter, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
+    pub fn send(self: LengthFormatter, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
         return objc.typedSendChain(@This(), self.obj, selector, args);
     }
 
@@ -2954,8 +2961,8 @@ pub const NSLinguisticTagger = struct {
 
     pub const methods = .{
         .{ "dominantLanguage", ?objc.NSString, .{} },
-        .{ "enumerateTagsInRange:scheme:options:usingBlock:", void, .{ NSRange, objc.NSString, objc.NSInteger, void } },
-        .{ "enumerateTagsInRange:unit:scheme:options:usingBlock:", void, .{ NSRange, NSLinguisticTaggerUnit, objc.NSString, objc.NSInteger, void } },
+        .{ "enumerateTagsInRange:scheme:options:usingBlock:", void, .{ NSRange, objc.NSString, objc.NSInteger, ?*anyopaque } },
+        .{ "enumerateTagsInRange:unit:scheme:options:usingBlock:", void, .{ NSRange, NSLinguisticTaggerUnit, objc.NSString, objc.NSInteger, ?*anyopaque } },
         .{ "orthographyAtIndex:effectiveRange:", ?NSOrthography, .{ objc.NSInteger, NSRange } },
         .{ "possibleTagsAtIndex:scheme:tokenRange:sentenceRange:scores:", ?*anyopaque, .{ objc.NSInteger, objc.NSString, NSRange, NSRange, ?NSArray } },
         .{ "sentenceRangeForRange:", NSRange, .{NSRange} },
@@ -2979,8 +2986,8 @@ pub const NSLinguisticTagger = struct {
         .{ "availableTagSchemesForLanguage:", Object, .{objc.NSString} },
         .{ "availableTagSchemesForUnit:language:", Object, .{ NSLinguisticTaggerUnit, objc.NSString } },
         .{ "dominantLanguageForString:", ?objc.NSString, .{objc.NSString} },
-        .{ "enumerateTagsForString:range:unit:scheme:options:orthography:usingBlock:", void, .{ objc.NSString, NSRange, NSLinguisticTaggerUnit, objc.NSString, objc.NSInteger, ?NSOrthography, void } },
-        .{ "initWithTagSchemes:options:", Object, .{ void, objc.NSInteger } },
+        .{ "enumerateTagsForString:range:unit:scheme:options:orthography:usingBlock:", void, .{ objc.NSString, NSRange, NSLinguisticTaggerUnit, objc.NSString, objc.NSInteger, ?NSOrthography, ?*anyopaque } },
+        .{ "initWithTagSchemes:options:", Object, .{ Object, objc.NSInteger } },
         .{ "tagForString:atIndex:unit:scheme:orthography:tokenRange:", objc.NSString, .{ objc.NSString, objc.NSInteger, NSLinguisticTaggerUnit, objc.NSString, ?NSOrthography, NSRange } },
         .{ "tagsForString:range:unit:scheme:options:orthography:tokenRanges:", Object, .{ objc.NSString, NSRange, NSLinguisticTaggerUnit, objc.NSString, objc.NSInteger, ?NSOrthography, ?NSArray } },
     };
@@ -2990,25 +2997,25 @@ pub const NSLinguisticTagger = struct {
     }
 };
 
-pub const NSListFormatter = struct {
+pub const ListFormatter = struct {
     obj: Object,
 
-    pub const Super = NSFormatter;
+    pub const Super = Formatter;
     pub const methods = .{
-        .{ "itemFormatter", ?NSFormatter, .{} },
+        .{ "itemFormatter", ?Formatter, .{} },
         .{ "locale", NSLocale, .{} },
-        .{ "setItemFormatter:", void, .{?NSFormatter} },
+        .{ "setItemFormatter:", void, .{?Formatter} },
         .{ "setLocale:", void, .{NSLocale} },
         .{ "stringForObjectValue:", ?objc.NSString, .{?Any} },
-        .{ "stringFromItems:", ?objc.NSString, .{void} },
+        .{ "stringFromItems:", ?objc.NSString, .{Object} },
     };
 
-    pub fn send(self: NSListFormatter, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
+    pub fn send(self: ListFormatter, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
         return objc.typedSendChain(@This(), self.obj, selector, args);
     }
 
     pub const class_methods = .{
-        .{ "localizedStringByJoiningStrings:", objc.NSString, .{void} },
+        .{ "localizedStringByJoiningStrings:", objc.NSString, .{Object} },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -3030,7 +3037,7 @@ pub const NSLocale = struct {
         .{ "currencySymbol", objc.NSString, .{} },
         .{ "decimalSeparator", objc.NSString, .{} },
         .{ "displayNameForKey:value:", ?objc.NSString, .{ objc.NSString, Any } },
-        .{ "exemplarCharacterSet", ?*anyopaque, .{} },
+        .{ "exemplarCharacterSet", NSCharacterSet, .{} },
         .{ "groupingSeparator", objc.NSString, .{} },
         .{ "languageCode", objc.NSString, .{} },
         .{ "languageIdentifier", objc.NSString, .{} },
@@ -3072,7 +3079,7 @@ pub const NSLocale = struct {
         .{ "initWithCoder:", Object, .{NSCoder} },
         .{ "initWithLocaleIdentifier:", Object, .{objc.NSString} },
         .{ "lineDirectionForLanguage:", NSLocale.LanguageDirection, .{objc.NSString} },
-        .{ "localeIdentifierFromComponents:", objc.NSString, .{objc.NSString} },
+        .{ "localeIdentifierFromComponents:", objc.NSString, .{Object} },
         .{ "localeIdentifierFromWindowsLocaleCode:", ?objc.NSString, .{u32} },
         .{ "preferredLanguages", Object, .{} },
         .{ "systemLocale", NSLocale, .{} },
@@ -3109,9 +3116,9 @@ pub const NSLock = struct {
 
 pub const NSLogicalTest = struct {
     pub const class_methods = .{
-        .{ "initAndTestWithTests:", Object, .{void} },
+        .{ "initAndTestWithTests:", Object, .{Object} },
         .{ "initNotTestWithTest:", Object, .{NSScriptWhoseTest} },
-        .{ "initOrTestWithTests:", Object, .{void} },
+        .{ "initOrTestWithTests:", Object, .{Object} },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -3122,13 +3129,13 @@ pub const NSLogicalTest = struct {
 pub const NSMachPort = struct {
     obj: Object,
 
-    pub const Super = NSPort;
+    pub const Super = Port;
     pub const methods = .{
         .{ "delegate", ?NSMachPortDelegate, .{} },
         .{ "machPort", u32, .{} },
-        .{ "removeFromRunLoop:forMode:", void, .{ NSRunLoop, objc.NSString } },
-        .{ "scheduleInRunLoop:forMode:", void, .{ NSRunLoop, objc.NSString } },
-        .{ "setDelegate:", void, .{void} },
+        .{ "removeFromRunLoop:forMode:", void, .{ RunLoop, objc.NSString } },
+        .{ "scheduleInRunLoop:forMode:", void, .{ RunLoop, objc.NSString } },
+        .{ "setDelegate:", void, .{?NSMachPortDelegate} },
     };
 
     pub fn send(self: NSMachPort, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
@@ -3138,8 +3145,8 @@ pub const NSMachPort = struct {
     pub const class_methods = .{
         .{ "initWithMachPort:", Object, .{u32} },
         .{ "initWithMachPort:options:", Object, .{ u32, objc.NSInteger } },
-        .{ "portWithMachPort:", NSPort, .{u32} },
-        .{ "portWithMachPort:options:", NSPort, .{ u32, objc.NSInteger } },
+        .{ "portWithMachPort:", Port, .{u32} },
+        .{ "portWithMachPort:options:", Port, .{ u32, objc.NSInteger } },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -3182,25 +3189,25 @@ pub const NSMapTable = struct {
     }
 };
 
-pub const NSMassFormatter = struct {
+pub const MassFormatter = struct {
     obj: Object,
 
-    pub const Super = NSFormatter;
+    pub const Super = Formatter;
     pub const methods = .{
         .{ "forPersonMassUse", objc.BOOL, .{} },
         .{ "getObjectValue:forString:errorDescription:", objc.BOOL, .{ ?*anyopaque, objc.NSString, ?objc.NSString } },
-        .{ "numberFormatter", NSNumberFormatter, .{} },
+        .{ "numberFormatter", NumberFormatter, .{} },
         .{ "setForPersonMassUse:", void, .{objc.BOOL} },
-        .{ "setNumberFormatter:", void, .{NSNumberFormatter} },
-        .{ "setUnitStyle:", void, .{NSFormatter.UnitStyle} },
+        .{ "setNumberFormatter:", void, .{NumberFormatter} },
+        .{ "setUnitStyle:", void, .{Formatter.UnitStyle} },
         .{ "stringFromKilograms:", objc.NSString, .{f64} },
-        .{ "stringFromValue:unit:", objc.NSString, .{ f64, NSMassFormatter.Unit } },
-        .{ "unitStringFromKilograms:usedUnit:", objc.NSString, .{ f64, NSMassFormatter.Unit } },
-        .{ "unitStringFromValue:unit:", objc.NSString, .{ f64, NSMassFormatter.Unit } },
-        .{ "unitStyle", NSFormatter.UnitStyle, .{} },
+        .{ "stringFromValue:unit:", objc.NSString, .{ f64, MassFormatter.Unit } },
+        .{ "unitStringFromKilograms:usedUnit:", objc.NSString, .{ f64, MassFormatter.Unit } },
+        .{ "unitStringFromValue:unit:", objc.NSString, .{ f64, MassFormatter.Unit } },
+        .{ "unitStyle", Formatter.UnitStyle, .{} },
     };
 
-    pub fn send(self: NSMassFormatter, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
+    pub fn send(self: MassFormatter, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
         return objc.typedSendChain(@This(), self.obj, selector, args);
     }
 
@@ -3217,12 +3224,12 @@ pub const NSMeasurement = struct {
     obj: Object,
 
     pub const methods = .{
-        .{ "canBeConvertedToUnit:", objc.BOOL, .{NSUnit} },
+        .{ "canBeConvertedToUnit:", objc.BOOL, .{Unit} },
         .{ "doubleValue", f64, .{} },
-        .{ "measurementByAddingMeasurement:", NSUnit, .{NSUnit} },
-        .{ "measurementByConvertingToUnit:", NSUnit, .{NSUnit} },
-        .{ "measurementBySubtractingMeasurement:", NSUnit, .{NSUnit} },
-        .{ "unit", NSUnit, .{} },
+        .{ "measurementByAddingMeasurement:", Unit, .{Unit} },
+        .{ "measurementByConvertingToUnit:", Unit, .{Unit} },
+        .{ "measurementBySubtractingMeasurement:", Unit, .{Unit} },
+        .{ "unit", Unit, .{} },
     };
 
     pub fn send(self: NSMeasurement, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
@@ -3230,7 +3237,7 @@ pub const NSMeasurement = struct {
     }
 
     pub const class_methods = .{
-        .{ "initWithDoubleValue:unit:", Object, .{ f64, NSUnit } },
+        .{ "initWithDoubleValue:unit:", Object, .{ f64, Unit } },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -3238,24 +3245,24 @@ pub const NSMeasurement = struct {
     }
 };
 
-pub const NSMeasurementFormatter = struct {
+pub const MeasurementFormatter = struct {
     obj: Object,
 
-    pub const Super = NSFormatter;
+    pub const Super = Formatter;
     pub const methods = .{
         .{ "locale", NSLocale, .{} },
-        .{ "numberFormatter", NSNumberFormatter, .{} },
+        .{ "numberFormatter", NumberFormatter, .{} },
         .{ "setLocale:", void, .{NSLocale} },
-        .{ "setNumberFormatter:", void, .{NSNumberFormatter} },
+        .{ "setNumberFormatter:", void, .{NumberFormatter} },
         .{ "setUnitOptions:", void, .{objc.NSInteger} },
-        .{ "setUnitStyle:", void, .{NSFormatter.UnitStyle} },
-        .{ "stringFromMeasurement:", objc.NSString, .{NSUnit} },
-        .{ "stringFromUnit:", objc.NSString, .{NSUnit} },
+        .{ "setUnitStyle:", void, .{Formatter.UnitStyle} },
+        .{ "stringFromMeasurement:", objc.NSString, .{Unit} },
+        .{ "stringFromUnit:", objc.NSString, .{Unit} },
         .{ "unitOptions", objc.NSInteger, .{} },
-        .{ "unitStyle", NSFormatter.UnitStyle, .{} },
+        .{ "unitStyle", Formatter.UnitStyle, .{} },
     };
 
-    pub fn send(self: NSMeasurementFormatter, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
+    pub fn send(self: MeasurementFormatter, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
         return objc.typedSendChain(@This(), self.obj, selector, args);
     }
 };
@@ -3266,7 +3273,7 @@ pub const NSMetadataItem = struct {
     pub const methods = .{
         .{ "attributes", Object, .{} },
         .{ "valueForAttribute:", ?Any, .{objc.NSString} },
-        .{ "valuesForAttributes:", ?*anyopaque, .{void} },
+        .{ "valuesForAttributes:", ?*anyopaque, .{Object} },
     };
 
     pub fn send(self: NSMetadataItem, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
@@ -3289,14 +3296,14 @@ pub const NSMetadataQuery = struct {
         .{ "delegate", ?NSMetadataQueryDelegate, .{} },
         .{ "disableUpdates", void, .{} },
         .{ "enableUpdates", void, .{} },
-        .{ "enumerateResultsUsingBlock:", void, .{void} },
-        .{ "enumerateResultsWithOptions:usingBlock:", void, .{ objc.NSInteger, void } },
+        .{ "enumerateResultsUsingBlock:", void, .{?*anyopaque} },
+        .{ "enumerateResultsWithOptions:usingBlock:", void, .{ objc.NSInteger, ?*anyopaque } },
         .{ "gathering", objc.BOOL, .{} },
         .{ "groupedResults", Object, .{} },
         .{ "groupingAttributes", ?*anyopaque, .{} },
         .{ "indexOfResult:", objc.NSInteger, .{Any} },
         .{ "notificationBatchingInterval", TimeInterval, .{} },
-        .{ "operationQueue", ?NSOperationQueue, .{} },
+        .{ "operationQueue", ?OperationQueue, .{} },
         .{ "predicate", ?NSPredicate, .{} },
         .{ "resultAtIndex:", Any, .{objc.NSInteger} },
         .{ "resultCount", objc.NSInteger, .{} },
@@ -3306,7 +3313,7 @@ pub const NSMetadataQuery = struct {
         .{ "setDelegate:", void, .{?NSMetadataQueryDelegate} },
         .{ "setGroupingAttributes:", void, .{?*anyopaque} },
         .{ "setNotificationBatchingInterval:", void, .{TimeInterval} },
-        .{ "setOperationQueue:", void, .{?NSOperationQueue} },
+        .{ "setOperationQueue:", void, .{?OperationQueue} },
         .{ "setPredicate:", void, .{?NSPredicate} },
         .{ "setSearchItems:", void, .{?*anyopaque} },
         .{ "setSearchScopes:", void, .{Object} },
@@ -3378,11 +3385,11 @@ pub const NSMutableArray = struct {
     pub const Super = NSArray;
     pub const methods = .{
         .{ "addObject:", void, .{Any} },
-        .{ "addObjectsFromArray:", void, .{void} },
+        .{ "addObjectsFromArray:", void, .{Object} },
         .{ "exchangeObjectAtIndex:withObjectAtIndex:", void, .{ objc.NSInteger, objc.NSInteger } },
         .{ "filterUsingPredicate:", void, .{NSPredicate} },
         .{ "insertObject:atIndex:", void, .{ Any, objc.NSInteger } },
-        .{ "insertObjects:atIndexes:", void, .{ void, NSIndexSet } },
+        .{ "insertObjects:atIndexes:", void, .{ Object, NSIndexSet } },
         .{ "removeAllObjects", void, .{} },
         .{ "removeLastObject", void, .{} },
         .{ "removeObject:", void, .{Any} },
@@ -3391,18 +3398,18 @@ pub const NSMutableArray = struct {
         .{ "removeObjectIdenticalTo:", void, .{Any} },
         .{ "removeObjectIdenticalTo:inRange:", void, .{ Any, NSRange } },
         .{ "removeObjectsAtIndexes:", void, .{NSIndexSet} },
-        .{ "removeObjectsInArray:", void, .{void} },
+        .{ "removeObjectsInArray:", void, .{Object} },
         .{ "removeObjectsInRange:", void, .{NSRange} },
         .{ "replaceObjectAtIndex:withObject:", void, .{ objc.NSInteger, Any } },
-        .{ "replaceObjectsAtIndexes:withObjects:", void, .{ NSIndexSet, void } },
-        .{ "replaceObjectsInRange:withObjectsFromArray:", void, .{ NSRange, void } },
-        .{ "replaceObjectsInRange:withObjectsFromArray:range:", void, .{ NSRange, void, NSRange } },
-        .{ "setArray:", void, .{void} },
-        .{ "sortUsingComparator:", void, .{void} },
-        .{ "sortUsingDescriptors:", void, .{void} },
-        .{ "sortUsingFunction:context:", void, .{ void, ?UnsafeMutableRawPointer } },
+        .{ "replaceObjectsAtIndexes:withObjects:", void, .{ NSIndexSet, Object } },
+        .{ "replaceObjectsInRange:withObjectsFromArray:", void, .{ NSRange, Object } },
+        .{ "replaceObjectsInRange:withObjectsFromArray:range:", void, .{ NSRange, Object, NSRange } },
+        .{ "setArray:", void, .{Object} },
+        .{ "sortUsingComparator:", void, .{?*anyopaque} },
+        .{ "sortUsingDescriptors:", void, .{Object} },
+        .{ "sortUsingFunction:context:", void, .{ ?*anyopaque, ?UnsafeMutableRawPointer } },
         .{ "sortUsingSelector:", void, .{Selector} },
-        .{ "sortWithOptions:usingComparator:", void, .{ objc.NSInteger, void } },
+        .{ "sortWithOptions:usingComparator:", void, .{ objc.NSInteger, ?*anyopaque } },
     };
 
     pub fn send(self: NSMutableArray, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
@@ -3427,7 +3434,7 @@ pub const NSMutableAttributedString = struct {
     pub const Super = NSAttributedString;
     pub const methods = .{
         .{ "addAttribute:value:range:", void, .{ objc.NSString, Any, NSRange } },
-        .{ "addAttributes:range:", void, .{ Any, NSRange } },
+        .{ "addAttributes:range:", void, .{ Object, NSRange } },
         .{ "appendAttributedString:", void, .{NSAttributedString} },
         .{ "beginEditing", void, .{} },
         .{ "deleteCharactersInRange:", void, .{NSRange} },
@@ -3438,7 +3445,7 @@ pub const NSMutableAttributedString = struct {
         .{ "replaceCharactersInRange:withAttributedString:", void, .{ NSRange, NSAttributedString } },
         .{ "replaceCharactersInRange:withString:", void, .{ NSRange, objc.NSString } },
         .{ "setAttributedString:", void, .{NSAttributedString} },
-        .{ "setAttributes:range:", void, .{ ?Any, NSRange } },
+        .{ "setAttributes:range:", void, .{ ?*anyopaque, NSRange } },
     };
 
     pub fn send(self: NSMutableAttributedString, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
@@ -3457,8 +3464,8 @@ pub const NSMutableCharacterSet = struct {
     pub const methods = .{
         .{ "addCharactersInRange:", void, .{NSRange} },
         .{ "addCharactersInString:", void, .{objc.NSString} },
-        .{ "formIntersectionWithCharacterSet:", void, .{?*anyopaque} },
-        .{ "formUnionWithCharacterSet:", void, .{?*anyopaque} },
+        .{ "formIntersectionWithCharacterSet:", void, .{NSCharacterSet} },
+        .{ "formUnionWithCharacterSet:", void, .{NSCharacterSet} },
         .{ "invert", void, .{} },
         .{ "removeCharactersInRange:", void, .{NSRange} },
         .{ "removeCharactersInString:", void, .{objc.NSString} },
@@ -3533,12 +3540,12 @@ pub const NSMutableDictionary = struct {
 
     pub const Super = NSDictionary;
     pub const methods = .{
-        .{ "addEntriesFromDictionary:", void, .{Any} },
+        .{ "addEntriesFromDictionary:", void, .{Object} },
         .{ "removeAllObjects", void, .{} },
         .{ "removeObjectForKey:", void, .{Any} },
-        .{ "removeObjectsForKeys:", void, .{void} },
-        .{ "setDictionary:", void, .{Any} },
-        .{ "setObject:forKey:", void, .{ Any, void } },
+        .{ "removeObjectsForKeys:", void, .{Object} },
+        .{ "setDictionary:", void, .{Object} },
+        .{ "setObject:forKey:", void, .{ Any, NSCopying } },
         .{ "setValue:forKey:", void, .{ ?Any, objc.NSString } },
     };
 
@@ -3586,11 +3593,11 @@ pub const NSMutableOrderedSet = struct {
     pub const methods = .{
         .{ "addObject:", void, .{Any} },
         .{ "addObjects:count:", void, .{ ?UnsafePointer, objc.NSInteger } },
-        .{ "addObjectsFromArray:", void, .{void} },
+        .{ "addObjectsFromArray:", void, .{Object} },
         .{ "exchangeObjectAtIndex:withObjectAtIndex:", void, .{ objc.NSInteger, objc.NSInteger } },
         .{ "filterUsingPredicate:", void, .{NSPredicate} },
         .{ "insertObject:atIndex:", void, .{ Any, objc.NSInteger } },
-        .{ "insertObjects:atIndexes:", void, .{ void, NSIndexSet } },
+        .{ "insertObjects:atIndexes:", void, .{ Object, NSIndexSet } },
         .{ "intersectOrderedSet:", void, .{NSOrderedSet} },
         .{ "intersectSet:", void, .{?*anyopaque} },
         .{ "minusOrderedSet:", void, .{NSOrderedSet} },
@@ -3600,16 +3607,16 @@ pub const NSMutableOrderedSet = struct {
         .{ "removeObject:", void, .{Any} },
         .{ "removeObjectAtIndex:", void, .{objc.NSInteger} },
         .{ "removeObjectsAtIndexes:", void, .{NSIndexSet} },
-        .{ "removeObjectsInArray:", void, .{void} },
+        .{ "removeObjectsInArray:", void, .{Object} },
         .{ "removeObjectsInRange:", void, .{NSRange} },
         .{ "replaceObjectAtIndex:withObject:", void, .{ objc.NSInteger, Any } },
-        .{ "replaceObjectsAtIndexes:withObjects:", void, .{ NSIndexSet, void } },
+        .{ "replaceObjectsAtIndexes:withObjects:", void, .{ NSIndexSet, Object } },
         .{ "replaceObjectsInRange:withObjects:count:", void, .{ NSRange, ?UnsafePointer, objc.NSInteger } },
         .{ "setObject:atIndex:", void, .{ Any, objc.NSInteger } },
-        .{ "sortRange:options:usingComparator:", void, .{ NSRange, objc.NSInteger, void } },
-        .{ "sortUsingComparator:", void, .{void} },
-        .{ "sortUsingDescriptors:", void, .{void} },
-        .{ "sortWithOptions:usingComparator:", void, .{ objc.NSInteger, void } },
+        .{ "sortRange:options:usingComparator:", void, .{ NSRange, objc.NSInteger, ?*anyopaque } },
+        .{ "sortUsingComparator:", void, .{?*anyopaque} },
+        .{ "sortUsingDescriptors:", void, .{Object} },
+        .{ "sortWithOptions:usingComparator:", void, .{ objc.NSInteger, ?*anyopaque } },
         .{ "unionOrderedSet:", void, .{NSOrderedSet} },
         .{ "unionSet:", void, .{?*anyopaque} },
     };
@@ -3635,7 +3642,7 @@ pub const NSMutableSet = struct {
     pub const Super = NSSet;
     pub const methods = .{
         .{ "addObject:", void, .{Any} },
-        .{ "addObjectsFromArray:", void, .{void} },
+        .{ "addObjectsFromArray:", void, .{Object} },
         .{ "filterUsingPredicate:", void, .{NSPredicate} },
         .{ "intersectSet:", void, .{?*anyopaque} },
         .{ "minusSet:", void, .{?*anyopaque} },
@@ -3693,7 +3700,7 @@ pub const NSMutableURLRequest = struct {
     pub const Super = NSURLRequest;
     pub const methods = .{
         .{ "HTTPBody", ?NSData, .{} },
-        .{ "HTTPBodyStream", ?NSInputStream, .{} },
+        .{ "HTTPBodyStream", ?InputStream, .{} },
         .{ "HTTPMethod", objc.NSString, .{} },
         .{ "HTTPShouldHandleCookies", objc.BOOL, .{} },
         .{ "HTTPShouldUsePipelining", objc.BOOL, .{} },
@@ -3723,7 +3730,7 @@ pub const NSMutableURLRequest = struct {
         .{ "setCachePolicy:", void, .{NSURLRequest.CachePolicy} },
         .{ "setCookiePartitionIdentifier:", void, .{?objc.NSString} },
         .{ "setHTTPBody:", void, .{?NSData} },
-        .{ "setHTTPBodyStream:", void, .{?NSInputStream} },
+        .{ "setHTTPBodyStream:", void, .{?InputStream} },
         .{ "setHTTPMethod:", void, .{objc.NSString} },
         .{ "setHTTPShouldHandleCookies:", void, .{objc.BOOL} },
         .{ "setHTTPShouldUsePipelining:", void, .{objc.BOOL} },
@@ -3764,7 +3771,7 @@ pub const NSNameSpecifier = struct {
     }
 };
 
-pub const NSNetService = struct {
+pub const NetService = struct {
     obj: Object,
 
     pub const methods = .{
@@ -3772,16 +3779,16 @@ pub const NSNetService = struct {
         .{ "addresses", ?*anyopaque, .{} },
         .{ "delegate", ?NetServiceDelegate, .{} },
         .{ "domain", objc.NSString, .{} },
-        .{ "getInputStream:outputStream:", objc.BOOL, .{ ?NSInputStream, ?NSOutputStream } },
+        .{ "getInputStream:outputStream:", objc.BOOL, .{ ?InputStream, ?OutputStream } },
         .{ "hostName", ?objc.NSString, .{} },
         .{ "includesPeerToPeer", objc.BOOL, .{} },
         .{ "name", objc.NSString, .{} },
         .{ "port", objc.NSInteger, .{} },
         .{ "publish", void, .{} },
         .{ "publishWithOptions:", void, .{objc.NSInteger} },
-        .{ "removeFromRunLoop:forMode:", void, .{ NSRunLoop, objc.NSString } },
+        .{ "removeFromRunLoop:forMode:", void, .{ RunLoop, objc.NSString } },
         .{ "resolveWithTimeout:", void, .{TimeInterval} },
-        .{ "scheduleInRunLoop:forMode:", void, .{ NSRunLoop, objc.NSString } },
+        .{ "scheduleInRunLoop:forMode:", void, .{ RunLoop, objc.NSString } },
         .{ "setDelegate:", void, .{?NetServiceDelegate} },
         .{ "setIncludesPeerToPeer:", void, .{objc.BOOL} },
         .{ "setTXTRecordData:", objc.BOOL, .{?NSData} },
@@ -3791,12 +3798,12 @@ pub const NSNetService = struct {
         .{ "type", objc.NSString, .{} },
     };
 
-    pub fn send(self: NSNetService, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
+    pub fn send(self: NetService, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
         return objc.typedSend(methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
-        .{ "dataFromTXTRecordDictionary:", NSData, .{NSData} },
+        .{ "dataFromTXTRecordDictionary:", NSData, .{Object} },
         .{ "dictionaryFromTXTRecordData:", Object, .{NSData} },
         .{ "initWithDomain:type:name:", Object, .{ objc.NSString, objc.NSString, objc.NSString } },
         .{ "initWithDomain:type:name:port:", Object, .{ objc.NSString, objc.NSString, objc.NSString, i32 } },
@@ -3819,14 +3826,14 @@ pub const NSNetService = struct {
     };
 };
 
-pub const NSNetServiceBrowser = struct {
+pub const NetServiceBrowser = struct {
     obj: Object,
 
     pub const methods = .{
         .{ "delegate", ?NetServiceBrowserDelegate, .{} },
         .{ "includesPeerToPeer", objc.BOOL, .{} },
-        .{ "removeFromRunLoop:forMode:", void, .{ NSRunLoop, objc.NSString } },
-        .{ "scheduleInRunLoop:forMode:", void, .{ NSRunLoop, objc.NSString } },
+        .{ "removeFromRunLoop:forMode:", void, .{ RunLoop, objc.NSString } },
+        .{ "scheduleInRunLoop:forMode:", void, .{ RunLoop, objc.NSString } },
         .{ "searchForBrowsableDomains", void, .{} },
         .{ "searchForRegistrationDomains", void, .{} },
         .{ "searchForServicesOfType:inDomain:", void, .{ objc.NSString, objc.NSString } },
@@ -3835,7 +3842,7 @@ pub const NSNetServiceBrowser = struct {
         .{ "stop", void, .{} },
     };
 
-    pub fn send(self: NSNetServiceBrowser, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
+    pub fn send(self: NetServiceBrowser, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
         return objc.typedSend(methods, self.obj, selector, args);
     }
 
@@ -3863,7 +3870,7 @@ pub const NSNotification = struct {
 
     pub const class_methods = .{
         .{ "initWithCoder:", Object, .{NSCoder} },
-        .{ "initWithName:object:userInfo:", Object, .{ objc.NSString, ?Any, ?Any } },
+        .{ "initWithName:object:userInfo:", Object, .{ objc.NSString, ?Any, ?*anyopaque } },
         .{ "notificationWithName:object:", Object, .{ objc.NSString, ?Any } },
     };
 
@@ -3872,25 +3879,25 @@ pub const NSNotification = struct {
     }
 };
 
-pub const NSNotificationCenter = struct {
+pub const NotificationCenter = struct {
     obj: Object,
 
     pub const methods = .{
         .{ "addObserver:selector:name:object:", void, .{ Any, Selector, objc.NSString, ?Any } },
-        .{ "addObserverForName:object:queue:usingBlock:", *anyopaque, .{ objc.NSString, ?Any, ?NSOperationQueue, void } },
+        .{ "addObserverForName:object:queue:usingBlock:", NSObjectProtocol, .{ objc.NSString, ?Any, ?OperationQueue, ?*anyopaque } },
         .{ "postNotification:", void, .{NSNotification} },
         .{ "postNotificationName:object:", void, .{ objc.NSString, ?Any } },
-        .{ "postNotificationName:object:userInfo:", void, .{ objc.NSString, ?Any, ?Any } },
+        .{ "postNotificationName:object:userInfo:", void, .{ objc.NSString, ?Any, ?*anyopaque } },
         .{ "removeObserver:", void, .{Any} },
         .{ "removeObserver:name:object:", void, .{ Any, objc.NSString, ?Any } },
     };
 
-    pub fn send(self: NSNotificationCenter, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
+    pub fn send(self: NotificationCenter, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
         return objc.typedSend(methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
-        .{ "defaultCenter", NSNotificationCenter, .{} },
+        .{ "defaultCenter", NotificationCenter, .{} },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -3898,22 +3905,22 @@ pub const NSNotificationCenter = struct {
     }
 };
 
-pub const NSNotificationQueue = struct {
+pub const NotificationQueue = struct {
     obj: Object,
 
     pub const methods = .{
         .{ "dequeueNotificationsMatching:coalesceMask:", void, .{ NSNotification, objc.NSInteger } },
-        .{ "enqueueNotification:postingStyle:", void, .{ NSNotification, NSNotificationQueue.PostingStyle } },
-        .{ "enqueueNotification:postingStyle:coalesceMask:forModes:", void, .{ NSNotification, NSNotificationQueue.PostingStyle, objc.NSInteger, void } },
+        .{ "enqueueNotification:postingStyle:", void, .{ NSNotification, NotificationQueue.PostingStyle } },
+        .{ "enqueueNotification:postingStyle:coalesceMask:forModes:", void, .{ NSNotification, NotificationQueue.PostingStyle, objc.NSInteger, ?*anyopaque } },
     };
 
-    pub fn send(self: NSNotificationQueue, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
+    pub fn send(self: NotificationQueue, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
         return objc.typedSend(methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
-        .{ "defaultQueue", NSNotificationQueue, .{} },
-        .{ "initWithNotificationCenter:", Object, .{NSNotificationCenter} },
+        .{ "defaultQueue", NotificationQueue, .{} },
+        .{ "initWithNotificationCenter:", Object, .{NotificationCenter} },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -3978,10 +3985,10 @@ pub const NSNumber = struct {
     }
 };
 
-pub const NSNumberFormatter = struct {
+pub const NumberFormatter = struct {
     obj: Object,
 
-    pub const Super = NSFormatter;
+    pub const Super = Formatter;
     pub const methods = .{
         .{ "allowsFloats", objc.BOOL, .{} },
         .{ "alwaysShowsDecimalSeparator", objc.BOOL, .{} },
@@ -3996,8 +4003,8 @@ pub const NSNumberFormatter = struct {
         .{ "exponentSymbol", objc.NSString, .{} },
         .{ "format", objc.NSString, .{} },
         .{ "formatWidth", objc.NSInteger, .{} },
-        .{ "formatterBehavior", NSNumberFormatter.Behavior, .{} },
-        .{ "formattingContext", NSFormatter.Context, .{} },
+        .{ "formatterBehavior", NumberFormatter.Behavior, .{} },
+        .{ "formattingContext", Formatter.Context, .{} },
         .{ "generatesDecimalNumbers", objc.BOOL, .{} },
         .{ "getObjectValue:forString:range:error:", void, .{ ?*anyopaque, objc.NSString, NSRange } },
         .{ "groupingSeparator", objc.NSString, .{} },
@@ -4025,9 +4032,9 @@ pub const NSNumberFormatter = struct {
         .{ "nilSymbol", objc.NSString, .{} },
         .{ "notANumberSymbol", objc.NSString, .{} },
         .{ "numberFromString:", ?NSNumber, .{objc.NSString} },
-        .{ "numberStyle", NSNumberFormatter.Style, .{} },
+        .{ "numberStyle", NumberFormatter.Style, .{} },
         .{ "paddingCharacter", objc.NSString, .{} },
-        .{ "paddingPosition", NSNumberFormatter.PadPosition, .{} },
+        .{ "paddingPosition", NumberFormatter.PadPosition, .{} },
         .{ "partialStringValidationEnabled", objc.BOOL, .{} },
         .{ "perMillSymbol", objc.NSString, .{} },
         .{ "percentSymbol", objc.NSString, .{} },
@@ -4038,7 +4045,7 @@ pub const NSNumberFormatter = struct {
         .{ "positiveSuffix", objc.NSString, .{} },
         .{ "roundingBehavior", NSDecimalNumberHandler, .{} },
         .{ "roundingIncrement", NSNumber, .{} },
-        .{ "roundingMode", NSNumberFormatter.RoundingMode, .{} },
+        .{ "roundingMode", NumberFormatter.RoundingMode, .{} },
         .{ "secondaryGroupingSize", objc.NSInteger, .{} },
         .{ "setAllowsFloats:", void, .{objc.BOOL} },
         .{ "setAlwaysShowsDecimalSeparator:", void, .{objc.BOOL} },
@@ -4053,8 +4060,8 @@ pub const NSNumberFormatter = struct {
         .{ "setExponentSymbol:", void, .{objc.NSString} },
         .{ "setFormat:", void, .{objc.NSString} },
         .{ "setFormatWidth:", void, .{objc.NSInteger} },
-        .{ "setFormatterBehavior:", void, .{NSNumberFormatter.Behavior} },
-        .{ "setFormattingContext:", void, .{NSFormatter.Context} },
+        .{ "setFormatterBehavior:", void, .{NumberFormatter.Behavior} },
+        .{ "setFormattingContext:", void, .{Formatter.Context} },
         .{ "setGeneratesDecimalNumbers:", void, .{objc.BOOL} },
         .{ "setGroupingSeparator:", void, .{objc.NSString} },
         .{ "setGroupingSize:", void, .{objc.NSInteger} },
@@ -4080,9 +4087,9 @@ pub const NSNumberFormatter = struct {
         .{ "setNegativeSuffix:", void, .{objc.NSString} },
         .{ "setNilSymbol:", void, .{objc.NSString} },
         .{ "setNotANumberSymbol:", void, .{objc.NSString} },
-        .{ "setNumberStyle:", void, .{NSNumberFormatter.Style} },
+        .{ "setNumberStyle:", void, .{NumberFormatter.Style} },
         .{ "setPaddingCharacter:", void, .{objc.NSString} },
-        .{ "setPaddingPosition:", void, .{NSNumberFormatter.PadPosition} },
+        .{ "setPaddingPosition:", void, .{NumberFormatter.PadPosition} },
         .{ "setPartialStringValidationEnabled:", void, .{objc.BOOL} },
         .{ "setPerMillSymbol:", void, .{objc.NSString} },
         .{ "setPercentSymbol:", void, .{objc.NSString} },
@@ -4093,7 +4100,7 @@ pub const NSNumberFormatter = struct {
         .{ "setPositiveSuffix:", void, .{objc.NSString} },
         .{ "setRoundingBehavior:", void, .{NSDecimalNumberHandler} },
         .{ "setRoundingIncrement:", void, .{NSNumber} },
-        .{ "setRoundingMode:", void, .{NSNumberFormatter.RoundingMode} },
+        .{ "setRoundingMode:", void, .{NumberFormatter.RoundingMode} },
         .{ "setSecondaryGroupingSize:", void, .{objc.NSInteger} },
         .{ "setTextAttributesForNegativeInfinity:", void, .{?*anyopaque} },
         .{ "setTextAttributesForNegativeValues:", void, .{?*anyopaque} },
@@ -4120,14 +4127,14 @@ pub const NSNumberFormatter = struct {
         .{ "zeroSymbol", ?objc.NSString, .{} },
     };
 
-    pub fn send(self: NSNumberFormatter, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
+    pub fn send(self: NumberFormatter, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
         return objc.typedSendChain(@This(), self.obj, selector, args);
     }
 
     pub const class_methods = .{
-        .{ "defaultFormatterBehavior", NSNumberFormatter.Behavior, .{} },
-        .{ "localizedStringFromNumber:numberStyle:", objc.NSString, .{ NSNumber, NSNumberFormatter.Style } },
-        .{ "setDefaultFormatterBehavior:", void, .{NSNumberFormatter.Behavior} },
+        .{ "defaultFormatterBehavior", NumberFormatter.Behavior, .{} },
+        .{ "localizedStringFromNumber:numberStyle:", objc.NSString, .{ NSNumber, NumberFormatter.Style } },
+        .{ "setDefaultFormatterBehavior:", void, .{NumberFormatter.Behavior} },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -4168,11 +4175,11 @@ pub const NSNumberFormatter = struct {
     };
 };
 
-pub const NSOperation = struct {
+pub const Operation = struct {
     obj: Object,
 
     pub const methods = .{
-        .{ "addDependency:", void, .{NSOperation} },
+        .{ "addDependency:", void, .{Operation} },
         .{ "asynchronous", objc.BOOL, .{} },
         .{ "cancel", void, .{} },
         .{ "cancelled", objc.BOOL, .{} },
@@ -4184,20 +4191,20 @@ pub const NSOperation = struct {
         .{ "main", void, .{} },
         .{ "name", ?objc.NSString, .{} },
         .{ "qualityOfService", QualityOfService, .{} },
-        .{ "queuePriority", NSOperation.QueuePriority, .{} },
+        .{ "queuePriority", Operation.QueuePriority, .{} },
         .{ "ready", objc.BOOL, .{} },
-        .{ "removeDependency:", void, .{NSOperation} },
+        .{ "removeDependency:", void, .{Operation} },
         .{ "setCompletionBlock:", void, .{void} },
         .{ "setName:", void, .{?objc.NSString} },
         .{ "setQualityOfService:", void, .{QualityOfService} },
-        .{ "setQueuePriority:", void, .{NSOperation.QueuePriority} },
+        .{ "setQueuePriority:", void, .{Operation.QueuePriority} },
         .{ "setThreadPriority:", void, .{f64} },
         .{ "start", void, .{} },
         .{ "threadPriority", f64, .{} },
         .{ "waitUntilFinished", void, .{} },
     };
 
-    pub fn send(self: NSOperation, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
+    pub fn send(self: Operation, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
         return objc.typedSend(methods, self.obj, selector, args);
     }
 
@@ -4210,20 +4217,20 @@ pub const NSOperation = struct {
     };
 };
 
-pub const NSOperationQueue = struct {
+pub const OperationQueue = struct {
     obj: Object,
 
     pub const methods = .{
-        .{ "addBarrierBlock:", void, .{void} },
-        .{ "addOperation:", void, .{NSOperation} },
-        .{ "addOperationWithBlock:", void, .{void} },
-        .{ "addOperations:waitUntilFinished:", void, .{ void, objc.BOOL } },
+        .{ "addBarrierBlock:", void, .{?*anyopaque} },
+        .{ "addOperation:", void, .{Operation} },
+        .{ "addOperationWithBlock:", void, .{?*anyopaque} },
+        .{ "addOperations:waitUntilFinished:", void, .{ Object, objc.BOOL } },
         .{ "cancelAllOperations", void, .{} },
         .{ "maxConcurrentOperationCount", objc.NSInteger, .{} },
         .{ "name", ?objc.NSString, .{} },
         .{ "operationCount", objc.NSInteger, .{} },
         .{ "operations", Object, .{} },
-        .{ "progress", NSProgress, .{} },
+        .{ "progress", Progress, .{} },
         .{ "qualityOfService", QualityOfService, .{} },
         .{ "setMaxConcurrentOperationCount:", void, .{objc.NSInteger} },
         .{ "setName:", void, .{?objc.NSString} },
@@ -4235,13 +4242,13 @@ pub const NSOperationQueue = struct {
         .{ "waitUntilAllOperationsAreFinished", void, .{} },
     };
 
-    pub fn send(self: NSOperationQueue, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
+    pub fn send(self: OperationQueue, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
         return objc.typedSend(methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
-        .{ "currentQueue", ?NSOperationQueue, .{} },
-        .{ "mainQueue", NSOperationQueue, .{} },
+        .{ "currentQueue", ?OperationQueue, .{} },
+        .{ "mainQueue", OperationQueue, .{} },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -4277,7 +4284,7 @@ pub const NSOrderedCollectionDifference = struct {
     obj: Object,
 
     pub const methods = .{
-        .{ "differenceByTransformingChangesWithBlock:", Any, .{void} },
+        .{ "differenceByTransformingChangesWithBlock:", Any, .{?*anyopaque} },
         .{ "hasChanges", objc.BOOL, .{} },
         .{ "insertions", Object, .{} },
         .{ "inverseDifference", ?*anyopaque, .{} },
@@ -4289,9 +4296,9 @@ pub const NSOrderedCollectionDifference = struct {
     }
 
     pub const class_methods = .{
-        .{ "initWithChanges:", Object, .{void} },
-        .{ "initWithInsertIndexes:insertedObjects:removeIndexes:removedObjects:", Object, .{ NSIndexSet, void, NSIndexSet, void } },
-        .{ "initWithInsertIndexes:insertedObjects:removeIndexes:removedObjects:additionalChanges:", Object, .{ NSIndexSet, void, NSIndexSet, void, void } },
+        .{ "initWithChanges:", Object, .{Object} },
+        .{ "initWithInsertIndexes:insertedObjects:removeIndexes:removedObjects:", Object, .{ NSIndexSet, ?*anyopaque, NSIndexSet, ?*anyopaque } },
+        .{ "initWithInsertIndexes:insertedObjects:removeIndexes:removedObjects:additionalChanges:", Object, .{ NSIndexSet, ?*anyopaque, NSIndexSet, ?*anyopaque, Object } },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -4310,19 +4317,19 @@ pub const NSOrderedSet = struct {
         .{ "description", objc.NSString, .{} },
         .{ "descriptionWithLocale:", objc.NSString, .{?Any} },
         .{ "descriptionWithLocale:indent:", objc.NSString, .{ ?Any, objc.NSInteger } },
-        .{ "enumerateObjectsAtIndexes:options:usingBlock:", void, .{ NSIndexSet, objc.NSInteger, void } },
-        .{ "enumerateObjectsUsingBlock:", void, .{void} },
-        .{ "enumerateObjectsWithOptions:usingBlock:", void, .{ objc.NSInteger, void } },
+        .{ "enumerateObjectsAtIndexes:options:usingBlock:", void, .{ NSIndexSet, objc.NSInteger, ?*anyopaque } },
+        .{ "enumerateObjectsUsingBlock:", void, .{?*anyopaque} },
+        .{ "enumerateObjectsWithOptions:usingBlock:", void, .{ objc.NSInteger, ?*anyopaque } },
         .{ "filteredOrderedSetUsingPredicate:", NSOrderedSet, .{NSPredicate} },
         .{ "firstObject", ?Any, .{} },
         .{ "indexOfObject:", objc.NSInteger, .{Any} },
-        .{ "indexOfObject:inSortedRange:options:usingComparator:", objc.NSInteger, .{ Any, NSRange, objc.NSInteger, void } },
-        .{ "indexOfObjectAtIndexes:options:passingTest:", objc.NSInteger, .{ NSIndexSet, objc.NSInteger, void } },
-        .{ "indexOfObjectPassingTest:", objc.NSInteger, .{void} },
-        .{ "indexOfObjectWithOptions:passingTest:", objc.NSInteger, .{ objc.NSInteger, void } },
-        .{ "indexesOfObjectsAtIndexes:options:passingTest:", NSIndexSet, .{ NSIndexSet, objc.NSInteger, void } },
-        .{ "indexesOfObjectsPassingTest:", NSIndexSet, .{void} },
-        .{ "indexesOfObjectsWithOptions:passingTest:", NSIndexSet, .{ objc.NSInteger, void } },
+        .{ "indexOfObject:inSortedRange:options:usingComparator:", objc.NSInteger, .{ Any, NSRange, objc.NSInteger, ?*anyopaque } },
+        .{ "indexOfObjectAtIndexes:options:passingTest:", objc.NSInteger, .{ NSIndexSet, objc.NSInteger, ?*anyopaque } },
+        .{ "indexOfObjectPassingTest:", objc.NSInteger, .{?*anyopaque} },
+        .{ "indexOfObjectWithOptions:passingTest:", objc.NSInteger, .{ objc.NSInteger, ?*anyopaque } },
+        .{ "indexesOfObjectsAtIndexes:options:passingTest:", NSIndexSet, .{ NSIndexSet, objc.NSInteger, ?*anyopaque } },
+        .{ "indexesOfObjectsPassingTest:", NSIndexSet, .{?*anyopaque} },
+        .{ "indexesOfObjectsWithOptions:passingTest:", NSIndexSet, .{ objc.NSInteger, ?*anyopaque } },
         .{ "intersectsOrderedSet:", objc.BOOL, .{NSOrderedSet} },
         .{ "intersectsSet:", objc.BOOL, .{?*anyopaque} },
         .{ "isEqualToOrderedSet:", objc.BOOL, .{NSOrderedSet} },
@@ -4339,9 +4346,9 @@ pub const NSOrderedSet = struct {
         .{ "set", ?*anyopaque, .{} },
         .{ "setSet:", void, .{?*anyopaque} },
         .{ "setValue:forKey:", void, .{ ?Any, objc.NSString } },
-        .{ "sortedArrayUsingComparator:", Object, .{void} },
-        .{ "sortedArrayUsingDescriptors:", Object, .{void} },
-        .{ "sortedArrayWithOptions:usingComparator:", Object, .{ objc.NSInteger, void } },
+        .{ "sortedArrayUsingComparator:", Object, .{?*anyopaque} },
+        .{ "sortedArrayUsingDescriptors:", Object, .{Object} },
+        .{ "sortedArrayWithOptions:usingComparator:", Object, .{ objc.NSInteger, ?*anyopaque } },
         .{ "valueForKey:", Any, .{objc.NSString} },
     };
 
@@ -4351,9 +4358,9 @@ pub const NSOrderedSet = struct {
 
     pub const class_methods = .{
         .{ "init", Object, .{} },
-        .{ "initWithArray:", Object, .{void} },
-        .{ "initWithArray:copyItems:", Object, .{ void, objc.BOOL } },
-        .{ "initWithArray:range:copyItems:", Object, .{ void, NSRange, objc.BOOL } },
+        .{ "initWithArray:", Object, .{Object} },
+        .{ "initWithArray:copyItems:", Object, .{ Object, objc.BOOL } },
+        .{ "initWithArray:range:copyItems:", Object, .{ Object, NSRange, objc.BOOL } },
         .{ "initWithCoder:", Object, .{NSCoder} },
         .{ "initWithObject:", Object, .{Any} },
         .{ "initWithObjects:count:", Object, .{ ?UnsafePointer, objc.NSInteger } },
@@ -4390,7 +4397,7 @@ pub const NSOrthography = struct {
     pub const class_methods = .{
         .{ "defaultOrthographyForLanguage:", ?*anyopaque, .{objc.NSString} },
         .{ "initWithCoder:", Object, .{NSCoder} },
-        .{ "initWithDominantScript:languageMap:", Object, .{ objc.NSString, void } },
+        .{ "initWithDominantScript:languageMap:", Object, .{ objc.NSString, Object } },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -4398,16 +4405,16 @@ pub const NSOrthography = struct {
     }
 };
 
-pub const NSOutputStream = struct {
+pub const OutputStream = struct {
     obj: Object,
 
-    pub const Super = NSStream;
+    pub const Super = Stream;
     pub const methods = .{
         .{ "hasSpaceAvailable", objc.BOOL, .{} },
         .{ "write:maxLength:", objc.NSInteger, .{ u8, objc.NSInteger } },
     };
 
-    pub fn send(self: NSOutputStream, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
+    pub fn send(self: OutputStream, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
         return objc.typedSendChain(@This(), self.obj, selector, args);
     }
 
@@ -4435,14 +4442,14 @@ pub const NSPersonNameComponents = struct {
         .{ "namePrefix", ?objc.NSString, .{} },
         .{ "nameSuffix", ?objc.NSString, .{} },
         .{ "nickname", ?objc.NSString, .{} },
-        .{ "phoneticRepresentation", ?*anyopaque, .{} },
+        .{ "phoneticRepresentation", ?NSPersonNameComponents, .{} },
         .{ "setFamilyName:", void, .{?objc.NSString} },
         .{ "setGivenName:", void, .{?objc.NSString} },
         .{ "setMiddleName:", void, .{?objc.NSString} },
         .{ "setNamePrefix:", void, .{?objc.NSString} },
         .{ "setNameSuffix:", void, .{?objc.NSString} },
         .{ "setNickname:", void, .{?objc.NSString} },
-        .{ "setPhoneticRepresentation:", void, .{?*anyopaque} },
+        .{ "setPhoneticRepresentation:", void, .{?NSPersonNameComponents} },
     };
 
     pub fn send(self: NSPersonNameComponents, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
@@ -4450,29 +4457,29 @@ pub const NSPersonNameComponents = struct {
     }
 };
 
-pub const NSPersonNameComponentsFormatter = struct {
+pub const PersonNameComponentsFormatter = struct {
     obj: Object,
 
-    pub const Super = NSFormatter;
+    pub const Super = Formatter;
     pub const methods = .{
-        .{ "annotatedStringFromPersonNameComponents:", NSAttributedString, .{?*anyopaque} },
+        .{ "annotatedStringFromPersonNameComponents:", NSAttributedString, .{NSPersonNameComponents} },
         .{ "getObjectValue:forString:errorDescription:", objc.BOOL, .{ ?*anyopaque, objc.NSString, ?objc.NSString } },
         .{ "locale", NSLocale, .{} },
-        .{ "personNameComponentsFromString:", ?*anyopaque, .{objc.NSString} },
+        .{ "personNameComponentsFromString:", ?NSPersonNameComponents, .{objc.NSString} },
         .{ "phonetic", objc.BOOL, .{} },
         .{ "setLocale:", void, .{NSLocale} },
         .{ "setPhonetic:", void, .{objc.BOOL} },
-        .{ "setStyle:", void, .{NSPersonNameComponentsFormatter.Style} },
-        .{ "stringFromPersonNameComponents:", objc.NSString, .{?*anyopaque} },
-        .{ "style", NSPersonNameComponentsFormatter.Style, .{} },
+        .{ "setStyle:", void, .{PersonNameComponentsFormatter.Style} },
+        .{ "stringFromPersonNameComponents:", objc.NSString, .{NSPersonNameComponents} },
+        .{ "style", PersonNameComponentsFormatter.Style, .{} },
     };
 
-    pub fn send(self: NSPersonNameComponentsFormatter, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
+    pub fn send(self: PersonNameComponentsFormatter, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
         return objc.typedSendChain(@This(), self.obj, selector, args);
     }
 
     pub const class_methods = .{
-        .{ "localizedStringFromPersonNameComponents:style:options:", objc.NSString, .{ ?*anyopaque, NSPersonNameComponentsFormatter.Style, objc.NSInteger } },
+        .{ "localizedStringFromPersonNameComponents:style:options:", objc.NSString, .{ NSPersonNameComponents, PersonNameComponentsFormatter.Style, objc.NSInteger } },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -4488,15 +4495,15 @@ pub const NSPersonNameComponentsFormatter = struct {
     };
 };
 
-pub const NSPipe = struct {
+pub const Pipe = struct {
     obj: Object,
 
     pub const methods = .{
-        .{ "fileHandleForReading", NSFileHandle, .{} },
-        .{ "fileHandleForWriting", NSFileHandle, .{} },
+        .{ "fileHandleForReading", FileHandle, .{} },
+        .{ "fileHandleForWriting", FileHandle, .{} },
     };
 
-    pub fn send(self: NSPipe, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
+    pub fn send(self: Pipe, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
         return objc.typedSend(methods, self.obj, selector, args);
     }
 };
@@ -4568,44 +4575,44 @@ pub const NSPointerFunctions = struct {
     }
 };
 
-pub const NSPort = struct {
+pub const Port = struct {
     obj: Object,
 
     pub const methods = .{
         .{ "delegate", ?PortDelegate, .{} },
         .{ "invalidate", void, .{} },
-        .{ "removeFromRunLoop:forMode:", void, .{ NSRunLoop, objc.NSString } },
+        .{ "removeFromRunLoop:forMode:", void, .{ RunLoop, objc.NSString } },
         .{ "reservedSpaceLength", objc.NSInteger, .{} },
-        .{ "scheduleInRunLoop:forMode:", void, .{ NSRunLoop, objc.NSString } },
-        .{ "sendBeforeDate:components:from:reserved:", objc.BOOL, .{ NSDate, ?NSMutableArray, ?NSPort, objc.NSInteger } },
-        .{ "sendBeforeDate:msgid:components:from:reserved:", objc.BOOL, .{ NSDate, objc.NSInteger, ?NSMutableArray, ?NSPort, objc.NSInteger } },
-        .{ "setDelegate:", void, .{void} },
+        .{ "scheduleInRunLoop:forMode:", void, .{ RunLoop, objc.NSString } },
+        .{ "sendBeforeDate:components:from:reserved:", objc.BOOL, .{ NSDate, ?NSMutableArray, ?Port, objc.NSInteger } },
+        .{ "sendBeforeDate:msgid:components:from:reserved:", objc.BOOL, .{ NSDate, objc.NSInteger, ?NSMutableArray, ?Port, objc.NSInteger } },
+        .{ "setDelegate:", void, .{?PortDelegate} },
         .{ "valid", objc.BOOL, .{} },
     };
 
-    pub fn send(self: NSPort, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
+    pub fn send(self: Port, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
         return objc.typedSend(methods, self.obj, selector, args);
     }
 };
 
-pub const NSPortMessage = struct {
+pub const PortMessage = struct {
     obj: Object,
 
     pub const methods = .{
         .{ "components", ?*anyopaque, .{} },
         .{ "msgid", u32, .{} },
-        .{ "receivePort", ?NSPort, .{} },
+        .{ "receivePort", ?Port, .{} },
         .{ "sendBeforeDate:", objc.BOOL, .{NSDate} },
-        .{ "sendPort", ?NSPort, .{} },
+        .{ "sendPort", ?Port, .{} },
         .{ "setMsgid:", void, .{u32} },
     };
 
-    pub fn send(self: NSPortMessage, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
+    pub fn send(self: PortMessage, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
         return objc.typedSend(methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
-        .{ "initWithSendPort:receivePort:components:", Object, .{ ?NSPort, ?NSPort, void } },
+        .{ "initWithSendPort:receivePort:components:", Object, .{ ?Port, ?Port, ?*anyopaque } },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -4654,9 +4661,9 @@ pub const NSPredicate = struct {
     pub const methods = .{
         .{ "allowEvaluation", void, .{} },
         .{ "evaluateWithObject:", objc.BOOL, .{?Any} },
-        .{ "evaluateWithObject:substitutionVariables:", objc.BOOL, .{ ?Any, ?Any } },
+        .{ "evaluateWithObject:substitutionVariables:", objc.BOOL, .{ ?Any, ?*anyopaque } },
         .{ "predicateFormat", objc.NSString, .{} },
-        .{ "predicateWithSubstitutionVariables:", ?*anyopaque, .{Any} },
+        .{ "predicateWithSubstitutionVariables:", ?*anyopaque, .{Object} },
     };
 
     pub fn send(self: NSPredicate, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
@@ -4665,8 +4672,8 @@ pub const NSPredicate = struct {
 
     pub const class_methods = .{
         .{ "predicateFromMetadataQueryString:", Object, .{objc.NSString} },
-        .{ "predicateWithBlock:", Object, .{objc.BOOL} },
-        .{ "predicateWithFormat:argumentArray:", Object, .{ objc.NSString, void } },
+        .{ "predicateWithBlock:", Object, .{?*anyopaque} },
+        .{ "predicateWithFormat:argumentArray:", Object, .{ objc.NSString, ?*anyopaque } },
         .{ "predicateWithFormat:arguments:", Object, .{ objc.NSString, ?*anyopaque } },
         .{ "predicateWithValue:", Object, .{objc.BOOL} },
     };
@@ -4676,19 +4683,19 @@ pub const NSPredicate = struct {
     }
 };
 
-pub const NSProcessInfo = struct {
+pub const ProcessInfo = struct {
     obj: Object,
 
     pub const methods = .{
         .{ "activeProcessorCount", objc.NSInteger, .{} },
         .{ "arguments", Object, .{} },
         .{ "automaticTerminationSupportEnabled", objc.BOOL, .{} },
-        .{ "beginActivityWithOptions:reason:", *anyopaque, .{ objc.NSInteger, objc.NSString } },
+        .{ "beginActivityWithOptions:reason:", NSObjectProtocol, .{ objc.NSInteger, objc.NSString } },
         .{ "disableAutomaticTermination:", void, .{objc.NSString} },
         .{ "disableSuddenTermination", void, .{} },
         .{ "enableAutomaticTermination:", void, .{objc.NSString} },
         .{ "enableSuddenTermination", void, .{} },
-        .{ "endActivity:", void, .{void} },
+        .{ "endActivity:", void, .{NSObjectProtocol} },
         .{ "environment", Object, .{} },
         .{ "fullUserName", objc.NSString, .{} },
         .{ "globallyUniqueString", objc.NSString, .{} },
@@ -4702,7 +4709,7 @@ pub const NSProcessInfo = struct {
         .{ "operatingSystemName", objc.NSString, .{} },
         .{ "operatingSystemVersion", ?*anyopaque, .{} },
         .{ "operatingSystemVersionString", objc.NSString, .{} },
-        .{ "performActivityWithOptions:reason:usingBlock:", void, .{ objc.NSInteger, objc.NSString, void } },
+        .{ "performActivityWithOptions:reason:usingBlock:", void, .{ objc.NSInteger, objc.NSString, ?*anyopaque } },
         .{ "physicalMemory", u64, .{} },
         .{ "processIdentifier", i32, .{} },
         .{ "processName", objc.NSString, .{} },
@@ -4710,16 +4717,16 @@ pub const NSProcessInfo = struct {
         .{ "setAutomaticTerminationSupportEnabled:", void, .{objc.BOOL} },
         .{ "setProcessName:", void, .{objc.NSString} },
         .{ "systemUptime", TimeInterval, .{} },
-        .{ "thermalState", NSProcessInfo.ThermalState, .{} },
+        .{ "thermalState", ProcessInfo.ThermalState, .{} },
         .{ "userName", objc.NSString, .{} },
     };
 
-    pub fn send(self: NSProcessInfo, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
+    pub fn send(self: ProcessInfo, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
         return objc.typedSend(methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
-        .{ "processInfo", NSProcessInfo, .{} },
+        .{ "processInfo", ProcessInfo, .{} },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -4734,11 +4741,11 @@ pub const NSProcessInfo = struct {
     };
 };
 
-pub const NSProgress = struct {
+pub const Progress = struct {
     obj: Object,
 
     pub const methods = .{
-        .{ "addChild:withPendingUnitCount:", void, .{ NSProgress, i64 } },
+        .{ "addChild:withPendingUnitCount:", void, .{ Progress, i64 } },
         .{ "becomeCurrentWithPendingUnitCount:", void, .{i64} },
         .{ "cancel", void, .{} },
         .{ "cancellable", objc.BOOL, .{} },
@@ -4780,17 +4787,17 @@ pub const NSProgress = struct {
         .{ "userInfo", Object, .{} },
     };
 
-    pub fn send(self: NSProgress, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
+    pub fn send(self: Progress, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
         return objc.typedSend(methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
         .{ "addSubscriberForFileURL:withPublishingHandler:", Any, .{ NSURL, objc.NSString } },
-        .{ "currentProgress", ?NSProgress, .{} },
-        .{ "discreteProgressWithTotalUnitCount:", NSProgress, .{i64} },
-        .{ "initWithParent:userInfo:", Object, .{ ?NSProgress, ?Any } },
+        .{ "currentProgress", ?Progress, .{} },
+        .{ "discreteProgressWithTotalUnitCount:", Progress, .{i64} },
+        .{ "initWithParent:userInfo:", Object, .{ ?Progress, ?*anyopaque } },
         .{ "progressWithTotalUnitCount:", Object, .{i64} },
-        .{ "progressWithTotalUnitCount:parent:pendingUnitCount:", Object, .{ i64, NSProgress, i64 } },
+        .{ "progressWithTotalUnitCount:parent:pendingUnitCount:", Object, .{ i64, Progress, i64 } },
         .{ "removeSubscriber:", void, .{Any} },
     };
 
@@ -4799,15 +4806,15 @@ pub const NSProgress = struct {
     }
 };
 
-pub const NSPropertyListSerialization = struct {
+pub const PropertyListSerialization = struct {
     pub const class_methods = .{
-        .{ "dataFromPropertyList:format:errorDescription:", ?NSData, .{ Any, NSPropertyListSerialization.PropertyListFormat, ?objc.NSString } },
-        .{ "dataWithPropertyList:format:options:error:", NSData, .{ Any, NSPropertyListSerialization.PropertyListFormat, objc.NSInteger } },
-        .{ "propertyList:isValidForFormat:", objc.BOOL, .{ Any, NSPropertyListSerialization.PropertyListFormat } },
-        .{ "propertyListFromData:mutabilityOption:format:errorDescription:", ?Any, .{ NSData, objc.NSInteger, NSPropertyListSerialization.PropertyListFormat, ?objc.NSString } },
-        .{ "propertyListWithData:options:format:error:", Any, .{ NSData, objc.NSString, NSPropertyListSerialization.PropertyListFormat } },
-        .{ "propertyListWithStream:options:format:error:", Any, .{ NSInputStream, objc.NSString, NSPropertyListSerialization.PropertyListFormat } },
-        .{ "writePropertyList:toStream:format:options:error:", objc.NSInteger, .{ Any, NSOutputStream, NSPropertyListSerialization.PropertyListFormat, objc.NSInteger, Object } },
+        .{ "dataFromPropertyList:format:errorDescription:", ?NSData, .{ Any, PropertyListSerialization.PropertyListFormat, ?objc.NSString } },
+        .{ "dataWithPropertyList:format:options:error:", NSData, .{ Any, PropertyListSerialization.PropertyListFormat, objc.NSInteger } },
+        .{ "propertyList:isValidForFormat:", objc.BOOL, .{ Any, PropertyListSerialization.PropertyListFormat } },
+        .{ "propertyListFromData:mutabilityOption:format:errorDescription:", ?Any, .{ NSData, objc.NSInteger, PropertyListSerialization.PropertyListFormat, ?objc.NSString } },
+        .{ "propertyListWithData:options:format:error:", Any, .{ NSData, objc.NSString, PropertyListSerialization.PropertyListFormat } },
+        .{ "propertyListWithStream:options:format:error:", Any, .{ InputStream, objc.NSString, PropertyListSerialization.PropertyListFormat } },
+        .{ "writePropertyList:toStream:format:options:error:", objc.NSInteger, .{ Any, OutputStream, PropertyListSerialization.PropertyListFormat, objc.NSInteger, Object } },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -4926,7 +4933,7 @@ pub const NSRegularExpression = struct {
     obj: Object,
 
     pub const methods = .{
-        .{ "enumerateMatchesInString:options:range:usingBlock:", void, .{ objc.NSString, objc.NSInteger, NSRange, void } },
+        .{ "enumerateMatchesInString:options:range:usingBlock:", void, .{ objc.NSString, objc.NSInteger, NSRange, ?*anyopaque } },
         .{ "firstMatchInString:options:range:", ?NSTextCheckingResult, .{ objc.NSString, objc.NSInteger, NSRange } },
         .{ "matchesInString:options:range:", Object, .{ objc.NSString, objc.NSInteger, NSRange } },
         .{ "numberOfCaptureGroups", objc.NSInteger, .{} },
@@ -4954,28 +4961,28 @@ pub const NSRegularExpression = struct {
     }
 };
 
-pub const NSRelativeDateTimeFormatter = struct {
+pub const RelativeDateTimeFormatter = struct {
     obj: Object,
 
-    pub const Super = NSFormatter;
+    pub const Super = Formatter;
     pub const methods = .{
-        .{ "calendar", ?*anyopaque, .{} },
-        .{ "dateTimeStyle", NSRelativeDateTimeFormatter.DateTimeStyle, .{} },
-        .{ "formattingContext", NSFormatter.Context, .{} },
+        .{ "calendar", NSCalendar, .{} },
+        .{ "dateTimeStyle", RelativeDateTimeFormatter.DateTimeStyle, .{} },
+        .{ "formattingContext", Formatter.Context, .{} },
         .{ "locale", NSLocale, .{} },
         .{ "localizedStringForDate:relativeToDate:", objc.NSString, .{ NSDate, NSDate } },
-        .{ "localizedStringFromDateComponents:", objc.NSString, .{?*anyopaque} },
+        .{ "localizedStringFromDateComponents:", objc.NSString, .{NSDateComponents} },
         .{ "localizedStringFromTimeInterval:", objc.NSString, .{TimeInterval} },
-        .{ "setCalendar:", void, .{?*anyopaque} },
-        .{ "setDateTimeStyle:", void, .{NSRelativeDateTimeFormatter.DateTimeStyle} },
-        .{ "setFormattingContext:", void, .{NSFormatter.Context} },
+        .{ "setCalendar:", void, .{NSCalendar} },
+        .{ "setDateTimeStyle:", void, .{RelativeDateTimeFormatter.DateTimeStyle} },
+        .{ "setFormattingContext:", void, .{Formatter.Context} },
         .{ "setLocale:", void, .{NSLocale} },
-        .{ "setUnitsStyle:", void, .{NSRelativeDateTimeFormatter.UnitsStyle} },
+        .{ "setUnitsStyle:", void, .{RelativeDateTimeFormatter.UnitsStyle} },
         .{ "stringForObjectValue:", ?objc.NSString, .{?Any} },
-        .{ "unitsStyle", NSRelativeDateTimeFormatter.UnitsStyle, .{} },
+        .{ "unitsStyle", RelativeDateTimeFormatter.UnitsStyle, .{} },
     };
 
-    pub fn send(self: NSRelativeDateTimeFormatter, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
+    pub fn send(self: RelativeDateTimeFormatter, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
         return objc.typedSendChain(@This(), self.obj, selector, args);
     }
 
@@ -5021,34 +5028,34 @@ pub const NSRelativeSpecifier = struct {
     };
 };
 
-pub const NSRunLoop = struct {
+pub const RunLoop = struct {
     obj: Object,
 
     pub const methods = .{
         .{ "acceptInputForMode:beforeDate:", void, .{ objc.NSString, NSDate } },
-        .{ "addPort:forMode:", void, .{ NSPort, objc.NSString } },
-        .{ "addTimer:forMode:", void, .{ NSTimer, objc.NSString } },
+        .{ "addPort:forMode:", void, .{ Port, objc.NSString } },
+        .{ "addTimer:forMode:", void, .{ Timer, objc.NSString } },
         .{ "cancelPerformSelector:target:argument:", void, .{ Selector, Any, ?Any } },
         .{ "cancelPerformSelectorsWithTarget:", void, .{Any} },
         .{ "currentMode", objc.NSString, .{} },
         .{ "getCFRunLoop", objc.NSString, .{} },
         .{ "limitDateForMode:", ?NSDate, .{objc.NSString} },
-        .{ "performBlock:", void, .{void} },
-        .{ "performInModes:block:", void, .{ void, void } },
-        .{ "performSelector:target:argument:order:modes:", void, .{ Selector, Any, ?Any, objc.NSInteger, void } },
-        .{ "removePort:forMode:", void, .{ NSPort, objc.NSString } },
+        .{ "performBlock:", void, .{?*anyopaque} },
+        .{ "performInModes:block:", void, .{ Object, ?*anyopaque } },
+        .{ "performSelector:target:argument:order:modes:", void, .{ Selector, Any, ?Any, objc.NSInteger, Object } },
+        .{ "removePort:forMode:", void, .{ Port, objc.NSString } },
         .{ "run", void, .{} },
         .{ "runMode:beforeDate:", objc.BOOL, .{ objc.NSString, NSDate } },
         .{ "runUntilDate:", void, .{NSDate} },
     };
 
-    pub fn send(self: NSRunLoop, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
+    pub fn send(self: RunLoop, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
         return objc.typedSend(methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
-        .{ "currentRunLoop", NSRunLoop, .{} },
-        .{ "mainRunLoop", NSRunLoop, .{} },
+        .{ "currentRunLoop", RunLoop, .{} },
+        .{ "mainRunLoop", RunLoop, .{} },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -5056,15 +5063,15 @@ pub const NSRunLoop = struct {
     }
 };
 
-pub const NSScanner = struct {
+pub const Scanner = struct {
     obj: Object,
 
     pub const methods = .{
         .{ "atEnd", objc.BOOL, .{} },
         .{ "caseSensitive", objc.BOOL, .{} },
-        .{ "charactersToBeSkipped", ?*anyopaque, .{} },
+        .{ "charactersToBeSkipped", ?NSCharacterSet, .{} },
         .{ "locale", ?Any, .{} },
-        .{ "scanCharactersFromSet:intoString:", objc.BOOL, .{ ?*anyopaque, ?objc.NSString } },
+        .{ "scanCharactersFromSet:intoString:", objc.BOOL, .{ NSCharacterSet, ?objc.NSString } },
         .{ "scanDecimal:", objc.BOOL, .{?*anyopaque} },
         .{ "scanDouble:", objc.BOOL, .{f64} },
         .{ "scanFloat:", objc.BOOL, .{f32} },
@@ -5078,16 +5085,16 @@ pub const NSScanner = struct {
         .{ "scanLongLong:", objc.BOOL, .{i64} },
         .{ "scanString:intoString:", objc.BOOL, .{ objc.NSString, ?objc.NSString } },
         .{ "scanUnsignedLongLong:", objc.BOOL, .{u64} },
-        .{ "scanUpToCharactersFromSet:intoString:", objc.BOOL, .{ ?*anyopaque, ?objc.NSString } },
+        .{ "scanUpToCharactersFromSet:intoString:", objc.BOOL, .{ NSCharacterSet, ?objc.NSString } },
         .{ "scanUpToString:intoString:", objc.BOOL, .{ objc.NSString, ?objc.NSString } },
         .{ "setCaseSensitive:", void, .{objc.BOOL} },
-        .{ "setCharactersToBeSkipped:", void, .{?*anyopaque} },
+        .{ "setCharactersToBeSkipped:", void, .{?NSCharacterSet} },
         .{ "setLocale:", void, .{?Any} },
         .{ "setScanLocation:", void, .{objc.NSInteger} },
         .{ "string", objc.NSString, .{} },
     };
 
-    pub fn send(self: NSScanner, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
+    pub fn send(self: Scanner, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
         return objc.typedSend(methods, self.obj, selector, args);
     }
 
@@ -5132,7 +5139,7 @@ pub const NSScriptClassDescription = struct {
 
     pub const class_methods = .{
         .{ "classDescriptionForClass:", Object, .{AnyClass} },
-        .{ "initWithSuiteName:className:dictionary:", Object, .{ objc.NSString, objc.NSString, ?Any } },
+        .{ "initWithSuiteName:className:dictionary:", Object, .{ objc.NSString, objc.NSString, ?*anyopaque } },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -5230,7 +5237,7 @@ pub const NSScriptCommandDescription = struct {
 
     pub const class_methods = .{
         .{ "initWithCoder:", Object, .{NSCoder} },
-        .{ "initWithSuiteName:commandName:dictionary:", Object, .{ objc.NSString, objc.NSString, ?Any } },
+        .{ "initWithSuiteName:commandName:dictionary:", Object, .{ objc.NSString, objc.NSString, ?*anyopaque } },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -5311,13 +5318,13 @@ pub const NSScriptSuiteRegistry = struct {
     pub const methods = .{
         .{ "aeteResource:", ?NSData, .{objc.NSString} },
         .{ "appleEventCodeForSuite:", objc.NSString, .{objc.NSString} },
-        .{ "bundleForSuite:", ?NSBundle, .{objc.NSString} },
+        .{ "bundleForSuite:", ?Bundle, .{objc.NSString} },
         .{ "classDescriptionWithAppleEventCode:", ?NSScriptClassDescription, .{objc.NSString} },
         .{ "classDescriptionsInSuite:", ?*anyopaque, .{objc.NSString} },
         .{ "commandDescriptionWithAppleEventClass:andAppleEventCode:", ?NSScriptCommandDescription, .{ objc.NSString, objc.NSString } },
         .{ "commandDescriptionsInSuite:", ?*anyopaque, .{objc.NSString} },
-        .{ "loadSuiteWithDictionary:fromBundle:", void, .{ Any, NSBundle } },
-        .{ "loadSuitesFromBundle:", void, .{NSBundle} },
+        .{ "loadSuiteWithDictionary:fromBundle:", void, .{ Object, Bundle } },
+        .{ "loadSuitesFromBundle:", void, .{Bundle} },
         .{ "registerClassDescription:", void, .{NSScriptClassDescription} },
         .{ "registerCommandDescription:", void, .{NSScriptCommandDescription} },
         .{ "suiteForAppleEventCode:", ?objc.NSString, .{objc.NSString} },
@@ -5380,23 +5387,23 @@ pub const NSSet = struct {
         .{ "count", objc.NSInteger, .{} },
         .{ "description", objc.NSString, .{} },
         .{ "descriptionWithLocale:", objc.NSString, .{?Any} },
-        .{ "enumerateObjectsUsingBlock:", void, .{void} },
-        .{ "enumerateObjectsWithOptions:usingBlock:", void, .{ objc.NSInteger, void } },
+        .{ "enumerateObjectsUsingBlock:", void, .{?*anyopaque} },
+        .{ "enumerateObjectsWithOptions:usingBlock:", void, .{ objc.NSInteger, ?*anyopaque } },
         .{ "filteredSetUsingPredicate:", ?*anyopaque, .{NSPredicate} },
         .{ "intersectsSet:", objc.BOOL, .{?*anyopaque} },
         .{ "isEqualToSet:", objc.BOOL, .{?*anyopaque} },
         .{ "isSubsetOfSet:", objc.BOOL, .{?*anyopaque} },
         .{ "member:", ?Any, .{Any} },
         .{ "objectEnumerator", NSEnumerator, .{} },
-        .{ "objectsPassingTest:", ?*anyopaque, .{void} },
-        .{ "objectsWithOptions:passingTest:", ?*anyopaque, .{ objc.NSInteger, void } },
+        .{ "objectsPassingTest:", ?*anyopaque, .{?*anyopaque} },
+        .{ "objectsWithOptions:passingTest:", ?*anyopaque, .{ objc.NSInteger, ?*anyopaque } },
         .{ "removeObserver:forKeyPath:", void, .{ Object, objc.NSString } },
         .{ "removeObserver:forKeyPath:context:", void, .{ Object, objc.NSString, ?UnsafeMutableRawPointer } },
         .{ "setByAddingObject:", ?*anyopaque, .{Any} },
-        .{ "setByAddingObjectsFromArray:", ?*anyopaque, .{void} },
+        .{ "setByAddingObjectsFromArray:", ?*anyopaque, .{Object} },
         .{ "setByAddingObjectsFromSet:", ?*anyopaque, .{?*anyopaque} },
         .{ "setValue:forKey:", void, .{ ?Any, objc.NSString } },
-        .{ "sortedArrayUsingDescriptors:", Object, .{void} },
+        .{ "sortedArrayUsingDescriptors:", Object, .{Object} },
         .{ "valueForKey:", Any, .{objc.NSString} },
     };
 
@@ -5406,7 +5413,7 @@ pub const NSSet = struct {
 
     pub const class_methods = .{
         .{ "init", Object, .{} },
-        .{ "initWithArray:", Object, .{void} },
+        .{ "initWithArray:", Object, .{Object} },
         .{ "initWithCoder:", Object, .{NSCoder} },
         .{ "initWithObjects:count:", Object, .{ ?UnsafePointer, objc.NSInteger } },
         .{ "initWithSet:", Object, .{?*anyopaque} },
@@ -5434,10 +5441,10 @@ pub const NSSetCommand = struct {
     }
 };
 
-pub const NSSocketPort = struct {
+pub const SocketPort = struct {
     obj: Object,
 
-    pub const Super = NSPort;
+    pub const Super = Port;
     pub const methods = .{
         .{ "address", NSData, .{} },
         .{ "protocol", i32, .{} },
@@ -5446,7 +5453,7 @@ pub const NSSocketPort = struct {
         .{ "socketType", i32, .{} },
     };
 
-    pub fn send(self: NSSocketPort, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
+    pub fn send(self: SocketPort, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
         return objc.typedSendChain(@This(), self.obj, selector, args);
     }
 
@@ -5531,7 +5538,7 @@ pub const NSSpellServer = struct {
     }
 };
 
-pub const NSStream = struct {
+pub const Stream = struct {
     obj: Object,
 
     pub const methods = .{
@@ -5539,22 +5546,22 @@ pub const NSStream = struct {
         .{ "delegate", ?StreamDelegate, .{} },
         .{ "open", void, .{} },
         .{ "propertyForKey:", ?Any, .{objc.NSString} },
-        .{ "removeFromRunLoop:forMode:", void, .{ NSRunLoop, objc.NSString } },
-        .{ "scheduleInRunLoop:forMode:", void, .{ NSRunLoop, objc.NSString } },
+        .{ "removeFromRunLoop:forMode:", void, .{ RunLoop, objc.NSString } },
+        .{ "scheduleInRunLoop:forMode:", void, .{ RunLoop, objc.NSString } },
         .{ "setDelegate:", void, .{?StreamDelegate} },
         .{ "setProperty:forKey:", objc.BOOL, .{ ?Any, objc.NSString } },
         .{ "streamError", ?*anyopaque, .{} },
-        .{ "streamStatus", NSStream.Status, .{} },
+        .{ "streamStatus", Stream.Status, .{} },
     };
 
-    pub fn send(self: NSStream, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
+    pub fn send(self: Stream, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
         return objc.typedSend(methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
-        .{ "getBoundStreamsWithBufferSize:inputStream:outputStream:", void, .{ objc.NSInteger, ?NSInputStream, ?NSOutputStream } },
-        .{ "getStreamsToHost:port:inputStream:outputStream:", void, .{ NSHost, objc.NSInteger, ?NSInputStream, ?NSOutputStream } },
-        .{ "getStreamsToHostWithName:port:inputStream:outputStream:", void, .{ objc.NSString, objc.NSInteger, ?NSInputStream, ?NSOutputStream } },
+        .{ "getBoundStreamsWithBufferSize:inputStream:outputStream:", void, .{ objc.NSInteger, ?InputStream, ?OutputStream } },
+        .{ "getStreamsToHost:port:inputStream:outputStream:", void, .{ Host, objc.NSInteger, ?InputStream, ?OutputStream } },
+        .{ "getStreamsToHostWithName:port:inputStream:outputStream:", void, .{ objc.NSString, objc.NSInteger, ?InputStream, ?OutputStream } },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -5591,8 +5598,8 @@ pub const NSString = struct {
         .{ "compare:options:", ComparisonResult, .{ objc.NSString, objc.NSInteger } },
         .{ "compare:options:range:", ComparisonResult, .{ objc.NSString, objc.NSInteger, NSRange } },
         .{ "compare:options:range:locale:", ComparisonResult, .{ objc.NSString, objc.NSInteger, NSRange, ?Any } },
-        .{ "completePathIntoString:caseSensitive:matchesIntoArray:filterTypes:", objc.NSInteger, .{ ?objc.NSString, objc.BOOL, ?NSArray, void } },
-        .{ "componentsSeparatedByCharactersInSet:", Object, .{?*anyopaque} },
+        .{ "completePathIntoString:caseSensitive:matchesIntoArray:filterTypes:", objc.NSInteger, .{ ?objc.NSString, objc.BOOL, ?NSArray, ?*anyopaque } },
+        .{ "componentsSeparatedByCharactersInSet:", Object, .{NSCharacterSet} },
         .{ "componentsSeparatedByString:", Object, .{objc.NSString} },
         .{ "containsString:", objc.BOOL, .{objc.NSString} },
         .{ "dataUsingEncoding:", ?NSData, .{c_ulong} },
@@ -5601,9 +5608,9 @@ pub const NSString = struct {
         .{ "decomposedStringWithCompatibilityMapping", objc.NSString, .{} },
         .{ "description", objc.NSString, .{} },
         .{ "doubleValue", f64, .{} },
-        .{ "enumerateLinesUsingBlock:", void, .{void} },
-        .{ "enumerateLinguisticTagsInRange:scheme:options:orthography:usingBlock:", void, .{ NSRange, objc.NSString, objc.NSInteger, ?NSOrthography, void } },
-        .{ "enumerateSubstringsInRange:options:usingBlock:", void, .{ NSRange, objc.NSInteger, void } },
+        .{ "enumerateLinesUsingBlock:", void, .{?*anyopaque} },
+        .{ "enumerateLinguisticTagsInRange:scheme:options:orthography:usingBlock:", void, .{ NSRange, objc.NSString, objc.NSInteger, ?NSOrthography, ?*anyopaque } },
+        .{ "enumerateSubstringsInRange:options:usingBlock:", void, .{ NSRange, objc.NSInteger, ?*anyopaque } },
         .{ "fastestEncoding", c_ulong, .{} },
         .{ "fileSystemRepresentation", ?*anyopaque, .{} },
         .{ "floatValue", f32, .{} },
@@ -5645,9 +5652,9 @@ pub const NSString = struct {
         .{ "precomposedStringWithCompatibilityMapping", objc.NSString, .{} },
         .{ "propertyList", Any, .{} },
         .{ "propertyListFromStringsFileFormat", ?*anyopaque, .{} },
-        .{ "rangeOfCharacterFromSet:", NSRange, .{?*anyopaque} },
-        .{ "rangeOfCharacterFromSet:options:", NSRange, .{ ?*anyopaque, objc.NSInteger } },
-        .{ "rangeOfCharacterFromSet:options:range:", NSRange, .{ ?*anyopaque, objc.NSInteger, NSRange } },
+        .{ "rangeOfCharacterFromSet:", NSRange, .{NSCharacterSet} },
+        .{ "rangeOfCharacterFromSet:options:", NSRange, .{ NSCharacterSet, objc.NSInteger } },
+        .{ "rangeOfCharacterFromSet:options:range:", NSRange, .{ NSCharacterSet, objc.NSInteger, NSRange } },
         .{ "rangeOfComposedCharacterSequenceAtIndex:", NSRange, .{objc.NSInteger} },
         .{ "rangeOfComposedCharacterSequencesForRange:", NSRange, .{NSRange} },
         .{ "rangeOfString:", NSRange, .{objc.NSString} },
@@ -5656,7 +5663,7 @@ pub const NSString = struct {
         .{ "rangeOfString:options:range:locale:", NSRange, .{ objc.NSString, objc.NSInteger, NSRange, ?NSLocale } },
         .{ "smallestEncoding", c_ulong, .{} },
         .{ "stringByAbbreviatingWithTildeInPath", objc.NSString, .{} },
-        .{ "stringByAddingPercentEncodingWithAllowedCharacters:", ?objc.NSString, .{?*anyopaque} },
+        .{ "stringByAddingPercentEncodingWithAllowedCharacters:", ?objc.NSString, .{NSCharacterSet} },
         .{ "stringByAddingPercentEscapesUsingEncoding:", ?objc.NSString, .{c_ulong} },
         .{ "stringByAppendingPathComponent:", objc.NSString, .{objc.NSString} },
         .{ "stringByAppendingPathExtension:", ?objc.NSString, .{objc.NSString} },
@@ -5674,8 +5681,8 @@ pub const NSString = struct {
         .{ "stringByReplacingPercentEscapesUsingEncoding:", ?objc.NSString, .{c_ulong} },
         .{ "stringByResolvingSymlinksInPath", objc.NSString, .{} },
         .{ "stringByStandardizingPath", objc.NSString, .{} },
-        .{ "stringByTrimmingCharactersInSet:", objc.NSString, .{?*anyopaque} },
-        .{ "stringsByAppendingPaths:", Object, .{void} },
+        .{ "stringByTrimmingCharactersInSet:", objc.NSString, .{NSCharacterSet} },
+        .{ "stringsByAppendingPaths:", Object, .{Object} },
         .{ "substringFromIndex:", objc.NSString, .{objc.NSInteger} },
         .{ "substringToIndex:", objc.NSString, .{objc.NSInteger} },
         .{ "substringWithRange:", objc.NSString, .{NSRange} },
@@ -5695,11 +5702,11 @@ pub const NSString = struct {
         .{ "defaultCStringEncoding", c_ulong, .{} },
         .{ "init", Object, .{} },
         .{ "initWithBytes:length:encoding:", Object, .{ UnsafeRawPointer, objc.NSInteger, c_ulong } },
-        .{ "initWithBytesNoCopy:length:encoding:deallocator:", Object, .{ UnsafeMutableRawPointer, objc.NSInteger, c_ulong, void } },
+        .{ "initWithBytesNoCopy:length:encoding:deallocator:", Object, .{ UnsafeMutableRawPointer, objc.NSInteger, c_ulong, ?*anyopaque } },
         .{ "initWithBytesNoCopy:length:encoding:freeWhenDone:", Object, .{ UnsafeMutableRawPointer, objc.NSInteger, c_ulong, objc.BOOL } },
         .{ "initWithCString:encoding:", Object, .{ ?*anyopaque, c_ulong } },
         .{ "initWithCharacters:length:", Object, .{ u16, objc.NSInteger } },
-        .{ "initWithCharactersNoCopy:length:deallocator:", Object, .{ u16, objc.NSInteger, void } },
+        .{ "initWithCharactersNoCopy:length:deallocator:", Object, .{ u16, objc.NSInteger, ?*anyopaque } },
         .{ "initWithCharactersNoCopy:length:freeWhenDone:", Object, .{ u16, objc.NSInteger, objc.BOOL } },
         .{ "initWithCoder:", Object, .{NSCoder} },
         .{ "initWithContentsOfFile:encoding:error:", Object, .{ objc.NSString, c_ulong } },
@@ -5712,8 +5719,8 @@ pub const NSString = struct {
         .{ "initWithString:", Object, .{objc.NSString} },
         .{ "initWithUTF8String:", Object, .{?*anyopaque} },
         .{ "localizedNameOfStringEncoding:", objc.NSString, .{c_ulong} },
-        .{ "pathWithComponents:", objc.NSString, .{void} },
-        .{ "stringEncodingForData:encodingOptions:convertedString:usedLossyConversion:", c_ulong, .{ NSData, ?Any, ?objc.NSString, ?*anyopaque } },
+        .{ "pathWithComponents:", objc.NSString, .{Object} },
+        .{ "stringEncodingForData:encodingOptions:convertedString:usedLossyConversion:", c_ulong, .{ NSData, ?*anyopaque, ?objc.NSString, ?*anyopaque } },
         .{ "stringWithCString:encoding:", Object, .{ ?*anyopaque, c_ulong } },
         .{ "stringWithContentsOfURL:encoding:error:", Object, .{ NSURL, c_ulong } },
         .{ "stringWithContentsOfURL:usedEncoding:error:", Object, .{ NSURL, c_ulong } },
@@ -5725,7 +5732,7 @@ pub const NSString = struct {
     }
 };
 
-pub const NSTask = struct {
+pub const Process = struct {
     obj: Object,
 
     pub const methods = .{
@@ -5761,19 +5768,19 @@ pub const NSTask = struct {
         .{ "suspend", objc.BOOL, .{} },
         .{ "terminate", void, .{} },
         .{ "terminationHandler", void, .{} },
-        .{ "terminationReason", NSTask.TerminationReason, .{} },
+        .{ "terminationReason", Process.TerminationReason, .{} },
         .{ "terminationStatus", i32, .{} },
         .{ "waitUntilExit", void, .{} },
     };
 
-    pub fn send(self: NSTask, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
+    pub fn send(self: Process, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
         return objc.typedSend(methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
         .{ "init", Object, .{} },
-        .{ "launchedTaskWithExecutableURL:arguments:error:terminationHandler:", NSTask, .{ NSURL, void, void } },
-        .{ "launchedTaskWithLaunchPath:arguments:", NSTask, .{ objc.NSString, void } },
+        .{ "launchedTaskWithExecutableURL:arguments:error:terminationHandler:", Process, .{ NSURL, Object, ?*anyopaque } },
+        .{ "launchedTaskWithLaunchPath:arguments:", Process, .{ objc.NSString, Object } },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -5807,7 +5814,7 @@ pub const NSTextCheckingResult = struct {
         .{ "replacementString", ?objc.NSString, .{} },
         .{ "resultByAdjustingRangesWithOffset:", NSTextCheckingResult, .{objc.NSInteger} },
         .{ "resultType", objc.NSInteger, .{} },
-        .{ "timeZone", ?*anyopaque, .{} },
+        .{ "timeZone", ?NSTimeZone, .{} },
     };
 
     pub fn send(self: NSTextCheckingResult, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
@@ -5815,13 +5822,13 @@ pub const NSTextCheckingResult = struct {
     }
 
     pub const class_methods = .{
-        .{ "addressCheckingResultWithRange:components:", NSTextCheckingResult, .{ NSRange, objc.NSString } },
+        .{ "addressCheckingResultWithRange:components:", NSTextCheckingResult, .{ NSRange, Object } },
         .{ "correctionCheckingResultWithRange:replacementString:", NSTextCheckingResult, .{ NSRange, objc.NSString } },
-        .{ "correctionCheckingResultWithRange:replacementString:alternativeStrings:", NSTextCheckingResult, .{ NSRange, objc.NSString, void } },
+        .{ "correctionCheckingResultWithRange:replacementString:alternativeStrings:", NSTextCheckingResult, .{ NSRange, objc.NSString, Object } },
         .{ "dashCheckingResultWithRange:replacementString:", NSTextCheckingResult, .{ NSRange, objc.NSString } },
         .{ "dateCheckingResultWithRange:date:", NSTextCheckingResult, .{ NSRange, NSDate } },
-        .{ "dateCheckingResultWithRange:date:timeZone:duration:", NSTextCheckingResult, .{ NSRange, NSDate, ?*anyopaque, TimeInterval } },
-        .{ "grammarCheckingResultWithRange:details:", NSTextCheckingResult, .{ NSRange, Any } },
+        .{ "dateCheckingResultWithRange:date:timeZone:duration:", NSTextCheckingResult, .{ NSRange, NSDate, NSTimeZone, TimeInterval } },
+        .{ "grammarCheckingResultWithRange:details:", NSTextCheckingResult, .{ NSRange, Object } },
         .{ "linkCheckingResultWithRange:URL:", NSTextCheckingResult, .{ NSRange, NSURL } },
         .{ "orthographyCheckingResultWithRange:orthography:", NSTextCheckingResult, .{ NSRange, NSOrthography } },
         .{ "phoneNumberCheckingResultWithRange:phoneNumber:", NSTextCheckingResult, .{ NSRange, objc.NSString } },
@@ -5829,7 +5836,7 @@ pub const NSTextCheckingResult = struct {
         .{ "regularExpressionCheckingResultWithRanges:count:regularExpression:", NSTextCheckingResult, .{ NSRange, objc.NSInteger, NSRegularExpression } },
         .{ "replacementCheckingResultWithRange:replacementString:", NSTextCheckingResult, .{ NSRange, objc.NSString } },
         .{ "spellCheckingResultWithRange:", NSTextCheckingResult, .{NSRange} },
-        .{ "transitInformationCheckingResultWithRange:components:", NSTextCheckingResult, .{ NSRange, objc.NSString } },
+        .{ "transitInformationCheckingResultWithRange:components:", NSTextCheckingResult, .{ NSRange, Object } },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -5837,7 +5844,7 @@ pub const NSTextCheckingResult = struct {
     }
 };
 
-pub const NSThread = struct {
+pub const Thread = struct {
     obj: Object,
 
     pub const methods = .{
@@ -5859,23 +5866,23 @@ pub const NSThread = struct {
         .{ "threadPriority", f64, .{} },
     };
 
-    pub fn send(self: NSThread, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
+    pub fn send(self: Thread, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
         return objc.typedSend(methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
         .{ "callStackReturnAddresses", Object, .{} },
         .{ "callStackSymbols", Object, .{} },
-        .{ "currentThread", NSThread, .{} },
+        .{ "currentThread", Thread, .{} },
         .{ "detachNewThreadSelector:toTarget:withObject:", void, .{ Selector, Any, ?Any } },
-        .{ "detachNewThreadWithBlock:", void, .{void} },
+        .{ "detachNewThreadWithBlock:", void, .{?*anyopaque} },
         .{ "exit", void, .{} },
         .{ "init", Object, .{} },
-        .{ "initWithBlock:", Object, .{void} },
+        .{ "initWithBlock:", Object, .{?*anyopaque} },
         .{ "initWithTarget:selector:object:", Object, .{ Any, Selector, ?Any } },
         .{ "isMainThread", objc.BOOL, .{} },
         .{ "isMultiThreaded", objc.BOOL, .{} },
-        .{ "mainThread", NSThread, .{} },
+        .{ "mainThread", Thread, .{} },
         .{ "setThreadPriority:", objc.BOOL, .{f64} },
         .{ "sleepForTimeInterval:", void, .{TimeInterval} },
         .{ "sleepUntilDate:", void, .{NSDate} },
@@ -5899,7 +5906,7 @@ pub const NSTimeZone = struct {
         .{ "daylightSavingTimeOffsetForDate:", TimeInterval, .{NSDate} },
         .{ "description", objc.NSString, .{} },
         .{ "isDaylightSavingTimeForDate:", objc.BOOL, .{NSDate} },
-        .{ "isEqualToTimeZone:", objc.BOOL, .{?*anyopaque} },
+        .{ "isEqualToTimeZone:", objc.BOOL, .{NSTimeZone} },
         .{ "localizedName:locale:", ?objc.NSString, .{ NSTimeZone.NameStyle, ?NSLocale } },
         .{ "name", objc.NSString, .{} },
         .{ "nextDaylightSavingTimeTransition", ?NSDate, .{} },
@@ -5915,15 +5922,15 @@ pub const NSTimeZone = struct {
 
     pub const class_methods = .{
         .{ "abbreviationDictionary", Object, .{} },
-        .{ "defaultTimeZone", ?*anyopaque, .{} },
+        .{ "defaultTimeZone", NSTimeZone, .{} },
         .{ "initWithName:", Object, .{objc.NSString} },
         .{ "initWithName:data:", Object, .{ objc.NSString, ?NSData } },
         .{ "knownTimeZoneNames", Object, .{} },
-        .{ "localTimeZone", ?*anyopaque, .{} },
+        .{ "localTimeZone", NSTimeZone, .{} },
         .{ "resetSystemTimeZone", void, .{} },
         .{ "setAbbreviationDictionary:", void, .{Object} },
-        .{ "setDefaultTimeZone:", void, .{?*anyopaque} },
-        .{ "systemTimeZone", ?*anyopaque, .{} },
+        .{ "setDefaultTimeZone:", void, .{NSTimeZone} },
+        .{ "systemTimeZone", NSTimeZone, .{} },
         .{ "timeZoneDataVersion", objc.NSString, .{} },
         .{ "timeZoneForSecondsFromGMT:", Object, .{objc.NSInteger} },
         .{ "timeZoneWithAbbreviation:", Object, .{objc.NSString} },
@@ -5943,7 +5950,7 @@ pub const NSTimeZone = struct {
     };
 };
 
-pub const NSTimer = struct {
+pub const Timer = struct {
     obj: Object,
 
     pub const methods = .{
@@ -5958,18 +5965,18 @@ pub const NSTimer = struct {
         .{ "valid", objc.BOOL, .{} },
     };
 
-    pub fn send(self: NSTimer, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
+    pub fn send(self: Timer, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
         return objc.typedSend(methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
-        .{ "initWithFireDate:interval:repeats:block:", Object, .{ NSDate, TimeInterval, objc.BOOL, void } },
+        .{ "initWithFireDate:interval:repeats:block:", Object, .{ NSDate, TimeInterval, objc.BOOL, ?*anyopaque } },
         .{ "initWithFireDate:interval:target:selector:userInfo:repeats:", Object, .{ NSDate, TimeInterval, Any, Selector, ?Any, objc.BOOL } },
-        .{ "scheduledTimerWithTimeInterval:invocation:repeats:", NSTimer, .{ TimeInterval, Object, objc.BOOL } },
-        .{ "scheduledTimerWithTimeInterval:repeats:block:", NSTimer, .{ TimeInterval, objc.BOOL, void } },
-        .{ "scheduledTimerWithTimeInterval:target:selector:userInfo:repeats:", NSTimer, .{ TimeInterval, Any, Selector, ?Any, objc.BOOL } },
+        .{ "scheduledTimerWithTimeInterval:invocation:repeats:", Timer, .{ TimeInterval, Object, objc.BOOL } },
+        .{ "scheduledTimerWithTimeInterval:repeats:block:", Timer, .{ TimeInterval, objc.BOOL, ?*anyopaque } },
+        .{ "scheduledTimerWithTimeInterval:target:selector:userInfo:repeats:", Timer, .{ TimeInterval, Any, Selector, ?Any, objc.BOOL } },
         .{ "timerWithTimeInterval:invocation:repeats:", Object, .{ TimeInterval, Object, objc.BOOL } },
-        .{ "timerWithTimeInterval:repeats:block:", Object, .{ TimeInterval, objc.BOOL, void } },
+        .{ "timerWithTimeInterval:repeats:block:", Object, .{ TimeInterval, objc.BOOL, ?*anyopaque } },
         .{ "timerWithTimeInterval:target:selector:userInfo:repeats:", Object, .{ TimeInterval, Any, Selector, ?Any, objc.BOOL } },
     };
 
@@ -5992,7 +5999,7 @@ pub const NSURL = struct {
         .{ "absoluteString", ?objc.NSString, .{} },
         .{ "absoluteURL", ?NSURL, .{} },
         .{ "baseURL", ?NSURL, .{} },
-        .{ "bookmarkDataWithOptions:includingResourceValuesForKeys:relativeToURL:error:", NSData, .{ objc.NSInteger, void, ?NSURL } },
+        .{ "bookmarkDataWithOptions:includingResourceValuesForKeys:relativeToURL:error:", NSData, .{ objc.NSInteger, ?*anyopaque, ?NSURL } },
         .{ "checkPromisedItemIsReachableAndReturnError:", objc.BOOL, .{Object} },
         .{ "checkResourceIsReachableAndReturnError:", objc.BOOL, .{Object} },
         .{ "dataRepresentation", NSData, .{} },
@@ -6014,18 +6021,18 @@ pub const NSURL = struct {
         .{ "pathComponents", ?*anyopaque, .{} },
         .{ "pathExtension", ?objc.NSString, .{} },
         .{ "port", ?NSNumber, .{} },
-        .{ "promisedItemResourceValuesForKeys:error:", Object, .{void} },
+        .{ "promisedItemResourceValuesForKeys:error:", Object, .{Object} },
         .{ "query", ?objc.NSString, .{} },
         .{ "relativePath", ?objc.NSString, .{} },
         .{ "relativeString", objc.NSString, .{} },
         .{ "removeAllCachedResourceValues", void, .{} },
         .{ "removeCachedResourceValueForKey:", void, .{objc.NSString} },
         .{ "resourceSpecifier", ?objc.NSString, .{} },
-        .{ "resourceValuesForKeys:error:", Object, .{void} },
+        .{ "resourceValuesForKeys:error:", Object, .{Object} },
         .{ "scheme", ?objc.NSString, .{} },
         .{ "setResourceValue:forKey:error:", void, .{ ?Any, objc.NSString } },
-        .{ "setResourceValues:error:", void, .{Any} },
-        .{ "setTemporaryResourceValue:forKey:", void, .{ void, objc.NSString } },
+        .{ "setResourceValues:error:", void, .{Object} },
+        .{ "setTemporaryResourceValue:forKey:", void, .{ ?*anyopaque, objc.NSString } },
         .{ "standardizedURL", ?NSURL, .{} },
         .{ "startAccessingSecurityScopedResource", objc.BOOL, .{} },
         .{ "stopAccessingSecurityScopedResource", void, .{} },
@@ -6045,7 +6052,7 @@ pub const NSURL = struct {
         .{ "fileURLWithPath:isDirectory:", NSURL, .{ objc.NSString, objc.BOOL } },
         .{ "fileURLWithPath:isDirectory:relativeToURL:", NSURL, .{ objc.NSString, objc.BOOL, ?NSURL } },
         .{ "fileURLWithPath:relativeToURL:", NSURL, .{ objc.NSString, ?NSURL } },
-        .{ "fileURLWithPathComponents:", ?NSURL, .{void} },
+        .{ "fileURLWithPathComponents:", ?NSURL, .{Object} },
         .{ "initAbsoluteURLWithDataRepresentation:relativeToURL:", Object, .{ NSData, ?NSURL } },
         .{ "initByResolvingBookmarkData:options:relativeToURL:bookmarkDataIsStale:error:", Object, .{ NSData, objc.NSInteger, ?NSURL, ?*anyopaque } },
         .{ "initFileURLWithFileSystemRepresentation:isDirectory:relativeToURL:", Object, .{ ?*anyopaque, objc.BOOL, ?NSURL } },
@@ -6058,7 +6065,7 @@ pub const NSURL = struct {
         .{ "initWithString:", Object, .{objc.NSString} },
         .{ "initWithString:encodingInvalidCharacters:", Object, .{ objc.NSString, objc.BOOL } },
         .{ "initWithString:relativeToURL:", Object, .{ objc.NSString, ?NSURL } },
-        .{ "resourceValuesForKeys:fromBookmarkData:", ?*anyopaque, .{ void, NSData } },
+        .{ "resourceValuesForKeys:fromBookmarkData:", ?*anyopaque, .{ Object, NSData } },
         .{ "writeBookmarkData:toURL:options:error:", void, .{ NSData, NSURL, objc.NSInteger } },
     };
 
@@ -6067,25 +6074,25 @@ pub const NSURL = struct {
     }
 };
 
-pub const NSURLAuthenticationChallenge = struct {
+pub const URLAuthenticationChallenge = struct {
     obj: Object,
 
     pub const methods = .{
         .{ "error", ?*anyopaque, .{} },
-        .{ "failureResponse", ?NSURLResponse, .{} },
+        .{ "failureResponse", ?URLResponse, .{} },
         .{ "previousFailureCount", objc.NSInteger, .{} },
-        .{ "proposedCredential", ?NSURLCredential, .{} },
-        .{ "protectionSpace", NSURLProtectionSpace, .{} },
+        .{ "proposedCredential", ?URLCredential, .{} },
+        .{ "protectionSpace", URLProtectionSpace, .{} },
         .{ "sender", ?URLAuthenticationChallengeSender, .{} },
     };
 
-    pub fn send(self: NSURLAuthenticationChallenge, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
+    pub fn send(self: URLAuthenticationChallenge, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
         return objc.typedSend(methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
-        .{ "initWithAuthenticationChallenge:sender:", Object, .{ NSURLAuthenticationChallenge, void } },
-        .{ "initWithProtectionSpace:proposedCredential:previousFailureCount:failureResponse:error:sender:", Object, .{ NSURLProtectionSpace, ?NSURLCredential, objc.NSInteger, ?NSURLResponse, void, void } },
+        .{ "initWithAuthenticationChallenge:sender:", Object, .{ URLAuthenticationChallenge, URLAuthenticationChallengeSender } },
+        .{ "initWithProtectionSpace:proposedCredential:previousFailureCount:failureResponse:error:sender:", Object, .{ URLProtectionSpace, ?URLCredential, objc.NSInteger, ?URLResponse, ?*anyopaque, URLAuthenticationChallengeSender } },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -6093,34 +6100,34 @@ pub const NSURLAuthenticationChallenge = struct {
     }
 };
 
-pub const NSURLCache = struct {
+pub const URLCache = struct {
     obj: Object,
 
     pub const methods = .{
-        .{ "cachedResponseForRequest:", ?NSCachedURLResponse, .{?*anyopaque} },
+        .{ "cachedResponseForRequest:", ?CachedURLResponse, .{NSURLRequest} },
         .{ "currentDiskUsage", objc.NSInteger, .{} },
         .{ "currentMemoryUsage", objc.NSInteger, .{} },
         .{ "diskCapacity", objc.NSInteger, .{} },
-        .{ "getCachedResponseForDataTask:completionHandler:", void, .{ NSURLSessionDataTask, void } },
+        .{ "getCachedResponseForDataTask:completionHandler:", void, .{ URLSessionDataTask, ?*anyopaque } },
         .{ "memoryCapacity", objc.NSInteger, .{} },
         .{ "removeAllCachedResponses", void, .{} },
-        .{ "removeCachedResponseForDataTask:", void, .{NSURLSessionDataTask} },
-        .{ "removeCachedResponseForRequest:", void, .{?*anyopaque} },
+        .{ "removeCachedResponseForDataTask:", void, .{URLSessionDataTask} },
+        .{ "removeCachedResponseForRequest:", void, .{NSURLRequest} },
         .{ "removeCachedResponsesSinceDate:", void, .{NSDate} },
         .{ "setDiskCapacity:", void, .{objc.NSInteger} },
         .{ "setMemoryCapacity:", void, .{objc.NSInteger} },
-        .{ "storeCachedResponse:forDataTask:", void, .{ NSCachedURLResponse, NSURLSessionDataTask } },
-        .{ "storeCachedResponse:forRequest:", void, .{ NSCachedURLResponse, ?*anyopaque } },
+        .{ "storeCachedResponse:forDataTask:", void, .{ CachedURLResponse, URLSessionDataTask } },
+        .{ "storeCachedResponse:forRequest:", void, .{ CachedURLResponse, NSURLRequest } },
     };
 
-    pub fn send(self: NSURLCache, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
+    pub fn send(self: URLCache, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
         return objc.typedSend(methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
         .{ "initWithMemoryCapacity:diskCapacity:diskPath:", Object, .{ objc.NSInteger, objc.NSInteger, ?objc.NSString } },
-        .{ "setSharedURLCache:", void, .{NSURLCache} },
-        .{ "sharedURLCache", NSURLCache, .{} },
+        .{ "setSharedURLCache:", void, .{URLCache} },
+        .{ "sharedURLCache", URLCache, .{} },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -6206,12 +6213,12 @@ pub const NSURLConnection = struct {
 
     pub const methods = .{
         .{ "cancel", void, .{} },
-        .{ "currentRequest", ?*anyopaque, .{} },
-        .{ "originalRequest", ?*anyopaque, .{} },
-        .{ "scheduleInRunLoop:forMode:", void, .{ NSRunLoop, objc.NSString } },
-        .{ "setDelegateQueue:", void, .{?NSOperationQueue} },
+        .{ "currentRequest", NSURLRequest, .{} },
+        .{ "originalRequest", NSURLRequest, .{} },
+        .{ "scheduleInRunLoop:forMode:", void, .{ RunLoop, objc.NSString } },
+        .{ "setDelegateQueue:", void, .{?OperationQueue} },
         .{ "start", void, .{} },
-        .{ "unscheduleFromRunLoop:forMode:", void, .{ NSRunLoop, objc.NSString } },
+        .{ "unscheduleFromRunLoop:forMode:", void, .{ RunLoop, objc.NSString } },
     };
 
     pub fn send(self: NSURLConnection, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
@@ -6219,11 +6226,11 @@ pub const NSURLConnection = struct {
     }
 
     pub const class_methods = .{
-        .{ "canHandleRequest:", objc.BOOL, .{?*anyopaque} },
-        .{ "initWithRequest:delegate:", Object, .{ ?*anyopaque, ?Any } },
-        .{ "initWithRequest:delegate:startImmediately:", Object, .{ ?*anyopaque, ?Any, objc.BOOL } },
-        .{ "sendAsynchronousRequest:queue:completionHandler:", void, .{ ?*anyopaque, NSOperationQueue, void } },
-        .{ "sendSynchronousRequest:returningResponse:error:", NSData, .{ ?*anyopaque, ?NSURLResponse } },
+        .{ "canHandleRequest:", objc.BOOL, .{NSURLRequest} },
+        .{ "initWithRequest:delegate:", Object, .{ NSURLRequest, ?Any } },
+        .{ "initWithRequest:delegate:startImmediately:", Object, .{ NSURLRequest, ?Any, objc.BOOL } },
+        .{ "sendAsynchronousRequest:queue:completionHandler:", void, .{ NSURLRequest, OperationQueue, ?*anyopaque } },
+        .{ "sendSynchronousRequest:returningResponse:error:", NSData, .{ NSURLRequest, ?URLResponse } },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -6231,7 +6238,7 @@ pub const NSURLConnection = struct {
     }
 };
 
-pub const NSURLCredential = struct {
+pub const URLCredential = struct {
     obj: Object,
 
     pub const methods = .{
@@ -6239,19 +6246,19 @@ pub const NSURLCredential = struct {
         .{ "hasPassword", objc.BOOL, .{} },
         .{ "identity", ?*anyopaque, .{} },
         .{ "password", ?objc.NSString, .{} },
-        .{ "persistence", NSURLCredential.Persistence, .{} },
+        .{ "persistence", URLCredential.Persistence, .{} },
         .{ "user", ?objc.NSString, .{} },
     };
 
-    pub fn send(self: NSURLCredential, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
+    pub fn send(self: URLCredential, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
         return objc.typedSend(methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
         .{ "credentialForTrust:", Object, .{?*anyopaque} },
-        .{ "initWithIdentity:certificates:persistence:", Object, .{ ?*anyopaque, void, NSURLCredential.Persistence } },
+        .{ "initWithIdentity:certificates:persistence:", Object, .{ ?*anyopaque, ?*anyopaque, URLCredential.Persistence } },
         .{ "initWithTrust:", Object, .{?*anyopaque} },
-        .{ "initWithUser:password:persistence:", Object, .{ objc.NSString, objc.NSString, NSURLCredential.Persistence } },
+        .{ "initWithUser:password:persistence:", Object, .{ objc.NSString, objc.NSString, URLCredential.Persistence } },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -6266,30 +6273,30 @@ pub const NSURLCredential = struct {
     };
 };
 
-pub const NSURLCredentialStorage = struct {
+pub const URLCredentialStorage = struct {
     obj: Object,
 
     pub const methods = .{
         .{ "allCredentials", Object, .{} },
-        .{ "credentialsForProtectionSpace:", ?*anyopaque, .{NSURLProtectionSpace} },
-        .{ "defaultCredentialForProtectionSpace:", ?NSURLCredential, .{NSURLProtectionSpace} },
-        .{ "getCredentialsForProtectionSpace:task:completionHandler:", void, .{ NSURLProtectionSpace, NSURLSessionTask, void } },
-        .{ "getDefaultCredentialForProtectionSpace:task:completionHandler:", void, .{ NSURLProtectionSpace, NSURLSessionTask, void } },
-        .{ "removeCredential:forProtectionSpace:", void, .{ NSURLCredential, NSURLProtectionSpace } },
-        .{ "removeCredential:forProtectionSpace:options:", void, .{ NSURLCredential, NSURLProtectionSpace, ?Any } },
-        .{ "removeCredential:forProtectionSpace:options:task:", void, .{ NSURLCredential, NSURLProtectionSpace, ?Any, NSURLSessionTask } },
-        .{ "setCredential:forProtectionSpace:", void, .{ NSURLCredential, NSURLProtectionSpace } },
-        .{ "setCredential:forProtectionSpace:task:", void, .{ NSURLCredential, NSURLProtectionSpace, NSURLSessionTask } },
-        .{ "setDefaultCredential:forProtectionSpace:", void, .{ NSURLCredential, NSURLProtectionSpace } },
-        .{ "setDefaultCredential:forProtectionSpace:task:", void, .{ NSURLCredential, NSURLProtectionSpace, NSURLSessionTask } },
+        .{ "credentialsForProtectionSpace:", ?*anyopaque, .{URLProtectionSpace} },
+        .{ "defaultCredentialForProtectionSpace:", ?URLCredential, .{URLProtectionSpace} },
+        .{ "getCredentialsForProtectionSpace:task:completionHandler:", void, .{ URLProtectionSpace, URLSessionTask, ?*anyopaque } },
+        .{ "getDefaultCredentialForProtectionSpace:task:completionHandler:", void, .{ URLProtectionSpace, URLSessionTask, ?*anyopaque } },
+        .{ "removeCredential:forProtectionSpace:", void, .{ URLCredential, URLProtectionSpace } },
+        .{ "removeCredential:forProtectionSpace:options:", void, .{ URLCredential, URLProtectionSpace, ?*anyopaque } },
+        .{ "removeCredential:forProtectionSpace:options:task:", void, .{ URLCredential, URLProtectionSpace, ?*anyopaque, URLSessionTask } },
+        .{ "setCredential:forProtectionSpace:", void, .{ URLCredential, URLProtectionSpace } },
+        .{ "setCredential:forProtectionSpace:task:", void, .{ URLCredential, URLProtectionSpace, URLSessionTask } },
+        .{ "setDefaultCredential:forProtectionSpace:", void, .{ URLCredential, URLProtectionSpace } },
+        .{ "setDefaultCredential:forProtectionSpace:task:", void, .{ URLCredential, URLProtectionSpace, URLSessionTask } },
     };
 
-    pub fn send(self: NSURLCredentialStorage, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
+    pub fn send(self: URLCredentialStorage, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
         return objc.typedSend(methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
-        .{ "sharedCredentialStorage", NSURLCredentialStorage, .{} },
+        .{ "sharedCredentialStorage", URLCredentialStorage, .{} },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -6303,7 +6310,7 @@ pub const NSURLDownload = struct {
     pub const methods = .{
         .{ "cancel", void, .{} },
         .{ "deletesFileUponFailure", objc.BOOL, .{} },
-        .{ "request", ?*anyopaque, .{} },
+        .{ "request", NSURLRequest, .{} },
         .{ "resumeData", ?NSData, .{} },
         .{ "setDeletesFileUponFailure:", void, .{objc.BOOL} },
         .{ "setDestination:allowOverwrite:", void, .{ objc.NSString, objc.BOOL } },
@@ -6315,8 +6322,8 @@ pub const NSURLDownload = struct {
 
     pub const class_methods = .{
         .{ "canResumeDownloadDecodedWithEncodingMIMEType:", objc.BOOL, .{objc.NSString} },
-        .{ "initWithRequest:delegate:", Object, .{ ?*anyopaque, void } },
-        .{ "initWithResumeData:delegate:path:", Object, .{ NSData, void, objc.NSString } },
+        .{ "initWithRequest:delegate:", Object, .{ NSURLRequest, ?NSURLDownloadDelegate } },
+        .{ "initWithResumeData:delegate:path:", Object, .{ NSData, ?NSURLDownloadDelegate, objc.NSString } },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -6324,7 +6331,16 @@ pub const NSURLDownload = struct {
     }
 };
 
-pub const NSURLProtectionSpace = struct {
+pub const NSURLHandle = struct {
+    pub const Status = enum(i64) {
+        notLoaded = 0,
+        loadSucceeded = 1,
+        loadInProgress = 2,
+        loadFailed = 3,
+    };
+};
+
+pub const URLProtectionSpace = struct {
     obj: Object,
 
     pub const methods = .{
@@ -6340,7 +6356,7 @@ pub const NSURLProtectionSpace = struct {
         .{ "serverTrust", ?*anyopaque, .{} },
     };
 
-    pub fn send(self: NSURLProtectionSpace, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
+    pub fn send(self: URLProtectionSpace, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
         return objc.typedSend(methods, self.obj, selector, args);
     }
 
@@ -6354,32 +6370,32 @@ pub const NSURLProtectionSpace = struct {
     }
 };
 
-pub const NSURLProtocol = struct {
+pub const URLProtocol = struct {
     obj: Object,
 
     pub const methods = .{
-        .{ "cachedResponse", ?NSCachedURLResponse, .{} },
+        .{ "cachedResponse", ?CachedURLResponse, .{} },
         .{ "client", ?URLProtocolClient, .{} },
-        .{ "request", ?*anyopaque, .{} },
+        .{ "request", NSURLRequest, .{} },
         .{ "startLoading", void, .{} },
         .{ "stopLoading", void, .{} },
-        .{ "task", ?NSURLSessionTask, .{} },
+        .{ "task", ?URLSessionTask, .{} },
     };
 
-    pub fn send(self: NSURLProtocol, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
+    pub fn send(self: URLProtocol, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
         return objc.typedSend(methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
-        .{ "canInitWithRequest:", objc.BOOL, .{?*anyopaque} },
-        .{ "canInitWithTask:", objc.BOOL, .{NSURLSessionTask} },
-        .{ "canonicalRequestForRequest:", ?*anyopaque, .{?*anyopaque} },
-        .{ "initWithRequest:cachedResponse:client:", Object, .{ ?*anyopaque, ?NSCachedURLResponse, void } },
-        .{ "initWithTask:cachedResponse:client:", Object, .{ NSURLSessionTask, ?NSCachedURLResponse, void } },
-        .{ "propertyForKey:inRequest:", ?Any, .{ objc.NSString, ?*anyopaque } },
+        .{ "canInitWithRequest:", objc.BOOL, .{NSURLRequest} },
+        .{ "canInitWithTask:", objc.BOOL, .{URLSessionTask} },
+        .{ "canonicalRequestForRequest:", NSURLRequest, .{NSURLRequest} },
+        .{ "initWithRequest:cachedResponse:client:", Object, .{ NSURLRequest, ?CachedURLResponse, ?URLProtocolClient } },
+        .{ "initWithTask:cachedResponse:client:", Object, .{ URLSessionTask, ?CachedURLResponse, ?URLProtocolClient } },
+        .{ "propertyForKey:inRequest:", ?Any, .{ objc.NSString, NSURLRequest } },
         .{ "registerClass:", objc.BOOL, .{AnyClass} },
         .{ "removePropertyForKey:inRequest:", void, .{ objc.NSString, NSMutableURLRequest } },
-        .{ "requestIsCacheEquivalent:toRequest:", objc.BOOL, .{ ?*anyopaque, ?*anyopaque } },
+        .{ "requestIsCacheEquivalent:toRequest:", objc.BOOL, .{ NSURLRequest, NSURLRequest } },
         .{ "setProperty:forKey:inRequest:", void, .{ Any, objc.NSString, NSMutableURLRequest } },
         .{ "unregisterClass:", void, .{AnyClass} },
     };
@@ -6415,7 +6431,7 @@ pub const NSURLRequest = struct {
 
     pub const methods = .{
         .{ "HTTPBody", ?NSData, .{} },
-        .{ "HTTPBodyStream", ?NSInputStream, .{} },
+        .{ "HTTPBodyStream", ?InputStream, .{} },
         .{ "HTTPMethod", ?objc.NSString, .{} },
         .{ "HTTPShouldHandleCookies", objc.BOOL, .{} },
         .{ "HTTPShouldUsePipelining", objc.BOOL, .{} },
@@ -6476,7 +6492,7 @@ pub const NSURLRequest = struct {
     };
 };
 
-pub const NSURLResponse = struct {
+pub const URLResponse = struct {
     obj: Object,
 
     pub const methods = .{
@@ -6487,7 +6503,7 @@ pub const NSURLResponse = struct {
         .{ "textEncodingName", ?objc.NSString, .{} },
     };
 
-    pub fn send(self: NSURLResponse, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
+    pub fn send(self: URLResponse, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
         return objc.typedSend(methods, self.obj, selector, args);
     }
 
@@ -6500,55 +6516,55 @@ pub const NSURLResponse = struct {
     }
 };
 
-pub const NSURLSession = struct {
+pub const URLSession = struct {
     obj: Object,
 
     pub const methods = .{
-        .{ "configuration", NSURLSessionConfiguration, .{} },
-        .{ "dataTaskWithRequest:", NSURLSessionDataTask, .{?*anyopaque} },
-        .{ "dataTaskWithRequest:completionHandler:", NSURLSessionDataTask, .{ ?*anyopaque, void } },
-        .{ "dataTaskWithURL:", NSURLSessionDataTask, .{NSURL} },
-        .{ "dataTaskWithURL:completionHandler:", NSURLSessionDataTask, .{ NSURL, void } },
+        .{ "configuration", URLSessionConfiguration, .{} },
+        .{ "dataTaskWithRequest:", URLSessionDataTask, .{NSURLRequest} },
+        .{ "dataTaskWithRequest:completionHandler:", URLSessionDataTask, .{ NSURLRequest, ?*anyopaque } },
+        .{ "dataTaskWithURL:", URLSessionDataTask, .{NSURL} },
+        .{ "dataTaskWithURL:completionHandler:", URLSessionDataTask, .{ NSURL, ?*anyopaque } },
         .{ "delegate", ?URLSessionDelegate, .{} },
-        .{ "delegateQueue", NSOperationQueue, .{} },
-        .{ "downloadTaskWithRequest:", NSURLSessionDownloadTask, .{?*anyopaque} },
-        .{ "downloadTaskWithRequest:completionHandler:", NSURLSessionDownloadTask, .{ ?*anyopaque, void } },
-        .{ "downloadTaskWithResumeData:", NSURLSessionDownloadTask, .{NSData} },
-        .{ "downloadTaskWithResumeData:completionHandler:", NSURLSessionDownloadTask, .{ NSData, void } },
-        .{ "downloadTaskWithURL:", NSURLSessionDownloadTask, .{NSURL} },
-        .{ "downloadTaskWithURL:completionHandler:", NSURLSessionDownloadTask, .{ NSURL, void } },
+        .{ "delegateQueue", OperationQueue, .{} },
+        .{ "downloadTaskWithRequest:", URLSessionDownloadTask, .{NSURLRequest} },
+        .{ "downloadTaskWithRequest:completionHandler:", URLSessionDownloadTask, .{ NSURLRequest, ?*anyopaque } },
+        .{ "downloadTaskWithResumeData:", URLSessionDownloadTask, .{NSData} },
+        .{ "downloadTaskWithResumeData:completionHandler:", URLSessionDownloadTask, .{ NSData, ?*anyopaque } },
+        .{ "downloadTaskWithURL:", URLSessionDownloadTask, .{NSURL} },
+        .{ "downloadTaskWithURL:completionHandler:", URLSessionDownloadTask, .{ NSURL, ?*anyopaque } },
         .{ "finishTasksAndInvalidate", void, .{} },
-        .{ "flushWithCompletionHandler:", void, .{void} },
-        .{ "getAllTasksWithCompletionHandler:", void, .{void} },
-        .{ "getTasksWithCompletionHandler:", void, .{void} },
+        .{ "flushWithCompletionHandler:", void, .{?*anyopaque} },
+        .{ "getAllTasksWithCompletionHandler:", void, .{?*anyopaque} },
+        .{ "getTasksWithCompletionHandler:", void, .{?*anyopaque} },
         .{ "invalidateAndCancel", void, .{} },
-        .{ "resetWithCompletionHandler:", void, .{void} },
+        .{ "resetWithCompletionHandler:", void, .{?*anyopaque} },
         .{ "sessionDescription", ?objc.NSString, .{} },
         .{ "setSessionDescription:", void, .{?objc.NSString} },
-        .{ "streamTaskWithHostName:port:", NSURLSessionStreamTask, .{ objc.NSString, objc.NSInteger } },
-        .{ "streamTaskWithNetService:", NSURLSessionStreamTask, .{NSNetService} },
-        .{ "uploadTaskWithRequest:fromData:", NSURLSessionUploadTask, .{ ?*anyopaque, NSData } },
-        .{ "uploadTaskWithRequest:fromData:completionHandler:", NSURLSessionUploadTask, .{ ?*anyopaque, ?NSData, void } },
-        .{ "uploadTaskWithRequest:fromFile:", NSURLSessionUploadTask, .{ ?*anyopaque, NSURL } },
-        .{ "uploadTaskWithRequest:fromFile:completionHandler:", NSURLSessionUploadTask, .{ ?*anyopaque, NSURL, void } },
-        .{ "uploadTaskWithResumeData:", NSURLSessionUploadTask, .{NSData} },
-        .{ "uploadTaskWithResumeData:completionHandler:", NSURLSessionUploadTask, .{ NSData, void } },
-        .{ "uploadTaskWithStreamedRequest:", NSURLSessionUploadTask, .{?*anyopaque} },
-        .{ "webSocketTaskWithRequest:", NSURLSessionWebSocketTask, .{?*anyopaque} },
-        .{ "webSocketTaskWithURL:", NSURLSessionWebSocketTask, .{NSURL} },
-        .{ "webSocketTaskWithURL:protocols:", NSURLSessionWebSocketTask, .{ NSURL, void } },
+        .{ "streamTaskWithHostName:port:", URLSessionStreamTask, .{ objc.NSString, objc.NSInteger } },
+        .{ "streamTaskWithNetService:", URLSessionStreamTask, .{NetService} },
+        .{ "uploadTaskWithRequest:fromData:", URLSessionUploadTask, .{ NSURLRequest, NSData } },
+        .{ "uploadTaskWithRequest:fromData:completionHandler:", URLSessionUploadTask, .{ NSURLRequest, ?NSData, ?*anyopaque } },
+        .{ "uploadTaskWithRequest:fromFile:", URLSessionUploadTask, .{ NSURLRequest, NSURL } },
+        .{ "uploadTaskWithRequest:fromFile:completionHandler:", URLSessionUploadTask, .{ NSURLRequest, NSURL, ?*anyopaque } },
+        .{ "uploadTaskWithResumeData:", URLSessionUploadTask, .{NSData} },
+        .{ "uploadTaskWithResumeData:completionHandler:", URLSessionUploadTask, .{ NSData, ?*anyopaque } },
+        .{ "uploadTaskWithStreamedRequest:", URLSessionUploadTask, .{NSURLRequest} },
+        .{ "webSocketTaskWithRequest:", URLSessionWebSocketTask, .{NSURLRequest} },
+        .{ "webSocketTaskWithURL:", URLSessionWebSocketTask, .{NSURL} },
+        .{ "webSocketTaskWithURL:protocols:", URLSessionWebSocketTask, .{ NSURL, Object } },
     };
 
-    pub fn send(self: NSURLSession, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
+    pub fn send(self: URLSession, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
         return objc.typedSend(methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
         .{ "init", Object, .{} },
         .{ "new", ?*anyopaque, .{} },
-        .{ "sessionWithConfiguration:", Object, .{NSURLSessionConfiguration} },
-        .{ "sessionWithConfiguration:delegate:delegateQueue:", Object, .{ NSURLSessionConfiguration, void, ?NSOperationQueue } },
-        .{ "sharedSession", NSURLSession, .{} },
+        .{ "sessionWithConfiguration:", Object, .{URLSessionConfiguration} },
+        .{ "sessionWithConfiguration:delegate:delegateQueue:", Object, .{ URLSessionConfiguration, ?URLSessionDelegate, ?OperationQueue } },
+        .{ "sharedSession", URLSession, .{} },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -6574,13 +6590,13 @@ pub const NSURLSession = struct {
     };
 };
 
-pub const NSURLSessionConfiguration = struct {
+pub const URLSessionConfiguration = struct {
     obj: Object,
 
     pub const methods = .{
         .{ "HTTPAdditionalHeaders", ?*anyopaque, .{} },
-        .{ "HTTPCookieAcceptPolicy", NSHTTPCookie.AcceptPolicy, .{} },
-        .{ "HTTPCookieStorage", ?NSHTTPCookieStorage, .{} },
+        .{ "HTTPCookieAcceptPolicy", HTTPCookie.AcceptPolicy, .{} },
+        .{ "HTTPCookieStorage", ?HTTPCookieStorage, .{} },
         .{ "HTTPMaximumConnectionsPerHost", objc.NSInteger, .{} },
         .{ "HTTPShouldSetCookies", objc.BOOL, .{} },
         .{ "HTTPShouldUsePipelining", objc.BOOL, .{} },
@@ -6588,8 +6604,8 @@ pub const NSURLSessionConfiguration = struct {
         .{ "TLSMaximumSupportedProtocolVersion", objc.NSInteger, .{} },
         .{ "TLSMinimumSupportedProtocol", objc.NSInteger, .{} },
         .{ "TLSMinimumSupportedProtocolVersion", objc.NSInteger, .{} },
-        .{ "URLCache", ?NSURLCache, .{} },
-        .{ "URLCredentialStorage", ?NSURLCredentialStorage, .{} },
+        .{ "URLCache", ?URLCache, .{} },
+        .{ "URLCredentialStorage", ?URLCredentialStorage, .{} },
         .{ "allowsCellularAccess", objc.BOOL, .{} },
         .{ "allowsConstrainedNetworkAccess", objc.BOOL, .{} },
         .{ "allowsExpensiveNetworkAccess", objc.BOOL, .{} },
@@ -6611,8 +6627,8 @@ pub const NSURLSessionConfiguration = struct {
         .{ "setDiscretionary:", void, .{objc.BOOL} },
         .{ "setEnablesEarlyData:", void, .{objc.BOOL} },
         .{ "setHTTPAdditionalHeaders:", void, .{?*anyopaque} },
-        .{ "setHTTPCookieAcceptPolicy:", void, .{NSHTTPCookie.AcceptPolicy} },
-        .{ "setHTTPCookieStorage:", void, .{?NSHTTPCookieStorage} },
+        .{ "setHTTPCookieAcceptPolicy:", void, .{HTTPCookie.AcceptPolicy} },
+        .{ "setHTTPCookieStorage:", void, .{?HTTPCookieStorage} },
         .{ "setHTTPMaximumConnectionsPerHost:", void, .{objc.NSInteger} },
         .{ "setHTTPShouldSetCookies:", void, .{objc.BOOL} },
         .{ "setHTTPShouldUsePipelining:", void, .{objc.BOOL} },
@@ -6629,8 +6645,8 @@ pub const NSURLSessionConfiguration = struct {
         .{ "setTLSMinimumSupportedProtocolVersion:", void, .{objc.NSInteger} },
         .{ "setTimeoutIntervalForRequest:", void, .{TimeInterval} },
         .{ "setTimeoutIntervalForResource:", void, .{TimeInterval} },
-        .{ "setURLCache:", void, .{?NSURLCache} },
-        .{ "setURLCredentialStorage:", void, .{?NSURLCredentialStorage} },
+        .{ "setURLCache:", void, .{?URLCache} },
+        .{ "setURLCredentialStorage:", void, .{?URLCredentialStorage} },
         .{ "setUsesClassicLoadingMode:", void, .{objc.BOOL} },
         .{ "setWaitsForConnectivity:", void, .{objc.BOOL} },
         .{ "sharedContainerIdentifier", ?objc.NSString, .{} },
@@ -6641,15 +6657,15 @@ pub const NSURLSessionConfiguration = struct {
         .{ "waitsForConnectivity", objc.BOOL, .{} },
     };
 
-    pub fn send(self: NSURLSessionConfiguration, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
+    pub fn send(self: URLSessionConfiguration, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
         return objc.typedSend(methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
-        .{ "backgroundSessionConfiguration:", NSURLSessionConfiguration, .{objc.NSString} },
-        .{ "backgroundSessionConfigurationWithIdentifier:", NSURLSessionConfiguration, .{objc.NSString} },
-        .{ "defaultSessionConfiguration", NSURLSessionConfiguration, .{} },
-        .{ "ephemeralSessionConfiguration", NSURLSessionConfiguration, .{} },
+        .{ "backgroundSessionConfiguration:", URLSessionConfiguration, .{objc.NSString} },
+        .{ "backgroundSessionConfigurationWithIdentifier:", URLSessionConfiguration, .{objc.NSString} },
+        .{ "defaultSessionConfiguration", URLSessionConfiguration, .{} },
+        .{ "ephemeralSessionConfiguration", URLSessionConfiguration, .{} },
         .{ "init", Object, .{} },
         .{ "new", ?*anyopaque, .{} },
     };
@@ -6659,7 +6675,7 @@ pub const NSURLSessionConfiguration = struct {
     }
 };
 
-pub const NSURLSessionDataTask = struct {
+pub const URLSessionDataTask = struct {
     pub const class_methods = .{
         .{ "init", Object, .{} },
         .{ "new", ?*anyopaque, .{} },
@@ -6670,15 +6686,15 @@ pub const NSURLSessionDataTask = struct {
     }
 };
 
-pub const NSURLSessionDownloadTask = struct {
+pub const URLSessionDownloadTask = struct {
     obj: Object,
 
-    pub const Super = NSURLSessionTask;
+    pub const Super = URLSessionTask;
     pub const methods = .{
-        .{ "cancelByProducingResumeData:", void, .{void} },
+        .{ "cancelByProducingResumeData:", void, .{?*anyopaque} },
     };
 
-    pub fn send(self: NSURLSessionDownloadTask, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
+    pub fn send(self: URLSessionDownloadTask, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
         return objc.typedSendChain(@This(), self.obj, selector, args);
     }
 
@@ -6692,21 +6708,21 @@ pub const NSURLSessionDownloadTask = struct {
     }
 };
 
-pub const NSURLSessionStreamTask = struct {
+pub const URLSessionStreamTask = struct {
     obj: Object,
 
-    pub const Super = NSURLSessionTask;
+    pub const Super = URLSessionTask;
     pub const methods = .{
         .{ "captureStreams", void, .{} },
         .{ "closeRead", void, .{} },
         .{ "closeWrite", void, .{} },
-        .{ "readDataOfMinLength:maxLength:timeout:completionHandler:", void, .{ objc.NSInteger, objc.NSInteger, TimeInterval, void } },
+        .{ "readDataOfMinLength:maxLength:timeout:completionHandler:", void, .{ objc.NSInteger, objc.NSInteger, TimeInterval, ?*anyopaque } },
         .{ "startSecureConnection", void, .{} },
         .{ "stopSecureConnection", void, .{} },
-        .{ "writeData:timeout:completionHandler:", void, .{ NSData, TimeInterval, void } },
+        .{ "writeData:timeout:completionHandler:", void, .{ NSData, TimeInterval, ?*anyopaque } },
     };
 
-    pub fn send(self: NSURLSessionStreamTask, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
+    pub fn send(self: URLSessionStreamTask, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
         return objc.typedSendChain(@This(), self.obj, selector, args);
     }
 
@@ -6720,7 +6736,7 @@ pub const NSURLSessionStreamTask = struct {
     }
 };
 
-pub const NSURLSessionTask = struct {
+pub const URLSessionTask = struct {
     obj: Object,
 
     pub const methods = .{
@@ -6731,15 +6747,15 @@ pub const NSURLSessionTask = struct {
         .{ "countOfBytesExpectedToSend", i64, .{} },
         .{ "countOfBytesReceived", i64, .{} },
         .{ "countOfBytesSent", i64, .{} },
-        .{ "currentRequest", ?*anyopaque, .{} },
+        .{ "currentRequest", ?NSURLRequest, .{} },
         .{ "delegate", ?URLSessionTaskDelegate, .{} },
         .{ "earliestBeginDate", ?NSDate, .{} },
         .{ "error", ?*anyopaque, .{} },
-        .{ "originalRequest", ?*anyopaque, .{} },
+        .{ "originalRequest", ?NSURLRequest, .{} },
         .{ "prefersIncrementalDelivery", objc.BOOL, .{} },
         .{ "priority", f32, .{} },
-        .{ "progress", NSProgress, .{} },
-        .{ "response", ?NSURLResponse, .{} },
+        .{ "progress", Progress, .{} },
+        .{ "response", ?URLResponse, .{} },
         .{ "resume", void, .{} },
         .{ "setCountOfBytesClientExpectsToReceive:", void, .{i64} },
         .{ "setCountOfBytesClientExpectsToSend:", void, .{i64} },
@@ -6748,13 +6764,13 @@ pub const NSURLSessionTask = struct {
         .{ "setPrefersIncrementalDelivery:", void, .{objc.BOOL} },
         .{ "setPriority:", void, .{f32} },
         .{ "setTaskDescription:", void, .{?objc.NSString} },
-        .{ "state", NSURLSessionTask.State, .{} },
+        .{ "state", URLSessionTask.State, .{} },
         .{ "suspend", void, .{} },
         .{ "taskDescription", ?objc.NSString, .{} },
         .{ "taskIdentifier", objc.NSInteger, .{} },
     };
 
-    pub fn send(self: NSURLSessionTask, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
+    pub fn send(self: URLSessionTask, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
         return objc.typedSend(methods, self.obj, selector, args);
     }
 
@@ -6775,16 +6791,16 @@ pub const NSURLSessionTask = struct {
     };
 };
 
-pub const NSURLSessionTaskMetrics = struct {
+pub const URLSessionTaskMetrics = struct {
     obj: Object,
 
     pub const methods = .{
         .{ "redirectCount", objc.NSInteger, .{} },
-        .{ "taskInterval", ?*anyopaque, .{} },
+        .{ "taskInterval", NSDateInterval, .{} },
         .{ "transactionMetrics", Object, .{} },
     };
 
-    pub fn send(self: NSURLSessionTaskMetrics, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
+    pub fn send(self: URLSessionTaskMetrics, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
         return objc.typedSend(methods, self.obj, selector, args);
     }
 
@@ -6812,7 +6828,7 @@ pub const NSURLSessionTaskMetrics = struct {
     };
 };
 
-pub const NSURLSessionTaskTransactionMetrics = struct {
+pub const URLSessionTaskTransactionMetrics = struct {
     obj: Object,
 
     pub const methods = .{
@@ -6828,7 +6844,7 @@ pub const NSURLSessionTaskTransactionMetrics = struct {
         .{ "countOfResponseHeaderBytesReceived", i64, .{} },
         .{ "domainLookupEndDate", ?NSDate, .{} },
         .{ "domainLookupStartDate", ?NSDate, .{} },
-        .{ "domainResolutionProtocol", NSURLSessionTaskMetrics.DomainResolutionProtocol, .{} },
+        .{ "domainResolutionProtocol", URLSessionTaskMetrics.DomainResolutionProtocol, .{} },
         .{ "expensive", objc.BOOL, .{} },
         .{ "fetchStartDate", ?NSDate, .{} },
         .{ "localAddress", ?objc.NSString, .{} },
@@ -6836,11 +6852,11 @@ pub const NSURLSessionTaskTransactionMetrics = struct {
         .{ "networkProtocolName", ?objc.NSString, .{} },
         .{ "proxyConnection", objc.BOOL, .{} },
         .{ "remoteAddress", ?objc.NSString, .{} },
-        .{ "request", ?*anyopaque, .{} },
+        .{ "request", NSURLRequest, .{} },
         .{ "requestEndDate", ?NSDate, .{} },
         .{ "requestStartDate", ?NSDate, .{} },
-        .{ "resourceFetchType", NSURLSessionTaskMetrics.ResourceFetchType, .{} },
-        .{ "response", ?NSURLResponse, .{} },
+        .{ "resourceFetchType", URLSessionTaskMetrics.ResourceFetchType, .{} },
+        .{ "response", ?URLResponse, .{} },
         .{ "responseEndDate", ?NSDate, .{} },
         .{ "responseStartDate", ?NSDate, .{} },
         .{ "reusedConnection", objc.BOOL, .{} },
@@ -6848,7 +6864,7 @@ pub const NSURLSessionTaskTransactionMetrics = struct {
         .{ "secureConnectionStartDate", ?NSDate, .{} },
     };
 
-    pub fn send(self: NSURLSessionTaskTransactionMetrics, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
+    pub fn send(self: URLSessionTaskTransactionMetrics, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
         return objc.typedSend(methods, self.obj, selector, args);
     }
 
@@ -6862,14 +6878,14 @@ pub const NSURLSessionTaskTransactionMetrics = struct {
     }
 };
 
-pub const NSURLSessionUploadTask = struct {
+pub const URLSessionUploadTask = struct {
     obj: Object,
 
     pub const methods = .{
-        .{ "cancelByProducingResumeData:", void, .{void} },
+        .{ "cancelByProducingResumeData:", void, .{?*anyopaque} },
     };
 
-    pub fn send(self: NSURLSessionUploadTask, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
+    pub fn send(self: URLSessionUploadTask, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
         return objc.typedSend(methods, self.obj, selector, args);
     }
 
@@ -6883,20 +6899,20 @@ pub const NSURLSessionUploadTask = struct {
     }
 };
 
-pub const NSURLSessionWebSocketTask = struct {
+pub const URLSessionWebSocketTask = struct {
     obj: Object,
 
-    pub const Super = NSURLSessionTask;
+    pub const Super = URLSessionTask;
     pub const methods = .{
-        .{ "cancelWithCloseCode:reason:", void, .{ NSURLSessionWebSocketTask.CloseCode, ?NSData } },
-        .{ "closeCode", NSURLSessionWebSocketTask.CloseCode, .{} },
+        .{ "cancelWithCloseCode:reason:", void, .{ URLSessionWebSocketTask.CloseCode, ?NSData } },
+        .{ "closeCode", URLSessionWebSocketTask.CloseCode, .{} },
         .{ "closeReason", ?NSData, .{} },
         .{ "maximumMessageSize", objc.NSInteger, .{} },
-        .{ "sendPingWithPongReceiveHandler:", void, .{void} },
+        .{ "sendPingWithPongReceiveHandler:", void, .{?*anyopaque} },
         .{ "setMaximumMessageSize:", void, .{objc.NSInteger} },
     };
 
-    pub fn send(self: NSURLSessionWebSocketTask, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
+    pub fn send(self: URLSessionWebSocketTask, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
         return objc.typedSendChain(@This(), self.obj, selector, args);
     }
 
@@ -6922,7 +6938,7 @@ pub const NSUUID = struct {
 
     pub const methods = .{
         .{ "UUIDString", objc.NSString, .{} },
-        .{ "compare:", ComparisonResult, .{?*anyopaque} },
+        .{ "compare:", ComparisonResult, .{NSUUID} },
         .{ "getUUIDBytes:", void, .{u8} },
     };
 
@@ -6954,10 +6970,10 @@ pub const NSUbiquitousKeyValueStore = struct {
         .{ "longLongForKey:", i64, .{objc.NSString} },
         .{ "objectForKey:", ?Any, .{objc.NSString} },
         .{ "removeObjectForKey:", void, .{objc.NSString} },
-        .{ "setArray:forKey:", void, .{ void, objc.NSString } },
+        .{ "setArray:forKey:", void, .{ ?*anyopaque, objc.NSString } },
         .{ "setBool:forKey:", void, .{ objc.BOOL, objc.NSString } },
         .{ "setData:forKey:", void, .{ ?NSData, objc.NSString } },
-        .{ "setDictionary:forKey:", void, .{ ?Any, objc.NSString } },
+        .{ "setDictionary:forKey:", void, .{ ?*anyopaque, objc.NSString } },
         .{ "setDouble:forKey:", void, .{ f64, objc.NSString } },
         .{ "setLongLong:forKey:", void, .{ i64, objc.NSString } },
         .{ "setObject:forKey:", void, .{ ?Any, objc.NSString } },
@@ -7008,7 +7024,7 @@ pub const NSUnarchiver = struct {
     }
 };
 
-pub const NSUndoManager = struct {
+pub const UndoManager = struct {
     obj: Object,
 
     pub const methods = .{
@@ -7052,7 +7068,7 @@ pub const NSUndoManager = struct {
         .{ "undoing", objc.BOOL, .{} },
     };
 
-    pub fn send(self: NSUndoManager, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
+    pub fn send(self: UndoManager, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
         return objc.typedSend(methods, self.obj, selector, args);
     }
 };
@@ -7080,14 +7096,14 @@ pub const NSUniqueIDSpecifier = struct {
     }
 };
 
-pub const NSUnit = struct {
+pub const Unit = struct {
     obj: Object,
 
     pub const methods = .{
         .{ "symbol", objc.NSString, .{} },
     };
 
-    pub fn send(self: NSUnit, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
+    pub fn send(self: Unit, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
         return objc.typedSend(methods, self.obj, selector, args);
     }
 
@@ -7100,10 +7116,10 @@ pub const NSUnit = struct {
     }
 };
 
-pub const NSUnitAcceleration = struct {
+pub const UnitAcceleration = struct {
     pub const class_methods = .{
-        .{ "gravity", NSUnitAcceleration, .{} },
-        .{ "metersPerSecondSquared", NSUnitAcceleration, .{} },
+        .{ "gravity", UnitAcceleration, .{} },
+        .{ "metersPerSecondSquared", UnitAcceleration, .{} },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -7111,14 +7127,14 @@ pub const NSUnitAcceleration = struct {
     }
 };
 
-pub const NSUnitAngle = struct {
+pub const UnitAngle = struct {
     pub const class_methods = .{
-        .{ "arcMinutes", NSUnitAngle, .{} },
-        .{ "arcSeconds", NSUnitAngle, .{} },
-        .{ "degrees", NSUnitAngle, .{} },
-        .{ "gradians", NSUnitAngle, .{} },
-        .{ "radians", NSUnitAngle, .{} },
-        .{ "revolutions", NSUnitAngle, .{} },
+        .{ "arcMinutes", UnitAngle, .{} },
+        .{ "arcSeconds", UnitAngle, .{} },
+        .{ "degrees", UnitAngle, .{} },
+        .{ "gradians", UnitAngle, .{} },
+        .{ "radians", UnitAngle, .{} },
+        .{ "revolutions", UnitAngle, .{} },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -7126,22 +7142,22 @@ pub const NSUnitAngle = struct {
     }
 };
 
-pub const NSUnitArea = struct {
+pub const UnitArea = struct {
     pub const class_methods = .{
-        .{ "acres", NSUnitArea, .{} },
-        .{ "ares", NSUnitArea, .{} },
-        .{ "hectares", NSUnitArea, .{} },
-        .{ "squareCentimeters", NSUnitArea, .{} },
-        .{ "squareFeet", NSUnitArea, .{} },
-        .{ "squareInches", NSUnitArea, .{} },
-        .{ "squareKilometers", NSUnitArea, .{} },
-        .{ "squareMegameters", NSUnitArea, .{} },
-        .{ "squareMeters", NSUnitArea, .{} },
-        .{ "squareMicrometers", NSUnitArea, .{} },
-        .{ "squareMiles", NSUnitArea, .{} },
-        .{ "squareMillimeters", NSUnitArea, .{} },
-        .{ "squareNanometers", NSUnitArea, .{} },
-        .{ "squareYards", NSUnitArea, .{} },
+        .{ "acres", UnitArea, .{} },
+        .{ "ares", UnitArea, .{} },
+        .{ "hectares", UnitArea, .{} },
+        .{ "squareCentimeters", UnitArea, .{} },
+        .{ "squareFeet", UnitArea, .{} },
+        .{ "squareInches", UnitArea, .{} },
+        .{ "squareKilometers", UnitArea, .{} },
+        .{ "squareMegameters", UnitArea, .{} },
+        .{ "squareMeters", UnitArea, .{} },
+        .{ "squareMicrometers", UnitArea, .{} },
+        .{ "squareMiles", UnitArea, .{} },
+        .{ "squareMillimeters", UnitArea, .{} },
+        .{ "squareNanometers", UnitArea, .{} },
+        .{ "squareYards", UnitArea, .{} },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -7149,11 +7165,11 @@ pub const NSUnitArea = struct {
     }
 };
 
-pub const NSUnitConcentrationMass = struct {
+pub const UnitConcentrationMass = struct {
     pub const class_methods = .{
-        .{ "gramsPerLiter", NSUnitConcentrationMass, .{} },
-        .{ "milligramsPerDeciliter", NSUnitConcentrationMass, .{} },
-        .{ "millimolesPerLiterWithGramsPerMole:", NSUnitConcentrationMass, .{f64} },
+        .{ "gramsPerLiter", UnitConcentrationMass, .{} },
+        .{ "milligramsPerDeciliter", UnitConcentrationMass, .{} },
+        .{ "millimolesPerLiterWithGramsPerMole:", UnitConcentrationMass, .{f64} },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -7161,7 +7177,7 @@ pub const NSUnitConcentrationMass = struct {
     }
 };
 
-pub const NSUnitConverter = struct {
+pub const UnitConverter = struct {
     obj: Object,
 
     pub const methods = .{
@@ -7169,21 +7185,21 @@ pub const NSUnitConverter = struct {
         .{ "valueFromBaseUnitValue:", f64, .{f64} },
     };
 
-    pub fn send(self: NSUnitConverter, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
+    pub fn send(self: UnitConverter, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
         return objc.typedSend(methods, self.obj, selector, args);
     }
 };
 
-pub const NSUnitConverterLinear = struct {
+pub const UnitConverterLinear = struct {
     obj: Object,
 
-    pub const Super = NSUnitConverter;
+    pub const Super = UnitConverter;
     pub const methods = .{
         .{ "coefficient", f64, .{} },
         .{ "constant", f64, .{} },
     };
 
-    pub fn send(self: NSUnitConverterLinear, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
+    pub fn send(self: UnitConverterLinear, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
         return objc.typedSendChain(@This(), self.obj, selector, args);
     }
 
@@ -7197,9 +7213,9 @@ pub const NSUnitConverterLinear = struct {
     }
 };
 
-pub const NSUnitDispersion = struct {
+pub const UnitDispersion = struct {
     pub const class_methods = .{
-        .{ "partsPerMillion", NSUnitDispersion, .{} },
+        .{ "partsPerMillion", UnitDispersion, .{} },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -7207,15 +7223,15 @@ pub const NSUnitDispersion = struct {
     }
 };
 
-pub const NSUnitDuration = struct {
+pub const UnitDuration = struct {
     pub const class_methods = .{
-        .{ "hours", NSUnitDuration, .{} },
-        .{ "microseconds", NSUnitDuration, .{} },
-        .{ "milliseconds", NSUnitDuration, .{} },
-        .{ "minutes", NSUnitDuration, .{} },
-        .{ "nanoseconds", NSUnitDuration, .{} },
-        .{ "picoseconds", NSUnitDuration, .{} },
-        .{ "seconds", NSUnitDuration, .{} },
+        .{ "hours", UnitDuration, .{} },
+        .{ "microseconds", UnitDuration, .{} },
+        .{ "milliseconds", UnitDuration, .{} },
+        .{ "minutes", UnitDuration, .{} },
+        .{ "nanoseconds", UnitDuration, .{} },
+        .{ "picoseconds", UnitDuration, .{} },
+        .{ "seconds", UnitDuration, .{} },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -7223,14 +7239,14 @@ pub const NSUnitDuration = struct {
     }
 };
 
-pub const NSUnitElectricCharge = struct {
+pub const UnitElectricCharge = struct {
     pub const class_methods = .{
-        .{ "ampereHours", NSUnitElectricCharge, .{} },
-        .{ "coulombs", NSUnitElectricCharge, .{} },
-        .{ "kiloampereHours", NSUnitElectricCharge, .{} },
-        .{ "megaampereHours", NSUnitElectricCharge, .{} },
-        .{ "microampereHours", NSUnitElectricCharge, .{} },
-        .{ "milliampereHours", NSUnitElectricCharge, .{} },
+        .{ "ampereHours", UnitElectricCharge, .{} },
+        .{ "coulombs", UnitElectricCharge, .{} },
+        .{ "kiloampereHours", UnitElectricCharge, .{} },
+        .{ "megaampereHours", UnitElectricCharge, .{} },
+        .{ "microampereHours", UnitElectricCharge, .{} },
+        .{ "milliampereHours", UnitElectricCharge, .{} },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -7238,13 +7254,13 @@ pub const NSUnitElectricCharge = struct {
     }
 };
 
-pub const NSUnitElectricCurrent = struct {
+pub const UnitElectricCurrent = struct {
     pub const class_methods = .{
-        .{ "amperes", NSUnitElectricCurrent, .{} },
-        .{ "kiloamperes", NSUnitElectricCurrent, .{} },
-        .{ "megaamperes", NSUnitElectricCurrent, .{} },
-        .{ "microamperes", NSUnitElectricCurrent, .{} },
-        .{ "milliamperes", NSUnitElectricCurrent, .{} },
+        .{ "amperes", UnitElectricCurrent, .{} },
+        .{ "kiloamperes", UnitElectricCurrent, .{} },
+        .{ "megaamperes", UnitElectricCurrent, .{} },
+        .{ "microamperes", UnitElectricCurrent, .{} },
+        .{ "milliamperes", UnitElectricCurrent, .{} },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -7252,13 +7268,13 @@ pub const NSUnitElectricCurrent = struct {
     }
 };
 
-pub const NSUnitElectricPotentialDifference = struct {
+pub const UnitElectricPotentialDifference = struct {
     pub const class_methods = .{
-        .{ "kilovolts", NSUnitElectricPotentialDifference, .{} },
-        .{ "megavolts", NSUnitElectricPotentialDifference, .{} },
-        .{ "microvolts", NSUnitElectricPotentialDifference, .{} },
-        .{ "millivolts", NSUnitElectricPotentialDifference, .{} },
-        .{ "volts", NSUnitElectricPotentialDifference, .{} },
+        .{ "kilovolts", UnitElectricPotentialDifference, .{} },
+        .{ "megavolts", UnitElectricPotentialDifference, .{} },
+        .{ "microvolts", UnitElectricPotentialDifference, .{} },
+        .{ "millivolts", UnitElectricPotentialDifference, .{} },
+        .{ "volts", UnitElectricPotentialDifference, .{} },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -7266,13 +7282,13 @@ pub const NSUnitElectricPotentialDifference = struct {
     }
 };
 
-pub const NSUnitElectricResistance = struct {
+pub const UnitElectricResistance = struct {
     pub const class_methods = .{
-        .{ "kiloohms", NSUnitElectricResistance, .{} },
-        .{ "megaohms", NSUnitElectricResistance, .{} },
-        .{ "microohms", NSUnitElectricResistance, .{} },
-        .{ "milliohms", NSUnitElectricResistance, .{} },
-        .{ "ohms", NSUnitElectricResistance, .{} },
+        .{ "kiloohms", UnitElectricResistance, .{} },
+        .{ "megaohms", UnitElectricResistance, .{} },
+        .{ "microohms", UnitElectricResistance, .{} },
+        .{ "milliohms", UnitElectricResistance, .{} },
+        .{ "ohms", UnitElectricResistance, .{} },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -7280,13 +7296,13 @@ pub const NSUnitElectricResistance = struct {
     }
 };
 
-pub const NSUnitEnergy = struct {
+pub const UnitEnergy = struct {
     pub const class_methods = .{
-        .{ "calories", NSUnitEnergy, .{} },
-        .{ "joules", NSUnitEnergy, .{} },
-        .{ "kilocalories", NSUnitEnergy, .{} },
-        .{ "kilojoules", NSUnitEnergy, .{} },
-        .{ "kilowattHours", NSUnitEnergy, .{} },
+        .{ "calories", UnitEnergy, .{} },
+        .{ "joules", UnitEnergy, .{} },
+        .{ "kilocalories", UnitEnergy, .{} },
+        .{ "kilojoules", UnitEnergy, .{} },
+        .{ "kilowattHours", UnitEnergy, .{} },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -7294,17 +7310,17 @@ pub const NSUnitEnergy = struct {
     }
 };
 
-pub const NSUnitFrequency = struct {
+pub const UnitFrequency = struct {
     pub const class_methods = .{
-        .{ "framesPerSecond", NSUnitFrequency, .{} },
-        .{ "gigahertz", NSUnitFrequency, .{} },
-        .{ "hertz", NSUnitFrequency, .{} },
-        .{ "kilohertz", NSUnitFrequency, .{} },
-        .{ "megahertz", NSUnitFrequency, .{} },
-        .{ "microhertz", NSUnitFrequency, .{} },
-        .{ "millihertz", NSUnitFrequency, .{} },
-        .{ "nanohertz", NSUnitFrequency, .{} },
-        .{ "terahertz", NSUnitFrequency, .{} },
+        .{ "framesPerSecond", UnitFrequency, .{} },
+        .{ "gigahertz", UnitFrequency, .{} },
+        .{ "hertz", UnitFrequency, .{} },
+        .{ "kilohertz", UnitFrequency, .{} },
+        .{ "megahertz", UnitFrequency, .{} },
+        .{ "microhertz", UnitFrequency, .{} },
+        .{ "millihertz", UnitFrequency, .{} },
+        .{ "nanohertz", UnitFrequency, .{} },
+        .{ "terahertz", UnitFrequency, .{} },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -7312,11 +7328,11 @@ pub const NSUnitFrequency = struct {
     }
 };
 
-pub const NSUnitFuelEfficiency = struct {
+pub const UnitFuelEfficiency = struct {
     pub const class_methods = .{
-        .{ "litersPer100Kilometers", NSUnitFuelEfficiency, .{} },
-        .{ "milesPerGallon", NSUnitFuelEfficiency, .{} },
-        .{ "milesPerImperialGallon", NSUnitFuelEfficiency, .{} },
+        .{ "litersPer100Kilometers", UnitFuelEfficiency, .{} },
+        .{ "milesPerGallon", UnitFuelEfficiency, .{} },
+        .{ "milesPerImperialGallon", UnitFuelEfficiency, .{} },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -7324,9 +7340,9 @@ pub const NSUnitFuelEfficiency = struct {
     }
 };
 
-pub const NSUnitIlluminance = struct {
+pub const UnitIlluminance = struct {
     pub const class_methods = .{
-        .{ "lux", NSUnitIlluminance, .{} },
+        .{ "lux", UnitIlluminance, .{} },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -7334,43 +7350,43 @@ pub const NSUnitIlluminance = struct {
     }
 };
 
-pub const NSUnitInformationStorage = struct {
+pub const UnitInformationStorage = struct {
     pub const class_methods = .{
-        .{ "bits", NSUnitInformationStorage, .{} },
-        .{ "bytes", NSUnitInformationStorage, .{} },
-        .{ "exabits", NSUnitInformationStorage, .{} },
-        .{ "exabytes", NSUnitInformationStorage, .{} },
-        .{ "exbibits", NSUnitInformationStorage, .{} },
-        .{ "exbibytes", NSUnitInformationStorage, .{} },
-        .{ "gibibits", NSUnitInformationStorage, .{} },
-        .{ "gibibytes", NSUnitInformationStorage, .{} },
-        .{ "gigabits", NSUnitInformationStorage, .{} },
-        .{ "gigabytes", NSUnitInformationStorage, .{} },
-        .{ "kibibits", NSUnitInformationStorage, .{} },
-        .{ "kibibytes", NSUnitInformationStorage, .{} },
-        .{ "kilobits", NSUnitInformationStorage, .{} },
-        .{ "kilobytes", NSUnitInformationStorage, .{} },
-        .{ "mebibits", NSUnitInformationStorage, .{} },
-        .{ "mebibytes", NSUnitInformationStorage, .{} },
-        .{ "megabits", NSUnitInformationStorage, .{} },
-        .{ "megabytes", NSUnitInformationStorage, .{} },
-        .{ "nibbles", NSUnitInformationStorage, .{} },
-        .{ "pebibits", NSUnitInformationStorage, .{} },
-        .{ "pebibytes", NSUnitInformationStorage, .{} },
-        .{ "petabits", NSUnitInformationStorage, .{} },
-        .{ "petabytes", NSUnitInformationStorage, .{} },
-        .{ "tebibits", NSUnitInformationStorage, .{} },
-        .{ "tebibytes", NSUnitInformationStorage, .{} },
-        .{ "terabits", NSUnitInformationStorage, .{} },
-        .{ "terabytes", NSUnitInformationStorage, .{} },
-        .{ "yobibits", NSUnitInformationStorage, .{} },
-        .{ "yobibytes", NSUnitInformationStorage, .{} },
-        .{ "yottabits", NSUnitInformationStorage, .{} },
-        .{ "yottabytes", NSUnitInformationStorage, .{} },
-        .{ "zebibits", NSUnitInformationStorage, .{} },
-        .{ "zebibytes", NSUnitInformationStorage, .{} },
-        .{ "zettabits", NSUnitInformationStorage, .{} },
-        .{ "zettabytes", NSUnitInformationStorage, .{} },
+        .{ "bits", UnitInformationStorage, .{} },
+        .{ "bytes", UnitInformationStorage, .{} },
+        .{ "exabits", UnitInformationStorage, .{} },
+        .{ "exabytes", UnitInformationStorage, .{} },
+        .{ "exbibits", UnitInformationStorage, .{} },
+        .{ "exbibytes", UnitInformationStorage, .{} },
+        .{ "gibibits", UnitInformationStorage, .{} },
+        .{ "gibibytes", UnitInformationStorage, .{} },
+        .{ "gigabits", UnitInformationStorage, .{} },
+        .{ "gigabytes", UnitInformationStorage, .{} },
+        .{ "kibibits", UnitInformationStorage, .{} },
+        .{ "kibibytes", UnitInformationStorage, .{} },
+        .{ "kilobits", UnitInformationStorage, .{} },
+        .{ "kilobytes", UnitInformationStorage, .{} },
+        .{ "mebibits", UnitInformationStorage, .{} },
+        .{ "mebibytes", UnitInformationStorage, .{} },
+        .{ "megabits", UnitInformationStorage, .{} },
+        .{ "megabytes", UnitInformationStorage, .{} },
+        .{ "nibbles", UnitInformationStorage, .{} },
+        .{ "pebibits", UnitInformationStorage, .{} },
+        .{ "pebibytes", UnitInformationStorage, .{} },
+        .{ "petabits", UnitInformationStorage, .{} },
+        .{ "petabytes", UnitInformationStorage, .{} },
+        .{ "tebibits", UnitInformationStorage, .{} },
+        .{ "tebibytes", UnitInformationStorage, .{} },
+        .{ "terabits", UnitInformationStorage, .{} },
+        .{ "terabytes", UnitInformationStorage, .{} },
+        .{ "yobibits", UnitInformationStorage, .{} },
+        .{ "yobibytes", UnitInformationStorage, .{} },
+        .{ "yottabits", UnitInformationStorage, .{} },
+        .{ "yottabytes", UnitInformationStorage, .{} },
+        .{ "zebibits", UnitInformationStorage, .{} },
+        .{ "zebibytes", UnitInformationStorage, .{} },
+        .{ "zettabits", UnitInformationStorage, .{} },
+        .{ "zettabytes", UnitInformationStorage, .{} },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -7378,30 +7394,30 @@ pub const NSUnitInformationStorage = struct {
     }
 };
 
-pub const NSUnitLength = struct {
+pub const UnitLength = struct {
     pub const class_methods = .{
-        .{ "astronomicalUnits", NSUnitLength, .{} },
-        .{ "centimeters", NSUnitLength, .{} },
-        .{ "decameters", NSUnitLength, .{} },
-        .{ "decimeters", NSUnitLength, .{} },
-        .{ "fathoms", NSUnitLength, .{} },
-        .{ "feet", NSUnitLength, .{} },
-        .{ "furlongs", NSUnitLength, .{} },
-        .{ "hectometers", NSUnitLength, .{} },
-        .{ "inches", NSUnitLength, .{} },
-        .{ "kilometers", NSUnitLength, .{} },
-        .{ "lightyears", NSUnitLength, .{} },
-        .{ "megameters", NSUnitLength, .{} },
-        .{ "meters", NSUnitLength, .{} },
-        .{ "micrometers", NSUnitLength, .{} },
-        .{ "miles", NSUnitLength, .{} },
-        .{ "millimeters", NSUnitLength, .{} },
-        .{ "nanometers", NSUnitLength, .{} },
-        .{ "nauticalMiles", NSUnitLength, .{} },
-        .{ "parsecs", NSUnitLength, .{} },
-        .{ "picometers", NSUnitLength, .{} },
-        .{ "scandinavianMiles", NSUnitLength, .{} },
-        .{ "yards", NSUnitLength, .{} },
+        .{ "astronomicalUnits", UnitLength, .{} },
+        .{ "centimeters", UnitLength, .{} },
+        .{ "decameters", UnitLength, .{} },
+        .{ "decimeters", UnitLength, .{} },
+        .{ "fathoms", UnitLength, .{} },
+        .{ "feet", UnitLength, .{} },
+        .{ "furlongs", UnitLength, .{} },
+        .{ "hectometers", UnitLength, .{} },
+        .{ "inches", UnitLength, .{} },
+        .{ "kilometers", UnitLength, .{} },
+        .{ "lightyears", UnitLength, .{} },
+        .{ "megameters", UnitLength, .{} },
+        .{ "meters", UnitLength, .{} },
+        .{ "micrometers", UnitLength, .{} },
+        .{ "miles", UnitLength, .{} },
+        .{ "millimeters", UnitLength, .{} },
+        .{ "nanometers", UnitLength, .{} },
+        .{ "nauticalMiles", UnitLength, .{} },
+        .{ "parsecs", UnitLength, .{} },
+        .{ "picometers", UnitLength, .{} },
+        .{ "scandinavianMiles", UnitLength, .{} },
+        .{ "yards", UnitLength, .{} },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -7409,24 +7425,24 @@ pub const NSUnitLength = struct {
     }
 };
 
-pub const NSUnitMass = struct {
+pub const UnitMass = struct {
     pub const class_methods = .{
-        .{ "carats", NSUnitMass, .{} },
-        .{ "centigrams", NSUnitMass, .{} },
-        .{ "decigrams", NSUnitMass, .{} },
-        .{ "grams", NSUnitMass, .{} },
-        .{ "kilograms", NSUnitMass, .{} },
-        .{ "metricTons", NSUnitMass, .{} },
-        .{ "micrograms", NSUnitMass, .{} },
-        .{ "milligrams", NSUnitMass, .{} },
-        .{ "nanograms", NSUnitMass, .{} },
-        .{ "ounces", NSUnitMass, .{} },
-        .{ "ouncesTroy", NSUnitMass, .{} },
-        .{ "picograms", NSUnitMass, .{} },
-        .{ "poundsMass", NSUnitMass, .{} },
-        .{ "shortTons", NSUnitMass, .{} },
-        .{ "slugs", NSUnitMass, .{} },
-        .{ "stones", NSUnitMass, .{} },
+        .{ "carats", UnitMass, .{} },
+        .{ "centigrams", UnitMass, .{} },
+        .{ "decigrams", UnitMass, .{} },
+        .{ "grams", UnitMass, .{} },
+        .{ "kilograms", UnitMass, .{} },
+        .{ "metricTons", UnitMass, .{} },
+        .{ "micrograms", UnitMass, .{} },
+        .{ "milligrams", UnitMass, .{} },
+        .{ "nanograms", UnitMass, .{} },
+        .{ "ounces", UnitMass, .{} },
+        .{ "ouncesTroy", UnitMass, .{} },
+        .{ "picograms", UnitMass, .{} },
+        .{ "poundsMass", UnitMass, .{} },
+        .{ "shortTons", UnitMass, .{} },
+        .{ "slugs", UnitMass, .{} },
+        .{ "stones", UnitMass, .{} },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -7434,19 +7450,19 @@ pub const NSUnitMass = struct {
     }
 };
 
-pub const NSUnitPower = struct {
+pub const UnitPower = struct {
     pub const class_methods = .{
-        .{ "femtowatts", NSUnitPower, .{} },
-        .{ "gigawatts", NSUnitPower, .{} },
-        .{ "horsepower", NSUnitPower, .{} },
-        .{ "kilowatts", NSUnitPower, .{} },
-        .{ "megawatts", NSUnitPower, .{} },
-        .{ "microwatts", NSUnitPower, .{} },
-        .{ "milliwatts", NSUnitPower, .{} },
-        .{ "nanowatts", NSUnitPower, .{} },
-        .{ "picowatts", NSUnitPower, .{} },
-        .{ "terawatts", NSUnitPower, .{} },
-        .{ "watts", NSUnitPower, .{} },
+        .{ "femtowatts", UnitPower, .{} },
+        .{ "gigawatts", UnitPower, .{} },
+        .{ "horsepower", UnitPower, .{} },
+        .{ "kilowatts", UnitPower, .{} },
+        .{ "megawatts", UnitPower, .{} },
+        .{ "microwatts", UnitPower, .{} },
+        .{ "milliwatts", UnitPower, .{} },
+        .{ "nanowatts", UnitPower, .{} },
+        .{ "picowatts", UnitPower, .{} },
+        .{ "terawatts", UnitPower, .{} },
+        .{ "watts", UnitPower, .{} },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -7454,18 +7470,18 @@ pub const NSUnitPower = struct {
     }
 };
 
-pub const NSUnitPressure = struct {
+pub const UnitPressure = struct {
     pub const class_methods = .{
-        .{ "bars", NSUnitPressure, .{} },
-        .{ "gigapascals", NSUnitPressure, .{} },
-        .{ "hectopascals", NSUnitPressure, .{} },
-        .{ "inchesOfMercury", NSUnitPressure, .{} },
-        .{ "kilopascals", NSUnitPressure, .{} },
-        .{ "megapascals", NSUnitPressure, .{} },
-        .{ "millibars", NSUnitPressure, .{} },
-        .{ "millimetersOfMercury", NSUnitPressure, .{} },
-        .{ "newtonsPerMetersSquared", NSUnitPressure, .{} },
-        .{ "poundsForcePerSquareInch", NSUnitPressure, .{} },
+        .{ "bars", UnitPressure, .{} },
+        .{ "gigapascals", UnitPressure, .{} },
+        .{ "hectopascals", UnitPressure, .{} },
+        .{ "inchesOfMercury", UnitPressure, .{} },
+        .{ "kilopascals", UnitPressure, .{} },
+        .{ "megapascals", UnitPressure, .{} },
+        .{ "millibars", UnitPressure, .{} },
+        .{ "millimetersOfMercury", UnitPressure, .{} },
+        .{ "newtonsPerMetersSquared", UnitPressure, .{} },
+        .{ "poundsForcePerSquareInch", UnitPressure, .{} },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -7473,12 +7489,12 @@ pub const NSUnitPressure = struct {
     }
 };
 
-pub const NSUnitSpeed = struct {
+pub const UnitSpeed = struct {
     pub const class_methods = .{
-        .{ "kilometersPerHour", NSUnitSpeed, .{} },
-        .{ "knots", NSUnitSpeed, .{} },
-        .{ "metersPerSecond", NSUnitSpeed, .{} },
-        .{ "milesPerHour", NSUnitSpeed, .{} },
+        .{ "kilometersPerHour", UnitSpeed, .{} },
+        .{ "knots", UnitSpeed, .{} },
+        .{ "metersPerSecond", UnitSpeed, .{} },
+        .{ "milesPerHour", UnitSpeed, .{} },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -7486,11 +7502,11 @@ pub const NSUnitSpeed = struct {
     }
 };
 
-pub const NSUnitTemperature = struct {
+pub const UnitTemperature = struct {
     pub const class_methods = .{
-        .{ "celsius", NSUnitTemperature, .{} },
-        .{ "fahrenheit", NSUnitTemperature, .{} },
-        .{ "kelvin", NSUnitTemperature, .{} },
+        .{ "celsius", UnitTemperature, .{} },
+        .{ "fahrenheit", UnitTemperature, .{} },
+        .{ "kelvin", UnitTemperature, .{} },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -7498,39 +7514,39 @@ pub const NSUnitTemperature = struct {
     }
 };
 
-pub const NSUnitVolume = struct {
+pub const UnitVolume = struct {
     pub const class_methods = .{
-        .{ "acreFeet", NSUnitVolume, .{} },
-        .{ "bushels", NSUnitVolume, .{} },
-        .{ "centiliters", NSUnitVolume, .{} },
-        .{ "cubicCentimeters", NSUnitVolume, .{} },
-        .{ "cubicDecimeters", NSUnitVolume, .{} },
-        .{ "cubicFeet", NSUnitVolume, .{} },
-        .{ "cubicInches", NSUnitVolume, .{} },
-        .{ "cubicKilometers", NSUnitVolume, .{} },
-        .{ "cubicMeters", NSUnitVolume, .{} },
-        .{ "cubicMiles", NSUnitVolume, .{} },
-        .{ "cubicMillimeters", NSUnitVolume, .{} },
-        .{ "cubicYards", NSUnitVolume, .{} },
-        .{ "cups", NSUnitVolume, .{} },
-        .{ "deciliters", NSUnitVolume, .{} },
-        .{ "fluidOunces", NSUnitVolume, .{} },
-        .{ "gallons", NSUnitVolume, .{} },
-        .{ "imperialFluidOunces", NSUnitVolume, .{} },
-        .{ "imperialGallons", NSUnitVolume, .{} },
-        .{ "imperialPints", NSUnitVolume, .{} },
-        .{ "imperialQuarts", NSUnitVolume, .{} },
-        .{ "imperialTablespoons", NSUnitVolume, .{} },
-        .{ "imperialTeaspoons", NSUnitVolume, .{} },
-        .{ "kiloliters", NSUnitVolume, .{} },
-        .{ "liters", NSUnitVolume, .{} },
-        .{ "megaliters", NSUnitVolume, .{} },
-        .{ "metricCups", NSUnitVolume, .{} },
-        .{ "milliliters", NSUnitVolume, .{} },
-        .{ "pints", NSUnitVolume, .{} },
-        .{ "quarts", NSUnitVolume, .{} },
-        .{ "tablespoons", NSUnitVolume, .{} },
-        .{ "teaspoons", NSUnitVolume, .{} },
+        .{ "acreFeet", UnitVolume, .{} },
+        .{ "bushels", UnitVolume, .{} },
+        .{ "centiliters", UnitVolume, .{} },
+        .{ "cubicCentimeters", UnitVolume, .{} },
+        .{ "cubicDecimeters", UnitVolume, .{} },
+        .{ "cubicFeet", UnitVolume, .{} },
+        .{ "cubicInches", UnitVolume, .{} },
+        .{ "cubicKilometers", UnitVolume, .{} },
+        .{ "cubicMeters", UnitVolume, .{} },
+        .{ "cubicMiles", UnitVolume, .{} },
+        .{ "cubicMillimeters", UnitVolume, .{} },
+        .{ "cubicYards", UnitVolume, .{} },
+        .{ "cups", UnitVolume, .{} },
+        .{ "deciliters", UnitVolume, .{} },
+        .{ "fluidOunces", UnitVolume, .{} },
+        .{ "gallons", UnitVolume, .{} },
+        .{ "imperialFluidOunces", UnitVolume, .{} },
+        .{ "imperialGallons", UnitVolume, .{} },
+        .{ "imperialPints", UnitVolume, .{} },
+        .{ "imperialQuarts", UnitVolume, .{} },
+        .{ "imperialTablespoons", UnitVolume, .{} },
+        .{ "imperialTeaspoons", UnitVolume, .{} },
+        .{ "kiloliters", UnitVolume, .{} },
+        .{ "liters", UnitVolume, .{} },
+        .{ "megaliters", UnitVolume, .{} },
+        .{ "metricCups", UnitVolume, .{} },
+        .{ "milliliters", UnitVolume, .{} },
+        .{ "pints", UnitVolume, .{} },
+        .{ "quarts", UnitVolume, .{} },
+        .{ "tablespoons", UnitVolume, .{} },
+        .{ "teaspoons", UnitVolume, .{} },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -7543,14 +7559,14 @@ pub const NSUserActivity = struct {
 
     pub const methods = .{
         .{ "activityType", objc.NSString, .{} },
-        .{ "addUserInfoEntriesFromDictionary:", void, .{Any} },
+        .{ "addUserInfoEntriesFromDictionary:", void, .{Object} },
         .{ "becomeCurrent", void, .{} },
         .{ "delegate", ?NSUserActivityDelegate, .{} },
         .{ "eligibleForHandoff", objc.BOOL, .{} },
         .{ "eligibleForPublicIndexing", objc.BOOL, .{} },
         .{ "eligibleForSearch", objc.BOOL, .{} },
         .{ "expirationDate", ?NSDate, .{} },
-        .{ "getContinuationStreamsWithCompletionHandler:", void, .{void} },
+        .{ "getContinuationStreamsWithCompletionHandler:", void, .{?*anyopaque} },
         .{ "invalidate", void, .{} },
         .{ "keywords", objc.NSString, .{} },
         .{ "needsSave", objc.BOOL, .{} },
@@ -7585,8 +7601,8 @@ pub const NSUserActivity = struct {
     }
 
     pub const class_methods = .{
-        .{ "deleteAllSavedUserActivitiesWithCompletionHandler:", void, .{void} },
-        .{ "deleteSavedUserActivitiesWithPersistentIdentifiers:completionHandler:", void, .{ void, void } },
+        .{ "deleteAllSavedUserActivitiesWithCompletionHandler:", void, .{?*anyopaque} },
+        .{ "deleteSavedUserActivitiesWithPersistentIdentifiers:completionHandler:", void, .{ Object, ?*anyopaque } },
         .{ "init", Object, .{} },
         .{ "initWithActivityType:", Object, .{objc.NSString} },
     };
@@ -7614,7 +7630,7 @@ pub const NSUserAutomatorTask = struct {
 
     pub const Super = NSUserScriptTask;
     pub const methods = .{
-        .{ "executeWithInput:completionHandler:", void, .{ void, void } },
+        .{ "executeWithInput:completionHandler:", void, .{ ?NSSecureCoding, void } },
         .{ "setVariables:", void, .{?*anyopaque} },
         .{ "variables", ?*anyopaque, .{} },
     };
@@ -7624,7 +7640,7 @@ pub const NSUserAutomatorTask = struct {
     }
 };
 
-pub const NSUserDefaults = struct {
+pub const UserDefaults = struct {
     obj: Object,
 
     pub const methods = .{
@@ -7642,7 +7658,7 @@ pub const NSUserDefaults = struct {
         .{ "objectIsForcedForKey:", objc.BOOL, .{objc.NSString} },
         .{ "objectIsForcedForKey:inDomain:", objc.BOOL, .{ objc.NSString, objc.NSString } },
         .{ "persistentDomainForName:", ?*anyopaque, .{objc.NSString} },
-        .{ "registerDefaults:", void, .{Any} },
+        .{ "registerDefaults:", void, .{Object} },
         .{ "removeObjectForKey:", void, .{objc.NSString} },
         .{ "removePersistentDomainForName:", void, .{objc.NSString} },
         .{ "removeSuiteNamed:", void, .{objc.NSString} },
@@ -7652,9 +7668,9 @@ pub const NSUserDefaults = struct {
         .{ "setFloat:forKey:", void, .{ f32, objc.NSString } },
         .{ "setInteger:forKey:", void, .{ objc.NSInteger, objc.NSString } },
         .{ "setObject:forKey:", void, .{ ?Any, objc.NSString } },
-        .{ "setPersistentDomain:forName:", void, .{ Any, objc.NSString } },
+        .{ "setPersistentDomain:forName:", void, .{ Object, objc.NSString } },
         .{ "setURL:forKey:", void, .{ ?NSURL, objc.NSString } },
-        .{ "setVolatileDomain:forName:", void, .{ Any, objc.NSString } },
+        .{ "setVolatileDomain:forName:", void, .{ Object, objc.NSString } },
         .{ "stringArrayForKey:", ?*anyopaque, .{objc.NSString} },
         .{ "stringForKey:", ?objc.NSString, .{objc.NSString} },
         .{ "synchronize", objc.BOOL, .{} },
@@ -7662,7 +7678,7 @@ pub const NSUserDefaults = struct {
         .{ "volatileDomainNames", Object, .{} },
     };
 
-    pub fn send(self: NSUserDefaults, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
+    pub fn send(self: UserDefaults, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
         return objc.typedSend(methods, self.obj, selector, args);
     }
 
@@ -7670,7 +7686,7 @@ pub const NSUserDefaults = struct {
         .{ "init", Object, .{} },
         .{ "initWithSuiteName:", Object, .{?objc.NSString} },
         .{ "resetStandardUserDefaults", void, .{} },
-        .{ "standardUserDefaults", NSUserDefaults, .{} },
+        .{ "standardUserDefaults", UserDefaults, .{} },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -7687,10 +7703,10 @@ pub const NSUserNotification = struct {
         .{ "actualDeliveryDate", ?NSDate, .{} },
         .{ "additionalActions", ?*anyopaque, .{} },
         .{ "additionalActivationAction", ?NSUserNotificationAction, .{} },
-        .{ "contentImage", ?*anyopaque, .{} },
+        .{ "contentImage", ?AppKit.NSImage, .{} },
         .{ "deliveryDate", ?NSDate, .{} },
-        .{ "deliveryRepeatInterval", ?*anyopaque, .{} },
-        .{ "deliveryTimeZone", ?*anyopaque, .{} },
+        .{ "deliveryRepeatInterval", ?NSDateComponents, .{} },
+        .{ "deliveryTimeZone", ?NSTimeZone, .{} },
         .{ "hasActionButton", objc.BOOL, .{} },
         .{ "hasReplyButton", objc.BOOL, .{} },
         .{ "identifier", ?objc.NSString, .{} },
@@ -7702,10 +7718,10 @@ pub const NSUserNotification = struct {
         .{ "responsePlaceholder", ?objc.NSString, .{} },
         .{ "setActionButtonTitle:", void, .{objc.NSString} },
         .{ "setAdditionalActions:", void, .{?*anyopaque} },
-        .{ "setContentImage:", void, .{?*anyopaque} },
+        .{ "setContentImage:", void, .{?AppKit.NSImage} },
         .{ "setDeliveryDate:", void, .{?NSDate} },
-        .{ "setDeliveryRepeatInterval:", void, .{?*anyopaque} },
-        .{ "setDeliveryTimeZone:", void, .{?*anyopaque} },
+        .{ "setDeliveryRepeatInterval:", void, .{?NSDateComponents} },
+        .{ "setDeliveryTimeZone:", void, .{?NSTimeZone} },
         .{ "setHasActionButton:", void, .{objc.BOOL} },
         .{ "setHasReplyButton:", void, .{objc.BOOL} },
         .{ "setIdentifier:", void, .{?objc.NSString} },
@@ -7819,13 +7835,13 @@ pub const NSUserUnixTask = struct {
 
     pub const Super = NSUserScriptTask;
     pub const methods = .{
-        .{ "executeWithArguments:completionHandler:", void, .{ void, void } },
-        .{ "setStandardError:", void, .{?NSFileHandle} },
-        .{ "setStandardInput:", void, .{?NSFileHandle} },
-        .{ "setStandardOutput:", void, .{?NSFileHandle} },
-        .{ "standardError", ?NSFileHandle, .{} },
-        .{ "standardInput", ?NSFileHandle, .{} },
-        .{ "standardOutput", ?NSFileHandle, .{} },
+        .{ "executeWithArguments:completionHandler:", void, .{ ?*anyopaque, void } },
+        .{ "setStandardError:", void, .{?FileHandle} },
+        .{ "setStandardInput:", void, .{?FileHandle} },
+        .{ "setStandardOutput:", void, .{?FileHandle} },
+        .{ "standardError", ?FileHandle, .{} },
+        .{ "standardInput", ?FileHandle, .{} },
+        .{ "standardOutput", ?FileHandle, .{} },
     };
 
     pub fn send(self: NSUserUnixTask, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
@@ -7873,7 +7889,7 @@ pub const NSValue = struct {
     }
 };
 
-pub const NSValueTransformer = struct {
+pub const ValueTransformer = struct {
     obj: Object,
 
     pub const methods = .{
@@ -7881,13 +7897,13 @@ pub const NSValueTransformer = struct {
         .{ "transformedValue:", ?Any, .{?Any} },
     };
 
-    pub fn send(self: NSValueTransformer, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
+    pub fn send(self: ValueTransformer, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
         return objc.typedSend(methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
         .{ "allowsReverseTransformation", objc.BOOL, .{} },
-        .{ "setValueTransformer:forName:", void, .{ ?NSValueTransformer, objc.NSString } },
+        .{ "setValueTransformer:forName:", void, .{ ?ValueTransformer, objc.NSString } },
         .{ "transformedValueClass", AnyClass, .{} },
         .{ "valueTransformerForName:", Object, .{objc.NSString} },
         .{ "valueTransformerNames", Object, .{} },
@@ -7937,28 +7953,28 @@ pub const NSWhoseSpecifier = struct {
     };
 };
 
-pub const NSXMLDTD = struct {
+pub const XMLDTD = struct {
     obj: Object,
 
-    pub const Super = NSXMLNode;
+    pub const Super = XMLNode;
     pub const methods = .{
-        .{ "addChild:", void, .{NSXMLNode} },
-        .{ "attributeDeclarationForName:elementName:", ?NSXMLDTDNode, .{ objc.NSString, objc.NSString } },
-        .{ "elementDeclarationForName:", ?NSXMLDTDNode, .{objc.NSString} },
-        .{ "entityDeclarationForName:", ?NSXMLDTDNode, .{objc.NSString} },
-        .{ "insertChild:atIndex:", void, .{ NSXMLNode, objc.NSInteger } },
-        .{ "insertChildren:atIndex:", void, .{ void, objc.NSInteger } },
-        .{ "notationDeclarationForName:", ?NSXMLDTDNode, .{objc.NSString} },
+        .{ "addChild:", void, .{XMLNode} },
+        .{ "attributeDeclarationForName:elementName:", ?XMLDTDNode, .{ objc.NSString, objc.NSString } },
+        .{ "elementDeclarationForName:", ?XMLDTDNode, .{objc.NSString} },
+        .{ "entityDeclarationForName:", ?XMLDTDNode, .{objc.NSString} },
+        .{ "insertChild:atIndex:", void, .{ XMLNode, objc.NSInteger } },
+        .{ "insertChildren:atIndex:", void, .{ Object, objc.NSInteger } },
+        .{ "notationDeclarationForName:", ?XMLDTDNode, .{objc.NSString} },
         .{ "publicID", ?objc.NSString, .{} },
         .{ "removeChildAtIndex:", void, .{objc.NSInteger} },
-        .{ "replaceChildAtIndex:withNode:", void, .{ objc.NSInteger, NSXMLNode } },
-        .{ "setChildren:", void, .{void} },
+        .{ "replaceChildAtIndex:withNode:", void, .{ objc.NSInteger, XMLNode } },
+        .{ "setChildren:", void, .{?*anyopaque} },
         .{ "setPublicID:", void, .{?objc.NSString} },
         .{ "setSystemID:", void, .{?objc.NSString} },
         .{ "systemID", ?objc.NSString, .{} },
     };
 
-    pub fn send(self: NSXMLDTD, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
+    pub fn send(self: XMLDTD, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
         return objc.typedSendChain(@This(), self.obj, selector, args);
     }
 
@@ -7966,7 +7982,7 @@ pub const NSXMLDTD = struct {
         .{ "init", Object, .{} },
         .{ "initWithContentsOfURL:options:error:", Object, .{ NSURL, objc.NSInteger } },
         .{ "initWithData:options:error:", Object, .{ NSData, objc.NSInteger } },
-        .{ "predefinedEntityDeclarationForName:", ?NSXMLDTDNode, .{objc.NSString} },
+        .{ "predefinedEntityDeclarationForName:", ?XMLDTDNode, .{objc.NSString} },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -7974,29 +7990,29 @@ pub const NSXMLDTD = struct {
     }
 };
 
-pub const NSXMLDTDNode = struct {
+pub const XMLDTDNode = struct {
     obj: Object,
 
-    pub const Super = NSXMLNode;
+    pub const Super = XMLNode;
     pub const methods = .{
-        .{ "DTDKind", NSXMLDTDNode.DTDKind, .{} },
+        .{ "DTDKind", XMLDTDNode.DTDKind, .{} },
         .{ "external", objc.BOOL, .{} },
         .{ "notationName", ?objc.NSString, .{} },
         .{ "publicID", ?objc.NSString, .{} },
-        .{ "setDTDKind:", void, .{NSXMLDTDNode.DTDKind} },
+        .{ "setDTDKind:", void, .{XMLDTDNode.DTDKind} },
         .{ "setNotationName:", void, .{?objc.NSString} },
         .{ "setPublicID:", void, .{?objc.NSString} },
         .{ "setSystemID:", void, .{?objc.NSString} },
         .{ "systemID", ?objc.NSString, .{} },
     };
 
-    pub fn send(self: NSXMLDTDNode, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
+    pub fn send(self: XMLDTDNode, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
         return objc.typedSendChain(@This(), self.obj, selector, args);
     }
 
     pub const class_methods = .{
         .{ "init", Object, .{} },
-        .{ "initWithKind:options:", Object, .{ NSXMLNode.Kind, objc.NSInteger } },
+        .{ "initWithKind:options:", Object, .{ XMLNode.Kind, objc.NSInteger } },
         .{ "initWithXMLString:", Object, .{objc.NSString} },
     };
 
@@ -8028,32 +8044,32 @@ pub const NSXMLDTDNode = struct {
     };
 };
 
-pub const NSXMLDocument = struct {
+pub const XMLDocument = struct {
     obj: Object,
 
-    pub const Super = NSXMLNode;
+    pub const Super = XMLNode;
     pub const methods = .{
-        .{ "DTD", ?NSXMLDTD, .{} },
+        .{ "DTD", ?XMLDTD, .{} },
         .{ "MIMEType", ?objc.NSString, .{} },
         .{ "XMLData", NSData, .{} },
         .{ "XMLDataWithOptions:", NSData, .{objc.NSInteger} },
-        .{ "addChild:", void, .{NSXMLNode} },
+        .{ "addChild:", void, .{XMLNode} },
         .{ "characterEncoding", ?objc.NSString, .{} },
-        .{ "documentContentKind", NSXMLDocument.ContentKind, .{} },
-        .{ "insertChild:atIndex:", void, .{ NSXMLNode, objc.NSInteger } },
-        .{ "insertChildren:atIndex:", void, .{ void, objc.NSInteger } },
-        .{ "objectByApplyingXSLT:arguments:error:", Any, .{ NSData, ?objc.NSString } },
-        .{ "objectByApplyingXSLTAtURL:arguments:error:", Any, .{ NSURL, ?objc.NSString } },
-        .{ "objectByApplyingXSLTString:arguments:error:", Any, .{ objc.NSString, ?objc.NSString } },
+        .{ "documentContentKind", XMLDocument.ContentKind, .{} },
+        .{ "insertChild:atIndex:", void, .{ XMLNode, objc.NSInteger } },
+        .{ "insertChildren:atIndex:", void, .{ Object, objc.NSInteger } },
+        .{ "objectByApplyingXSLT:arguments:error:", Any, .{ NSData, ?*anyopaque } },
+        .{ "objectByApplyingXSLTAtURL:arguments:error:", Any, .{ NSURL, ?*anyopaque } },
+        .{ "objectByApplyingXSLTString:arguments:error:", Any, .{ objc.NSString, ?*anyopaque } },
         .{ "removeChildAtIndex:", void, .{objc.NSInteger} },
-        .{ "replaceChildAtIndex:withNode:", void, .{ objc.NSInteger, NSXMLNode } },
-        .{ "rootElement", ?NSXMLElement, .{} },
+        .{ "replaceChildAtIndex:withNode:", void, .{ objc.NSInteger, XMLNode } },
+        .{ "rootElement", ?XMLElement, .{} },
         .{ "setCharacterEncoding:", void, .{?objc.NSString} },
-        .{ "setChildren:", void, .{void} },
-        .{ "setDTD:", void, .{?NSXMLDTD} },
-        .{ "setDocumentContentKind:", void, .{NSXMLDocument.ContentKind} },
+        .{ "setChildren:", void, .{?*anyopaque} },
+        .{ "setDTD:", void, .{?XMLDTD} },
+        .{ "setDocumentContentKind:", void, .{XMLDocument.ContentKind} },
         .{ "setMIMEType:", void, .{?objc.NSString} },
-        .{ "setRootElement:", void, .{NSXMLElement} },
+        .{ "setRootElement:", void, .{XMLElement} },
         .{ "setStandalone:", void, .{objc.BOOL} },
         .{ "setVersion:", void, .{?objc.NSString} },
         .{ "standalone", objc.BOOL, .{} },
@@ -8061,7 +8077,7 @@ pub const NSXMLDocument = struct {
         .{ "version", ?objc.NSString, .{} },
     };
 
-    pub fn send(self: NSXMLDocument, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
+    pub fn send(self: XMLDocument, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
         return objc.typedSendChain(@This(), self.obj, selector, args);
     }
 
@@ -8069,7 +8085,7 @@ pub const NSXMLDocument = struct {
         .{ "init", Object, .{} },
         .{ "initWithContentsOfURL:options:error:", Object, .{ NSURL, objc.NSInteger } },
         .{ "initWithData:options:error:", Object, .{ NSData, objc.NSInteger } },
-        .{ "initWithRootElement:", Object, .{?NSXMLElement} },
+        .{ "initWithRootElement:", Object, .{?XMLElement} },
         .{ "initWithXMLString:options:error:", Object, .{ objc.NSString, objc.NSInteger } },
         .{ "replacementClassForClass:", AnyClass, .{AnyClass} },
     };
@@ -8086,43 +8102,43 @@ pub const NSXMLDocument = struct {
     };
 };
 
-pub const NSXMLElement = struct {
+pub const XMLElement = struct {
     obj: Object,
 
-    pub const Super = NSXMLNode;
+    pub const Super = XMLNode;
     pub const methods = .{
-        .{ "addAttribute:", void, .{NSXMLNode} },
-        .{ "addChild:", void, .{NSXMLNode} },
-        .{ "addNamespace:", void, .{NSXMLNode} },
-        .{ "attributeForLocalName:URI:", ?NSXMLNode, .{ objc.NSString, ?objc.NSString } },
-        .{ "attributeForName:", ?NSXMLNode, .{objc.NSString} },
+        .{ "addAttribute:", void, .{XMLNode} },
+        .{ "addChild:", void, .{XMLNode} },
+        .{ "addNamespace:", void, .{XMLNode} },
+        .{ "attributeForLocalName:URI:", ?XMLNode, .{ objc.NSString, ?objc.NSString } },
+        .{ "attributeForName:", ?XMLNode, .{objc.NSString} },
         .{ "attributes", ?*anyopaque, .{} },
         .{ "elementsForLocalName:URI:", Object, .{ objc.NSString, ?objc.NSString } },
         .{ "elementsForName:", Object, .{objc.NSString} },
-        .{ "insertChild:atIndex:", void, .{ NSXMLNode, objc.NSInteger } },
-        .{ "insertChildren:atIndex:", void, .{ void, objc.NSInteger } },
-        .{ "namespaceForPrefix:", ?NSXMLNode, .{objc.NSString} },
+        .{ "insertChild:atIndex:", void, .{ XMLNode, objc.NSInteger } },
+        .{ "insertChildren:atIndex:", void, .{ Object, objc.NSInteger } },
+        .{ "namespaceForPrefix:", ?XMLNode, .{objc.NSString} },
         .{ "namespaces", ?*anyopaque, .{} },
         .{ "normalizeAdjacentTextNodesPreservingCDATA:", void, .{objc.BOOL} },
         .{ "removeAttributeForName:", void, .{objc.NSString} },
         .{ "removeChildAtIndex:", void, .{objc.NSInteger} },
         .{ "removeNamespaceForPrefix:", void, .{objc.NSString} },
-        .{ "replaceChildAtIndex:withNode:", void, .{ objc.NSInteger, NSXMLNode } },
-        .{ "resolveNamespaceForName:", ?NSXMLNode, .{objc.NSString} },
+        .{ "replaceChildAtIndex:withNode:", void, .{ objc.NSInteger, XMLNode } },
+        .{ "resolveNamespaceForName:", ?XMLNode, .{objc.NSString} },
         .{ "resolvePrefixForNamespaceURI:", ?objc.NSString, .{objc.NSString} },
         .{ "setAttributes:", void, .{?*anyopaque} },
-        .{ "setAttributesAsDictionary:", void, .{Any} },
-        .{ "setAttributesWithDictionary:", void, .{objc.NSString} },
-        .{ "setChildren:", void, .{void} },
+        .{ "setAttributesAsDictionary:", void, .{Object} },
+        .{ "setAttributesWithDictionary:", void, .{Object} },
+        .{ "setChildren:", void, .{?*anyopaque} },
         .{ "setNamespaces:", void, .{?*anyopaque} },
     };
 
-    pub fn send(self: NSXMLElement, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
+    pub fn send(self: XMLElement, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
         return objc.typedSendChain(@This(), self.obj, selector, args);
     }
 
     pub const class_methods = .{
-        .{ "initWithKind:options:", Object, .{ NSXMLNode.Kind, objc.NSInteger } },
+        .{ "initWithKind:options:", Object, .{ XMLNode.Kind, objc.NSInteger } },
         .{ "initWithName:", Object, .{objc.NSString} },
         .{ "initWithName:URI:", Object, .{ objc.NSString, ?objc.NSString } },
         .{ "initWithName:stringValue:", Object, .{ objc.NSString, ?objc.NSString } },
@@ -8134,7 +8150,7 @@ pub const NSXMLElement = struct {
     }
 };
 
-pub const NSXMLNode = struct {
+pub const XMLNode = struct {
     obj: Object,
 
     pub const methods = .{
@@ -8143,27 +8159,27 @@ pub const NSXMLNode = struct {
         .{ "XMLStringWithOptions:", objc.NSString, .{objc.NSInteger} },
         .{ "XPath", ?objc.NSString, .{} },
         .{ "canonicalXMLStringPreservingComments:", objc.NSString, .{objc.BOOL} },
-        .{ "childAtIndex:", ?NSXMLNode, .{objc.NSInteger} },
+        .{ "childAtIndex:", ?XMLNode, .{objc.NSInteger} },
         .{ "childCount", objc.NSInteger, .{} },
         .{ "children", ?*anyopaque, .{} },
         .{ "description", objc.NSString, .{} },
         .{ "detach", void, .{} },
         .{ "index", objc.NSInteger, .{} },
-        .{ "kind", NSXMLNode.Kind, .{} },
+        .{ "kind", XMLNode.Kind, .{} },
         .{ "level", objc.NSInteger, .{} },
         .{ "localName", ?objc.NSString, .{} },
         .{ "name", ?objc.NSString, .{} },
-        .{ "nextNode", ?NSXMLNode, .{} },
-        .{ "nextSibling", ?NSXMLNode, .{} },
+        .{ "nextNode", ?XMLNode, .{} },
+        .{ "nextSibling", ?XMLNode, .{} },
         .{ "nodesForXPath:error:", Object, .{objc.NSString} },
         .{ "objectValue", ?Any, .{} },
-        .{ "objectsForXQuery:constants:error:", Object, .{ objc.NSString, ?Any } },
+        .{ "objectsForXQuery:constants:error:", Object, .{ objc.NSString, ?*anyopaque } },
         .{ "objectsForXQuery:error:", Object, .{objc.NSString} },
-        .{ "parent", ?NSXMLNode, .{} },
+        .{ "parent", ?XMLNode, .{} },
         .{ "prefix", ?objc.NSString, .{} },
-        .{ "previousNode", ?NSXMLNode, .{} },
-        .{ "previousSibling", ?NSXMLNode, .{} },
-        .{ "rootDocument", ?NSXMLDocument, .{} },
+        .{ "previousNode", ?XMLNode, .{} },
+        .{ "previousSibling", ?XMLNode, .{} },
+        .{ "rootDocument", ?XMLDocument, .{} },
         .{ "setName:", void, .{?objc.NSString} },
         .{ "setObjectValue:", void, .{?Any} },
         .{ "setStringValue:", void, .{?objc.NSString} },
@@ -8172,7 +8188,7 @@ pub const NSXMLNode = struct {
         .{ "stringValue", ?objc.NSString, .{} },
     };
 
-    pub fn send(self: NSXMLNode, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
+    pub fn send(self: XMLNode, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
         return objc.typedSend(methods, self.obj, selector, args);
     }
 
@@ -8182,17 +8198,17 @@ pub const NSXMLNode = struct {
         .{ "attributeWithName:stringValue:", Any, .{ objc.NSString, objc.NSString } },
         .{ "commentWithStringValue:", Any, .{objc.NSString} },
         .{ "document", Any, .{} },
-        .{ "documentWithRootElement:", Any, .{NSXMLElement} },
+        .{ "documentWithRootElement:", Any, .{XMLElement} },
         .{ "elementWithName:", Any, .{objc.NSString} },
         .{ "elementWithName:URI:", Any, .{ objc.NSString, objc.NSString } },
-        .{ "elementWithName:children:attributes:", Any, .{ objc.NSString, void, void } },
+        .{ "elementWithName:children:attributes:", Any, .{ objc.NSString, ?*anyopaque, ?*anyopaque } },
         .{ "elementWithName:stringValue:", Any, .{ objc.NSString, objc.NSString } },
         .{ "init", Object, .{} },
-        .{ "initWithKind:", Object, .{NSXMLNode.Kind} },
-        .{ "initWithKind:options:", Object, .{ NSXMLNode.Kind, objc.NSInteger } },
+        .{ "initWithKind:", Object, .{XMLNode.Kind} },
+        .{ "initWithKind:options:", Object, .{ XMLNode.Kind, objc.NSInteger } },
         .{ "localNameForName:", objc.NSString, .{objc.NSString} },
         .{ "namespaceWithName:stringValue:", Any, .{ objc.NSString, objc.NSString } },
-        .{ "predefinedNamespaceForPrefix:", ?NSXMLNode, .{objc.NSString} },
+        .{ "predefinedNamespaceForPrefix:", ?XMLNode, .{objc.NSString} },
         .{ "prefixForName:", ?objc.NSString, .{objc.NSString} },
         .{ "processingInstructionWithName:stringValue:", Any, .{ objc.NSString, objc.NSString } },
         .{ "textWithStringValue:", Any, .{objc.NSString} },
@@ -8219,7 +8235,7 @@ pub const NSXMLNode = struct {
     };
 };
 
-pub const NSXMLParser = struct {
+pub const XMLParser = struct {
     obj: Object,
 
     pub const methods = .{
@@ -8227,14 +8243,14 @@ pub const NSXMLParser = struct {
         .{ "allowedExternalEntityURLs", ?NSURL, .{} },
         .{ "columnNumber", objc.NSInteger, .{} },
         .{ "delegate", ?XMLParserDelegate, .{} },
-        .{ "externalEntityResolvingPolicy", NSXMLParser.ExternalEntityResolvingPolicy, .{} },
+        .{ "externalEntityResolvingPolicy", XMLParser.ExternalEntityResolvingPolicy, .{} },
         .{ "lineNumber", objc.NSInteger, .{} },
         .{ "parse", objc.BOOL, .{} },
         .{ "parserError", ?*anyopaque, .{} },
         .{ "publicID", ?objc.NSString, .{} },
         .{ "setAllowedExternalEntityURLs:", void, .{?NSURL} },
         .{ "setDelegate:", void, .{?XMLParserDelegate} },
-        .{ "setExternalEntityResolvingPolicy:", void, .{NSXMLParser.ExternalEntityResolvingPolicy} },
+        .{ "setExternalEntityResolvingPolicy:", void, .{XMLParser.ExternalEntityResolvingPolicy} },
         .{ "setShouldProcessNamespaces:", void, .{objc.BOOL} },
         .{ "setShouldReportNamespacePrefixes:", void, .{objc.BOOL} },
         .{ "setShouldResolveExternalEntities:", void, .{objc.BOOL} },
@@ -8244,14 +8260,14 @@ pub const NSXMLParser = struct {
         .{ "systemID", ?objc.NSString, .{} },
     };
 
-    pub fn send(self: NSXMLParser, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
+    pub fn send(self: XMLParser, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
         return objc.typedSend(methods, self.obj, selector, args);
     }
 
     pub const class_methods = .{
         .{ "initWithContentsOfURL:", Object, .{NSURL} },
         .{ "initWithData:", Object, .{NSData} },
-        .{ "initWithStream:", Object, .{NSInputStream} },
+        .{ "initWithStream:", Object, .{InputStream} },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -8369,8 +8385,8 @@ pub const NSXPCCoder = struct {
         .{ "connection", ?NSXPCConnection, .{} },
         .{ "decodeXPCObjectOfType:forKey:", ?*anyopaque, .{ objc.NSString, objc.NSString } },
         .{ "encodeXPCObject:forKey:", void, .{ objc.NSString, objc.NSString } },
-        .{ "setUserInfo:", void, .{?*anyopaque} },
-        .{ "userInfo", ?*anyopaque, .{} },
+        .{ "setUserInfo:", void, .{?NSObjectProtocol} },
+        .{ "userInfo", ?NSObjectProtocol, .{} },
     };
 
     pub fn send(self: NSXPCCoder, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
@@ -8395,9 +8411,9 @@ pub const NSXPCConnection = struct {
         .{ "processIdentifier", pid_t, .{} },
         .{ "remoteObjectInterface", ?NSXPCInterface, .{} },
         .{ "remoteObjectProxy", Any, .{} },
-        .{ "remoteObjectProxyWithErrorHandler:", Any, .{void} },
+        .{ "remoteObjectProxyWithErrorHandler:", Any, .{?*anyopaque} },
         .{ "resume", void, .{} },
-        .{ "scheduleSendBarrierBlock:", void, .{void} },
+        .{ "scheduleSendBarrierBlock:", void, .{?*anyopaque} },
         .{ "serviceName", ?objc.NSString, .{} },
         .{ "setCodeSigningRequirement:", void, .{objc.NSString} },
         .{ "setExportedInterface:", void, .{?NSXPCInterface} },
@@ -8406,7 +8422,7 @@ pub const NSXPCConnection = struct {
         .{ "setInvalidationHandler:", void, .{void} },
         .{ "setRemoteObjectInterface:", void, .{?NSXPCInterface} },
         .{ "suspend", void, .{} },
-        .{ "synchronousRemoteObjectProxyWithErrorHandler:", Any, .{void} },
+        .{ "synchronousRemoteObjectProxyWithErrorHandler:", Any, .{?*anyopaque} },
     };
 
     pub fn send(self: NSXPCConnection, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {

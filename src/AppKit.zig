@@ -17,7 +17,9 @@ pub const UnsafePointer = *const anyopaque;
 pub const TimeInterval = f64;
 pub const pid_t = std.c_int;
 
+pub const Accessibility = @import("Accessibility.zig");
 pub const Foundation = @import("Foundation.zig");
+pub const WebKit = @import("WebKit.zig");
 
 pub const NSPoint = Foundation.NSPoint;
 pub const NSSize = Foundation.NSSize;
@@ -609,8 +611,8 @@ pub const NSAccessibilityCustomAction = struct {
     }
 
     pub const class_methods = .{
-        .{ "initWithName:handler:", Object, .{ objc.NSString, void } },
-        .{ "initWithName:target:selector:", Object, .{ objc.NSString, void, Selector } },
+        .{ "initWithName:handler:", Object, .{ objc.NSString, ?*anyopaque } },
+        .{ "initWithName:target:selector:", Object, .{ objc.NSString, NSObjectProtocol, Selector } },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -637,8 +639,8 @@ pub const NSAccessibilityCustomRotor = struct {
     }
 
     pub const class_methods = .{
-        .{ "initWithLabel:itemSearchDelegate:", Object, .{ objc.NSString, void } },
-        .{ "initWithRotorType:itemSearchDelegate:", Object, .{ NSAccessibilityCustomRotor.RotorType, void } },
+        .{ "initWithLabel:itemSearchDelegate:", Object, .{ objc.NSString, NSAccessibilityCustomRotorItemSearchDelegate } },
+        .{ "initWithRotorType:itemSearchDelegate:", Object, .{ NSAccessibilityCustomRotor.RotorType, NSAccessibilityCustomRotorItemSearchDelegate } },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -693,7 +695,7 @@ pub const NSAccessibilityCustomRotorItemResult = struct {
 
     pub const class_methods = .{
         .{ "initWithItemLoadingToken:customLabel:", Object, .{ objc.NSString, objc.NSString } },
-        .{ "initWithTargetElement:", Object, .{void} },
+        .{ "initWithTargetElement:", Object, .{NSAccessibilityElementProtocol} },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -789,7 +791,7 @@ pub const NSAlert = struct {
         .{ "accessoryView", ?NSView, .{} },
         .{ "addButtonWithTitle:", NSButton, .{objc.NSString} },
         .{ "alertStyle", NSAlert.Style, .{} },
-        .{ "beginSheetModalForWindow:completionHandler:", void, .{ NSWindow, void } },
+        .{ "beginSheetModalForWindow:completionHandler:", void, .{ NSWindow, ?*anyopaque } },
         .{ "beginSheetModalForWindow:modalDelegate:didEndSelector:contextInfo:", void, .{ NSWindow, ?Any, Selector, ?UnsafeMutableRawPointer } },
         .{ "buttons", Object, .{} },
         .{ "delegate", ?NSAlertDelegate, .{} },
@@ -819,7 +821,7 @@ pub const NSAlert = struct {
     }
 
     pub const class_methods = .{
-        .{ "alertWithError:", Object, .{void} },
+        .{ "alertWithError:", Object, .{?*anyopaque} },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -844,7 +846,7 @@ pub const NSAlignmentFeedbackFilter = struct {
         .{ "alignmentFeedbackTokenForHorizontalMovementInView:previousX:alignedX:defaultX:", ?NSAlignmentFeedbackToken, .{ ?NSView, objc.CGFloat, objc.CGFloat, objc.CGFloat } },
         .{ "alignmentFeedbackTokenForMovementInView:previousPoint:alignedPoint:defaultPoint:", ?NSAlignmentFeedbackToken, .{ ?NSView, NSPoint, NSPoint, NSPoint } },
         .{ "alignmentFeedbackTokenForVerticalMovementInView:previousY:alignedY:defaultY:", ?NSAlignmentFeedbackToken, .{ ?NSView, objc.CGFloat, objc.CGFloat, objc.CGFloat } },
-        .{ "performFeedback:performanceTime:", void, .{ void, NSHapticFeedbackManager.PerformanceTime } },
+        .{ "performFeedback:performanceTime:", void, .{ Object, NSHapticFeedbackManager.PerformanceTime } },
         .{ "updateWithEvent:", void, .{NSEvent} },
         .{ "updateWithPanRecognizer:", void, .{NSPanGestureRecognizer} },
     };
@@ -941,8 +943,8 @@ pub const NSAnimationContext = struct {
         .{ "beginGrouping", void, .{} },
         .{ "currentContext", NSAnimationContext, .{} },
         .{ "endGrouping", void, .{} },
-        .{ "runAnimationGroup:", void, .{void} },
-        .{ "runAnimationGroup:completionHandler:", void, .{ void, void } },
+        .{ "runAnimationGroup:", void, .{?*anyopaque} },
+        .{ "runAnimationGroup:completionHandler:", void, .{ ?*anyopaque, ?*anyopaque } },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -955,9 +957,9 @@ pub const NSAppearance = struct {
 
     pub const methods = .{
         .{ "allowsVibrancy", objc.BOOL, .{} },
-        .{ "bestMatchFromAppearancesWithNames:", objc.NSString, .{void} },
+        .{ "bestMatchFromAppearancesWithNames:", objc.NSString, .{Object} },
         .{ "name", objc.NSString, .{} },
-        .{ "performAsCurrentDrawingAppearance:", void, .{void} },
+        .{ "performAsCurrentDrawingAppearance:", void, .{?*anyopaque} },
     };
 
     pub fn send(self: NSAppearance, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
@@ -968,7 +970,7 @@ pub const NSAppearance = struct {
         .{ "appearanceNamed:", Object, .{objc.NSString} },
         .{ "currentAppearance", NSAppearance, .{} },
         .{ "currentDrawingAppearance", NSAppearance, .{} },
-        .{ "initWithAppearanceNamed:bundle:", Object, .{ objc.NSString, ?Foundation.NSBundle } },
+        .{ "initWithAppearanceNamed:bundle:", Object, .{ objc.NSString, ?Foundation.Bundle } },
         .{ "initWithCoder:", Object, .{Foundation.NSCoder} },
         .{ "setCurrentAppearance:", void, .{NSAppearance} },
     };
@@ -1014,7 +1016,7 @@ pub const NSApplication = struct {
         .{ "endModalSession:", void, .{OpaquePointer} },
         .{ "endSheet:", void, .{NSWindow} },
         .{ "endSheet:returnCode:", void, .{ NSWindow, objc.NSInteger } },
-        .{ "enumerateWindowsWithOptions:usingBlock:", void, .{ objc.NSInteger, void } },
+        .{ "enumerateWindowsWithOptions:usingBlock:", void, .{ objc.NSInteger, ?*anyopaque } },
         .{ "extendStateRestoration", void, .{} },
         .{ "finishLaunching", void, .{} },
         .{ "fullKeyboardAccessEnabled", objc.BOOL, .{} },
@@ -1033,7 +1035,7 @@ pub const NSApplication = struct {
         .{ "orderFrontCharacterPalette:", void, .{?Any} },
         .{ "orderFrontColorPanel:", void, .{?Any} },
         .{ "orderFrontStandardAboutPanel:", void, .{?Any} },
-        .{ "orderFrontStandardAboutPanelWithOptions:", void, .{Any} },
+        .{ "orderFrontStandardAboutPanelWithOptions:", void, .{Object} },
         .{ "orderedDocuments", Object, .{} },
         .{ "orderedWindows", Object, .{} },
         .{ "postEvent:atStart:", void, .{ NSEvent, objc.BOOL } },
@@ -1042,15 +1044,15 @@ pub const NSApplication = struct {
         .{ "protectedDataAvailable", objc.BOOL, .{} },
         .{ "registerForRemoteNotificationTypes:", void, .{objc.NSInteger} },
         .{ "registerForRemoteNotifications", void, .{} },
-        .{ "registerServicesMenuSendTypes:returnTypes:", void, .{ void, void } },
-        .{ "registerUserInterfaceItemSearchHandler:", void, .{void} },
+        .{ "registerServicesMenuSendTypes:returnTypes:", void, .{ Object, Object } },
+        .{ "registerUserInterfaceItemSearchHandler:", void, .{NSUserInterfaceItemSearching} },
         .{ "registeredForRemoteNotifications", objc.BOOL, .{} },
         .{ "removeWindowsItem:", void, .{NSWindow} },
         .{ "replyToApplicationShouldTerminate:", void, .{objc.BOOL} },
         .{ "replyToOpenOrPrint:", void, .{NSApplication.DelegateReply} },
         .{ "reportException:", void, .{Foundation.NSException} },
         .{ "requestUserAttention:", objc.NSInteger, .{NSApplication.RequestUserAttentionType} },
-        .{ "restoreWindowWithIdentifier:state:completionHandler:", objc.BOOL, .{ objc.NSString, Foundation.NSCoder, void } },
+        .{ "restoreWindowWithIdentifier:state:completionHandler:", objc.BOOL, .{ objc.NSString, Foundation.NSCoder, ?*anyopaque } },
         .{ "run", void, .{} },
         .{ "runModalForWindow:", objc.NSInteger, .{NSWindow} },
         .{ "runModalSession:", objc.NSInteger, .{OpaquePointer} },
@@ -1086,7 +1088,7 @@ pub const NSApplication = struct {
         .{ "unhideAllApplications:", void, .{?Any} },
         .{ "unhideWithoutActivation", void, .{} },
         .{ "unregisterForRemoteNotifications", void, .{} },
-        .{ "unregisterUserInterfaceItemSearchHandler:", void, .{void} },
+        .{ "unregisterUserInterfaceItemSearchHandler:", void, .{NSUserInterfaceItemSearching} },
         .{ "updateWindows", void, .{} },
         .{ "updateWindowsItem:", void, .{NSWindow} },
         .{ "userInterfaceLayoutDirection", NSUserInterfaceLayoutDirection, .{} },
@@ -1149,11 +1151,11 @@ pub const NSArrayController = struct {
     pub const methods = .{
         .{ "add:", void, .{?Any} },
         .{ "addObject:", void, .{Any} },
-        .{ "addObjects:", void, .{void} },
-        .{ "addSelectedObjects:", objc.BOOL, .{void} },
+        .{ "addObjects:", void, .{Object} },
+        .{ "addSelectedObjects:", objc.BOOL, .{Object} },
         .{ "addSelectionIndexes:", objc.BOOL, .{Foundation.NSIndexSet} },
         .{ "alwaysUsesMultipleValuesMarker", objc.BOOL, .{} },
-        .{ "arrangeObjects:", Object, .{void} },
+        .{ "arrangeObjects:", Object, .{Object} },
         .{ "arrangedObjects", Any, .{} },
         .{ "automaticRearrangementKeyPaths", ?*anyopaque, .{} },
         .{ "automaticallyRearrangesObjects", objc.BOOL, .{} },
@@ -1166,15 +1168,15 @@ pub const NSArrayController = struct {
         .{ "filterPredicate", ?Foundation.NSPredicate, .{} },
         .{ "insert:", void, .{?Any} },
         .{ "insertObject:atArrangedObjectIndex:", void, .{ Any, objc.NSInteger } },
-        .{ "insertObjects:atArrangedObjectIndexes:", void, .{ void, Foundation.NSIndexSet } },
+        .{ "insertObjects:atArrangedObjectIndexes:", void, .{ Object, Foundation.NSIndexSet } },
         .{ "preservesSelection", objc.BOOL, .{} },
         .{ "rearrangeObjects", void, .{} },
         .{ "remove:", void, .{?Any} },
         .{ "removeObject:", void, .{Any} },
         .{ "removeObjectAtArrangedObjectIndex:", void, .{objc.NSInteger} },
-        .{ "removeObjects:", void, .{void} },
+        .{ "removeObjects:", void, .{Object} },
         .{ "removeObjectsAtArrangedObjectIndexes:", void, .{Foundation.NSIndexSet} },
-        .{ "removeSelectedObjects:", objc.BOOL, .{void} },
+        .{ "removeSelectedObjects:", objc.BOOL, .{Object} },
         .{ "removeSelectionIndexes:", objc.BOOL, .{Foundation.NSIndexSet} },
         .{ "selectNext:", void, .{?Any} },
         .{ "selectPrevious:", void, .{?Any} },
@@ -1188,7 +1190,7 @@ pub const NSArrayController = struct {
         .{ "setClearsFilterPredicateOnInsertion:", void, .{objc.BOOL} },
         .{ "setFilterPredicate:", void, .{?Foundation.NSPredicate} },
         .{ "setPreservesSelection:", void, .{objc.BOOL} },
-        .{ "setSelectedObjects:", objc.BOOL, .{void} },
+        .{ "setSelectedObjects:", objc.BOOL, .{Object} },
         .{ "setSelectionIndex:", objc.BOOL, .{objc.NSInteger} },
         .{ "setSelectionIndexes:", objc.BOOL, .{Foundation.NSIndexSet} },
         .{ "setSelectsInsertedObjects:", void, .{objc.BOOL} },
@@ -1274,7 +1276,7 @@ pub const NSBezierPath = struct {
         .{ "setMiterLimit:", void, .{objc.CGFloat} },
         .{ "setWindingRule:", void, .{NSBezierPath.WindingRule} },
         .{ "stroke", void, .{} },
-        .{ "transformUsingAffineTransform:", void, .{?*anyopaque} },
+        .{ "transformUsingAffineTransform:", void, .{Foundation.NSAffineTransform} },
         .{ "windingRule", NSBezierPath.WindingRule, .{} },
     };
 
@@ -1372,7 +1374,7 @@ pub const NSBitmapImageRep = struct {
         .{ "incrementalLoadFromData:complete:", objc.NSInteger, .{ Foundation.NSData, objc.BOOL } },
         .{ "numberOfPlanes", objc.NSInteger, .{} },
         .{ "planar", objc.BOOL, .{} },
-        .{ "representationUsingType:properties:", ?Foundation.NSData, .{ NSBitmapImageRep.FileType, Any } },
+        .{ "representationUsingType:properties:", ?Foundation.NSData, .{ NSBitmapImageRep.FileType, Object } },
         .{ "samplesPerPixel", objc.NSInteger, .{} },
         .{ "setColor:atX:y:", void, .{ NSColor, objc.NSInteger, objc.NSInteger } },
         .{ "setCompression:factor:", void, .{ NSBitmapImageRep.TIFFCompression, f32 } },
@@ -1386,8 +1388,8 @@ pub const NSBitmapImageRep = struct {
     }
 
     pub const class_methods = .{
-        .{ "TIFFRepresentationOfImageRepsInArray:", ?Foundation.NSData, .{void} },
-        .{ "TIFFRepresentationOfImageRepsInArray:usingCompression:factor:", ?Foundation.NSData, .{ void, NSBitmapImageRep.TIFFCompression, f32 } },
+        .{ "TIFFRepresentationOfImageRepsInArray:", ?Foundation.NSData, .{Object} },
+        .{ "TIFFRepresentationOfImageRepsInArray:usingCompression:factor:", ?Foundation.NSData, .{ Object, NSBitmapImageRep.TIFFCompression, f32 } },
         .{ "getTIFFCompressionTypes:count:", void, .{ NSBitmapImageRep.TIFFCompression, objc.NSInteger } },
         .{ "imageRepsWithData:", Object, .{Foundation.NSData} },
         .{ "initForIncrementalLoad", Object, .{void} },
@@ -1398,7 +1400,7 @@ pub const NSBitmapImageRep = struct {
         .{ "initWithData:", Object, .{Foundation.NSData} },
         .{ "initWithFocusedViewRect:", Object, .{NSRect} },
         .{ "localizedNameForTIFFCompressionType:", ?objc.NSString, .{NSBitmapImageRep.TIFFCompression} },
-        .{ "representationOfImageRepsInArray:usingType:properties:", ?Foundation.NSData, .{ void, NSBitmapImageRep.FileType, Any } },
+        .{ "representationOfImageRepsInArray:usingType:properties:", ?Foundation.NSData, .{ Object, NSBitmapImageRep.FileType, Object } },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -1524,16 +1526,16 @@ pub const NSBrowser = struct {
         .{ "doubleAction", Selector, .{} },
         .{ "draggingImageForRowsWithIndexes:inColumn:withEvent:offset:", ?NSImage, .{ Foundation.NSIndexSet, objc.NSInteger, NSEvent, NSPoint } },
         .{ "drawTitleOfColumn:inRect:", void, .{ objc.NSInteger, NSRect } },
-        .{ "editItemAtIndexPath:withEvent:select:", void, .{ ?*anyopaque, ?NSEvent, objc.BOOL } },
+        .{ "editItemAtIndexPath:withEvent:select:", void, .{ Foundation.NSIndexPath, ?NSEvent, objc.BOOL } },
         .{ "firstVisibleColumn", objc.NSInteger, .{} },
         .{ "frameOfColumn:", NSRect, .{objc.NSInteger} },
         .{ "frameOfInsideOfColumn:", NSRect, .{objc.NSInteger} },
         .{ "frameOfRow:inColumn:", NSRect, .{ objc.NSInteger, objc.NSInteger } },
         .{ "getRow:column:forPoint:", objc.BOOL, .{ objc.NSInteger, objc.NSInteger, NSPoint } },
         .{ "hasHorizontalScroller", objc.BOOL, .{} },
-        .{ "indexPathForColumn:", ?*anyopaque, .{objc.NSInteger} },
+        .{ "indexPathForColumn:", Foundation.NSIndexPath, .{objc.NSInteger} },
         .{ "isLeafItem:", objc.BOOL, .{?Any} },
-        .{ "itemAtIndexPath:", ?Any, .{?*anyopaque} },
+        .{ "itemAtIndexPath:", ?Any, .{Foundation.NSIndexPath} },
         .{ "itemAtRow:inColumn:", ?Any, .{ objc.NSInteger, objc.NSInteger } },
         .{ "lastColumn", objc.NSInteger, .{} },
         .{ "lastVisibleColumn", objc.NSInteger, .{} },
@@ -1568,7 +1570,7 @@ pub const NSBrowser = struct {
         .{ "selectedColumn", objc.NSInteger, .{} },
         .{ "selectedRowInColumn:", objc.NSInteger, .{objc.NSInteger} },
         .{ "selectedRowIndexesInColumn:", ?Foundation.NSIndexSet, .{objc.NSInteger} },
-        .{ "selectionIndexPath", ?*anyopaque, .{} },
+        .{ "selectionIndexPath", ?Foundation.NSIndexPath, .{} },
         .{ "selectionIndexPaths", Object, .{} },
         .{ "sendAction", objc.BOOL, .{} },
         .{ "sendsActionOnArrowKeys", objc.BOOL, .{} },
@@ -1597,7 +1599,7 @@ pub const NSBrowser = struct {
         .{ "setPrefersAllColumnUserResizing:", void, .{objc.BOOL} },
         .{ "setReusesColumns:", void, .{objc.BOOL} },
         .{ "setRowHeight:", void, .{objc.CGFloat} },
-        .{ "setSelectionIndexPath:", void, .{?*anyopaque} },
+        .{ "setSelectionIndexPath:", void, .{?Foundation.NSIndexPath} },
         .{ "setSelectionIndexPaths:", void, .{Object} },
         .{ "setSendsActionOnArrowKeys:", void, .{objc.BOOL} },
         .{ "setSeparatesColumns:", void, .{objc.BOOL} },
@@ -1689,7 +1691,7 @@ pub const NSButton = struct {
         .{ "bezelStyle", NSButton.BezelStyle, .{} },
         .{ "borderShape", NSControl.BorderShape, .{} },
         .{ "bordered", objc.BOOL, .{} },
-        .{ "compressWithPrioritizedCompressionOptions:", void, .{void} },
+        .{ "compressWithPrioritizedCompressionOptions:", void, .{Object} },
         .{ "contentTintColor", ?NSColor, .{} },
         .{ "getPeriodicDelay:interval:", void, .{ f32, f32 } },
         .{ "hasDestructiveAction", objc.BOOL, .{} },
@@ -1701,7 +1703,7 @@ pub const NSButton = struct {
         .{ "keyEquivalent", objc.NSString, .{} },
         .{ "keyEquivalentModifierMask", objc.NSInteger, .{} },
         .{ "maxAcceleratorLevel", objc.NSInteger, .{} },
-        .{ "minimumSizeWithPrioritizedCompressionOptions:", NSSize, .{void} },
+        .{ "minimumSizeWithPrioritizedCompressionOptions:", NSSize, .{Object} },
         .{ "performKeyEquivalent:", objc.BOOL, .{NSEvent} },
         .{ "setAllowsMixedState:", void, .{objc.BOOL} },
         .{ "setAlternateImage:", void, .{?NSImage} },
@@ -1958,7 +1960,7 @@ pub const NSCandidateListTouchBarItem = struct {
         .{ "setAllowsCollapsing:", void, .{objc.BOOL} },
         .{ "setAllowsTextInputContextCandidates:", void, .{objc.BOOL} },
         .{ "setAttributedStringForCandidate:", void, .{?Foundation.NSAttributedString} },
-        .{ "setCandidates:forSelectedRange:inString:", void, .{ void, NSRange, ?objc.NSString } },
+        .{ "setCandidates:forSelectedRange:inString:", void, .{ Object, NSRange, ?objc.NSString } },
         .{ "setClient:", void, .{?NSTextInputClient} },
         .{ "setCollapsed:", void, .{objc.BOOL} },
         .{ "setCustomizationLabel:", void, .{objc.NSString} },
@@ -2013,7 +2015,7 @@ pub const NSCell = struct {
         .{ "focusRingMaskBoundsForFrame:inView:", NSRect, .{ NSRect, NSView } },
         .{ "focusRingType", NSFocusRingType, .{} },
         .{ "font", ?NSFont, .{} },
-        .{ "formatter", ?Foundation.NSFormatter, .{} },
+        .{ "formatter", ?Foundation.Formatter, .{} },
         .{ "getPeriodicDelay:interval:", void, .{ f32, f32 } },
         .{ "hasValidObjectValue", objc.BOOL, .{} },
         .{ "highlight:withFrame:inView:", void, .{ objc.BOOL, NSRect, NSView } },
@@ -2064,7 +2066,7 @@ pub const NSCell = struct {
         .{ "setFloatValue:", void, .{f32} },
         .{ "setFocusRingType:", void, .{NSFocusRingType} },
         .{ "setFont:", void, .{?NSFont} },
-        .{ "setFormatter:", void, .{?Foundation.NSFormatter} },
+        .{ "setFormatter:", void, .{?Foundation.Formatter} },
         .{ "setHighlighted:", void, .{objc.BOOL} },
         .{ "setImage:", void, .{?NSImage} },
         .{ "setImportsGraphics:", void, .{objc.BOOL} },
@@ -2360,9 +2362,9 @@ pub const NSCollectionLayoutGroup = struct {
     pub const class_methods = .{
         .{ "customGroupWithLayoutSize:itemProvider:", ?*anyopaque, .{ NSCollectionLayoutSize, objc.NSString } },
         .{ "horizontalGroupWithLayoutSize:subitem:count:", ?*anyopaque, .{ NSCollectionLayoutSize, NSCollectionLayoutItem, objc.NSInteger } },
-        .{ "horizontalGroupWithLayoutSize:subitems:", ?*anyopaque, .{ NSCollectionLayoutSize, void } },
+        .{ "horizontalGroupWithLayoutSize:subitems:", ?*anyopaque, .{ NSCollectionLayoutSize, Object } },
         .{ "verticalGroupWithLayoutSize:subitem:count:", ?*anyopaque, .{ NSCollectionLayoutSize, NSCollectionLayoutItem, objc.NSInteger } },
-        .{ "verticalGroupWithLayoutSize:subitems:", ?*anyopaque, .{ NSCollectionLayoutSize, void } },
+        .{ "verticalGroupWithLayoutSize:subitems:", ?*anyopaque, .{ NSCollectionLayoutSize, Object } },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -2410,7 +2412,7 @@ pub const NSCollectionLayoutItem = struct {
 
     pub const class_methods = .{
         .{ "itemWithLayoutSize:", Object, .{NSCollectionLayoutSize} },
-        .{ "itemWithLayoutSize:supplementaryItems:", Object, .{ NSCollectionLayoutSize, void } },
+        .{ "itemWithLayoutSize:supplementaryItems:", Object, .{ NSCollectionLayoutSize, Object } },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -2535,51 +2537,51 @@ pub const NSCollectionView = struct {
         .{ "content", Object, .{} },
         .{ "dataSource", ?NSCollectionViewDataSource, .{} },
         .{ "delegate", ?NSCollectionViewDelegate, .{} },
-        .{ "deleteItemsAtIndexPaths:", void, .{?*anyopaque} },
+        .{ "deleteItemsAtIndexPaths:", void, .{Foundation.NSIndexPath} },
         .{ "deleteSections:", void, .{Foundation.NSIndexSet} },
         .{ "deselectAll:", void, .{?Any} },
-        .{ "deselectItemsAtIndexPaths:", void, .{?*anyopaque} },
-        .{ "draggingImageForItemsAtIndexPaths:withEvent:offset:", NSImage, .{ ?*anyopaque, NSEvent, NSPoint } },
+        .{ "deselectItemsAtIndexPaths:", void, .{Foundation.NSIndexPath} },
+        .{ "draggingImageForItemsAtIndexPaths:withEvent:offset:", NSImage, .{ Foundation.NSIndexPath, NSEvent, NSPoint } },
         .{ "draggingImageForItemsAtIndexes:withEvent:offset:", NSImage, .{ Foundation.NSIndexSet, NSEvent, NSPoint } },
         .{ "firstResponder", objc.BOOL, .{} },
         .{ "frameForItemAtIndex:", NSRect, .{objc.NSInteger} },
         .{ "frameForItemAtIndex:withNumberOfItems:", NSRect, .{ objc.NSInteger, objc.NSInteger } },
-        .{ "indexPathForItem:", ?*anyopaque, .{NSCollectionViewItem} },
-        .{ "indexPathForItemAtPoint:", ?*anyopaque, .{NSPoint} },
-        .{ "indexPathsForVisibleItems", ?*anyopaque, .{} },
-        .{ "indexPathsForVisibleSupplementaryElementsOfKind:", ?*anyopaque, .{objc.NSString} },
-        .{ "insertItemsAtIndexPaths:", void, .{?*anyopaque} },
+        .{ "indexPathForItem:", ?Foundation.NSIndexPath, .{NSCollectionViewItem} },
+        .{ "indexPathForItemAtPoint:", ?Foundation.NSIndexPath, .{NSPoint} },
+        .{ "indexPathsForVisibleItems", Foundation.NSIndexPath, .{} },
+        .{ "indexPathsForVisibleSupplementaryElementsOfKind:", Foundation.NSIndexPath, .{objc.NSString} },
+        .{ "insertItemsAtIndexPaths:", void, .{Foundation.NSIndexPath} },
         .{ "insertSections:", void, .{Foundation.NSIndexSet} },
         .{ "itemAtIndex:", ?NSCollectionViewItem, .{objc.NSInteger} },
-        .{ "itemAtIndexPath:", ?NSCollectionViewItem, .{?*anyopaque} },
+        .{ "itemAtIndexPath:", ?NSCollectionViewItem, .{Foundation.NSIndexPath} },
         .{ "itemPrototype", ?NSCollectionViewItem, .{} },
-        .{ "layoutAttributesForItemAtIndexPath:", ?NSCollectionViewLayoutAttributes, .{?*anyopaque} },
-        .{ "layoutAttributesForSupplementaryElementOfKind:atIndexPath:", ?NSCollectionViewLayoutAttributes, .{ objc.NSString, ?*anyopaque } },
-        .{ "makeItemWithIdentifier:forIndexPath:", NSCollectionViewItem, .{ objc.NSString, ?*anyopaque } },
-        .{ "makeSupplementaryViewOfKind:withIdentifier:forIndexPath:", NSView, .{ objc.NSString, objc.NSString, ?*anyopaque } },
+        .{ "layoutAttributesForItemAtIndexPath:", ?NSCollectionViewLayoutAttributes, .{Foundation.NSIndexPath} },
+        .{ "layoutAttributesForSupplementaryElementOfKind:atIndexPath:", ?NSCollectionViewLayoutAttributes, .{ objc.NSString, Foundation.NSIndexPath } },
+        .{ "makeItemWithIdentifier:forIndexPath:", NSCollectionViewItem, .{ objc.NSString, Foundation.NSIndexPath } },
+        .{ "makeSupplementaryViewOfKind:withIdentifier:forIndexPath:", NSView, .{ objc.NSString, objc.NSString, Foundation.NSIndexPath } },
         .{ "maxItemSize", NSSize, .{} },
         .{ "maxNumberOfColumns", objc.NSInteger, .{} },
         .{ "maxNumberOfRows", objc.NSInteger, .{} },
         .{ "minItemSize", NSSize, .{} },
-        .{ "moveItemAtIndexPath:toIndexPath:", void, .{ ?*anyopaque, ?*anyopaque } },
+        .{ "moveItemAtIndexPath:toIndexPath:", void, .{ Foundation.NSIndexPath, Foundation.NSIndexPath } },
         .{ "moveSection:toSection:", void, .{ objc.NSInteger, objc.NSInteger } },
         .{ "newItemForRepresentedObject:", NSCollectionViewItem, .{Any} },
         .{ "numberOfItemsInSection:", objc.NSInteger, .{objc.NSInteger} },
         .{ "numberOfSections", objc.NSInteger, .{} },
-        .{ "performBatchUpdates:completionHandler:", void, .{ void, void } },
+        .{ "performBatchUpdates:completionHandler:", void, .{ ?*anyopaque, ?*anyopaque } },
         .{ "prefetchDataSource", ?NSCollectionViewPrefetching, .{} },
         .{ "registerClass:forItemWithIdentifier:", void, .{ ?AnyClass, objc.NSString } },
         .{ "registerClass:forSupplementaryViewOfKind:withIdentifier:", void, .{ ?AnyClass, objc.NSString, objc.NSString } },
         .{ "registerNib:forItemWithIdentifier:", void, .{ ?NSNib, objc.NSString } },
         .{ "registerNib:forSupplementaryViewOfKind:withIdentifier:", void, .{ ?NSNib, objc.NSString, objc.NSString } },
         .{ "reloadData", void, .{} },
-        .{ "reloadItemsAtIndexPaths:", void, .{?*anyopaque} },
+        .{ "reloadItemsAtIndexPaths:", void, .{Foundation.NSIndexPath} },
         .{ "reloadSections:", void, .{Foundation.NSIndexSet} },
-        .{ "scrollToItemsAtIndexPaths:scrollPosition:", void, .{ ?*anyopaque, objc.NSInteger } },
+        .{ "scrollToItemsAtIndexPaths:scrollPosition:", void, .{ Foundation.NSIndexPath, objc.NSInteger } },
         .{ "selectAll:", void, .{?Any} },
-        .{ "selectItemsAtIndexPaths:scrollPosition:", void, .{ ?*anyopaque, objc.NSInteger } },
+        .{ "selectItemsAtIndexPaths:scrollPosition:", void, .{ Foundation.NSIndexPath, objc.NSInteger } },
         .{ "selectable", objc.BOOL, .{} },
-        .{ "selectionIndexPaths", ?*anyopaque, .{} },
+        .{ "selectionIndexPaths", Foundation.NSIndexPath, .{} },
         .{ "selectionIndexes", Foundation.NSIndexSet, .{} },
         .{ "setAllowsEmptySelection:", void, .{objc.BOOL} },
         .{ "setAllowsMultipleSelection:", void, .{objc.BOOL} },
@@ -2598,9 +2600,9 @@ pub const NSCollectionView = struct {
         .{ "setMinItemSize:", void, .{NSSize} },
         .{ "setPrefetchDataSource:", void, .{?NSCollectionViewPrefetching} },
         .{ "setSelectable:", void, .{objc.BOOL} },
-        .{ "setSelectionIndexPaths:", void, .{?*anyopaque} },
+        .{ "setSelectionIndexPaths:", void, .{Foundation.NSIndexPath} },
         .{ "setSelectionIndexes:", void, .{Foundation.NSIndexSet} },
-        .{ "supplementaryViewForElementKind:atIndexPath:", ?NSCollectionViewElement, .{ objc.NSString, ?*anyopaque } },
+        .{ "supplementaryViewForElementKind:atIndexPath:", ?NSCollectionViewElement, .{ objc.NSString, Foundation.NSIndexPath } },
         .{ "toggleSectionCollapse:", void, .{Any} },
         .{ "visibleItems", Object, .{} },
         .{ "visibleSupplementaryViewsOfKind:", Object, .{objc.NSString} },
@@ -2669,19 +2671,19 @@ pub const NSCollectionViewCompositionalLayoutConfiguration = struct {
     }
 };
 
-pub const NSCollectionViewDiffableDataSource = struct {
+pub const NSCollectionViewDiffableDataSourceReference = struct {
     obj: Object,
 
     pub const methods = .{
-        .{ "applySnapshot:animatingDifferences:", void, .{ NSDiffableDataSourceSnapshot, objc.BOOL } },
-        .{ "indexPathForItemIdentifier:", ?*anyopaque, .{Any} },
-        .{ "itemIdentifierForIndexPath:", ?Any, .{?*anyopaque} },
+        .{ "applySnapshot:animatingDifferences:", void, .{ NSDiffableDataSourceSnapshotReference, objc.BOOL } },
+        .{ "indexPathForItemIdentifier:", ?Foundation.NSIndexPath, .{Any} },
+        .{ "itemIdentifierForIndexPath:", ?Any, .{Foundation.NSIndexPath} },
         .{ "setSupplementaryViewProvider:", void, .{?*anyopaque} },
-        .{ "snapshot", NSDiffableDataSourceSnapshot, .{} },
+        .{ "snapshot", NSDiffableDataSourceSnapshotReference, .{} },
         .{ "supplementaryViewProvider", ?*anyopaque, .{} },
     };
 
-    pub fn send(self: NSCollectionViewDiffableDataSource, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
+    pub fn send(self: NSCollectionViewDiffableDataSourceReference, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
         return objc.typedSend(methods, self.obj, selector, args);
     }
 
@@ -2808,31 +2810,31 @@ pub const NSCollectionViewLayout = struct {
     pub const methods = .{
         .{ "collectionView", ?NSCollectionView, .{} },
         .{ "collectionViewContentSize", NSSize, .{} },
-        .{ "finalLayoutAttributesForDisappearingDecorationElementOfKind:atIndexPath:", ?NSCollectionViewLayoutAttributes, .{ objc.NSString, ?*anyopaque } },
-        .{ "finalLayoutAttributesForDisappearingItemAtIndexPath:", ?NSCollectionViewLayoutAttributes, .{?*anyopaque} },
-        .{ "finalLayoutAttributesForDisappearingSupplementaryElementOfKind:atIndexPath:", ?NSCollectionViewLayoutAttributes, .{ objc.NSString, ?*anyopaque } },
+        .{ "finalLayoutAttributesForDisappearingDecorationElementOfKind:atIndexPath:", ?NSCollectionViewLayoutAttributes, .{ objc.NSString, Foundation.NSIndexPath } },
+        .{ "finalLayoutAttributesForDisappearingItemAtIndexPath:", ?NSCollectionViewLayoutAttributes, .{Foundation.NSIndexPath} },
+        .{ "finalLayoutAttributesForDisappearingSupplementaryElementOfKind:atIndexPath:", ?NSCollectionViewLayoutAttributes, .{ objc.NSString, Foundation.NSIndexPath } },
         .{ "finalizeAnimatedBoundsChange", void, .{} },
         .{ "finalizeCollectionViewUpdates", void, .{} },
         .{ "finalizeLayoutTransition", void, .{} },
-        .{ "indexPathsToDeleteForDecorationViewOfKind:", ?*anyopaque, .{objc.NSString} },
-        .{ "indexPathsToDeleteForSupplementaryViewOfKind:", ?*anyopaque, .{objc.NSString} },
-        .{ "indexPathsToInsertForDecorationViewOfKind:", ?*anyopaque, .{objc.NSString} },
-        .{ "indexPathsToInsertForSupplementaryViewOfKind:", ?*anyopaque, .{objc.NSString} },
-        .{ "initialLayoutAttributesForAppearingDecorationElementOfKind:atIndexPath:", ?NSCollectionViewLayoutAttributes, .{ objc.NSString, ?*anyopaque } },
-        .{ "initialLayoutAttributesForAppearingItemAtIndexPath:", ?NSCollectionViewLayoutAttributes, .{?*anyopaque} },
-        .{ "initialLayoutAttributesForAppearingSupplementaryElementOfKind:atIndexPath:", ?NSCollectionViewLayoutAttributes, .{ objc.NSString, ?*anyopaque } },
+        .{ "indexPathsToDeleteForDecorationViewOfKind:", Foundation.NSIndexPath, .{objc.NSString} },
+        .{ "indexPathsToDeleteForSupplementaryViewOfKind:", Foundation.NSIndexPath, .{objc.NSString} },
+        .{ "indexPathsToInsertForDecorationViewOfKind:", Foundation.NSIndexPath, .{objc.NSString} },
+        .{ "indexPathsToInsertForSupplementaryViewOfKind:", Foundation.NSIndexPath, .{objc.NSString} },
+        .{ "initialLayoutAttributesForAppearingDecorationElementOfKind:atIndexPath:", ?NSCollectionViewLayoutAttributes, .{ objc.NSString, Foundation.NSIndexPath } },
+        .{ "initialLayoutAttributesForAppearingItemAtIndexPath:", ?NSCollectionViewLayoutAttributes, .{Foundation.NSIndexPath} },
+        .{ "initialLayoutAttributesForAppearingSupplementaryElementOfKind:atIndexPath:", ?NSCollectionViewLayoutAttributes, .{ objc.NSString, Foundation.NSIndexPath } },
         .{ "invalidateLayout", void, .{} },
         .{ "invalidateLayoutWithContext:", void, .{NSCollectionViewLayoutInvalidationContext} },
         .{ "invalidationContextForBoundsChange:", NSCollectionViewLayoutInvalidationContext, .{NSRect} },
         .{ "invalidationContextForPreferredLayoutAttributes:withOriginalAttributes:", NSCollectionViewLayoutInvalidationContext, .{ NSCollectionViewLayoutAttributes, NSCollectionViewLayoutAttributes } },
-        .{ "layoutAttributesForDecorationViewOfKind:atIndexPath:", ?NSCollectionViewLayoutAttributes, .{ objc.NSString, ?*anyopaque } },
+        .{ "layoutAttributesForDecorationViewOfKind:atIndexPath:", ?NSCollectionViewLayoutAttributes, .{ objc.NSString, Foundation.NSIndexPath } },
         .{ "layoutAttributesForDropTargetAtPoint:", ?NSCollectionViewLayoutAttributes, .{NSPoint} },
         .{ "layoutAttributesForElementsInRect:", Object, .{NSRect} },
-        .{ "layoutAttributesForInterItemGapBeforeIndexPath:", ?NSCollectionViewLayoutAttributes, .{?*anyopaque} },
-        .{ "layoutAttributesForItemAtIndexPath:", ?NSCollectionViewLayoutAttributes, .{?*anyopaque} },
-        .{ "layoutAttributesForSupplementaryViewOfKind:atIndexPath:", ?NSCollectionViewLayoutAttributes, .{ objc.NSString, ?*anyopaque } },
+        .{ "layoutAttributesForInterItemGapBeforeIndexPath:", ?NSCollectionViewLayoutAttributes, .{Foundation.NSIndexPath} },
+        .{ "layoutAttributesForItemAtIndexPath:", ?NSCollectionViewLayoutAttributes, .{Foundation.NSIndexPath} },
+        .{ "layoutAttributesForSupplementaryViewOfKind:atIndexPath:", ?NSCollectionViewLayoutAttributes, .{ objc.NSString, Foundation.NSIndexPath } },
         .{ "prepareForAnimatedBoundsChange:", void, .{NSRect} },
-        .{ "prepareForCollectionViewUpdates:", void, .{void} },
+        .{ "prepareForCollectionViewUpdates:", void, .{Object} },
         .{ "prepareForTransitionFromLayout:", void, .{NSCollectionViewLayout} },
         .{ "prepareForTransitionToLayout:", void, .{NSCollectionViewLayout} },
         .{ "prepareLayout", void, .{} },
@@ -2865,13 +2867,13 @@ pub const NSCollectionViewLayoutAttributes = struct {
         .{ "alpha", objc.CGFloat, .{} },
         .{ "frame", NSRect, .{} },
         .{ "hidden", objc.BOOL, .{} },
-        .{ "indexPath", ?*anyopaque, .{} },
+        .{ "indexPath", ?Foundation.NSIndexPath, .{} },
         .{ "representedElementCategory", NSCollectionElementCategory, .{} },
         .{ "representedElementKind", ?objc.NSString, .{} },
         .{ "setAlpha:", void, .{objc.CGFloat} },
         .{ "setFrame:", void, .{NSRect} },
         .{ "setHidden:", void, .{objc.BOOL} },
-        .{ "setIndexPath:", void, .{?*anyopaque} },
+        .{ "setIndexPath:", void, .{?Foundation.NSIndexPath} },
         .{ "setSize:", void, .{NSSize} },
         .{ "setZIndex:", void, .{objc.NSInteger} },
         .{ "size", NSSize, .{} },
@@ -2883,10 +2885,10 @@ pub const NSCollectionViewLayoutAttributes = struct {
     }
 
     pub const class_methods = .{
-        .{ "layoutAttributesForDecorationViewOfKind:withIndexPath:", Object, .{ objc.NSString, ?*anyopaque } },
-        .{ "layoutAttributesForInterItemGapBeforeIndexPath:", Object, .{?*anyopaque} },
-        .{ "layoutAttributesForItemWithIndexPath:", Object, .{?*anyopaque} },
-        .{ "layoutAttributesForSupplementaryViewOfKind:withIndexPath:", Object, .{ objc.NSString, ?*anyopaque } },
+        .{ "layoutAttributesForDecorationViewOfKind:withIndexPath:", Object, .{ objc.NSString, Foundation.NSIndexPath } },
+        .{ "layoutAttributesForInterItemGapBeforeIndexPath:", Object, .{Foundation.NSIndexPath} },
+        .{ "layoutAttributesForItemWithIndexPath:", Object, .{Foundation.NSIndexPath} },
+        .{ "layoutAttributesForSupplementaryViewOfKind:withIndexPath:", Object, .{ objc.NSString, Foundation.NSIndexPath } },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -2901,12 +2903,12 @@ pub const NSCollectionViewLayoutInvalidationContext = struct {
         .{ "contentOffsetAdjustment", NSPoint, .{} },
         .{ "contentSizeAdjustment", NSSize, .{} },
         .{ "invalidateDataSourceCounts", objc.BOOL, .{} },
-        .{ "invalidateDecorationElementsOfKind:atIndexPaths:", void, .{ objc.NSString, ?*anyopaque } },
+        .{ "invalidateDecorationElementsOfKind:atIndexPaths:", void, .{ objc.NSString, Foundation.NSIndexPath } },
         .{ "invalidateEverything", objc.BOOL, .{} },
-        .{ "invalidateItemsAtIndexPaths:", void, .{?*anyopaque} },
-        .{ "invalidateSupplementaryElementsOfKind:atIndexPaths:", void, .{ objc.NSString, ?*anyopaque } },
+        .{ "invalidateItemsAtIndexPaths:", void, .{Foundation.NSIndexPath} },
+        .{ "invalidateSupplementaryElementsOfKind:atIndexPaths:", void, .{ objc.NSString, Foundation.NSIndexPath } },
         .{ "invalidatedDecorationIndexPaths", ?*anyopaque, .{} },
-        .{ "invalidatedItemIndexPaths", ?*anyopaque, .{} },
+        .{ "invalidatedItemIndexPaths", ?Foundation.NSIndexPath, .{} },
         .{ "invalidatedSupplementaryIndexPaths", ?*anyopaque, .{} },
         .{ "setContentOffsetAdjustment:", void, .{NSPoint} },
         .{ "setContentSizeAdjustment:", void, .{NSSize} },
@@ -2947,8 +2949,8 @@ pub const NSCollectionViewUpdateItem = struct {
     obj: Object,
 
     pub const methods = .{
-        .{ "indexPathAfterUpdate", ?*anyopaque, .{} },
-        .{ "indexPathBeforeUpdate", ?*anyopaque, .{} },
+        .{ "indexPathAfterUpdate", ?Foundation.NSIndexPath, .{} },
+        .{ "indexPathBeforeUpdate", ?Foundation.NSIndexPath, .{} },
         .{ "updateAction", NSCollectionView.UpdateAction, .{} },
     };
 
@@ -2974,7 +2976,7 @@ pub const NSColor = struct {
         .{ "colorSpaceName", objc.NSString, .{} },
         .{ "colorUsingColorSpace:", ?NSColor, .{NSColorSpace} },
         .{ "colorUsingColorSpaceName:", ?NSColor, .{objc.NSString} },
-        .{ "colorUsingColorSpaceName:device:", ?NSColor, .{ objc.NSString, ?Any } },
+        .{ "colorUsingColorSpaceName:device:", ?NSColor, .{ objc.NSString, ?*anyopaque } },
         .{ "colorUsingType:", ?NSColor, .{NSColor.ColorType} },
         .{ "colorWithAlphaComponent:", NSColor, .{objc.CGFloat} },
         .{ "colorWithSystemEffect:", NSColor, .{NSColor.SystemEffect} },
@@ -3022,7 +3024,7 @@ pub const NSColor = struct {
         .{ "colorForControlTint:", Object, .{NSControlTint} },
         .{ "colorFromPasteboard:", Object, .{NSPasteboard} },
         .{ "colorNamed:", Object, .{objc.NSString} },
-        .{ "colorNamed:bundle:", Object, .{ objc.NSString, ?Foundation.NSBundle } },
+        .{ "colorNamed:bundle:", Object, .{ objc.NSString, ?Foundation.Bundle } },
         .{ "colorWithCGColor:", Object, .{?*anyopaque} },
         .{ "colorWithCIColor:", Object, .{Object} },
         .{ "colorWithCalibratedHue:saturation:brightness:alpha:", Object, .{ objc.CGFloat, objc.CGFloat, objc.CGFloat, objc.CGFloat } },
@@ -3038,7 +3040,7 @@ pub const NSColor = struct {
         .{ "colorWithDisplayP3Red:green:blue:alpha:", Object, .{ objc.CGFloat, objc.CGFloat, objc.CGFloat, objc.CGFloat } },
         .{ "colorWithGenericGamma22White:alpha:", Object, .{ objc.CGFloat, objc.CGFloat } },
         .{ "colorWithHue:saturation:brightness:alpha:", Object, .{ objc.CGFloat, objc.CGFloat, objc.CGFloat, objc.CGFloat } },
-        .{ "colorWithName:dynamicProvider:", Object, .{ objc.NSString, void } },
+        .{ "colorWithName:dynamicProvider:", Object, .{ objc.NSString, ?*anyopaque } },
         .{ "colorWithPatternImage:", Object, .{NSImage} },
         .{ "colorWithRed:green:blue:alpha:", Object, .{ objc.CGFloat, objc.CGFloat, objc.CGFloat, objc.CGFloat } },
         .{ "colorWithRed:green:blue:alpha:exposure:", Object, .{ objc.CGFloat, objc.CGFloat, objc.CGFloat, objc.CGFloat, objc.CGFloat } },
@@ -3302,7 +3304,7 @@ pub const NSColorSampler = struct {
     obj: Object,
 
     pub const methods = .{
-        .{ "showSamplerWithSelectionHandler:", void, .{void} },
+        .{ "showSamplerWithSelectionHandler:", void, .{?*anyopaque} },
     };
 
     pub fn send(self: NSColorSampler, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
@@ -3414,7 +3416,7 @@ pub const NSComboBox = struct {
     pub const Super = NSTextField;
     pub const methods = .{
         .{ "addItemWithObjectValue:", void, .{Any} },
-        .{ "addItemsWithObjectValues:", void, .{void} },
+        .{ "addItemsWithObjectValues:", void, .{Object} },
         .{ "buttonBordered", objc.BOOL, .{} },
         .{ "completes", objc.BOOL, .{} },
         .{ "dataSource", ?NSComboBoxDataSource, .{} },
@@ -3463,7 +3465,7 @@ pub const NSComboBoxCell = struct {
     pub const Super = NSTextFieldCell;
     pub const methods = .{
         .{ "addItemWithObjectValue:", void, .{Any} },
-        .{ "addItemsWithObjectValues:", void, .{void} },
+        .{ "addItemsWithObjectValues:", void, .{Object} },
         .{ "buttonBordered", objc.BOOL, .{} },
         .{ "completedString:", ?objc.NSString, .{objc.NSString} },
         .{ "completes", objc.BOOL, .{} },
@@ -3568,7 +3570,7 @@ pub const NSControl = struct {
         .{ "expansionFrameWithFrame:", NSRect, .{NSRect} },
         .{ "floatValue", f32, .{} },
         .{ "font", ?NSFont, .{} },
-        .{ "formatter", ?Foundation.NSFormatter, .{} },
+        .{ "formatter", ?Foundation.Formatter, .{} },
         .{ "highlighted", objc.BOOL, .{} },
         .{ "ignoresMultiClick", objc.BOOL, .{} },
         .{ "intValue", i32, .{} },
@@ -3596,7 +3598,7 @@ pub const NSControl = struct {
         .{ "setEnabled:", void, .{objc.BOOL} },
         .{ "setFloatValue:", void, .{f32} },
         .{ "setFont:", void, .{?NSFont} },
-        .{ "setFormatter:", void, .{?Foundation.NSFormatter} },
+        .{ "setFormatter:", void, .{?Foundation.Formatter} },
         .{ "setHighlighted:", void, .{objc.BOOL} },
         .{ "setIgnoresMultiClick:", void, .{objc.BOOL} },
         .{ "setIntValue:", void, .{i32} },
@@ -3675,8 +3677,8 @@ pub const NSController = struct {
         .{ "commitEditingWithDelegate:didCommitSelector:contextInfo:", void, .{ ?Any, Selector, ?UnsafeMutableRawPointer } },
         .{ "discardEditing", void, .{} },
         .{ "editing", objc.BOOL, .{} },
-        .{ "objectDidBeginEditing:", void, .{void} },
-        .{ "objectDidEndEditing:", void, .{void} },
+        .{ "objectDidBeginEditing:", void, .{NSEditor} },
+        .{ "objectDidEndEditing:", void, .{NSEditor} },
     };
 
     pub fn send(self: NSController, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
@@ -3780,7 +3782,7 @@ pub const NSCustomImageRep = struct {
 
     pub const class_methods = .{
         .{ "initWithDrawSelector:delegate:", Object, .{ Selector, Any } },
-        .{ "initWithSize:flipped:drawingHandler:", Object, .{ NSSize, objc.BOOL, void } },
+        .{ "initWithSize:flipped:drawingHandler:", Object, .{ NSSize, objc.BOOL, ?*anyopaque } },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -3822,7 +3824,7 @@ pub const NSDataAsset = struct {
 
     pub const class_methods = .{
         .{ "initWithName:", Object, .{objc.NSString} },
-        .{ "initWithName:bundle:", Object, .{ objc.NSString, Foundation.NSBundle } },
+        .{ "initWithName:bundle:", Object, .{ objc.NSString, Foundation.Bundle } },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -3838,7 +3840,7 @@ pub const NSDatePicker = struct {
         .{ "backgroundColor", NSColor, .{} },
         .{ "bezeled", objc.BOOL, .{} },
         .{ "bordered", objc.BOOL, .{} },
-        .{ "calendar", ?*anyopaque, .{} },
+        .{ "calendar", ?Foundation.NSCalendar, .{} },
         .{ "datePickerElements", objc.NSInteger, .{} },
         .{ "datePickerMode", NSDatePicker.Mode, .{} },
         .{ "datePickerStyle", NSDatePicker.Style, .{} },
@@ -3852,7 +3854,7 @@ pub const NSDatePicker = struct {
         .{ "setBackgroundColor:", void, .{NSColor} },
         .{ "setBezeled:", void, .{objc.BOOL} },
         .{ "setBordered:", void, .{objc.BOOL} },
-        .{ "setCalendar:", void, .{?*anyopaque} },
+        .{ "setCalendar:", void, .{?Foundation.NSCalendar} },
         .{ "setDatePickerElements:", void, .{objc.NSInteger} },
         .{ "setDatePickerMode:", void, .{NSDatePicker.Mode} },
         .{ "setDatePickerStyle:", void, .{NSDatePicker.Style} },
@@ -3865,10 +3867,10 @@ pub const NSDatePicker = struct {
         .{ "setPresentsCalendarOverlay:", void, .{objc.BOOL} },
         .{ "setTextColor:", void, .{NSColor} },
         .{ "setTimeInterval:", void, .{TimeInterval} },
-        .{ "setTimeZone:", void, .{?*anyopaque} },
+        .{ "setTimeZone:", void, .{?Foundation.NSTimeZone} },
         .{ "textColor", NSColor, .{} },
         .{ "timeInterval", TimeInterval, .{} },
-        .{ "timeZone", ?*anyopaque, .{} },
+        .{ "timeZone", ?Foundation.NSTimeZone, .{} },
     };
 
     pub fn send(self: NSDatePicker, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
@@ -3892,7 +3894,7 @@ pub const NSDatePickerCell = struct {
     pub const Super = NSActionCell;
     pub const methods = .{
         .{ "backgroundColor", NSColor, .{} },
-        .{ "calendar", ?*anyopaque, .{} },
+        .{ "calendar", ?Foundation.NSCalendar, .{} },
         .{ "datePickerElements", objc.NSInteger, .{} },
         .{ "datePickerMode", NSDatePicker.Mode, .{} },
         .{ "datePickerStyle", NSDatePicker.Style, .{} },
@@ -3903,7 +3905,7 @@ pub const NSDatePickerCell = struct {
         .{ "maxDate", ?Foundation.NSDate, .{} },
         .{ "minDate", ?Foundation.NSDate, .{} },
         .{ "setBackgroundColor:", void, .{NSColor} },
-        .{ "setCalendar:", void, .{?*anyopaque} },
+        .{ "setCalendar:", void, .{?Foundation.NSCalendar} },
         .{ "setDatePickerElements:", void, .{objc.NSInteger} },
         .{ "setDatePickerMode:", void, .{NSDatePicker.Mode} },
         .{ "setDatePickerStyle:", void, .{NSDatePicker.Style} },
@@ -3915,10 +3917,10 @@ pub const NSDatePickerCell = struct {
         .{ "setMinDate:", void, .{?Foundation.NSDate} },
         .{ "setTextColor:", void, .{NSColor} },
         .{ "setTimeInterval:", void, .{TimeInterval} },
-        .{ "setTimeZone:", void, .{?*anyopaque} },
+        .{ "setTimeZone:", void, .{?Foundation.NSTimeZone} },
         .{ "textColor", NSColor, .{} },
         .{ "timeInterval", TimeInterval, .{} },
-        .{ "timeZone", ?*anyopaque, .{} },
+        .{ "timeZone", ?Foundation.NSTimeZone, .{} },
     };
 
     pub fn send(self: NSDatePickerCell, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
@@ -3978,22 +3980,22 @@ pub const NSDictionaryControllerKeyValuePair = struct {
     }
 };
 
-pub const NSDiffableDataSourceSnapshot = struct {
+pub const NSDiffableDataSourceSnapshotReference = struct {
     obj: Object,
 
     pub const methods = .{
-        .{ "appendItemsWithIdentifiers:", void, .{void} },
-        .{ "appendItemsWithIdentifiers:intoSectionWithIdentifier:", void, .{ void, Any } },
-        .{ "appendSectionsWithIdentifiers:", void, .{void} },
+        .{ "appendItemsWithIdentifiers:", void, .{Object} },
+        .{ "appendItemsWithIdentifiers:intoSectionWithIdentifier:", void, .{ Object, Any } },
+        .{ "appendSectionsWithIdentifiers:", void, .{Object} },
         .{ "deleteAllItems", void, .{} },
-        .{ "deleteItemsWithIdentifiers:", void, .{void} },
-        .{ "deleteSectionsWithIdentifiers:", void, .{void} },
+        .{ "deleteItemsWithIdentifiers:", void, .{Object} },
+        .{ "deleteSectionsWithIdentifiers:", void, .{Object} },
         .{ "indexOfItemIdentifier:", objc.NSInteger, .{Any} },
         .{ "indexOfSectionIdentifier:", objc.NSInteger, .{Any} },
-        .{ "insertItemsWithIdentifiers:afterItemWithIdentifier:", void, .{ void, Any } },
-        .{ "insertItemsWithIdentifiers:beforeItemWithIdentifier:", void, .{ void, Any } },
-        .{ "insertSectionsWithIdentifiers:afterSectionWithIdentifier:", void, .{ void, Any } },
-        .{ "insertSectionsWithIdentifiers:beforeSectionWithIdentifier:", void, .{ void, Any } },
+        .{ "insertItemsWithIdentifiers:afterItemWithIdentifier:", void, .{ Object, Any } },
+        .{ "insertItemsWithIdentifiers:beforeItemWithIdentifier:", void, .{ Object, Any } },
+        .{ "insertSectionsWithIdentifiers:afterSectionWithIdentifier:", void, .{ Object, Any } },
+        .{ "insertSectionsWithIdentifiers:beforeSectionWithIdentifier:", void, .{ Object, Any } },
         .{ "itemIdentifiers", Object, .{} },
         .{ "itemIdentifiersInSectionWithIdentifier:", Object, .{Any} },
         .{ "moveItemWithIdentifier:afterItemWithIdentifier:", void, .{ Any, Any } },
@@ -4003,13 +4005,13 @@ pub const NSDiffableDataSourceSnapshot = struct {
         .{ "numberOfItems", objc.NSInteger, .{} },
         .{ "numberOfItemsInSection:", objc.NSInteger, .{Any} },
         .{ "numberOfSections", objc.NSInteger, .{} },
-        .{ "reloadItemsWithIdentifiers:", void, .{void} },
-        .{ "reloadSectionsWithIdentifiers:", void, .{void} },
+        .{ "reloadItemsWithIdentifiers:", void, .{Object} },
+        .{ "reloadSectionsWithIdentifiers:", void, .{Object} },
         .{ "sectionIdentifierForSectionContainingItemIdentifier:", ?Any, .{Any} },
         .{ "sectionIdentifiers", Object, .{} },
     };
 
-    pub fn send(self: NSDiffableDataSourceSnapshot, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
+    pub fn send(self: NSDiffableDataSourceSnapshotReference, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
         return objc.typedSend(methods, self.obj, selector, args);
     }
 };
@@ -4039,11 +4041,11 @@ pub const NSDocument = struct {
 
     pub const methods = .{
         .{ "PDFPrintOperation", NSPrintOperation, .{} },
-        .{ "accommodatePresentedItemDeletionWithCompletionHandler:", void, .{void} },
+        .{ "accommodatePresentedItemDeletionWithCompletionHandler:", void, .{?*anyopaque} },
         .{ "addWindowController:", void, .{NSWindowController} },
         .{ "allowsDocumentSharing", objc.BOOL, .{} },
         .{ "autosaveDocumentWithDelegate:didAutosaveSelector:contextInfo:", void, .{ ?Any, Selector, ?UnsafeMutableRawPointer } },
-        .{ "autosaveWithImplicitCancellability:completionHandler:", void, .{ objc.BOOL, void } },
+        .{ "autosaveWithImplicitCancellability:completionHandler:", void, .{ objc.BOOL, ?*anyopaque } },
         .{ "autosavedContentsFileURL", ?Foundation.NSURL, .{} },
         .{ "autosavingFileType", ?objc.NSString, .{} },
         .{ "autosavingIsImplicitlyCancellable", objc.BOOL, .{} },
@@ -4055,8 +4057,8 @@ pub const NSDocument = struct {
         .{ "changeCountTokenForSaveOperation:", Any, .{NSDocument.SaveOperationType} },
         .{ "checkAutosavingSafetyAndReturnError:", void, .{} },
         .{ "close", void, .{} },
-        .{ "continueActivityUsingBlock:", void, .{void} },
-        .{ "continueAsynchronousWorkOnMainThreadUsingBlock:", void, .{void} },
+        .{ "continueActivityUsingBlock:", void, .{?*anyopaque} },
+        .{ "continueAsynchronousWorkOnMainThreadUsingBlock:", void, .{?*anyopaque} },
         .{ "dataOfType:error:", Foundation.NSData, .{objc.NSString} },
         .{ "defaultDraftName", objc.NSString, .{} },
         .{ "displayName", objc.NSString, .{} },
@@ -4066,7 +4068,7 @@ pub const NSDocument = struct {
         .{ "duplicateDocument:", void, .{?Any} },
         .{ "duplicateDocumentWithDelegate:didDuplicateSelector:contextInfo:", void, .{ ?Any, Selector, ?UnsafeMutableRawPointer } },
         .{ "encodeRestorableStateWithCoder:", void, .{Foundation.NSCoder} },
-        .{ "encodeRestorableStateWithCoder:backgroundQueue:", void, .{ Foundation.NSCoder, Foundation.NSOperationQueue } },
+        .{ "encodeRestorableStateWithCoder:backgroundQueue:", void, .{ Foundation.NSCoder, Foundation.OperationQueue } },
         .{ "entireFileLoaded", objc.BOOL, .{} },
         .{ "fileAttributesToWriteToURL:ofType:forSaveOperation:originalContentsURL:error:", Object, .{ Foundation.NSURL, objc.NSString, NSDocument.SaveOperationType, ?Foundation.NSURL } },
         .{ "fileModificationDate", ?Foundation.NSDate, .{} },
@@ -4075,7 +4077,7 @@ pub const NSDocument = struct {
         .{ "fileType", ?objc.NSString, .{} },
         .{ "fileTypeFromLastRunSavePanel", ?objc.NSString, .{} },
         .{ "fileURL", ?Foundation.NSURL, .{} },
-        .{ "fileWrapperOfType:error:", Foundation.NSFileWrapper, .{objc.NSString} },
+        .{ "fileWrapperOfType:error:", Foundation.FileWrapper, .{objc.NSString} },
         .{ "handleCloseScriptCommand:", ?Any, .{Foundation.NSCloseCommand} },
         .{ "handlePrintScriptCommand:", ?Any, .{Foundation.NSScriptCommand} },
         .{ "handleSaveScriptCommand:", ?Any, .{Foundation.NSScriptCommand} },
@@ -4086,24 +4088,24 @@ pub const NSDocument = struct {
         .{ "keepBackupFile", objc.BOOL, .{} },
         .{ "lastComponentOfFileName", objc.NSString, .{} },
         .{ "lockDocument:", void, .{?Any} },
-        .{ "lockDocumentWithCompletionHandler:", void, .{void} },
-        .{ "lockWithCompletionHandler:", void, .{void} },
+        .{ "lockDocumentWithCompletionHandler:", void, .{?*anyopaque} },
+        .{ "lockWithCompletionHandler:", void, .{?*anyopaque} },
         .{ "locked", objc.BOOL, .{} },
         .{ "makeWindowControllers", void, .{} },
         .{ "moveDocument:", void, .{?Any} },
         .{ "moveDocumentToUbiquityContainer:", void, .{?Any} },
-        .{ "moveDocumentWithCompletionHandler:", void, .{void} },
-        .{ "moveToURL:completionHandler:", void, .{ Foundation.NSURL, void } },
+        .{ "moveDocumentWithCompletionHandler:", void, .{?*anyopaque} },
+        .{ "moveToURL:completionHandler:", void, .{ Foundation.NSURL, ?*anyopaque } },
         .{ "objectSpecifier", Foundation.NSScriptObjectSpecifier, .{} },
         .{ "observedPresentedItemUbiquityAttributes", objc.NSString, .{} },
-        .{ "performActivityWithSynchronousWaiting:usingBlock:", void, .{ objc.BOOL, void } },
-        .{ "performAsynchronousFileAccessUsingBlock:", void, .{void} },
-        .{ "performSynchronousFileAccessUsingBlock:", void, .{void} },
+        .{ "performActivityWithSynchronousWaiting:usingBlock:", void, .{ objc.BOOL, ?*anyopaque } },
+        .{ "performAsynchronousFileAccessUsingBlock:", void, .{?*anyopaque} },
+        .{ "performSynchronousFileAccessUsingBlock:", void, .{?*anyopaque} },
         .{ "preparePageLayout:", objc.BOOL, .{NSPageLayout} },
         .{ "prepareSavePanel:", objc.BOOL, .{NSSavePanel} },
         .{ "prepareSharingServicePicker:", void, .{NSSharingServicePicker} },
-        .{ "presentError:", objc.BOOL, .{void} },
-        .{ "presentError:modalForWindow:delegate:didPresentSelector:contextInfo:", void, .{ void, NSWindow, ?Any, Selector, ?UnsafeMutableRawPointer } },
+        .{ "presentError:", objc.BOOL, .{?*anyopaque} },
+        .{ "presentError:modalForWindow:delegate:didPresentSelector:contextInfo:", void, .{ ?*anyopaque, NSWindow, ?Any, Selector, ?UnsafeMutableRawPointer } },
         .{ "presentedItemDidChange", void, .{} },
         .{ "presentedItemDidChangeUbiquityAttributes:", void, .{objc.NSString} },
         .{ "presentedItemDidGainVersion:", void, .{Foundation.NSFileVersion} },
@@ -4113,17 +4115,17 @@ pub const NSDocument = struct {
         .{ "presentedItemURL", ?Foundation.NSURL, .{} },
         .{ "previewRepresentableActivityItems", ?*anyopaque, .{} },
         .{ "printDocument:", void, .{?Any} },
-        .{ "printDocumentWithSettings:showPrintPanel:delegate:didPrintSelector:contextInfo:", void, .{ Any, objc.BOOL, ?Any, Selector, ?UnsafeMutableRawPointer } },
+        .{ "printDocumentWithSettings:showPrintPanel:delegate:didPrintSelector:contextInfo:", void, .{ Object, objc.BOOL, ?Any, Selector, ?UnsafeMutableRawPointer } },
         .{ "printInfo", NSPrintInfo, .{} },
-        .{ "printOperationWithSettings:error:", NSPrintOperation, .{Any} },
+        .{ "printOperationWithSettings:error:", NSPrintOperation, .{Object} },
         .{ "readFromData:ofType:error:", void, .{ Foundation.NSData, objc.NSString } },
-        .{ "readFromFileWrapper:ofType:error:", void, .{ Foundation.NSFileWrapper, objc.NSString } },
+        .{ "readFromFileWrapper:ofType:error:", void, .{ Foundation.FileWrapper, objc.NSString } },
         .{ "readFromURL:ofType:error:", void, .{ Foundation.NSURL, objc.NSString } },
-        .{ "relinquishPresentedItemToReader:", void, .{void} },
-        .{ "relinquishPresentedItemToWriter:", void, .{void} },
+        .{ "relinquishPresentedItemToReader:", void, .{?*anyopaque} },
+        .{ "relinquishPresentedItemToWriter:", void, .{?*anyopaque} },
         .{ "removeWindowController:", void, .{NSWindowController} },
         .{ "renameDocument:", void, .{?Any} },
-        .{ "restoreDocumentWindowWithIdentifier:state:completionHandler:", void, .{ objc.NSString, Foundation.NSCoder, void } },
+        .{ "restoreDocumentWindowWithIdentifier:state:completionHandler:", void, .{ objc.NSString, Foundation.NSCoder, ?*anyopaque } },
         .{ "restoreStateWithCoder:", void, .{Foundation.NSCoder} },
         .{ "revertDocumentToSaved:", void, .{?Any} },
         .{ "revertToContentsOfURL:ofType:error:", void, .{ Foundation.NSURL, objc.NSString } },
@@ -4137,8 +4139,8 @@ pub const NSDocument = struct {
         .{ "saveDocumentToPDF:", void, .{?Any} },
         .{ "saveDocumentWithDelegate:didSaveSelector:contextInfo:", void, .{ ?Any, Selector, ?UnsafeMutableRawPointer } },
         .{ "savePanelShowsFileFormatsControl", objc.BOOL, .{} },
-        .{ "savePresentedItemChangesWithCompletionHandler:", void, .{void} },
-        .{ "saveToURL:ofType:forSaveOperation:completionHandler:", void, .{ Foundation.NSURL, objc.NSString, NSDocument.SaveOperationType, void } },
+        .{ "savePresentedItemChangesWithCompletionHandler:", void, .{?*anyopaque} },
+        .{ "saveToURL:ofType:forSaveOperation:completionHandler:", void, .{ Foundation.NSURL, objc.NSString, NSDocument.SaveOperationType, ?*anyopaque } },
         .{ "saveToURL:ofType:forSaveOperation:delegate:didSaveSelector:contextInfo:", void, .{ Foundation.NSURL, objc.NSString, NSDocument.SaveOperationType, ?Any, Selector, ?UnsafeMutableRawPointer } },
         .{ "scheduleAutosaving", void, .{} },
         .{ "setAutosavedContentsFileURL:", void, .{?Foundation.NSURL} },
@@ -4151,27 +4153,27 @@ pub const NSDocument = struct {
         .{ "setLastComponentOfFileName:", void, .{objc.NSString} },
         .{ "setPreviewRepresentableActivityItems:", void, .{?*anyopaque} },
         .{ "setPrintInfo:", void, .{NSPrintInfo} },
-        .{ "setUndoManager:", void, .{?Foundation.NSUndoManager} },
+        .{ "setUndoManager:", void, .{?Foundation.UndoManager} },
         .{ "setUserActivity:", void, .{?Foundation.NSUserActivity} },
         .{ "setWindow:", void, .{?NSWindow} },
-        .{ "shareDocumentWithSharingService:completionHandler:", void, .{ NSSharingService, void } },
+        .{ "shareDocumentWithSharingService:completionHandler:", void, .{ NSSharingService, ?*anyopaque } },
         .{ "shouldChangePrintInfo:", objc.BOOL, .{NSPrintInfo} },
         .{ "shouldCloseWindowController:delegate:shouldCloseSelector:contextInfo:", void, .{ NSWindowController, ?Any, Selector, ?UnsafeMutableRawPointer } },
         .{ "shouldRunSavePanelWithAccessoryView", objc.BOOL, .{} },
         .{ "showWindows", void, .{} },
-        .{ "stopBrowsingVersionsWithCompletionHandler:", void, .{void} },
+        .{ "stopBrowsingVersionsWithCompletionHandler:", void, .{?*anyopaque} },
         .{ "unblockUserInteraction", void, .{} },
-        .{ "undoManager", ?Foundation.NSUndoManager, .{} },
+        .{ "undoManager", ?Foundation.UndoManager, .{} },
         .{ "unlockDocument:", void, .{?Any} },
-        .{ "unlockDocumentWithCompletionHandler:", void, .{void} },
-        .{ "unlockWithCompletionHandler:", void, .{void} },
+        .{ "unlockDocumentWithCompletionHandler:", void, .{?*anyopaque} },
+        .{ "unlockWithCompletionHandler:", void, .{?*anyopaque} },
         .{ "updateChangeCount:", void, .{NSDocument.ChangeType} },
         .{ "updateChangeCountWithToken:forSaveOperation:", void, .{ Any, NSDocument.SaveOperationType } },
         .{ "updateUserActivityState:", void, .{Foundation.NSUserActivity} },
         .{ "userActivity", ?Foundation.NSUserActivity, .{} },
-        .{ "validateUserInterfaceItem:", objc.BOOL, .{void} },
-        .{ "willNotPresentError:", void, .{void} },
-        .{ "willPresentError:", ?*anyopaque, .{void} },
+        .{ "validateUserInterfaceItem:", objc.BOOL, .{NSValidatedUserInterfaceItem} },
+        .{ "willNotPresentError:", void, .{?*anyopaque} },
+        .{ "willPresentError:", ?*anyopaque, .{?*anyopaque} },
         .{ "windowControllerDidLoadNib:", void, .{NSWindowController} },
         .{ "windowControllerWillLoadNib:", void, .{NSWindowController} },
         .{ "windowControllers", Object, .{} },
@@ -4235,8 +4237,8 @@ pub const NSDocumentController = struct {
         .{ "addDocument:", void, .{NSDocument} },
         .{ "allowsAutomaticShareMenu", objc.BOOL, .{} },
         .{ "autosavingDelay", TimeInterval, .{} },
-        .{ "beginOpenPanel:forTypes:completionHandler:", void, .{ NSOpenPanel, void, void } },
-        .{ "beginOpenPanelWithCompletionHandler:", void, .{void} },
+        .{ "beginOpenPanel:forTypes:completionHandler:", void, .{ NSOpenPanel, ?*anyopaque, ?*anyopaque } },
+        .{ "beginOpenPanelWithCompletionHandler:", void, .{?*anyopaque} },
         .{ "clearRecentDocuments:", void, .{?Any} },
         .{ "closeAllDocumentsWithDelegate:didCloseAllSelector:contextInfo:", void, .{ ?Any, Selector, ?UnsafeMutableRawPointer } },
         .{ "currentDirectory", ?objc.NSString, .{} },
@@ -4258,21 +4260,21 @@ pub const NSDocumentController = struct {
         .{ "noteNewRecentDocument:", void, .{NSDocument} },
         .{ "noteNewRecentDocumentURL:", void, .{Foundation.NSURL} },
         .{ "openDocument:", void, .{?Any} },
-        .{ "openDocumentWithContentsOfURL:display:completionHandler:", void, .{ Foundation.NSURL, objc.BOOL, void } },
+        .{ "openDocumentWithContentsOfURL:display:completionHandler:", void, .{ Foundation.NSURL, objc.BOOL, ?*anyopaque } },
         .{ "openUntitledDocumentAndDisplay:error:", NSDocument, .{objc.BOOL} },
-        .{ "presentError:", objc.BOOL, .{void} },
-        .{ "presentError:modalForWindow:delegate:didPresentSelector:contextInfo:", void, .{ void, NSWindow, ?Any, Selector, ?UnsafeMutableRawPointer } },
+        .{ "presentError:", objc.BOOL, .{?*anyopaque} },
+        .{ "presentError:modalForWindow:delegate:didPresentSelector:contextInfo:", void, .{ ?*anyopaque, NSWindow, ?Any, Selector, ?UnsafeMutableRawPointer } },
         .{ "recentDocumentURLs", Object, .{} },
         .{ "removeDocument:", void, .{NSDocument} },
-        .{ "reopenDocumentForURL:withContentsOfURL:display:completionHandler:", void, .{ ?Foundation.NSURL, Foundation.NSURL, objc.BOOL, void } },
+        .{ "reopenDocumentForURL:withContentsOfURL:display:completionHandler:", void, .{ ?Foundation.NSURL, Foundation.NSURL, objc.BOOL, ?*anyopaque } },
         .{ "reviewUnsavedDocumentsWithAlertTitle:cancellable:delegate:didReviewAllSelector:contextInfo:", void, .{ ?objc.NSString, objc.BOOL, ?Any, Selector, ?UnsafeMutableRawPointer } },
-        .{ "runModalOpenPanel:forTypes:", objc.NSInteger, .{ NSOpenPanel, void } },
+        .{ "runModalOpenPanel:forTypes:", objc.NSInteger, .{ NSOpenPanel, ?*anyopaque } },
         .{ "saveAllDocuments:", void, .{?Any} },
         .{ "setAutosavingDelay:", void, .{TimeInterval} },
         .{ "standardShareMenuItem", NSMenuItem, .{} },
         .{ "typeForContentsOfURL:error:", objc.NSString, .{Foundation.NSURL} },
-        .{ "validateUserInterfaceItem:", objc.BOOL, .{void} },
-        .{ "willPresentError:", ?*anyopaque, .{void} },
+        .{ "validateUserInterfaceItem:", objc.BOOL, .{NSValidatedUserInterfaceItem} },
+        .{ "willPresentError:", ?*anyopaque, .{?*anyopaque} },
     };
 
     pub fn send(self: NSDocumentController, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
@@ -4333,7 +4335,7 @@ pub const NSDraggingItem = struct {
     }
 
     pub const class_methods = .{
-        .{ "initWithPasteboardWriter:", Object, .{void} },
+        .{ "initWithPasteboardWriter:", Object, .{NSPasteboardWriting} },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -4351,7 +4353,7 @@ pub const NSDraggingSession = struct {
         .{ "draggingLocation", NSPoint, .{} },
         .{ "draggingPasteboard", NSPasteboard, .{} },
         .{ "draggingSequenceNumber", objc.NSInteger, .{} },
-        .{ "enumerateDraggingItemsWithOptions:forView:classes:searchOptions:usingBlock:", void, .{ objc.NSInteger, ?NSView, void, Any, void } },
+        .{ "enumerateDraggingItemsWithOptions:forView:classes:searchOptions:usingBlock:", void, .{ objc.NSInteger, ?NSView, Object, Object, ?*anyopaque } },
         .{ "setAnimatesToStartingPositionsOnCancelOrFail:", void, .{objc.BOOL} },
         .{ "setDraggingFormation:", void, .{NSDraggingFormation} },
         .{ "setDraggingLeaderIndex:", void, .{objc.NSInteger} },
@@ -4493,7 +4495,7 @@ pub const NSEvent = struct {
         .{ "timestamp", TimeInterval, .{} },
         .{ "touchesForView:", NSTouch, .{NSView} },
         .{ "touchesMatchingPhase:inView:", NSTouch, .{ objc.NSInteger, ?NSView } },
-        .{ "trackSwipeEventWithOptions:dampenAmountThresholdMin:max:usingHandler:", void, .{ objc.NSInteger, objc.CGFloat, objc.CGFloat, void } },
+        .{ "trackSwipeEventWithOptions:dampenAmountThresholdMin:max:usingHandler:", void, .{ objc.NSInteger, objc.CGFloat, objc.CGFloat, ?*anyopaque } },
         .{ "trackingArea", ?NSTrackingArea, .{} },
         .{ "trackingNumber", objc.NSInteger, .{} },
         .{ "type", NSEvent.EventType, .{} },
@@ -4511,8 +4513,8 @@ pub const NSEvent = struct {
     }
 
     pub const class_methods = .{
-        .{ "addGlobalMonitorForEventsMatchingMask:handler:", ?Any, .{ objc.NSInteger, void } },
-        .{ "addLocalMonitorForEventsMatchingMask:handler:", ?Any, .{ objc.NSInteger, void } },
+        .{ "addGlobalMonitorForEventsMatchingMask:handler:", ?Any, .{ objc.NSInteger, ?*anyopaque } },
+        .{ "addLocalMonitorForEventsMatchingMask:handler:", ?Any, .{ objc.NSInteger, ?*anyopaque } },
         .{ "doubleClickInterval", TimeInterval, .{} },
         .{ "enterExitEventWithType:location:modifierFlags:timestamp:windowNumber:context:eventNumber:trackingNumber:userData:", ?NSEvent, .{ NSEvent.EventType, NSPoint, objc.NSInteger, TimeInterval, objc.NSInteger, ?NSGraphicsContext, objc.NSInteger, objc.NSInteger, ?UnsafeMutableRawPointer } },
         .{ "eventWithCGEvent:", Object, .{?*anyopaque} },
@@ -4622,7 +4624,7 @@ pub const NSFilePromiseProvider = struct {
 
     pub const class_methods = .{
         .{ "init", Object, .{} },
-        .{ "initWithFileType:delegate:", Object, .{ objc.NSString, void } },
+        .{ "initWithFileType:delegate:", Object, .{ objc.NSString, NSFilePromiseProviderDelegate } },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -4636,7 +4638,7 @@ pub const NSFilePromiseReceiver = struct {
     pub const methods = .{
         .{ "fileNames", Object, .{} },
         .{ "fileTypes", Object, .{} },
-        .{ "receivePromisedFilesAtDestination:options:operationQueue:reader:", void, .{ Foundation.NSURL, Any, Foundation.NSOperationQueue, void } },
+        .{ "receivePromisedFilesAtDestination:options:operationQueue:reader:", void, .{ Foundation.NSURL, Object, Foundation.OperationQueue, ?*anyopaque } },
     };
 
     pub fn send(self: NSFilePromiseReceiver, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
@@ -4663,7 +4665,7 @@ pub const NSFont = struct {
         .{ "boundingRectForFont", NSRect, .{} },
         .{ "boundingRectForGlyph:", NSRect, .{u32} },
         .{ "capHeight", objc.CGFloat, .{} },
-        .{ "coveredCharacterSet", ?*anyopaque, .{} },
+        .{ "coveredCharacterSet", Foundation.NSCharacterSet, .{} },
         .{ "descender", objc.CGFloat, .{} },
         .{ "displayName", ?objc.NSString, .{} },
         .{ "familyName", ?objc.NSString, .{} },
@@ -4690,7 +4692,7 @@ pub const NSFont = struct {
         .{ "screenFontWithRenderingMode:", NSFont, .{NSFontRenderingMode} },
         .{ "set", void, .{} },
         .{ "setInContext:", void, .{NSGraphicsContext} },
-        .{ "textTransform", ?*anyopaque, .{} },
+        .{ "textTransform", Foundation.NSAffineTransform, .{} },
         .{ "underlinePosition", objc.CGFloat, .{} },
         .{ "underlineThickness", objc.CGFloat, .{} },
         .{ "vertical", objc.BOOL, .{} },
@@ -4706,7 +4708,7 @@ pub const NSFont = struct {
         .{ "boldSystemFontOfSize:", NSFont, .{objc.CGFloat} },
         .{ "controlContentFontOfSize:", NSFont, .{objc.CGFloat} },
         .{ "fontWithDescriptor:size:", Object, .{ NSFontDescriptor, objc.CGFloat } },
-        .{ "fontWithDescriptor:textTransform:", Object, .{ NSFontDescriptor, ?*anyopaque } },
+        .{ "fontWithDescriptor:textTransform:", Object, .{ NSFontDescriptor, ?Foundation.NSAffineTransform } },
         .{ "fontWithName:matrix:", Object, .{ objc.NSString, objc.CGFloat } },
         .{ "fontWithName:size:", Object, .{ objc.NSString, objc.CGFloat } },
         .{ "labelFontOfSize:", NSFont, .{objc.CGFloat} },
@@ -4717,7 +4719,7 @@ pub const NSFont = struct {
         .{ "monospacedDigitSystemFontOfSize:weight:", NSFont, .{ objc.CGFloat, objc.CGFloat } },
         .{ "monospacedSystemFontOfSize:weight:", NSFont, .{ objc.CGFloat, objc.CGFloat } },
         .{ "paletteFontOfSize:", NSFont, .{objc.CGFloat} },
-        .{ "preferredFontForTextStyle:options:", NSFont, .{ objc.NSString, Any } },
+        .{ "preferredFontForTextStyle:options:", NSFont, .{ objc.NSString, Object } },
         .{ "setUserFixedPitchFont:", void, .{?NSFont} },
         .{ "setUserFont:", void, .{?NSFont} },
         .{ "smallSystemFontSize", objc.CGFloat, .{} },
@@ -4741,9 +4743,9 @@ pub const NSFontAssetRequest = struct {
     obj: Object,
 
     pub const methods = .{
-        .{ "downloadFontAssetsWithCompletionHandler:", void, .{void} },
+        .{ "downloadFontAssetsWithCompletionHandler:", void, .{?*anyopaque} },
         .{ "downloadedFontDescriptors", Object, .{} },
-        .{ "progress", Foundation.NSProgress, .{} },
+        .{ "progress", Foundation.Progress, .{} },
     };
 
     pub fn send(self: NSFontAssetRequest, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
@@ -4751,7 +4753,7 @@ pub const NSFontAssetRequest = struct {
     }
 
     pub const class_methods = .{
-        .{ "initWithFontDescriptors:options:", Object, .{ void, objc.NSInteger } },
+        .{ "initWithFontDescriptors:options:", Object, .{ Object, objc.NSInteger } },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -4766,8 +4768,8 @@ pub const NSFontCollection = struct {
         .{ "exclusionDescriptors", ?*anyopaque, .{} },
         .{ "matchingDescriptors", ?*anyopaque, .{} },
         .{ "matchingDescriptorsForFamily:", ?*anyopaque, .{objc.NSString} },
-        .{ "matchingDescriptorsForFamily:options:", ?*anyopaque, .{ objc.NSString, ?Foundation.NSNumber } },
-        .{ "matchingDescriptorsWithOptions:", ?*anyopaque, .{?Foundation.NSNumber} },
+        .{ "matchingDescriptorsForFamily:options:", ?*anyopaque, .{ objc.NSString, ?*anyopaque } },
+        .{ "matchingDescriptorsWithOptions:", ?*anyopaque, .{?*anyopaque} },
         .{ "queryDescriptors", ?*anyopaque, .{} },
     };
 
@@ -4778,7 +4780,7 @@ pub const NSFontCollection = struct {
     pub const class_methods = .{
         .{ "allFontCollectionNames", Object, .{} },
         .{ "fontCollectionWithAllAvailableDescriptors", NSFontCollection, .{} },
-        .{ "fontCollectionWithDescriptors:", Object, .{void} },
+        .{ "fontCollectionWithDescriptors:", Object, .{Object} },
         .{ "fontCollectionWithLocale:", Object, .{Foundation.NSLocale} },
         .{ "fontCollectionWithName:", Object, .{objc.NSString} },
         .{ "fontCollectionWithName:visibility:", Object, .{ objc.NSString, objc.NSInteger } },
@@ -4797,16 +4799,16 @@ pub const NSFontDescriptor = struct {
 
     pub const methods = .{
         .{ "fontAttributes", Object, .{} },
-        .{ "fontDescriptorByAddingAttributes:", NSFontDescriptor, .{Any} },
+        .{ "fontDescriptorByAddingAttributes:", NSFontDescriptor, .{Object} },
         .{ "fontDescriptorWithDesign:", ?*anyopaque, .{objc.NSString} },
         .{ "fontDescriptorWithFace:", NSFontDescriptor, .{objc.NSString} },
         .{ "fontDescriptorWithFamily:", NSFontDescriptor, .{objc.NSString} },
-        .{ "fontDescriptorWithMatrix:", NSFontDescriptor, .{?*anyopaque} },
+        .{ "fontDescriptorWithMatrix:", NSFontDescriptor, .{Foundation.NSAffineTransform} },
         .{ "fontDescriptorWithSize:", NSFontDescriptor, .{objc.CGFloat} },
         .{ "fontDescriptorWithSymbolicTraits:", NSFontDescriptor, .{objc.NSInteger} },
         .{ "matchingFontDescriptorWithMandatoryKeys:", ?NSFontDescriptor, .{objc.NSString} },
         .{ "matchingFontDescriptorsWithMandatoryKeys:", Object, .{objc.NSString} },
-        .{ "matrix", ?*anyopaque, .{} },
+        .{ "matrix", ?Foundation.NSAffineTransform, .{} },
         .{ "objectForKey:", ?Any, .{objc.NSString} },
         .{ "pointSize", objc.CGFloat, .{} },
         .{ "postscriptName", ?objc.NSString, .{} },
@@ -4820,10 +4822,10 @@ pub const NSFontDescriptor = struct {
     }
 
     pub const class_methods = .{
-        .{ "fontDescriptorWithName:matrix:", Object, .{ objc.NSString, ?*anyopaque } },
+        .{ "fontDescriptorWithName:matrix:", Object, .{ objc.NSString, Foundation.NSAffineTransform } },
         .{ "fontDescriptorWithName:size:", Object, .{ objc.NSString, objc.CGFloat } },
-        .{ "initWithFontAttributes:", Object, .{?Any} },
-        .{ "preferredFontDescriptorForTextStyle:options:", NSFontDescriptor, .{ objc.NSString, Any } },
+        .{ "initWithFontAttributes:", Object, .{?*anyopaque} },
+        .{ "preferredFontDescriptorForTextStyle:options:", NSFontDescriptor, .{ objc.NSString, Object } },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -4837,7 +4839,7 @@ pub const NSFontManager = struct {
     pub const methods = .{
         .{ "action", Selector, .{} },
         .{ "addCollection:options:", objc.BOOL, .{ objc.NSString, objc.NSInteger } },
-        .{ "addFontDescriptors:toCollection:", void, .{ void, objc.NSString } },
+        .{ "addFontDescriptors:toCollection:", void, .{ Object, objc.NSString } },
         .{ "addFontTrait:", void, .{?Any} },
         .{ "availableFontFamilies", Object, .{} },
         .{ "availableFontNamesMatchingFontDescriptor:", ?*anyopaque, .{NSFontDescriptor} },
@@ -4845,7 +4847,7 @@ pub const NSFontManager = struct {
         .{ "availableFonts", Object, .{} },
         .{ "availableMembersOfFontFamily:", ?*anyopaque, .{objc.NSString} },
         .{ "collectionNames", Object, .{} },
-        .{ "convertAttributes:", Object, .{Any} },
+        .{ "convertAttributes:", Object, .{Object} },
         .{ "convertFont:", NSFont, .{NSFont} },
         .{ "convertFont:toFace:", ?NSFont, .{ NSFont, objc.NSString } },
         .{ "convertFont:toFamily:", NSFont, .{ NSFont, objc.NSString } },
@@ -4877,7 +4879,7 @@ pub const NSFontManager = struct {
         .{ "setDelegate:", void, .{?AnyObject} },
         .{ "setEnabled:", void, .{objc.BOOL} },
         .{ "setFontMenu:", void, .{NSMenu} },
-        .{ "setSelectedAttributes:isMultiple:", void, .{ Any, objc.BOOL } },
+        .{ "setSelectedAttributes:isMultiple:", void, .{ Object, objc.BOOL } },
         .{ "setSelectedFont:isMultiple:", void, .{ NSFont, objc.BOOL } },
         .{ "setTarget:", void, .{?AnyObject} },
         .{ "target", ?AnyObject, .{} },
@@ -5135,7 +5137,7 @@ pub const NSGlyphGenerator = struct {
     obj: Object,
 
     pub const methods = .{
-        .{ "generateGlyphsForGlyphStorage:desiredNumberOfCharacters:glyphIndex:characterIndex:", void, .{ void, objc.NSInteger, objc.NSInteger, objc.NSInteger } },
+        .{ "generateGlyphsForGlyphStorage:desiredNumberOfCharacters:glyphIndex:characterIndex:", void, .{ NSGlyphStorage, objc.NSInteger, objc.NSInteger, objc.NSInteger } },
     };
 
     pub fn send(self: NSGlyphGenerator, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
@@ -5200,8 +5202,8 @@ pub const NSGradient = struct {
 
     pub const class_methods = .{
         .{ "initWithCoder:", Object, .{Foundation.NSCoder} },
-        .{ "initWithColors:", Object, .{void} },
-        .{ "initWithColors:atLocations:colorSpace:", Object, .{ void, objc.CGFloat, NSColorSpace } },
+        .{ "initWithColors:", Object, .{Object} },
+        .{ "initWithColors:atLocations:colorSpace:", Object, .{ Object, objc.CGFloat, NSColorSpace } },
         .{ "initWithStartingColor:endingColor:", Object, .{ NSColor, NSColor } },
     };
 
@@ -5242,7 +5244,7 @@ pub const NSGraphicsContext = struct {
     pub const class_methods = .{
         .{ "currentContext", ?NSGraphicsContext, .{} },
         .{ "currentContextDrawingToScreen", objc.BOOL, .{} },
-        .{ "graphicsContextWithAttributes:", Object, .{Any} },
+        .{ "graphicsContextWithAttributes:", Object, .{Object} },
         .{ "graphicsContextWithBitmapImageRep:", Object, .{NSBitmapImageRep} },
         .{ "graphicsContextWithCGContext:flipped:", Object, .{ ?*anyopaque, objc.BOOL } },
         .{ "graphicsContextWithGraphicsPort:flipped:", Object, .{ UnsafeMutableRawPointer, objc.BOOL } },
@@ -5362,16 +5364,16 @@ pub const NSGridView = struct {
 
     pub const Super = NSView;
     pub const methods = .{
-        .{ "addColumnWithViews:", NSGridColumn, .{void} },
-        .{ "addRowWithViews:", NSGridRow, .{void} },
+        .{ "addColumnWithViews:", NSGridColumn, .{Object} },
+        .{ "addRowWithViews:", NSGridRow, .{Object} },
         .{ "cellAtColumnIndex:rowIndex:", NSGridCell, .{ objc.NSInteger, objc.NSInteger } },
         .{ "cellForView:", ?NSGridCell, .{NSView} },
         .{ "columnAtIndex:", NSGridColumn, .{objc.NSInteger} },
         .{ "columnSpacing", objc.CGFloat, .{} },
         .{ "indexOfColumn:", objc.NSInteger, .{NSGridColumn} },
         .{ "indexOfRow:", objc.NSInteger, .{NSGridRow} },
-        .{ "insertColumnAtIndex:withViews:", NSGridColumn, .{ objc.NSInteger, void } },
-        .{ "insertRowAtIndex:withViews:", NSGridRow, .{ objc.NSInteger, void } },
+        .{ "insertColumnAtIndex:withViews:", NSGridColumn, .{ objc.NSInteger, Object } },
+        .{ "insertRowAtIndex:withViews:", NSGridRow, .{ objc.NSInteger, Object } },
         .{ "mergeCellsInHorizontalRange:verticalRange:", void, .{ NSRange, NSRange } },
         .{ "moveColumnAtIndex:toIndex:", void, .{ objc.NSInteger, objc.NSInteger } },
         .{ "moveRowAtIndex:toIndex:", void, .{ objc.NSInteger, objc.NSInteger } },
@@ -5397,7 +5399,7 @@ pub const NSGridView = struct {
 
     pub const class_methods = .{
         .{ "gridViewWithNumberOfColumns:rows:", Object, .{ objc.NSInteger, objc.NSInteger } },
-        .{ "gridViewWithViews:", Object, .{void} },
+        .{ "gridViewWithViews:", Object, .{Object} },
         .{ "initWithCoder:", Object, .{Foundation.NSCoder} },
         .{ "initWithFrame:", Object, .{NSRect} },
     };
@@ -5433,8 +5435,8 @@ pub const NSGroupTouchBarItem = struct {
 
     pub const class_methods = .{
         .{ "alertStyleGroupItemWithIdentifier:", Object, .{objc.NSString} },
-        .{ "groupItemWithIdentifier:items:", Object, .{ objc.NSString, void } },
-        .{ "groupItemWithIdentifier:items:allowedCompressionOptions:", Object, .{ objc.NSString, void, NSUserInterfaceCompressionOptions } },
+        .{ "groupItemWithIdentifier:items:", Object, .{ objc.NSString, Object } },
+        .{ "groupItemWithIdentifier:items:allowedCompressionOptions:", Object, .{ objc.NSString, Object, NSUserInterfaceCompressionOptions } },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -5470,7 +5472,7 @@ pub const NSHelpManager = struct {
         .{ "contextHelpForObject:", ?Foundation.NSAttributedString, .{Any} },
         .{ "findString:inBook:", void, .{ objc.NSString, objc.NSString } },
         .{ "openHelpAnchor:inBook:", void, .{ objc.NSString, objc.NSString } },
-        .{ "registerBooksInBundle:", objc.BOOL, .{Foundation.NSBundle} },
+        .{ "registerBooksInBundle:", objc.BOOL, .{Foundation.Bundle} },
         .{ "removeContextHelpForObject:", void, .{Any} },
         .{ "setContextHelp:forObject:", void, .{ Foundation.NSAttributedString, Any } },
         .{ "showContextHelpForObject:locationHint:", objc.BOOL, .{ Any, NSPoint } },
@@ -5495,24 +5497,24 @@ pub const NSImage = struct {
     obj: Object,
 
     pub const methods = .{
-        .{ "CGImageForProposedRect:context:hints:", ?*anyopaque, .{ NSRect, ?NSGraphicsContext, ?Any } },
+        .{ "CGImageForProposedRect:context:hints:", ?*anyopaque, .{ NSRect, ?NSGraphicsContext, ?*anyopaque } },
         .{ "TIFFRepresentation", ?Foundation.NSData, .{} },
         .{ "TIFFRepresentationUsingCompression:factor:", ?Foundation.NSData, .{ NSBitmapImageRep.TIFFCompression, f32 } },
         .{ "accessibilityDescription", ?objc.NSString, .{} },
         .{ "addRepresentation:", void, .{NSImageRep} },
-        .{ "addRepresentations:", void, .{void} },
+        .{ "addRepresentations:", void, .{Object} },
         .{ "alignmentRect", NSRect, .{} },
         .{ "backgroundColor", NSColor, .{} },
-        .{ "bestRepresentationForRect:context:hints:", ?NSImageRep, .{ NSRect, ?NSGraphicsContext, ?Any } },
+        .{ "bestRepresentationForRect:context:hints:", ?NSImageRep, .{ NSRect, ?NSGraphicsContext, ?*anyopaque } },
         .{ "cacheMode", NSImage.CacheMode, .{} },
         .{ "capInsets", NSEdgeInsets, .{} },
         .{ "delegate", ?NSImageDelegate, .{} },
         .{ "drawAtPoint:fromRect:operation:fraction:", void, .{ NSPoint, NSRect, NSCompositingOperation, objc.CGFloat } },
         .{ "drawInRect:", void, .{NSRect} },
         .{ "drawInRect:fromRect:operation:fraction:", void, .{ NSRect, NSRect, NSCompositingOperation, objc.CGFloat } },
-        .{ "drawInRect:fromRect:operation:fraction:respectFlipped:hints:", void, .{ NSRect, NSRect, NSCompositingOperation, objc.CGFloat, objc.BOOL, ?Any } },
+        .{ "drawInRect:fromRect:operation:fraction:respectFlipped:hints:", void, .{ NSRect, NSRect, NSCompositingOperation, objc.CGFloat, objc.BOOL, ?*anyopaque } },
         .{ "drawRepresentation:inRect:", objc.BOOL, .{ NSImageRep, NSRect } },
-        .{ "hitTestRect:withImageDestinationRect:context:hints:flipped:", objc.BOOL, .{ NSRect, NSRect, ?NSGraphicsContext, ?Any, objc.BOOL } },
+        .{ "hitTestRect:withImageDestinationRect:context:hints:flipped:", objc.BOOL, .{ NSRect, NSRect, ?NSGraphicsContext, ?*anyopaque, objc.BOOL } },
         .{ "imageWithLocale:", NSImage, .{?Foundation.NSLocale} },
         .{ "imageWithSymbolConfiguration:", ?NSImage, .{NSImageSymbolConfiguration} },
         .{ "layerContentsForContentsScale:", Any, .{objc.CGFloat} },
@@ -5563,8 +5565,8 @@ pub const NSImage = struct {
         .{ "imageUnfilteredFileTypes", Object, .{} },
         .{ "imageUnfilteredPasteboardTypes", Object, .{} },
         .{ "imageUnfilteredTypes", Object, .{} },
-        .{ "imageWithSize:flipped:drawingHandler:", Object, .{ NSSize, objc.BOOL, void } },
-        .{ "imageWithSymbolName:bundle:variableValue:", Object, .{ objc.NSString, ?Foundation.NSBundle, f64 } },
+        .{ "imageWithSize:flipped:drawingHandler:", Object, .{ NSSize, objc.BOOL, ?*anyopaque } },
+        .{ "imageWithSymbolName:bundle:variableValue:", Object, .{ objc.NSString, ?Foundation.Bundle, f64 } },
         .{ "imageWithSymbolName:variableValue:", Object, .{ objc.NSString, f64 } },
         .{ "imageWithSystemSymbolName:accessibilityDescription:", Object, .{ objc.NSString, ?objc.NSString } },
         .{ "imageWithSystemSymbolName:variableValue:accessibilityDescription:", Object, .{ objc.NSString, f64, ?objc.NSString } },
@@ -5652,14 +5654,14 @@ pub const NSImageRep = struct {
     obj: Object,
 
     pub const methods = .{
-        .{ "CGImageForProposedRect:context:hints:", ?*anyopaque, .{ NSRect, ?NSGraphicsContext, ?Any } },
+        .{ "CGImageForProposedRect:context:hints:", ?*anyopaque, .{ NSRect, ?NSGraphicsContext, ?*anyopaque } },
         .{ "alpha", objc.BOOL, .{} },
         .{ "bitsPerSample", objc.NSInteger, .{} },
         .{ "colorSpaceName", objc.NSString, .{} },
         .{ "draw", objc.BOOL, .{} },
         .{ "drawAtPoint:", objc.BOOL, .{NSPoint} },
         .{ "drawInRect:", objc.BOOL, .{NSRect} },
-        .{ "drawInRect:fromRect:operation:fraction:respectFlipped:hints:", objc.BOOL, .{ NSRect, NSRect, NSCompositingOperation, objc.CGFloat, objc.BOOL, ?Any } },
+        .{ "drawInRect:fromRect:operation:fraction:respectFlipped:hints:", objc.BOOL, .{ NSRect, NSRect, NSCompositingOperation, objc.CGFloat, objc.BOOL, ?*anyopaque } },
         .{ "layoutDirection", NSImage.LayoutDirection, .{} },
         .{ "opaque", objc.BOOL, .{} },
         .{ "pixelsHigh", objc.NSInteger, .{} },
@@ -5727,7 +5729,7 @@ pub const NSImageSymbolConfiguration = struct {
         .{ "configurationPreferringMulticolor", ?*anyopaque, .{} },
         .{ "configurationWithColorRenderingMode:", Object, .{NSImage.SymbolColorRenderingMode} },
         .{ "configurationWithHierarchicalColor:", Object, .{NSColor} },
-        .{ "configurationWithPaletteColors:", Object, .{void} },
+        .{ "configurationWithPaletteColors:", Object, .{Object} },
         .{ "configurationWithPointSize:weight:", Object, .{ objc.CGFloat, objc.CGFloat } },
         .{ "configurationWithPointSize:weight:scale:", Object, .{ objc.CGFloat, objc.CGFloat, NSImage.SymbolScale } },
         .{ "configurationWithScale:", Object, .{NSImage.SymbolScale} },
@@ -5849,10 +5851,10 @@ pub const NSLayoutConstraint = struct {
     }
 
     pub const class_methods = .{
-        .{ "activateConstraints:", void, .{void} },
+        .{ "activateConstraints:", void, .{Object} },
         .{ "constraintWithItem:attribute:relatedBy:toItem:attribute:multiplier:constant:", Object, .{ Any, NSLayoutConstraint.Attribute, NSLayoutConstraint.Relation, ?Any, NSLayoutConstraint.Attribute, objc.CGFloat, objc.CGFloat } },
-        .{ "constraintsWithVisualFormat:options:metrics:views:", Object, .{ objc.NSString, objc.NSInteger, ?Any, Any } },
-        .{ "deactivateConstraints:", void, .{void} },
+        .{ "constraintsWithVisualFormat:options:metrics:views:", Object, .{ objc.NSString, objc.NSInteger, ?*anyopaque, Object } },
+        .{ "deactivateConstraints:", void, .{Object} },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -5956,7 +5958,7 @@ pub const NSLayoutManager = struct {
         .{ "CGGlyphAtIndex:", objc.NSString, .{objc.NSInteger} },
         .{ "CGGlyphAtIndex:isValidIndex:", objc.NSString, .{ objc.NSInteger, ?*anyopaque } },
         .{ "addTemporaryAttribute:value:forCharacterRange:", void, .{ objc.NSString, Any, NSRange } },
-        .{ "addTemporaryAttributes:forCharacterRange:", void, .{ Any, NSRange } },
+        .{ "addTemporaryAttributes:forCharacterRange:", void, .{ Object, NSRange } },
         .{ "addTextContainer:", void, .{NSTextContainer} },
         .{ "allowsNonContiguousLayout", objc.BOOL, .{} },
         .{ "attachmentSizeForGlyphAtIndex:", NSSize, .{objc.NSInteger} },
@@ -5983,8 +5985,8 @@ pub const NSLayoutManager = struct {
         .{ "ensureLayoutForCharacterRange:", void, .{NSRange} },
         .{ "ensureLayoutForGlyphRange:", void, .{NSRange} },
         .{ "ensureLayoutForTextContainer:", void, .{NSTextContainer} },
-        .{ "enumerateEnclosingRectsForGlyphRange:withinSelectedGlyphRange:inTextContainer:usingBlock:", void, .{ NSRange, NSRange, NSTextContainer, void } },
-        .{ "enumerateLineFragmentsForGlyphRange:usingBlock:", void, .{ NSRange, void } },
+        .{ "enumerateEnclosingRectsForGlyphRange:withinSelectedGlyphRange:inTextContainer:usingBlock:", void, .{ NSRange, NSRange, NSTextContainer, ?*anyopaque } },
+        .{ "enumerateLineFragmentsForGlyphRange:usingBlock:", void, .{ NSRange, ?*anyopaque } },
         .{ "extraLineFragmentRect", NSRect, .{} },
         .{ "extraLineFragmentTextContainer", ?NSTextContainer, .{} },
         .{ "extraLineFragmentUsedRect", NSRect, .{} },
@@ -6065,7 +6067,7 @@ pub const NSLayoutManager = struct {
         .{ "setNotShownAttribute:forGlyphAtIndex:", void, .{ objc.BOOL, objc.NSInteger } },
         .{ "setShowsControlCharacters:", void, .{objc.BOOL} },
         .{ "setShowsInvisibleCharacters:", void, .{objc.BOOL} },
-        .{ "setTemporaryAttributes:forCharacterRange:", void, .{ Any, NSRange } },
+        .{ "setTemporaryAttributes:forCharacterRange:", void, .{ Object, NSRange } },
         .{ "setTextContainer:forGlyphRange:", void, .{ NSTextContainer, NSRange } },
         .{ "setTextStorage:", void, .{?NSTextStorage} },
         .{ "setTypesetter:", void, .{NSTypesetter} },
@@ -6074,8 +6076,8 @@ pub const NSLayoutManager = struct {
         .{ "setUsesFontLeading:", void, .{objc.BOOL} },
         .{ "setUsesScreenFonts:", void, .{objc.BOOL} },
         .{ "showAttachmentCell:inRect:characterIndex:", void, .{ NSCell, NSRect, objc.NSInteger } },
-        .{ "showCGGlyphs:positions:count:font:matrix:attributes:inContext:", void, .{ objc.NSString, NSPoint, objc.NSInteger, NSFont, ?*anyopaque, Any, NSGraphicsContext } },
-        .{ "showCGGlyphs:positions:count:font:textMatrix:attributes:inContext:", void, .{ objc.NSString, NSPoint, objc.NSInteger, NSFont, ?*anyopaque, Any, ?*anyopaque } },
+        .{ "showCGGlyphs:positions:count:font:matrix:attributes:inContext:", void, .{ objc.NSString, NSPoint, objc.NSInteger, NSFont, Foundation.NSAffineTransform, Object, NSGraphicsContext } },
+        .{ "showCGGlyphs:positions:count:font:textMatrix:attributes:inContext:", void, .{ objc.NSString, NSPoint, objc.NSInteger, NSFont, ?*anyopaque, Object, ?*anyopaque } },
         .{ "showsControlCharacters", objc.BOOL, .{} },
         .{ "showsInvisibleCharacters", objc.BOOL, .{} },
         .{ "strikethroughGlyphRange:strikethroughType:lineFragmentRect:lineFragmentGlyphRange:containerOrigin:", void, .{ NSRange, objc.NSInteger, NSRect, NSRange, NSPoint } },
@@ -6278,9 +6280,9 @@ pub const NSMatrix = struct {
     pub const methods = .{
         .{ "acceptsFirstMouse:", objc.BOOL, .{?NSEvent} },
         .{ "addColumn", void, .{} },
-        .{ "addColumnWithCells:", void, .{void} },
+        .{ "addColumnWithCells:", void, .{Object} },
         .{ "addRow", void, .{} },
-        .{ "addRowWithCells:", void, .{void} },
+        .{ "addRowWithCells:", void, .{Object} },
         .{ "allowsEmptySelection", objc.BOOL, .{} },
         .{ "autorecalculatesCellSize", objc.BOOL, .{} },
         .{ "autoscroll", objc.BOOL, .{} },
@@ -6305,9 +6307,9 @@ pub const NSMatrix = struct {
         .{ "getRow:column:ofCell:", objc.BOOL, .{ objc.NSInteger, objc.NSInteger, NSCell } },
         .{ "highlightCell:atRow:column:", void, .{ objc.BOOL, objc.NSInteger, objc.NSInteger } },
         .{ "insertColumn:", void, .{objc.NSInteger} },
-        .{ "insertColumn:withCells:", void, .{ objc.NSInteger, void } },
+        .{ "insertColumn:withCells:", void, .{ objc.NSInteger, ?*anyopaque } },
         .{ "insertRow:", void, .{objc.NSInteger} },
-        .{ "insertRow:withCells:", void, .{ objc.NSInteger, void } },
+        .{ "insertRow:withCells:", void, .{ objc.NSInteger, ?*anyopaque } },
         .{ "intercellSpacing", NSSize, .{} },
         .{ "keyCell", ?NSCell, .{} },
         .{ "makeCellAtRow:column:", NSCell, .{ objc.NSInteger, objc.NSInteger } },
@@ -6361,7 +6363,7 @@ pub const NSMatrix = struct {
         .{ "setToolTip:forCell:", void, .{ ?objc.NSString, NSCell } },
         .{ "setValidateSize:", void, .{objc.BOOL} },
         .{ "sizeToCells", void, .{} },
-        .{ "sortUsingFunction:context:", void, .{ void, ?UnsafeMutableRawPointer } },
+        .{ "sortUsingFunction:context:", void, .{ ?*anyopaque, ?UnsafeMutableRawPointer } },
         .{ "sortUsingSelector:", void, .{Selector} },
         .{ "tabKeyTraversesCells", objc.BOOL, .{} },
         .{ "textDidBeginEditing:", void, .{Foundation.NSNotification} },
@@ -6715,10 +6717,10 @@ pub const NSMutableFontCollection = struct {
 
     pub const Super = NSFontCollection;
     pub const methods = .{
-        .{ "addQueryForDescriptors:", void, .{void} },
+        .{ "addQueryForDescriptors:", void, .{Object} },
         .{ "exclusionDescriptors", ?*anyopaque, .{} },
         .{ "queryDescriptors", ?*anyopaque, .{} },
-        .{ "removeQueryForDescriptors:", void, .{void} },
+        .{ "removeQueryForDescriptors:", void, .{Object} },
         .{ "setExclusionDescriptors:", void, .{?*anyopaque} },
         .{ "setQueryDescriptors:", void, .{?*anyopaque} },
     };
@@ -6729,7 +6731,7 @@ pub const NSMutableFontCollection = struct {
 
     pub const class_methods = .{
         .{ "fontCollectionWithAllAvailableDescriptors", NSMutableFontCollection, .{} },
-        .{ "fontCollectionWithDescriptors:", Object, .{void} },
+        .{ "fontCollectionWithDescriptors:", Object, .{Object} },
         .{ "fontCollectionWithLocale:", Object, .{Foundation.NSLocale} },
         .{ "fontCollectionWithName:", Object, .{objc.NSString} },
         .{ "fontCollectionWithName:visibility:", Object, .{ objc.NSString, objc.NSInteger } },
@@ -6811,8 +6813,8 @@ pub const NSNib = struct {
     }
 
     pub const class_methods = .{
-        .{ "initWithNibData:bundle:", Object, .{ Foundation.NSData, ?Foundation.NSBundle } },
-        .{ "initWithNibNamed:bundle:", Object, .{ objc.NSString, ?Foundation.NSBundle } },
+        .{ "initWithNibData:bundle:", Object, .{ Foundation.NSData, ?Foundation.Bundle } },
+        .{ "initWithNibNamed:bundle:", Object, .{ objc.NSString, ?Foundation.Bundle } },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -6854,7 +6856,7 @@ pub const NSObjectController = struct {
         .{ "setObjectClass:", void, .{AnyClass} },
         .{ "setUsesLazyFetching:", void, .{objc.BOOL} },
         .{ "usesLazyFetching", objc.BOOL, .{} },
-        .{ "validateUserInterfaceItem:", objc.BOOL, .{void} },
+        .{ "validateUserInterfaceItem:", objc.BOOL, .{NSValidatedUserInterfaceItem} },
     };
 
     pub fn send(self: NSObjectController, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
@@ -7131,7 +7133,7 @@ pub const NSPDFPanel = struct {
 
     pub const methods = .{
         .{ "accessoryController", ?NSViewController, .{} },
-        .{ "beginSheetWithPDFInfo:modalForWindow:completionHandler:", void, .{ NSPDFInfo, ?NSWindow, void } },
+        .{ "beginSheetWithPDFInfo:modalForWindow:completionHandler:", void, .{ NSPDFInfo, ?NSWindow, ?*anyopaque } },
         .{ "defaultFileName", objc.NSString, .{} },
         .{ "options", objc.NSInteger, .{} },
         .{ "setAccessoryController:", void, .{?NSViewController} },
@@ -7204,7 +7206,7 @@ pub const NSPageLayout = struct {
     pub const methods = .{
         .{ "accessoryControllers", Object, .{} },
         .{ "addAccessoryController:", void, .{NSViewController} },
-        .{ "beginSheetUsingPrintInfo:onWindow:completionHandler:", void, .{ NSPrintInfo, NSWindow, void } },
+        .{ "beginSheetUsingPrintInfo:onWindow:completionHandler:", void, .{ NSPrintInfo, NSWindow, ?*anyopaque } },
         .{ "beginSheetWithPrintInfo:modalForWindow:delegate:didEndSelector:contextInfo:", void, .{ NSPrintInfo, NSWindow, ?Any, Selector, ?UnsafeMutableRawPointer } },
         .{ "printInfo", ?NSPrintInfo, .{} },
         .{ "removeAccessoryController:", void, .{NSViewController} },
@@ -7313,22 +7315,22 @@ pub const NSPasteboard = struct {
 
     pub const methods = .{
         .{ "accessBehavior", NSPasteboard.AccessBehavior, .{} },
-        .{ "addTypes:owner:", objc.NSInteger, .{ void, ?Any } },
-        .{ "availableTypeFromArray:", objc.NSString, .{void} },
-        .{ "canReadItemWithDataConformingToTypes:", objc.BOOL, .{void} },
-        .{ "canReadObjectForClasses:options:", objc.BOOL, .{ void, ?Any } },
+        .{ "addTypes:owner:", objc.NSInteger, .{ Object, ?Any } },
+        .{ "availableTypeFromArray:", objc.NSString, .{Object} },
+        .{ "canReadItemWithDataConformingToTypes:", objc.BOOL, .{Object} },
+        .{ "canReadObjectForClasses:options:", objc.BOOL, .{ Object, ?*anyopaque } },
         .{ "changeCount", objc.NSInteger, .{} },
         .{ "clearContents", objc.NSInteger, .{} },
         .{ "dataForType:", ?Foundation.NSData, .{objc.NSString} },
-        .{ "declareTypes:owner:", objc.NSInteger, .{ void, ?Any } },
+        .{ "declareTypes:owner:", objc.NSInteger, .{ Object, ?Any } },
         .{ "indexOfPasteboardItem:", objc.NSInteger, .{NSPasteboardItem} },
         .{ "name", objc.NSString, .{} },
         .{ "pasteboardItems", ?*anyopaque, .{} },
         .{ "prepareForNewContentsWithOptions:", objc.NSInteger, .{objc.NSInteger} },
         .{ "propertyListForType:", ?Any, .{objc.NSString} },
         .{ "readFileContentsType:toFile:", ?objc.NSString, .{ objc.NSString, objc.NSString } },
-        .{ "readFileWrapper", ?Foundation.NSFileWrapper, .{} },
-        .{ "readObjectsForClasses:options:", ?*anyopaque, .{ void, ?Any } },
+        .{ "readFileWrapper", ?Foundation.FileWrapper, .{} },
+        .{ "readObjectsForClasses:options:", ?*anyopaque, .{ Object, ?*anyopaque } },
         .{ "releaseGlobally", void, .{} },
         .{ "setData:forType:", objc.BOOL, .{ ?Foundation.NSData, objc.NSString } },
         .{ "setPropertyList:forType:", objc.BOOL, .{ Any, objc.NSString } },
@@ -7336,8 +7338,8 @@ pub const NSPasteboard = struct {
         .{ "stringForType:", ?objc.NSString, .{objc.NSString} },
         .{ "types", ?*anyopaque, .{} },
         .{ "writeFileContents:", objc.BOOL, .{objc.NSString} },
-        .{ "writeFileWrapper:", objc.BOOL, .{Foundation.NSFileWrapper} },
-        .{ "writeObjects:", objc.BOOL, .{void} },
+        .{ "writeFileWrapper:", objc.BOOL, .{Foundation.FileWrapper} },
+        .{ "writeObjects:", objc.BOOL, .{Object} },
     };
 
     pub fn send(self: NSPasteboard, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
@@ -7370,11 +7372,11 @@ pub const NSPasteboardItem = struct {
     obj: Object,
 
     pub const methods = .{
-        .{ "availableTypeFromArray:", objc.NSString, .{void} },
+        .{ "availableTypeFromArray:", objc.NSString, .{Object} },
         .{ "dataForType:", ?Foundation.NSData, .{objc.NSString} },
         .{ "propertyListForType:", ?Any, .{objc.NSString} },
         .{ "setData:forType:", objc.BOOL, .{ Foundation.NSData, objc.NSString } },
-        .{ "setDataProvider:forTypes:", objc.BOOL, .{ void, void } },
+        .{ "setDataProvider:forTypes:", objc.BOOL, .{ NSPasteboardItemDataProvider, Object } },
         .{ "setPropertyList:forType:", objc.BOOL, .{ Any, objc.NSString } },
         .{ "setString:forType:", objc.BOOL, .{ objc.NSString, objc.NSString } },
         .{ "stringForType:", ?objc.NSString, .{objc.NSString} },
@@ -7409,7 +7411,7 @@ pub const NSPathCell = struct {
         .{ "setBackgroundColor:", void, .{?NSColor} },
         .{ "setDelegate:", void, .{?NSPathCellDelegate} },
         .{ "setDoubleAction:", void, .{Selector} },
-        .{ "setObjectValue:", void, .{void} },
+        .{ "setObjectValue:", void, .{?NSCopying} },
         .{ "setPathComponentCells:", void, .{Object} },
         .{ "setPathStyle:", void, .{NSPathControl.Style} },
         .{ "setPlaceholderAttributedString:", void, .{?Foundation.NSAttributedString} },
@@ -7472,7 +7474,7 @@ pub const NSPathControl = struct {
         .{ "setDraggingSourceOperationMask:forLocal:", void, .{ objc.NSInteger, objc.BOOL } },
         .{ "setEditable:", void, .{objc.BOOL} },
         .{ "setMenu:", void, .{?NSMenu} },
-        .{ "setPathComponentCells:", void, .{void} },
+        .{ "setPathComponentCells:", void, .{Object} },
         .{ "setPathItems:", void, .{Object} },
         .{ "setPathStyle:", void, .{NSPathControl.Style} },
         .{ "setPlaceholderAttributedString:", void, .{?Foundation.NSAttributedString} },
@@ -7513,7 +7515,7 @@ pub const NSPersistentDocument = struct {
 
     pub const Super = NSDocument;
     pub const methods = .{
-        .{ "configurePersistentStoreCoordinatorForURL:ofType:modelConfiguration:storeOptions:error:", void, .{ Foundation.NSURL, objc.NSString, ?objc.NSString, ?Any } },
+        .{ "configurePersistentStoreCoordinatorForURL:ofType:modelConfiguration:storeOptions:error:", void, .{ Foundation.NSURL, objc.NSString, ?objc.NSString, ?*anyopaque } },
         .{ "managedObjectContext", ?*anyopaque, .{} },
         .{ "managedObjectModel", ?*anyopaque, .{} },
         .{ "persistentStoreTypeForFileType:", objc.NSString, .{objc.NSString} },
@@ -7568,8 +7570,8 @@ pub const NSPickerTouchBarItem = struct {
     }
 
     pub const class_methods = .{
-        .{ "pickerTouchBarItemWithIdentifier:images:selectionMode:target:action:", Object, .{ objc.NSString, void, NSPickerTouchBarItem.SelectionMode, ?Any, Selector } },
-        .{ "pickerTouchBarItemWithIdentifier:labels:selectionMode:target:action:", Object, .{ objc.NSString, void, NSPickerTouchBarItem.SelectionMode, ?Any, Selector } },
+        .{ "pickerTouchBarItemWithIdentifier:images:selectionMode:target:action:", Object, .{ objc.NSString, Object, NSPickerTouchBarItem.SelectionMode, ?Any, Selector } },
+        .{ "pickerTouchBarItemWithIdentifier:labels:selectionMode:target:action:", Object, .{ objc.NSString, Object, NSPickerTouchBarItem.SelectionMode, ?Any, Selector } },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -7594,7 +7596,7 @@ pub const NSPopUpButton = struct {
     pub const Super = NSButton;
     pub const methods = .{
         .{ "addItemWithTitle:", void, .{objc.NSString} },
-        .{ "addItemsWithTitles:", void, .{void} },
+        .{ "addItemsWithTitles:", void, .{Object} },
         .{ "altersStateOfSelectedItem", objc.BOOL, .{} },
         .{ "autoenablesItems", objc.BOOL, .{} },
         .{ "indexOfItem:", objc.NSInteger, .{NSMenuItem} },
@@ -7660,7 +7662,7 @@ pub const NSPopUpButtonCell = struct {
     pub const Super = NSMenuItemCell;
     pub const methods = .{
         .{ "addItemWithTitle:", void, .{objc.NSString} },
-        .{ "addItemsWithTitles:", void, .{void} },
+        .{ "addItemsWithTitles:", void, .{Object} },
         .{ "altersStateOfSelectedItem", objc.BOOL, .{} },
         .{ "arrowPosition", NSPopUpButton.ArrowPosition, .{} },
         .{ "attachPopUpWithFrame:inView:", void, .{ NSRect, NSView } },
@@ -7827,7 +7829,7 @@ pub const NSPredicateEditorRowTemplate = struct {
         .{ "modifier", Foundation.NSComparisonPredicate.Modifier, .{} },
         .{ "operators", ?*anyopaque, .{} },
         .{ "options", objc.NSInteger, .{} },
-        .{ "predicateWithSubpredicates:", Foundation.NSPredicate, .{void} },
+        .{ "predicateWithSubpredicates:", Foundation.NSPredicate, .{?*anyopaque} },
         .{ "rightExpressionAttributeType", objc.NSInteger, .{} },
         .{ "rightExpressions", ?*anyopaque, .{} },
         .{ "setPredicate:", void, .{Foundation.NSPredicate} },
@@ -7839,10 +7841,10 @@ pub const NSPredicateEditorRowTemplate = struct {
     }
 
     pub const class_methods = .{
-        .{ "initWithCompoundTypes:", Object, .{void} },
-        .{ "initWithLeftExpressions:rightExpressionAttributeType:modifier:operators:options:", Object, .{ void, objc.NSInteger, Foundation.NSComparisonPredicate.Modifier, void, objc.NSInteger } },
-        .{ "initWithLeftExpressions:rightExpressions:modifier:operators:options:", Object, .{ void, void, Foundation.NSComparisonPredicate.Modifier, void, objc.NSInteger } },
-        .{ "templatesWithAttributeKeyPaths:inEntityDescription:", Object, .{ void, Object } },
+        .{ "initWithCompoundTypes:", Object, .{Object} },
+        .{ "initWithLeftExpressions:rightExpressionAttributeType:modifier:operators:options:", Object, .{ Object, objc.NSInteger, Foundation.NSComparisonPredicate.Modifier, Object, objc.NSInteger } },
+        .{ "initWithLeftExpressions:rightExpressions:modifier:operators:options:", Object, .{ Object, Object, Foundation.NSComparisonPredicate.Modifier, Object, objc.NSInteger } },
+        .{ "templatesWithAttributeKeyPaths:inEntityDescription:", Object, .{ Object, Object } },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -7957,7 +7959,7 @@ pub const NSPrintInfo = struct {
         .{ "defaultPrinter", ?NSPrinter, .{} },
         .{ "init", Object, .{} },
         .{ "initWithCoder:", Object, .{Foundation.NSCoder} },
-        .{ "initWithDictionary:", Object, .{Any} },
+        .{ "initWithDictionary:", Object, .{Object} },
         .{ "setSharedPrintInfo:", void, .{NSPrintInfo} },
         .{ "sharedPrintInfo", NSPrintInfo, .{} },
     };
@@ -8053,15 +8055,15 @@ pub const NSPrintPanel = struct {
 
     pub const methods = .{
         .{ "accessoryControllers", Object, .{} },
-        .{ "addAccessoryController:", void, .{void} },
-        .{ "beginSheetUsingPrintInfo:onWindow:completionHandler:", void, .{ NSPrintInfo, NSWindow, void } },
+        .{ "addAccessoryController:", void, .{NSPrintPanelAccessorizing} },
+        .{ "beginSheetUsingPrintInfo:onWindow:completionHandler:", void, .{ NSPrintInfo, NSWindow, ?*anyopaque } },
         .{ "beginSheetWithPrintInfo:modalForWindow:delegate:didEndSelector:contextInfo:", void, .{ NSPrintInfo, NSWindow, ?Any, Selector, ?UnsafeMutableRawPointer } },
         .{ "defaultButtonTitle", ?objc.NSString, .{} },
         .{ "helpAnchor", objc.NSString, .{} },
         .{ "jobStyleHint", objc.NSString, .{} },
         .{ "options", objc.NSInteger, .{} },
         .{ "printInfo", NSPrintInfo, .{} },
-        .{ "removeAccessoryController:", void, .{void} },
+        .{ "removeAccessoryController:", void, .{NSPrintPanelAccessorizing} },
         .{ "runModal", objc.NSInteger, .{} },
         .{ "runModalWithPrintInfo:", objc.NSInteger, .{NSPrintInfo} },
         .{ "setDefaultButtonTitle:", void, .{?objc.NSString} },
@@ -8127,7 +8129,7 @@ pub const NSProgressIndicator = struct {
         .{ "indeterminate", objc.BOOL, .{} },
         .{ "maxValue", f64, .{} },
         .{ "minValue", f64, .{} },
-        .{ "observedProgress", ?Foundation.NSProgress, .{} },
+        .{ "observedProgress", ?Foundation.Progress, .{} },
         .{ "setBezeled:", void, .{objc.BOOL} },
         .{ "setControlSize:", void, .{NSControl.ControlSize} },
         .{ "setControlTint:", void, .{NSControlTint} },
@@ -8136,7 +8138,7 @@ pub const NSProgressIndicator = struct {
         .{ "setIndeterminate:", void, .{objc.BOOL} },
         .{ "setMaxValue:", void, .{f64} },
         .{ "setMinValue:", void, .{f64} },
-        .{ "setObservedProgress:", void, .{?Foundation.NSProgress} },
+        .{ "setObservedProgress:", void, .{?Foundation.Progress} },
         .{ "setStyle:", void, .{NSProgressIndicator.Style} },
         .{ "setUsesThreadedAnimation:", void, .{objc.BOOL} },
         .{ "sizeToFit", void, .{} },
@@ -8167,12 +8169,12 @@ pub const NSResponder = struct {
         .{ "contextMenuKeyDown:", void, .{NSEvent} },
         .{ "cursorUpdate:", void, .{NSEvent} },
         .{ "encodeRestorableStateWithCoder:", void, .{Foundation.NSCoder} },
-        .{ "encodeRestorableStateWithCoder:backgroundQueue:", void, .{ Foundation.NSCoder, Foundation.NSOperationQueue } },
+        .{ "encodeRestorableStateWithCoder:backgroundQueue:", void, .{ Foundation.NSCoder, Foundation.OperationQueue } },
         .{ "endGestureWithEvent:", void, .{NSEvent} },
         .{ "flagsChanged:", void, .{NSEvent} },
         .{ "flushBufferedKeyEvents", void, .{} },
         .{ "helpRequested:", void, .{NSEvent} },
-        .{ "interpretKeyEvents:", void, .{void} },
+        .{ "interpretKeyEvents:", void, .{Object} },
         .{ "invalidateRestorableState", void, .{} },
         .{ "keyDown:", void, .{NSEvent} },
         .{ "keyUp:", void, .{NSEvent} },
@@ -8194,8 +8196,8 @@ pub const NSResponder = struct {
         .{ "otherMouseUp:", void, .{NSEvent} },
         .{ "performKeyEquivalent:", objc.BOOL, .{NSEvent} },
         .{ "performTextFinderAction:", void, .{?Any} },
-        .{ "presentError:", objc.BOOL, .{void} },
-        .{ "presentError:modalForWindow:delegate:didPresentSelector:contextInfo:", void, .{ void, NSWindow, ?Any, Selector, ?UnsafeMutableRawPointer } },
+        .{ "presentError:", objc.BOOL, .{?*anyopaque} },
+        .{ "presentError:modalForWindow:delegate:didPresentSelector:contextInfo:", void, .{ ?*anyopaque, NSWindow, ?Any, Selector, ?UnsafeMutableRawPointer } },
         .{ "pressureChangeWithEvent:", void, .{NSEvent} },
         .{ "quickLookWithEvent:", void, .{NSEvent} },
         .{ "resignFirstResponder", objc.BOOL, .{} },
@@ -8223,14 +8225,14 @@ pub const NSResponder = struct {
         .{ "touchesEndedWithEvent:", void, .{NSEvent} },
         .{ "touchesMovedWithEvent:", void, .{NSEvent} },
         .{ "tryToPerform:with:", objc.BOOL, .{ Selector, ?Any } },
-        .{ "undoManager", ?Foundation.NSUndoManager, .{} },
+        .{ "undoManager", ?Foundation.UndoManager, .{} },
         .{ "updateUserActivityState:", void, .{Foundation.NSUserActivity} },
         .{ "userActivity", ?Foundation.NSUserActivity, .{} },
         .{ "validRequestorForSendType:returnType:", ?Any, .{ objc.NSString, objc.NSString } },
         .{ "validateProposedFirstResponder:forEvent:", objc.BOOL, .{ NSResponder, ?NSEvent } },
         .{ "wantsForwardedScrollEventsForAxis:", objc.BOOL, .{NSEvent.GestureAxis} },
         .{ "wantsScrollEventsForSwipeTrackingOnAxis:", objc.BOOL, .{NSEvent.GestureAxis} },
-        .{ "willPresentError:", ?*anyopaque, .{void} },
+        .{ "willPresentError:", ?*anyopaque, .{?*anyopaque} },
     };
 
     pub fn send(self: NSResponder, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
@@ -8298,7 +8300,7 @@ pub const NSRuleEditor = struct {
         .{ "selectRowIndexes:byExtendingSelection:", void, .{ Foundation.NSIndexSet, objc.BOOL } },
         .{ "selectedRowIndexes", Foundation.NSIndexSet, .{} },
         .{ "setCanRemoveAllRows:", void, .{objc.BOOL} },
-        .{ "setCriteria:andDisplayValues:forRowAtIndex:", void, .{ void, void, objc.NSInteger } },
+        .{ "setCriteria:andDisplayValues:forRowAtIndex:", void, .{ Object, Object, objc.NSInteger } },
         .{ "setCriteriaKeyPath:", void, .{objc.NSString} },
         .{ "setDelegate:", void, .{?NSRuleEditorDelegate} },
         .{ "setDisplayValuesKeyPath:", void, .{objc.NSString} },
@@ -8412,7 +8414,7 @@ pub const NSRulerView = struct {
     pub const class_methods = .{
         .{ "initWithCoder:", Object, .{Foundation.NSCoder} },
         .{ "initWithScrollView:orientation:", Object, .{ ?NSScrollView, NSRulerView.Orientation } },
-        .{ "registerUnitWithName:abbreviation:unitToPointsConversionFactor:stepUpCycle:stepDownCycle:", void, .{ objc.NSString, objc.NSString, objc.CGFloat, void, void } },
+        .{ "registerUnitWithName:abbreviation:unitToPointsConversionFactor:stepUpCycle:stepDownCycle:", void, .{ objc.NSString, objc.NSString, objc.CGFloat, Object, Object } },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -8477,8 +8479,8 @@ pub const NSSavePanel = struct {
         .{ "allowedContentTypes", Object, .{} },
         .{ "allowedFileTypes", ?*anyopaque, .{} },
         .{ "allowsOtherFileTypes", objc.BOOL, .{} },
-        .{ "beginSheetModalForWindow:completionHandler:", void, .{ NSWindow, void } },
-        .{ "beginWithCompletionHandler:", void, .{void} },
+        .{ "beginSheetModalForWindow:completionHandler:", void, .{ NSWindow, ?*anyopaque } },
+        .{ "beginWithCompletionHandler:", void, .{?*anyopaque} },
         .{ "canCreateDirectories", objc.BOOL, .{} },
         .{ "canSelectHiddenExtension", objc.BOOL, .{} },
         .{ "cancel:", void, .{?Any} },
@@ -8808,7 +8810,7 @@ pub const NSScrubber = struct {
         .{ "mode", NSScrubber.Mode, .{} },
         .{ "moveItemAtIndex:toIndex:", void, .{ objc.NSInteger, objc.NSInteger } },
         .{ "numberOfItems", objc.NSInteger, .{} },
-        .{ "performSequentialBatchUpdates:", void, .{void} },
+        .{ "performSequentialBatchUpdates:", void, .{?*anyopaque} },
         .{ "registerClass:forItemIdentifier:", void, .{ ?AnyClass, objc.NSString } },
         .{ "registerNib:forItemIdentifier:", void, .{ ?NSNib, objc.NSString } },
         .{ "reloadData", void, .{} },
@@ -9190,7 +9192,7 @@ pub const NSSegmentedControl = struct {
         .{ "activeCompressionOptions", NSUserInterfaceCompressionOptions, .{} },
         .{ "alignmentForSegment:", NSTextAlignment, .{objc.NSInteger} },
         .{ "borderShape", NSControl.BorderShape, .{} },
-        .{ "compressWithPrioritizedCompressionOptions:", void, .{void} },
+        .{ "compressWithPrioritizedCompressionOptions:", void, .{Object} },
         .{ "doubleValueForSelectedSegment", f64, .{} },
         .{ "imageForSegment:", ?NSImage, .{objc.NSInteger} },
         .{ "imageScalingForSegment:", NSImageScaling, .{objc.NSInteger} },
@@ -9199,7 +9201,7 @@ pub const NSSegmentedControl = struct {
         .{ "isSelectedForSegment:", objc.BOOL, .{objc.NSInteger} },
         .{ "labelForSegment:", ?objc.NSString, .{objc.NSInteger} },
         .{ "menuForSegment:", ?NSMenu, .{objc.NSInteger} },
-        .{ "minimumSizeWithPrioritizedCompressionOptions:", NSSize, .{void} },
+        .{ "minimumSizeWithPrioritizedCompressionOptions:", NSSize, .{Object} },
         .{ "segmentCount", objc.NSInteger, .{} },
         .{ "segmentDistribution", NSSegmentedControl.Distribution, .{} },
         .{ "segmentStyle", NSSegmentedControl.Style, .{} },
@@ -9238,8 +9240,8 @@ pub const NSSegmentedControl = struct {
     }
 
     pub const class_methods = .{
-        .{ "segmentedControlWithImages:trackingMode:target:action:", Object, .{ void, NSSegmentedControl.SwitchTracking, ?Any, Selector } },
-        .{ "segmentedControlWithLabels:trackingMode:target:action:", Object, .{ void, NSSegmentedControl.SwitchTracking, ?Any, Selector } },
+        .{ "segmentedControlWithImages:trackingMode:target:action:", Object, .{ Object, NSSegmentedControl.SwitchTracking, ?Any, Selector } },
+        .{ "segmentedControlWithLabels:trackingMode:target:action:", Object, .{ Object, NSSegmentedControl.SwitchTracking, ?Any, Selector } },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -9337,12 +9339,12 @@ pub const NSSharingService = struct {
         .{ "accountName", ?objc.NSString, .{} },
         .{ "alternateImage", ?NSImage, .{} },
         .{ "attachmentFileURLs", ?*anyopaque, .{} },
-        .{ "canPerformWithItems:", objc.BOOL, .{void} },
+        .{ "canPerformWithItems:", objc.BOOL, .{?*anyopaque} },
         .{ "delegate", ?NSSharingServiceDelegate, .{} },
         .{ "image", NSImage, .{} },
         .{ "menuItemTitle", objc.NSString, .{} },
         .{ "messageBody", ?objc.NSString, .{} },
-        .{ "performWithItems:", void, .{void} },
+        .{ "performWithItems:", void, .{Object} },
         .{ "permanentLink", ?Foundation.NSURL, .{} },
         .{ "recipients", ?*anyopaque, .{} },
         .{ "setDelegate:", void, .{?NSSharingServiceDelegate} },
@@ -9358,9 +9360,9 @@ pub const NSSharingService = struct {
     }
 
     pub const class_methods = .{
-        .{ "initWithTitle:image:alternateImage:handler:", Object, .{ objc.NSString, NSImage, ?NSImage, void } },
+        .{ "initWithTitle:image:alternateImage:handler:", Object, .{ objc.NSString, NSImage, ?NSImage, ?*anyopaque } },
         .{ "sharingServiceNamed:", Object, .{objc.NSString} },
-        .{ "sharingServicesForItems:", Object, .{void} },
+        .{ "sharingServicesForItems:", Object, .{Object} },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -9390,7 +9392,7 @@ pub const NSSharingServicePicker = struct {
     }
 
     pub const class_methods = .{
-        .{ "initWithItems:", Object, .{void} },
+        .{ "initWithItems:", Object, .{Object} },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -9526,7 +9528,7 @@ pub const NSSliderAccessoryBehavior = struct {
 
     pub const class_methods = .{
         .{ "automaticBehavior", NSSliderAccessoryBehavior, .{} },
-        .{ "behaviorWithHandler:", Object, .{void} },
+        .{ "behaviorWithHandler:", Object, .{?*anyopaque} },
         .{ "behaviorWithTarget:action:", Object, .{ ?Any, Selector } },
         .{ "setValueResetBehavior:", void, .{NSSliderAccessoryBehavior} },
         .{ "valueResetBehavior", NSSliderAccessoryBehavior, .{} },
@@ -9700,7 +9702,7 @@ pub const NSSpeechSynthesizer = struct {
     obj: Object,
 
     pub const methods = .{
-        .{ "addSpeechDictionary:", void, .{Any} },
+        .{ "addSpeechDictionary:", void, .{Object} },
         .{ "continueSpeaking", void, .{} },
         .{ "delegate", ?NSSpeechSynthesizerDelegate, .{} },
         .{ "objectForProperty:error:", Any, .{objc.NSString} },
@@ -9756,7 +9758,7 @@ pub const NSSpellChecker = struct {
         .{ "checkGrammarOfString:startingAt:language:wrap:inSpellDocumentWithTag:details:", NSRange, .{ objc.NSString, objc.NSInteger, ?objc.NSString, objc.BOOL, objc.NSInteger, ?Foundation.NSArray } },
         .{ "checkSpellingOfString:startingAt:", NSRange, .{ objc.NSString, objc.NSInteger } },
         .{ "checkSpellingOfString:startingAt:language:wrap:inSpellDocumentWithTag:wordCount:", NSRange, .{ objc.NSString, objc.NSInteger, ?objc.NSString, objc.BOOL, objc.NSInteger, objc.NSInteger } },
-        .{ "checkString:range:types:options:inSpellDocumentWithTag:orthography:wordCount:", Object, .{ objc.NSString, NSRange, u64, ?Any, objc.NSInteger, ?Foundation.NSOrthography, objc.NSInteger } },
+        .{ "checkString:range:types:options:inSpellDocumentWithTag:orthography:wordCount:", Object, .{ objc.NSString, NSRange, u64, ?*anyopaque, objc.NSInteger, ?Foundation.NSOrthography, objc.NSInteger } },
         .{ "closeSpellDocumentWithTag:", void, .{objc.NSInteger} },
         .{ "completionsForPartialWordRange:inString:language:inSpellDocumentWithTag:", ?*anyopaque, .{ NSRange, objc.NSString, ?objc.NSString, objc.NSInteger } },
         .{ "correctionForWordRange:inString:language:inSpellDocumentWithTag:", ?objc.NSString, .{ NSRange, objc.NSString, objc.NSString, objc.NSInteger } },
@@ -9770,25 +9772,25 @@ pub const NSSpellChecker = struct {
         .{ "language", objc.NSString, .{} },
         .{ "languageForWordRange:inString:orthography:", ?objc.NSString, .{ NSRange, objc.NSString, ?Foundation.NSOrthography } },
         .{ "learnWord:", void, .{objc.NSString} },
-        .{ "menuForResult:string:options:atLocation:inView:", ?NSMenu, .{ Foundation.NSTextCheckingResult, objc.NSString, ?Any, NSPoint, NSView } },
+        .{ "menuForResult:string:options:atLocation:inView:", ?NSMenu, .{ Foundation.NSTextCheckingResult, objc.NSString, ?*anyopaque, NSPoint, NSView } },
         .{ "preventsAutocorrectionBeforeString:language:", objc.BOOL, .{ objc.NSString, ?objc.NSString } },
         .{ "recordResponse:toCorrection:forWord:language:inSpellDocumentWithTag:", void, .{ NSSpellChecker.CorrectionResponse, objc.NSString, objc.NSString, ?objc.NSString, objc.NSInteger } },
-        .{ "requestCandidatesForSelectedRange:inString:types:options:inSpellDocumentWithTag:completionHandler:", objc.NSInteger, .{ NSRange, objc.NSString, u64, ?Any, objc.NSInteger, void } },
-        .{ "requestCheckingOfString:range:types:options:inSpellDocumentWithTag:completionHandler:", objc.NSInteger, .{ objc.NSString, NSRange, u64, ?Any, objc.NSInteger, void } },
+        .{ "requestCandidatesForSelectedRange:inString:types:options:inSpellDocumentWithTag:completionHandler:", objc.NSInteger, .{ NSRange, objc.NSString, u64, ?*anyopaque, objc.NSInteger, ?*anyopaque } },
+        .{ "requestCheckingOfString:range:types:options:inSpellDocumentWithTag:completionHandler:", objc.NSInteger, .{ objc.NSString, NSRange, u64, ?*anyopaque, objc.NSInteger, ?*anyopaque } },
         .{ "setAccessoryView:", void, .{?NSView} },
         .{ "setAutomaticallyIdentifiesLanguages:", void, .{objc.BOOL} },
-        .{ "setIgnoredWords:inSpellDocumentWithTag:", void, .{ void, objc.NSInteger } },
+        .{ "setIgnoredWords:inSpellDocumentWithTag:", void, .{ Object, objc.NSInteger } },
         .{ "setLanguage:", objc.BOOL, .{objc.NSString} },
         .{ "setSubstitutionsPanelAccessoryViewController:", void, .{?NSViewController} },
         .{ "setWordFieldStringValue:", void, .{objc.NSString} },
-        .{ "showCorrectionIndicatorOfType:primaryString:alternativeStrings:forStringInRect:view:completionHandler:", void, .{ NSSpellChecker.CorrectionIndicatorType, objc.NSString, void, NSRect, NSView, void } },
-        .{ "showInlinePredictionForCandidates:client:", void, .{ void, void } },
+        .{ "showCorrectionIndicatorOfType:primaryString:alternativeStrings:forStringInRect:view:completionHandler:", void, .{ NSSpellChecker.CorrectionIndicatorType, objc.NSString, Object, NSRect, NSView, ?*anyopaque } },
+        .{ "showInlinePredictionForCandidates:client:", void, .{ Object, NSTextInputClient } },
         .{ "spellingPanel", NSPanel, .{} },
         .{ "substitutionsPanel", NSPanel, .{} },
         .{ "substitutionsPanelAccessoryViewController", ?NSViewController, .{} },
         .{ "unlearnWord:", void, .{objc.NSString} },
         .{ "updatePanels", void, .{} },
-        .{ "updateSpellingPanelWithGrammarString:detail:", void, .{ objc.NSString, Any } },
+        .{ "updateSpellingPanelWithGrammarString:detail:", void, .{ objc.NSString, Object } },
         .{ "updateSpellingPanelWithMisspelledWord:", void, .{objc.NSString} },
         .{ "userPreferredLanguages", Object, .{} },
         .{ "userQuotesArrayForLanguage:", Object, .{objc.NSString} },
@@ -9896,7 +9898,7 @@ pub const NSSplitViewController = struct {
         .{ "splitViewItems", Object, .{} },
         .{ "toggleInspector:", void, .{?Any} },
         .{ "toggleSidebar:", void, .{?Any} },
-        .{ "validateUserInterfaceItem:", objc.BOOL, .{void} },
+        .{ "validateUserInterfaceItem:", objc.BOOL, .{NSValidatedUserInterfaceItem} },
         .{ "viewDidLoad", void, .{} },
     };
 
@@ -10035,7 +10037,7 @@ pub const NSStackView = struct {
         .{ "setHuggingPriority:forOrientation:", void, .{ f32, NSLayoutConstraint.Orientation } },
         .{ "setOrientation:", void, .{NSUserInterfaceLayoutOrientation} },
         .{ "setSpacing:", void, .{objc.CGFloat} },
-        .{ "setViews:inGravity:", void, .{ void, NSStackView.Gravity } },
+        .{ "setViews:inGravity:", void, .{ Object, NSStackView.Gravity } },
         .{ "setVisibilityPriority:forView:", void, .{ f32, NSView } },
         .{ "spacing", objc.CGFloat, .{} },
         .{ "views", Object, .{} },
@@ -10048,7 +10050,7 @@ pub const NSStackView = struct {
     }
 
     pub const class_methods = .{
-        .{ "stackViewWithViews:", Object, .{void} },
+        .{ "stackViewWithViews:", Object, .{Object} },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -10232,8 +10234,8 @@ pub const NSStepperTouchBarItem = struct {
     }
 
     pub const class_methods = .{
-        .{ "stepperTouchBarItemWithIdentifier:drawingHandler:", Object, .{ objc.NSString, void } },
-        .{ "stepperTouchBarItemWithIdentifier:formatter:", Object, .{ objc.NSString, Foundation.NSFormatter } },
+        .{ "stepperTouchBarItemWithIdentifier:drawingHandler:", Object, .{ objc.NSString, ?*anyopaque } },
+        .{ "stepperTouchBarItemWithIdentifier:formatter:", Object, .{ objc.NSString, Foundation.Formatter } },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -10255,7 +10257,7 @@ pub const NSStoryboard = struct {
 
     pub const class_methods = .{
         .{ "mainStoryboard", ?NSStoryboard, .{} },
-        .{ "storyboardWithName:bundle:", Object, .{ objc.NSString, ?Foundation.NSBundle } },
+        .{ "storyboardWithName:bundle:", Object, .{ objc.NSString, ?Foundation.Bundle } },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -10279,7 +10281,7 @@ pub const NSStoryboardSegue = struct {
 
     pub const class_methods = .{
         .{ "initWithIdentifier:source:destination:", Object, .{ objc.NSString, Any, Any } },
-        .{ "segueWithIdentifier:source:destination:performHandler:", Object, .{ objc.NSString, Any, Any, void } },
+        .{ "segueWithIdentifier:source:destination:performHandler:", Object, .{ objc.NSString, Any, Any, ?*anyopaque } },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -10656,7 +10658,7 @@ pub const NSTableView = struct {
         .{ "didAddRowView:forRow:", void, .{ NSTableRowView, objc.NSInteger } },
         .{ "didRemoveRowView:forRow:", void, .{ NSTableRowView, objc.NSInteger } },
         .{ "doubleAction", Selector, .{} },
-        .{ "dragImageForRowsWithIndexes:tableColumns:event:offset:", NSImage, .{ Foundation.NSIndexSet, void, NSEvent, NSPoint } },
+        .{ "dragImageForRowsWithIndexes:tableColumns:event:offset:", NSImage, .{ Foundation.NSIndexSet, Object, NSEvent, NSPoint } },
         .{ "draggingDestinationFeedbackStyle", NSTableView.DraggingDestinationFeedbackStyle, .{} },
         .{ "drawBackgroundInClipRect:", void, .{NSRect} },
         .{ "drawGridInClipRect:", void, .{NSRect} },
@@ -10667,7 +10669,7 @@ pub const NSTableView = struct {
         .{ "effectiveRowSizeStyle", NSTableView.RowSizeStyle, .{} },
         .{ "effectiveStyle", NSTableView.Style, .{} },
         .{ "endUpdates", void, .{} },
-        .{ "enumerateAvailableRowViewsUsingBlock:", void, .{void} },
+        .{ "enumerateAvailableRowViewsUsingBlock:", void, .{?*anyopaque} },
         .{ "floatsGroupRows", objc.BOOL, .{} },
         .{ "focusedColumn", objc.NSInteger, .{} },
         .{ "frameOfCellAtColumn:row:", NSRect, .{ objc.NSInteger, objc.NSInteger } },
@@ -10828,12 +10830,12 @@ pub const NSTableView = struct {
     };
 };
 
-pub const NSTableViewDiffableDataSource = struct {
+pub const NSTableViewDiffableDataSourceReference = struct {
     obj: Object,
 
     pub const methods = .{
-        .{ "applySnapshot:animatingDifferences:", void, .{ NSDiffableDataSourceSnapshot, objc.BOOL } },
-        .{ "applySnapshot:animatingDifferences:completion:", void, .{ NSDiffableDataSourceSnapshot, objc.BOOL, void } },
+        .{ "applySnapshot:animatingDifferences:", void, .{ NSDiffableDataSourceSnapshotReference, objc.BOOL } },
+        .{ "applySnapshot:animatingDifferences:completion:", void, .{ NSDiffableDataSourceSnapshotReference, objc.BOOL, ?*anyopaque } },
         .{ "defaultRowAnimation", objc.NSInteger, .{} },
         .{ "itemIdentifierForRow:", ?*anyopaque, .{objc.NSInteger} },
         .{ "rowForItemIdentifier:", objc.NSInteger, .{?*anyopaque} },
@@ -10844,10 +10846,10 @@ pub const NSTableViewDiffableDataSource = struct {
         .{ "setDefaultRowAnimation:", void, .{objc.NSInteger} },
         .{ "setRowViewProvider:", void, .{?*anyopaque} },
         .{ "setSectionHeaderViewProvider:", void, .{?*anyopaque} },
-        .{ "snapshot", NSDiffableDataSourceSnapshot, .{} },
+        .{ "snapshot", NSDiffableDataSourceSnapshotReference, .{} },
     };
 
-    pub fn send(self: NSTableViewDiffableDataSource, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
+    pub fn send(self: NSTableViewDiffableDataSourceReference, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
         return objc.typedSend(methods, self.obj, selector, args);
     }
 
@@ -10878,7 +10880,7 @@ pub const NSTableViewRowAction = struct {
     }
 
     pub const class_methods = .{
-        .{ "rowActionWithStyle:title:handler:", Object, .{ NSTableViewRowAction.Style, objc.NSString, void } },
+        .{ "rowActionWithStyle:title:handler:", Object, .{ NSTableViewRowAction.Style, objc.NSString, ?*anyopaque } },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -10996,7 +10998,7 @@ pub const NSTextAlternatives = struct {
     }
 
     pub const class_methods = .{
-        .{ "initWithPrimaryString:alternativeStrings:", Object, .{ objc.NSString, void } },
+        .{ "initWithPrimaryString:alternativeStrings:", Object, .{ objc.NSString, Object } },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -11013,7 +11015,7 @@ pub const NSTextAttachment = struct {
         .{ "bounds", NSRect, .{} },
         .{ "contents", ?Foundation.NSData, .{} },
         .{ "fileType", ?objc.NSString, .{} },
-        .{ "fileWrapper", ?Foundation.NSFileWrapper, .{} },
+        .{ "fileWrapper", ?Foundation.FileWrapper, .{} },
         .{ "image", ?NSImage, .{} },
         .{ "lineLayoutPadding", objc.CGFloat, .{} },
         .{ "setAllowsTextAttachmentView:", void, .{objc.BOOL} },
@@ -11021,7 +11023,7 @@ pub const NSTextAttachment = struct {
         .{ "setBounds:", void, .{NSRect} },
         .{ "setContents:", void, .{?Foundation.NSData} },
         .{ "setFileType:", void, .{?objc.NSString} },
-        .{ "setFileWrapper:", void, .{?Foundation.NSFileWrapper} },
+        .{ "setFileWrapper:", void, .{?Foundation.FileWrapper} },
         .{ "setImage:", void, .{?NSImage} },
         .{ "setLineLayoutPadding:", void, .{objc.CGFloat} },
         .{ "usesTextAttachmentView", objc.BOOL, .{} },
@@ -11033,7 +11035,7 @@ pub const NSTextAttachment = struct {
 
     pub const class_methods = .{
         .{ "initWithData:ofType:", Object, .{ ?Foundation.NSData, ?objc.NSString } },
-        .{ "initWithFileWrapper:", Object, .{?Foundation.NSFileWrapper} },
+        .{ "initWithFileWrapper:", Object, .{?Foundation.FileWrapper} },
         .{ "registerTextAttachmentViewProviderClass:forFileType:", void, .{ AnyClass, objc.NSString } },
         .{ "textAttachmentViewProviderClassForFileType:", ?AnyClass, .{objc.NSString} },
     };
@@ -11047,7 +11049,7 @@ pub const NSTextAttachmentViewProvider = struct {
     obj: Object,
 
     pub const methods = .{
-        .{ "attachmentBoundsForAttributes:location:textContainer:proposedLineFragment:position:", NSRect, .{ Any, void, ?NSTextContainer, NSRect, NSPoint } },
+        .{ "attachmentBoundsForAttributes:location:textContainer:proposedLineFragment:position:", NSRect, .{ Object, NSTextLocation, ?NSTextContainer, NSRect, NSPoint } },
         .{ "loadView", void, .{} },
         .{ "location", NSTextLocation, .{} },
         .{ "setTracksTextAttachmentViewBounds:", void, .{objc.BOOL} },
@@ -11063,7 +11065,7 @@ pub const NSTextAttachmentViewProvider = struct {
     }
 
     pub const class_methods = .{
-        .{ "initWithTextAttachment:parentView:textLayoutManager:location:", Object, .{ NSTextAttachment, ?NSView, ?NSTextLayoutManager, void } },
+        .{ "initWithTextAttachment:parentView:textLayoutManager:location:", Object, .{ NSTextAttachment, ?NSView, ?NSTextLayoutManager, NSTextLocation } },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -11141,7 +11143,7 @@ pub const NSTextCheckingController = struct {
         .{ "changeSpelling:", void, .{?Any} },
         .{ "checkSpelling:", void, .{?Any} },
         .{ "checkTextInDocument:", void, .{?Any} },
-        .{ "checkTextInRange:types:options:", void, .{ NSRange, u64, Any } },
+        .{ "checkTextInRange:types:options:", void, .{ NSRange, u64, Object } },
         .{ "checkTextInSelection:", void, .{?Any} },
         .{ "client", NSTextCheckingClient, .{} },
         .{ "considerTextCheckingForRange:", void, .{NSRange} },
@@ -11164,7 +11166,7 @@ pub const NSTextCheckingController = struct {
     }
 
     pub const class_methods = .{
-        .{ "initWithClient:", Object, .{void} },
+        .{ "initWithClient:", Object, .{NSTextCheckingClient} },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -11228,7 +11230,7 @@ pub const NSTextContentManager = struct {
         .{ "automaticallySynchronizesToBackingStore", objc.BOOL, .{} },
         .{ "delegate", ?NSTextContentManagerDelegate, .{} },
         .{ "hasEditingTransaction", objc.BOOL, .{} },
-        .{ "performEditingTransactionUsingBlock:", void, .{void} },
+        .{ "performEditingTransactionUsingBlock:", void, .{?*anyopaque} },
         .{ "primaryTextLayoutManager", ?NSTextLayoutManager, .{} },
         .{ "recordEditActionInRange:newTextRange:", void, .{ NSTextRange, NSTextRange } },
         .{ "removeTextLayoutManager:", void, .{NSTextLayoutManager} },
@@ -11236,7 +11238,7 @@ pub const NSTextContentManager = struct {
         .{ "setAutomaticallySynchronizesToBackingStore:", void, .{objc.BOOL} },
         .{ "setDelegate:", void, .{?NSTextContentManagerDelegate} },
         .{ "setPrimaryTextLayoutManager:", void, .{?NSTextLayoutManager} },
-        .{ "synchronizeTextLayoutManagers:", void, .{void} },
+        .{ "synchronizeTextLayoutManagers:", void, .{?*anyopaque} },
         .{ "textElementsForRange:", Object, .{NSTextRange} },
         .{ "textLayoutManagers", Object, .{} },
     };
@@ -11265,8 +11267,8 @@ pub const NSTextContentStorage = struct {
         .{ "attributedStringForTextElement:", ?Foundation.NSAttributedString, .{NSTextElement} },
         .{ "delegate", ?NSTextContentStorageDelegate, .{} },
         .{ "includesTextListMarkers", objc.BOOL, .{} },
-        .{ "locationFromLocation:withOffset:", ?NSTextLocation, .{ void, objc.NSInteger } },
-        .{ "offsetFromLocation:toLocation:", objc.NSInteger, .{ void, void } },
+        .{ "locationFromLocation:withOffset:", ?NSTextLocation, .{ NSTextLocation, objc.NSInteger } },
+        .{ "offsetFromLocation:toLocation:", objc.NSInteger, .{ NSTextLocation, NSTextLocation } },
         .{ "setAttributedString:", void, .{?Foundation.NSAttributedString} },
         .{ "setDelegate:", void, .{?NSTextContentStorageDelegate} },
         .{ "setIncludesTextListMarkers:", void, .{objc.BOOL} },
@@ -11531,7 +11533,7 @@ pub const NSTextInputContext = struct {
 
     pub const class_methods = .{
         .{ "currentInputContext", ?NSTextInputContext, .{} },
-        .{ "initWithClient:", Object, .{void} },
+        .{ "initWithClient:", Object, .{NSTextInputClient} },
         .{ "localizedNameForInputSource:", ?objc.NSString, .{objc.NSString} },
     };
 
@@ -11572,19 +11574,19 @@ pub const NSTextLayoutFragment = struct {
     pub const methods = .{
         .{ "bottomMargin", objc.CGFloat, .{} },
         .{ "drawAtPoint:inContext:", void, .{ NSPoint, ?*anyopaque } },
-        .{ "frameForTextAttachmentAtLocation:", NSRect, .{void} },
+        .{ "frameForTextAttachmentAtLocation:", NSRect, .{NSTextLocation} },
         .{ "invalidateLayout", void, .{} },
         .{ "layoutFragmentFrame", NSRect, .{} },
-        .{ "layoutQueue", ?Foundation.NSOperationQueue, .{} },
+        .{ "layoutQueue", ?Foundation.OperationQueue, .{} },
         .{ "leadingPadding", objc.CGFloat, .{} },
         .{ "rangeInElement", NSTextRange, .{} },
         .{ "renderingSurfaceBounds", NSRect, .{} },
-        .{ "setLayoutQueue:", void, .{?Foundation.NSOperationQueue} },
+        .{ "setLayoutQueue:", void, .{?Foundation.OperationQueue} },
         .{ "state", NSTextLayoutFragment.State, .{} },
         .{ "textAttachmentViewProviders", Object, .{} },
         .{ "textElement", ?NSTextElement, .{} },
         .{ "textLayoutManager", ?NSTextLayoutManager, .{} },
-        .{ "textLineFragmentForTextLocation:isUpstreamAffinity:", ?NSTextLineFragment, .{ void, objc.BOOL } },
+        .{ "textLineFragmentForTextLocation:isUpstreamAffinity:", ?NSTextLineFragment, .{ NSTextLocation, objc.BOOL } },
         .{ "textLineFragmentForVerticalOffset:requiresExactMatch:", ?NSTextLineFragment, .{ objc.CGFloat, objc.BOOL } },
         .{ "textLineFragments", Object, .{} },
         .{ "topMargin", objc.CGFloat, .{} },
@@ -11620,24 +11622,24 @@ pub const NSTextLayoutManager = struct {
         .{ "delegate", ?NSTextLayoutManagerDelegate, .{} },
         .{ "ensureLayoutForBounds:", void, .{NSRect} },
         .{ "ensureLayoutForRange:", void, .{NSTextRange} },
-        .{ "enumerateRenderingAttributesFromLocation:reverse:usingBlock:", void, .{ void, objc.BOOL, objc.BOOL } },
-        .{ "enumerateTextLayoutFragmentsFromLocation:options:usingBlock:", ?NSTextLocation, .{ void, objc.NSInteger, void } },
-        .{ "enumerateTextSegmentsInRange:type:options:usingBlock:", void, .{ NSTextRange, NSTextLayoutManager.SegmentType, objc.NSInteger, void } },
+        .{ "enumerateRenderingAttributesFromLocation:reverse:usingBlock:", void, .{ NSTextLocation, objc.BOOL, ?*anyopaque } },
+        .{ "enumerateTextLayoutFragmentsFromLocation:options:usingBlock:", ?NSTextLocation, .{ ?NSTextLocation, objc.NSInteger, ?*anyopaque } },
+        .{ "enumerateTextSegmentsInRange:type:options:usingBlock:", void, .{ NSTextRange, NSTextLayoutManager.SegmentType, objc.NSInteger, ?*anyopaque } },
         .{ "invalidateLayoutForRange:", void, .{NSTextRange} },
         .{ "invalidateRenderingAttributesForTextRange:", void, .{NSTextRange} },
-        .{ "layoutQueue", ?Foundation.NSOperationQueue, .{} },
+        .{ "layoutQueue", ?Foundation.OperationQueue, .{} },
         .{ "limitsLayoutForSuspiciousContents", objc.BOOL, .{} },
         .{ "removeRenderingAttribute:forTextRange:", void, .{ objc.NSString, NSTextRange } },
-        .{ "renderingAttributesForLink:atLocation:", Object, .{ Any, void } },
+        .{ "renderingAttributesForLink:atLocation:", Object, .{ Any, NSTextLocation } },
         .{ "renderingAttributesValidator", void, .{} },
         .{ "replaceContentsInRange:withAttributedString:", void, .{ NSTextRange, Foundation.NSAttributedString } },
-        .{ "replaceContentsInRange:withTextElements:", void, .{ NSTextRange, void } },
+        .{ "replaceContentsInRange:withTextElements:", void, .{ NSTextRange, Object } },
         .{ "replaceTextContentManager:", void, .{NSTextContentManager} },
         .{ "resolvesNaturalAlignmentWithBaseWritingDirection", objc.BOOL, .{} },
         .{ "setDelegate:", void, .{?NSTextLayoutManagerDelegate} },
-        .{ "setLayoutQueue:", void, .{?Foundation.NSOperationQueue} },
+        .{ "setLayoutQueue:", void, .{?Foundation.OperationQueue} },
         .{ "setLimitsLayoutForSuspiciousContents:", void, .{objc.BOOL} },
-        .{ "setRenderingAttributes:forTextRange:", void, .{ Any, NSTextRange } },
+        .{ "setRenderingAttributes:forTextRange:", void, .{ Object, NSTextRange } },
         .{ "setRenderingAttributesValidator:", void, .{void} },
         .{ "setResolvesNaturalAlignmentWithBaseWritingDirection:", void, .{objc.BOOL} },
         .{ "setTextContainer:", void, .{?NSTextContainer} },
@@ -11647,7 +11649,7 @@ pub const NSTextLayoutManager = struct {
         .{ "setUsesHyphenation:", void, .{objc.BOOL} },
         .{ "textContainer", ?NSTextContainer, .{} },
         .{ "textContentManager", ?NSTextContentManager, .{} },
-        .{ "textLayoutFragmentForLocation:", ?NSTextLayoutFragment, .{void} },
+        .{ "textLayoutFragmentForLocation:", ?NSTextLayoutFragment, .{NSTextLocation} },
         .{ "textLayoutFragmentForPosition:", ?NSTextLayoutFragment, .{NSPoint} },
         .{ "textSelectionNavigation", NSTextSelectionNavigation, .{} },
         .{ "textSelections", Object, .{} },
@@ -11699,7 +11701,7 @@ pub const NSTextLineFragment = struct {
     pub const class_methods = .{
         .{ "initWithAttributedString:range:", Object, .{ Foundation.NSAttributedString, NSRange } },
         .{ "initWithCoder:", Object, .{Foundation.NSCoder} },
-        .{ "initWithString:attributes:range:", Object, .{ objc.NSString, Any, NSRange } },
+        .{ "initWithString:attributes:range:", Object, .{ objc.NSString, Object, NSRange } },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -11753,9 +11755,9 @@ pub const NSTextListElement = struct {
     }
 
     pub const class_methods = .{
-        .{ "initWithParentElement:textList:contents:markerAttributes:childElements:", Object, .{ ?NSTextListElement, NSTextList, ?Foundation.NSAttributedString, ?Any, void } },
-        .{ "textListElementWithChildElements:textList:nestingLevel:", Object, .{ void, NSTextList, objc.NSInteger } },
-        .{ "textListElementWithContents:markerAttributes:textList:childElements:", Object, .{ Foundation.NSAttributedString, ?Any, NSTextList, void } },
+        .{ "initWithParentElement:textList:contents:markerAttributes:childElements:", Object, .{ ?NSTextListElement, NSTextList, ?Foundation.NSAttributedString, ?*anyopaque, ?*anyopaque } },
+        .{ "textListElementWithChildElements:textList:nestingLevel:", Object, .{ Object, NSTextList, objc.NSInteger } },
+        .{ "textListElementWithContents:markerAttributes:textList:childElements:", Object, .{ Foundation.NSAttributedString, ?*anyopaque, NSTextList, ?*anyopaque } },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -11801,7 +11803,7 @@ pub const NSTextPreview = struct {
 
     pub const class_methods = .{
         .{ "initWithSnapshotImage:presentationFrame:", Object, .{ ?*anyopaque, NSRect } },
-        .{ "initWithSnapshotImage:presentationFrame:candidateRects:", Object, .{ ?*anyopaque, NSRect, void } },
+        .{ "initWithSnapshotImage:presentationFrame:candidateRects:", Object, .{ ?*anyopaque, NSRect, Object } },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -11813,7 +11815,7 @@ pub const NSTextRange = struct {
     obj: Object,
 
     pub const methods = .{
-        .{ "containsLocation:", objc.BOOL, .{void} },
+        .{ "containsLocation:", objc.BOOL, .{NSTextLocation} },
         .{ "containsRange:", objc.BOOL, .{NSTextRange} },
         .{ "empty", objc.BOOL, .{} },
         .{ "endLocation", NSTextLocation, .{} },
@@ -11829,8 +11831,8 @@ pub const NSTextRange = struct {
     }
 
     pub const class_methods = .{
-        .{ "initWithLocation:", Object, .{void} },
-        .{ "initWithLocation:endLocation:", Object, .{ void, void } },
+        .{ "initWithLocation:", Object, .{NSTextLocation} },
+        .{ "initWithLocation:endLocation:", Object, .{ NSTextLocation, ?NSTextLocation } },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -11852,7 +11854,7 @@ pub const NSTextSelection = struct {
         .{ "setSecondarySelectionLocation:", void, .{?NSTextLocation} },
         .{ "setTypingAttributes:", void, .{Object} },
         .{ "textRanges", Object, .{} },
-        .{ "textSelectionWithTextRanges:", NSTextSelection, .{void} },
+        .{ "textSelectionWithTextRanges:", NSTextSelection, .{Object} },
         .{ "transient", objc.BOOL, .{} },
         .{ "typingAttributes", Object, .{} },
     };
@@ -11863,9 +11865,9 @@ pub const NSTextSelection = struct {
 
     pub const class_methods = .{
         .{ "initWithCoder:", Object, .{Foundation.NSCoder} },
-        .{ "initWithLocation:affinity:", Object, .{ void, NSTextSelection.Affinity } },
+        .{ "initWithLocation:affinity:", Object, .{ NSTextLocation, NSTextSelection.Affinity } },
         .{ "initWithRange:affinity:granularity:", Object, .{ NSTextRange, NSTextSelection.Affinity, NSTextSelection.Granularity } },
-        .{ "initWithRanges:affinity:granularity:", Object, .{ void, NSTextSelection.Affinity, NSTextSelection.Granularity } },
+        .{ "initWithRanges:affinity:granularity:", Object, .{ Object, NSTextSelection.Affinity, NSTextSelection.Granularity } },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -11898,9 +11900,9 @@ pub const NSTextSelectionNavigation = struct {
         .{ "setAllowsNonContiguousRanges:", void, .{objc.BOOL} },
         .{ "setRotatesCoordinateSystemForLayoutOrientation:", void, .{objc.BOOL} },
         .{ "textSelectionDataSource", ?NSTextSelectionDataSource, .{} },
-        .{ "textSelectionForSelectionGranularity:enclosingPoint:inContainerAtLocation:", ?NSTextSelection, .{ NSTextSelection.Granularity, NSPoint, void } },
+        .{ "textSelectionForSelectionGranularity:enclosingPoint:inContainerAtLocation:", ?NSTextSelection, .{ NSTextSelection.Granularity, NSPoint, NSTextLocation } },
         .{ "textSelectionForSelectionGranularity:enclosingTextSelection:", NSTextSelection, .{ NSTextSelection.Granularity, NSTextSelection } },
-        .{ "textSelectionsInteractingAtPoint:inContainerAtLocation:anchors:modifiers:selecting:bounds:", Object, .{ NSPoint, void, void, objc.NSInteger, objc.BOOL, NSRect } },
+        .{ "textSelectionsInteractingAtPoint:inContainerAtLocation:anchors:modifiers:selecting:bounds:", Object, .{ NSPoint, NSTextLocation, Object, objc.NSInteger, objc.BOOL, NSRect } },
     };
 
     pub fn send(self: NSTextSelectionNavigation, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
@@ -11908,7 +11910,7 @@ pub const NSTextSelectionNavigation = struct {
     }
 
     pub const class_methods = .{
-        .{ "initWithDataSource:", Object, .{void} },
+        .{ "initWithDataSource:", Object, .{NSTextSelectionDataSource} },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -11996,8 +11998,8 @@ pub const NSTextTab = struct {
     }
 
     pub const class_methods = .{
-        .{ "columnTerminatorsForLocale:", ?*anyopaque, .{?Foundation.NSLocale} },
-        .{ "initWithTextAlignment:location:options:", Object, .{ NSTextAlignment, objc.CGFloat, Any } },
+        .{ "columnTerminatorsForLocale:", Foundation.NSCharacterSet, .{?Foundation.NSLocale} },
+        .{ "initWithTextAlignment:location:options:", Object, .{ NSTextAlignment, objc.CGFloat, Object } },
         .{ "initWithType:location:", Object, .{ NSParagraphStyle.TextTabType, objc.CGFloat } },
     };
 
@@ -12089,7 +12091,7 @@ pub const NSTextView = struct {
         .{ "changeLayoutOrientation:", void, .{?Any} },
         .{ "characterIndexForInsertionAtPoint:", objc.NSInteger, .{NSPoint} },
         .{ "checkTextInDocument:", void, .{?Any} },
-        .{ "checkTextInRange:types:options:", void, .{ NSRange, u64, Any } },
+        .{ "checkTextInRange:types:options:", void, .{ NSRange, u64, Object } },
         .{ "checkTextInSelection:", void, .{?Any} },
         .{ "cleanUpAfterDragOperation", void, .{} },
         .{ "clickedOnLink:atIndex:", void, .{ Any, objc.NSInteger } },
@@ -12102,7 +12104,7 @@ pub const NSTextView = struct {
         .{ "didChangeText", void, .{} },
         .{ "displaysLinkToolTips", objc.BOOL, .{} },
         .{ "dragImageForSelectionWithEvent:origin:", ?NSImage, .{ NSEvent, NSPoint } },
-        .{ "dragOperationForDraggingInfo:type:", objc.NSInteger, .{ void, objc.NSString } },
+        .{ "dragOperationForDraggingInfo:type:", objc.NSInteger, .{ NSDraggingInfo, objc.NSString } },
         .{ "dragSelectionWithEvent:offset:slideBack:", objc.BOOL, .{ NSEvent, NSSize, objc.BOOL } },
         .{ "drawInsertionPointInRect:color:turnedOn:", void, .{ NSRect, NSColor, objc.BOOL } },
         .{ "drawTextHighlightBackgroundForTextRange:origin:", void, .{ NSTextRange, NSPoint } },
@@ -12112,7 +12114,7 @@ pub const NSTextView = struct {
         .{ "enabledTextCheckingTypes", u64, .{} },
         .{ "fieldEditor", objc.BOOL, .{} },
         .{ "grammarCheckingEnabled", objc.BOOL, .{} },
-        .{ "handleTextCheckingResults:forRange:types:options:orthography:wordCount:", void, .{ void, NSRange, u64, Any, Foundation.NSOrthography, objc.NSInteger } },
+        .{ "handleTextCheckingResults:forRange:types:options:orthography:wordCount:", void, .{ Object, NSRange, u64, Object, Foundation.NSOrthography, objc.NSInteger } },
         .{ "highlight:", void, .{?Any} },
         .{ "importsGraphics", objc.BOOL, .{} },
         .{ "incrementalSearchingEnabled", objc.BOOL, .{} },
@@ -12138,8 +12140,8 @@ pub const NSTextView = struct {
         .{ "pasteAsRichText:", void, .{?Any} },
         .{ "performFindPanelAction:", void, .{?Any} },
         .{ "performValidatedReplacementInRange:withAttributedString:", objc.BOOL, .{ NSRange, Foundation.NSAttributedString } },
-        .{ "preferredPasteboardTypeFromArray:restrictedToTypesFromArray:", objc.NSString, .{ void, void } },
-        .{ "quickLookPreviewableItemsInRanges:", Object, .{void} },
+        .{ "preferredPasteboardTypeFromArray:restrictedToTypesFromArray:", objc.NSString, .{ Object, ?*anyopaque } },
+        .{ "quickLookPreviewableItemsInRanges:", Object, .{Object} },
         .{ "raiseBaseline:", void, .{?Any} },
         .{ "rangeForUserCharacterAttributeChange", NSRange, .{} },
         .{ "rangeForUserCompletion", NSRange, .{} },
@@ -12211,7 +12213,7 @@ pub const NSTextView = struct {
         .{ "setSelectedRange:", void, .{NSRange} },
         .{ "setSelectedRange:affinity:stillSelecting:", void, .{ NSRange, NSSelectionAffinity, objc.BOOL } },
         .{ "setSelectedRanges:", void, .{Object} },
-        .{ "setSelectedRanges:affinity:stillSelecting:", void, .{ void, NSSelectionAffinity, objc.BOOL } },
+        .{ "setSelectedRanges:affinity:stillSelecting:", void, .{ Object, NSSelectionAffinity, objc.BOOL } },
         .{ "setSelectedTextAttributes:", void, .{Object} },
         .{ "setSelectionGranularity:", void, .{NSSelectionGranularity} },
         .{ "setSmartInsertDeleteEnabled:", void, .{objc.BOOL} },
@@ -12229,7 +12231,7 @@ pub const NSTextView = struct {
         .{ "setUsesRuler:", void, .{objc.BOOL} },
         .{ "setWritingToolsBehavior:", void, .{NSWritingToolsBehavior} },
         .{ "shouldChangeTextInRange:replacementString:", objc.BOOL, .{ NSRange, ?objc.NSString } },
-        .{ "shouldChangeTextInRanges:replacementStrings:", objc.BOOL, .{ void, void } },
+        .{ "shouldChangeTextInRanges:replacementStrings:", objc.BOOL, .{ Object, ?*anyopaque } },
         .{ "shouldDrawInsertionPoint", objc.BOOL, .{} },
         .{ "showFindIndicatorForRange:", void, .{NSRange} },
         .{ "smartDeleteRangeForProposedRange:", NSRange, .{NSRange} },
@@ -12284,7 +12286,7 @@ pub const NSTextView = struct {
         .{ "validRequestorForSendType:returnType:", ?Any, .{ objc.NSString, objc.NSString } },
         .{ "writablePasteboardTypes", Object, .{} },
         .{ "writeSelectionToPasteboard:type:", objc.BOOL, .{ NSPasteboard, objc.NSString } },
-        .{ "writeSelectionToPasteboard:types:", objc.BOOL, .{ NSPasteboard, void } },
+        .{ "writeSelectionToPasteboard:types:", objc.BOOL, .{ NSPasteboard, Object } },
         .{ "writingToolsActive", objc.BOOL, .{} },
         .{ "writingToolsBehavior", NSWritingToolsBehavior, .{} },
     };
@@ -12318,7 +12320,7 @@ pub const NSTextViewportLayoutController = struct {
         .{ "adjustViewportByVerticalOffset:", void, .{objc.CGFloat} },
         .{ "delegate", ?NSTextViewportLayoutControllerDelegate, .{} },
         .{ "layoutViewport", void, .{} },
-        .{ "relocateViewportToTextLocation:", objc.CGFloat, .{void} },
+        .{ "relocateViewportToTextLocation:", objc.CGFloat, .{NSTextLocation} },
         .{ "setDelegate:", void, .{?NSTextViewportLayoutControllerDelegate} },
         .{ "textLayoutManager", ?NSTextLayoutManager, .{} },
         .{ "viewportBounds", NSRect, .{} },
@@ -12398,9 +12400,9 @@ pub const NSTokenField = struct {
         .{ "setCompletionDelay:", void, .{TimeInterval} },
         .{ "setDelegate:", void, .{?NSTokenFieldDelegate} },
         .{ "setTokenStyle:", void, .{NSTokenField.TokenStyle} },
-        .{ "setTokenizingCharacterSet:", void, .{?*anyopaque} },
+        .{ "setTokenizingCharacterSet:", void, .{Foundation.NSCharacterSet} },
         .{ "tokenStyle", NSTokenField.TokenStyle, .{} },
-        .{ "tokenizingCharacterSet", ?*anyopaque, .{} },
+        .{ "tokenizingCharacterSet", Foundation.NSCharacterSet, .{} },
     };
 
     pub fn send(self: NSTokenField, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
@@ -12409,7 +12411,7 @@ pub const NSTokenField = struct {
 
     pub const class_methods = .{
         .{ "defaultCompletionDelay", TimeInterval, .{} },
-        .{ "defaultTokenizingCharacterSet", ?*anyopaque, .{} },
+        .{ "defaultTokenizingCharacterSet", Foundation.NSCharacterSet, .{} },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -12435,9 +12437,9 @@ pub const NSTokenFieldCell = struct {
         .{ "setCompletionDelay:", void, .{TimeInterval} },
         .{ "setDelegate:", void, .{?NSTokenFieldCellDelegate} },
         .{ "setTokenStyle:", void, .{NSTokenField.TokenStyle} },
-        .{ "setTokenizingCharacterSet:", void, .{?*anyopaque} },
+        .{ "setTokenizingCharacterSet:", void, .{Foundation.NSCharacterSet} },
         .{ "tokenStyle", NSTokenField.TokenStyle, .{} },
-        .{ "tokenizingCharacterSet", ?*anyopaque, .{} },
+        .{ "tokenizingCharacterSet", Foundation.NSCharacterSet, .{} },
     };
 
     pub fn send(self: NSTokenFieldCell, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {
@@ -12446,7 +12448,7 @@ pub const NSTokenFieldCell = struct {
 
     pub const class_methods = .{
         .{ "defaultCompletionDelay", TimeInterval, .{} },
-        .{ "defaultTokenizingCharacterSet", ?*anyopaque, .{} },
+        .{ "defaultTokenizingCharacterSet", Foundation.NSCharacterSet, .{} },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -12485,7 +12487,7 @@ pub const NSToolbar = struct {
         .{ "setAutosavesConfiguration:", void, .{objc.BOOL} },
         .{ "setCenteredItemIdentifier:", void, .{objc.NSString} },
         .{ "setCenteredItemIdentifiers:", void, .{objc.NSString} },
-        .{ "setConfigurationFromDictionary:", void, .{Any} },
+        .{ "setConfigurationFromDictionary:", void, .{Object} },
         .{ "setDelegate:", void, .{?NSToolbarDelegate} },
         .{ "setDisplayMode:", void, .{NSToolbar.DisplayMode} },
         .{ "setFullScreenAccessoryView:", void, .{?NSView} },
@@ -12630,8 +12632,8 @@ pub const NSToolbarItemGroup = struct {
     }
 
     pub const class_methods = .{
-        .{ "groupWithItemIdentifier:images:selectionMode:labels:target:action:", Object, .{ objc.NSString, void, NSToolbarItemGroup.SelectionMode, void, ?Any, Selector } },
-        .{ "groupWithItemIdentifier:titles:selectionMode:labels:target:action:", Object, .{ objc.NSString, void, NSToolbarItemGroup.SelectionMode, void, ?Any, Selector } },
+        .{ "groupWithItemIdentifier:images:selectionMode:labels:target:action:", Object, .{ objc.NSString, Object, NSToolbarItemGroup.SelectionMode, ?*anyopaque, ?Any, Selector } },
+        .{ "groupWithItemIdentifier:titles:selectionMode:labels:target:action:", Object, .{ objc.NSString, Object, NSToolbarItemGroup.SelectionMode, ?*anyopaque, ?Any, Selector } },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -12758,7 +12760,7 @@ pub const NSTrackingArea = struct {
     }
 
     pub const class_methods = .{
-        .{ "initWithRect:options:owner:userInfo:", Object, .{ NSRect, objc.NSInteger, ?Any, ?Any } },
+        .{ "initWithRect:options:owner:userInfo:", Object, .{ NSRect, objc.NSInteger, ?Any, ?*anyopaque } },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -12797,7 +12799,7 @@ pub const NSTreeController = struct {
     pub const methods = .{
         .{ "add:", void, .{?Any} },
         .{ "addChild:", void, .{?Any} },
-        .{ "addSelectionIndexPaths:", objc.BOOL, .{void} },
+        .{ "addSelectionIndexPaths:", objc.BOOL, .{Object} },
         .{ "alwaysUsesMultipleValuesMarker", objc.BOOL, .{} },
         .{ "arrangedObjects", NSTreeNode, .{} },
         .{ "avoidsEmptySelection", objc.BOOL, .{} },
@@ -12811,21 +12813,21 @@ pub const NSTreeController = struct {
         .{ "countKeyPathForNode:", ?objc.NSString, .{NSTreeNode} },
         .{ "insert:", void, .{?Any} },
         .{ "insertChild:", void, .{?Any} },
-        .{ "insertObject:atArrangedObjectIndexPath:", void, .{ ?Any, ?*anyopaque } },
-        .{ "insertObjects:atArrangedObjectIndexPaths:", void, .{ void, void } },
+        .{ "insertObject:atArrangedObjectIndexPath:", void, .{ ?Any, Foundation.NSIndexPath } },
+        .{ "insertObjects:atArrangedObjectIndexPaths:", void, .{ Object, Object } },
         .{ "leafKeyPath", ?objc.NSString, .{} },
         .{ "leafKeyPathForNode:", ?objc.NSString, .{NSTreeNode} },
-        .{ "moveNode:toIndexPath:", void, .{ NSTreeNode, ?*anyopaque } },
-        .{ "moveNodes:toIndexPath:", void, .{ void, ?*anyopaque } },
+        .{ "moveNode:toIndexPath:", void, .{ NSTreeNode, Foundation.NSIndexPath } },
+        .{ "moveNodes:toIndexPath:", void, .{ Object, Foundation.NSIndexPath } },
         .{ "preservesSelection", objc.BOOL, .{} },
         .{ "rearrangeObjects", void, .{} },
         .{ "remove:", void, .{?Any} },
-        .{ "removeObjectAtArrangedObjectIndexPath:", void, .{?*anyopaque} },
-        .{ "removeObjectsAtArrangedObjectIndexPaths:", void, .{void} },
-        .{ "removeSelectionIndexPaths:", objc.BOOL, .{void} },
+        .{ "removeObjectAtArrangedObjectIndexPath:", void, .{Foundation.NSIndexPath} },
+        .{ "removeObjectsAtArrangedObjectIndexPaths:", void, .{Object} },
+        .{ "removeSelectionIndexPaths:", objc.BOOL, .{Object} },
         .{ "selectedNodes", Object, .{} },
         .{ "selectedObjects", Object, .{} },
-        .{ "selectionIndexPath", ?*anyopaque, .{} },
+        .{ "selectionIndexPath", ?Foundation.NSIndexPath, .{} },
         .{ "selectionIndexPaths", Object, .{} },
         .{ "selectsInsertedObjects", objc.BOOL, .{} },
         .{ "setAlwaysUsesMultipleValuesMarker:", void, .{objc.BOOL} },
@@ -12835,8 +12837,8 @@ pub const NSTreeController = struct {
         .{ "setCountKeyPath:", void, .{?objc.NSString} },
         .{ "setLeafKeyPath:", void, .{?objc.NSString} },
         .{ "setPreservesSelection:", void, .{objc.BOOL} },
-        .{ "setSelectionIndexPath:", objc.BOOL, .{?*anyopaque} },
-        .{ "setSelectionIndexPaths:", objc.BOOL, .{void} },
+        .{ "setSelectionIndexPath:", objc.BOOL, .{?Foundation.NSIndexPath} },
+        .{ "setSelectionIndexPaths:", objc.BOOL, .{Object} },
         .{ "setSelectsInsertedObjects:", void, .{objc.BOOL} },
         .{ "setSortDescriptors:", void, .{Object} },
         .{ "sortDescriptors", Object, .{} },
@@ -12852,13 +12854,13 @@ pub const NSTreeNode = struct {
 
     pub const methods = .{
         .{ "childNodes", ?*anyopaque, .{} },
-        .{ "descendantNodeAtIndexPath:", ?NSTreeNode, .{?*anyopaque} },
-        .{ "indexPath", ?*anyopaque, .{} },
+        .{ "descendantNodeAtIndexPath:", ?NSTreeNode, .{Foundation.NSIndexPath} },
+        .{ "indexPath", Foundation.NSIndexPath, .{} },
         .{ "leaf", objc.BOOL, .{} },
         .{ "mutableChildNodes", Foundation.NSMutableArray, .{} },
         .{ "parentNode", ?NSTreeNode, .{} },
         .{ "representedObject", ?Any, .{} },
-        .{ "sortWithSortDescriptors:recursively:", void, .{ void, objc.BOOL } },
+        .{ "sortWithSortDescriptors:recursively:", void, .{ Object, objc.BOOL } },
     };
 
     pub fn send(self: NSTreeNode, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {
@@ -12961,7 +12963,7 @@ pub const NSUserDefaultsController = struct {
     pub const Super = NSController;
     pub const methods = .{
         .{ "appliesImmediately", objc.BOOL, .{} },
-        .{ "defaults", Foundation.NSUserDefaults, .{} },
+        .{ "defaults", Foundation.UserDefaults, .{} },
         .{ "hasUnappliedChanges", objc.BOOL, .{} },
         .{ "initialValues", ?*anyopaque, .{} },
         .{ "revert:", void, .{?Any} },
@@ -12978,7 +12980,7 @@ pub const NSUserDefaultsController = struct {
 
     pub const class_methods = .{
         .{ "initWithCoder:", Object, .{Foundation.NSCoder} },
-        .{ "initWithDefaults:initialValues:", Object, .{ ?Foundation.NSUserDefaults, ?Any } },
+        .{ "initWithDefaults:initialValues:", Object, .{ ?Foundation.UserDefaults, ?*anyopaque } },
         .{ "sharedUserDefaultsController", NSUserDefaultsController, .{} },
     };
 
@@ -13027,7 +13029,7 @@ pub const NSView = struct {
         .{ "acceptsFirstMouse:", objc.BOOL, .{?NSEvent} },
         .{ "acceptsTouchEvents", objc.BOOL, .{} },
         .{ "addConstraint:", void, .{NSLayoutConstraint} },
-        .{ "addConstraints:", void, .{void} },
+        .{ "addConstraints:", void, .{Object} },
         .{ "addCursorRect:cursor:", void, .{ NSRect, NSCursor } },
         .{ "addGestureRecognizer:", void, .{NSGestureRecognizer} },
         .{ "addLayoutGuide:", void, .{NSLayoutGuide} },
@@ -13054,7 +13056,7 @@ pub const NSView = struct {
         .{ "backingAlignedRect:options:", NSRect, .{ NSRect, objc.NSInteger } },
         .{ "baselineOffsetFromBottom", objc.CGFloat, .{} },
         .{ "beginDocument", void, .{} },
-        .{ "beginDraggingSessionWithItems:event:source:", NSDraggingSession, .{ void, NSEvent, void } },
+        .{ "beginDraggingSessionWithItems:event:source:", NSDraggingSession, .{ Object, NSEvent, NSDraggingSource } },
         .{ "beginPageInRect:atPlacement:", void, .{ NSRect, NSPoint } },
         .{ "bitmapImageRepForCachingDisplayInRect:", ?NSBitmapImageRep, .{NSRect} },
         .{ "bottomAnchor", NSLayoutYAxisAnchor, .{} },
@@ -13109,7 +13111,7 @@ pub const NSView = struct {
         .{ "displayRectIgnoringOpacity:", void, .{NSRect} },
         .{ "displayRectIgnoringOpacity:inContext:", void, .{ NSRect, NSGraphicsContext } },
         .{ "dragFile:fromRect:slideBack:event:", objc.BOOL, .{ objc.NSString, NSRect, objc.BOOL, NSEvent } },
-        .{ "dragPromisedFilesOfTypes:fromRect:source:slideBack:event:", objc.BOOL, .{ void, NSRect, Any, objc.BOOL, NSEvent } },
+        .{ "dragPromisedFilesOfTypes:fromRect:source:slideBack:event:", objc.BOOL, .{ Object, NSRect, Any, objc.BOOL, NSEvent } },
         .{ "drawFocusRingMask", void, .{} },
         .{ "drawPageBorderWithSize:", void, .{NSSize} },
         .{ "drawRect:", void, .{NSRect} },
@@ -13119,9 +13121,9 @@ pub const NSView = struct {
         .{ "enclosingScrollView", ?NSScrollView, .{} },
         .{ "endDocument", void, .{} },
         .{ "endPage", void, .{} },
-        .{ "enterFullScreenMode:withOptions:", objc.BOOL, .{ NSScreen, ?Any } },
+        .{ "enterFullScreenMode:withOptions:", objc.BOOL, .{ NSScreen, ?*anyopaque } },
         .{ "exerciseAmbiguityInLayout", void, .{} },
-        .{ "exitFullScreenModeWithOptions:", void, .{?Any} },
+        .{ "exitFullScreenModeWithOptions:", void, .{?*anyopaque} },
         .{ "firstBaselineAnchor", NSLayoutYAxisAnchor, .{} },
         .{ "firstBaselineOffsetFromTop", objc.CGFloat, .{} },
         .{ "fittingSize", NSSize, .{} },
@@ -13199,12 +13201,12 @@ pub const NSView = struct {
         .{ "rectForSmartMagnificationAtPoint:inRect:", NSRect, .{ NSPoint, NSRect } },
         .{ "rectPreservedDuringLiveResize", NSRect, .{} },
         .{ "reflectScrolledClipView:", void, .{NSClipView} },
-        .{ "registerForDraggedTypes:", void, .{void} },
+        .{ "registerForDraggedTypes:", void, .{Object} },
         .{ "registeredDraggedTypes", Object, .{} },
         .{ "releaseGState", void, .{} },
         .{ "removeAllToolTips", void, .{} },
         .{ "removeConstraint:", void, .{NSLayoutConstraint} },
-        .{ "removeConstraints:", void, .{void} },
+        .{ "removeConstraints:", void, .{Object} },
         .{ "removeCursorRect:cursor:", void, .{ NSRect, NSCursor } },
         .{ "removeFromSuperview", void, .{} },
         .{ "removeFromSuperviewWithoutNeedingDisplay", void, .{} },
@@ -13305,8 +13307,8 @@ pub const NSView = struct {
         .{ "shouldDelayWindowOrderingForEvent:", objc.BOOL, .{NSEvent} },
         .{ "shouldDrawColor", objc.BOOL, .{} },
         .{ "showDefinitionForAttributedString:atPoint:", void, .{ ?Foundation.NSAttributedString, NSPoint } },
-        .{ "showDefinitionForAttributedString:range:options:baselineOriginProvider:", void, .{ ?Foundation.NSAttributedString, NSRange, ?Any, void } },
-        .{ "sortSubviewsUsingFunction:context:", void, .{ void, ?UnsafeMutableRawPointer } },
+        .{ "showDefinitionForAttributedString:range:options:baselineOriginProvider:", void, .{ ?Foundation.NSAttributedString, NSRange, ?*anyopaque, ?*anyopaque } },
+        .{ "sortSubviewsUsingFunction:context:", void, .{ ?*anyopaque, ?UnsafeMutableRawPointer } },
         .{ "subviews", Object, .{} },
         .{ "superview", ?NSView, .{} },
         .{ "tag", objc.NSInteger, .{} },
@@ -13415,7 +13417,7 @@ pub const NSViewAnimation = struct {
     }
 
     pub const class_methods = .{
-        .{ "initWithViewAnimations:", Object, .{Any} },
+        .{ "initWithViewAnimations:", Object, .{Object} },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -13439,7 +13441,7 @@ pub const NSViewController = struct {
         .{ "insertChildViewController:atIndex:", void, .{ NSViewController, objc.NSInteger } },
         .{ "loadView", void, .{} },
         .{ "loadViewIfNeeded", void, .{} },
-        .{ "nibBundle", ?Foundation.NSBundle, .{} },
+        .{ "nibBundle", ?Foundation.Bundle, .{} },
         .{ "nibName", objc.NSString, .{} },
         .{ "parentViewController", ?NSViewController, .{} },
         .{ "preferredContentSize", NSSize, .{} },
@@ -13447,7 +13449,7 @@ pub const NSViewController = struct {
         .{ "preferredMaximumSize", NSSize, .{} },
         .{ "preferredMinimumSize", NSSize, .{} },
         .{ "preferredScreenOrigin", NSPoint, .{} },
-        .{ "presentViewController:animator:", void, .{ NSViewController, void } },
+        .{ "presentViewController:animator:", void, .{ NSViewController, NSViewControllerPresentationAnimator } },
         .{ "presentViewController:asPopoverRelativeToRect:ofView:preferredEdge:behavior:", void, .{ NSViewController, NSRect, NSView, Foundation.NSRectEdge, NSPopover.Behavior } },
         .{ "presentViewController:asPopoverRelativeToRect:ofView:preferredEdge:behavior:hasFullSizeContent:", void, .{ NSViewController, NSRect, NSView, Foundation.NSRectEdge, NSPopover.Behavior, objc.BOOL } },
         .{ "presentViewControllerAsModalWindow:", void, .{NSViewController} },
@@ -13467,7 +13469,7 @@ pub const NSViewController = struct {
         .{ "sourceItemView", ?NSView, .{} },
         .{ "storyboard", ?NSStoryboard, .{} },
         .{ "title", ?objc.NSString, .{} },
-        .{ "transitionFromViewController:toViewController:options:completionHandler:", void, .{ NSViewController, NSViewController, objc.NSInteger, void } },
+        .{ "transitionFromViewController:toViewController:options:completionHandler:", void, .{ NSViewController, NSViewController, objc.NSInteger, ?*anyopaque } },
         .{ "updateViewConstraints", void, .{} },
         .{ "view", NSView, .{} },
         .{ "viewDidAppear", void, .{} },
@@ -13488,7 +13490,7 @@ pub const NSViewController = struct {
 
     pub const class_methods = .{
         .{ "initWithCoder:", Object, .{Foundation.NSCoder} },
-        .{ "initWithNibName:bundle:", Object, .{ objc.NSString, ?Foundation.NSBundle } },
+        .{ "initWithNibName:bundle:", Object, .{ objc.NSString, ?Foundation.Bundle } },
     };
 
     pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {
@@ -13581,9 +13583,9 @@ pub const NSWindow = struct {
         .{ "backingType", NSWindow.BackingStoreType, .{} },
         .{ "becomeKeyWindow", void, .{} },
         .{ "becomeMainWindow", void, .{} },
-        .{ "beginCriticalSheet:completionHandler:", void, .{ NSWindow, void } },
-        .{ "beginDraggingSessionWithItems:event:source:", NSDraggingSession, .{ void, NSEvent, void } },
-        .{ "beginSheet:completionHandler:", void, .{ NSWindow, void } },
+        .{ "beginCriticalSheet:completionHandler:", void, .{ NSWindow, ?*anyopaque } },
+        .{ "beginDraggingSessionWithItems:event:source:", NSDraggingSession, .{ Object, NSEvent, NSDraggingSource } },
+        .{ "beginSheet:completionHandler:", void, .{ NSWindow, ?*anyopaque } },
         .{ "cacheImageInRect:", void, .{NSRect} },
         .{ "canBecomeKeyWindow", objc.BOOL, .{} },
         .{ "canBecomeMainWindow", objc.BOOL, .{} },
@@ -13723,14 +13725,14 @@ pub const NSWindow = struct {
         .{ "preventsApplicationTerminationWhenModal", objc.BOOL, .{} },
         .{ "print:", void, .{?Any} },
         .{ "recalculateKeyViewLoop", void, .{} },
-        .{ "registerForDraggedTypes:", void, .{void} },
+        .{ "registerForDraggedTypes:", void, .{Object} },
         .{ "releasedWhenClosed", objc.BOOL, .{} },
         .{ "removeChildWindow:", void, .{NSWindow} },
         .{ "removeTitlebarAccessoryViewControllerAtIndex:", void, .{objc.NSInteger} },
         .{ "representedFilename", objc.NSString, .{} },
         .{ "representedURL", ?Foundation.NSURL, .{} },
-        .{ "requestSharingOfWindow:completionHandler:", void, .{ NSWindow, void } },
-        .{ "requestSharingOfWindowUsingPreview:title:completionHandler:", void, .{ NSImage, objc.NSString, void } },
+        .{ "requestSharingOfWindow:completionHandler:", void, .{ NSWindow, ?*anyopaque } },
+        .{ "requestSharingOfWindowUsingPreview:title:completionHandler:", void, .{ NSImage, objc.NSString, ?*anyopaque } },
         .{ "resetCursorRects", void, .{} },
         .{ "resignKeyWindow", void, .{} },
         .{ "resignMainWindow", void, .{} },
@@ -13862,8 +13864,8 @@ pub const NSWindow = struct {
         .{ "toggleToolbarShown:", void, .{?Any} },
         .{ "toolbar", ?NSToolbar, .{} },
         .{ "toolbarStyle", NSWindow.ToolbarStyle, .{} },
-        .{ "trackEventsMatchingMask:timeout:mode:handler:", void, .{ objc.NSInteger, TimeInterval, objc.NSString, void } },
-        .{ "transferWindowSharingToWindow:completionHandler:", void, .{ NSWindow, void } },
+        .{ "trackEventsMatchingMask:timeout:mode:handler:", void, .{ objc.NSInteger, TimeInterval, objc.NSString, ?*anyopaque } },
+        .{ "transferWindowSharingToWindow:completionHandler:", void, .{ NSWindow, ?*anyopaque } },
         .{ "tryToPerform:with:", objc.BOOL, .{ Selector, ?Any } },
         .{ "unregisterDraggedTypes", void, .{} },
         .{ "update", void, .{} },
@@ -13872,7 +13874,7 @@ pub const NSWindow = struct {
         .{ "validRequestorForSendType:returnType:", ?Any, .{ objc.NSString, objc.NSString } },
         .{ "viewsNeedDisplay", objc.BOOL, .{} },
         .{ "visible", objc.BOOL, .{} },
-        .{ "visualizeConstraints:", void, .{void} },
+        .{ "visualizeConstraints:", void, .{?*anyopaque} },
         .{ "windowController", ?NSWindowController, .{} },
         .{ "windowNumber", objc.NSInteger, .{} },
         .{ "windowRef", UnsafeMutableRawPointer, .{} },
@@ -14100,11 +14102,11 @@ pub const NSWorkspace = struct {
         .{ "accessibilityDisplayShouldInvertColors", objc.BOOL, .{} },
         .{ "accessibilityDisplayShouldReduceMotion", objc.BOOL, .{} },
         .{ "accessibilityDisplayShouldReduceTransparency", objc.BOOL, .{} },
-        .{ "activateFileViewerSelectingURLs:", void, .{void} },
+        .{ "activateFileViewerSelectingURLs:", void, .{Object} },
         .{ "activeApplication", ?*anyopaque, .{} },
         .{ "desktopImageOptionsForScreen:", ?*anyopaque, .{NSScreen} },
         .{ "desktopImageURLForScreen:", ?Foundation.NSURL, .{NSScreen} },
-        .{ "duplicateURLs:completionHandler:", void, .{ void, void } },
+        .{ "duplicateURLs:completionHandler:", void, .{ Object, ?*anyopaque } },
         .{ "extendPowerOffBy:", objc.NSInteger, .{objc.NSInteger} },
         .{ "fileLabelColors", Object, .{} },
         .{ "fileLabels", Object, .{} },
@@ -14117,40 +14119,40 @@ pub const NSWorkspace = struct {
         .{ "iconForContentType:", NSImage, .{?*anyopaque} },
         .{ "iconForFile:", NSImage, .{objc.NSString} },
         .{ "iconForFileType:", NSImage, .{objc.NSString} },
-        .{ "iconForFiles:", ?NSImage, .{void} },
+        .{ "iconForFiles:", ?NSImage, .{Object} },
         .{ "isFilePackageAtPath:", objc.BOOL, .{objc.NSString} },
         .{ "launchAppWithBundleIdentifier:options:additionalEventParamDescriptor:launchIdentifier:", objc.BOOL, .{ objc.NSString, objc.NSInteger, ?Foundation.NSAppleEventDescriptor, ?Foundation.NSNumber } },
         .{ "launchApplication:", objc.BOOL, .{objc.NSString} },
         .{ "launchApplication:showIcon:autolaunch:", objc.BOOL, .{ objc.NSString, objc.BOOL, objc.BOOL } },
-        .{ "launchApplicationAtURL:options:configuration:error:", NSRunningApplication, .{ Foundation.NSURL, objc.NSInteger, Any } },
+        .{ "launchApplicationAtURL:options:configuration:error:", NSRunningApplication, .{ Foundation.NSURL, objc.NSInteger, Object } },
         .{ "localizedDescriptionForType:", ?objc.NSString, .{objc.NSString} },
         .{ "menuBarOwningApplication", ?NSRunningApplication, .{} },
         .{ "mountedLocalVolumePaths", ?*anyopaque, .{} },
         .{ "mountedRemovableMedia", ?*anyopaque, .{} },
         .{ "noteFileSystemChanged:", void, .{objc.NSString} },
-        .{ "notificationCenter", Foundation.NSNotificationCenter, .{} },
-        .{ "openApplicationAtURL:configuration:completionHandler:", void, .{ Foundation.NSURL, NSWorkspaceOpenConfiguration, void } },
+        .{ "notificationCenter", Foundation.NotificationCenter, .{} },
+        .{ "openApplicationAtURL:configuration:completionHandler:", void, .{ Foundation.NSURL, NSWorkspaceOpenConfiguration, ?*anyopaque } },
         .{ "openFile:", objc.BOOL, .{objc.NSString} },
         .{ "openFile:fromImage:at:inView:", objc.BOOL, .{ objc.NSString, ?NSImage, NSPoint, ?NSView } },
         .{ "openFile:withApplication:", objc.BOOL, .{ objc.NSString, ?objc.NSString } },
         .{ "openFile:withApplication:andDeactivate:", objc.BOOL, .{ objc.NSString, ?objc.NSString, objc.BOOL } },
         .{ "openURL:", objc.BOOL, .{Foundation.NSURL} },
-        .{ "openURL:configuration:completionHandler:", void, .{ Foundation.NSURL, NSWorkspaceOpenConfiguration, void } },
-        .{ "openURL:options:configuration:error:", NSRunningApplication, .{ Foundation.NSURL, objc.NSInteger, Any } },
-        .{ "openURLs:withAppBundleIdentifier:options:additionalEventParamDescriptor:launchIdentifiers:", objc.BOOL, .{ void, ?objc.NSString, objc.NSInteger, ?Foundation.NSAppleEventDescriptor, ?Foundation.NSArray } },
-        .{ "openURLs:withApplicationAtURL:configuration:completionHandler:", void, .{ void, Foundation.NSURL, NSWorkspaceOpenConfiguration, void } },
-        .{ "openURLs:withApplicationAtURL:options:configuration:error:", NSRunningApplication, .{ void, Foundation.NSURL, objc.NSInteger, Any } },
-        .{ "performFileOperation:source:destination:files:tag:", objc.BOOL, .{ objc.NSString, objc.NSString, objc.NSString, void, objc.NSInteger } },
+        .{ "openURL:configuration:completionHandler:", void, .{ Foundation.NSURL, NSWorkspaceOpenConfiguration, ?*anyopaque } },
+        .{ "openURL:options:configuration:error:", NSRunningApplication, .{ Foundation.NSURL, objc.NSInteger, Object } },
+        .{ "openURLs:withAppBundleIdentifier:options:additionalEventParamDescriptor:launchIdentifiers:", objc.BOOL, .{ Object, ?objc.NSString, objc.NSInteger, ?Foundation.NSAppleEventDescriptor, ?Foundation.NSArray } },
+        .{ "openURLs:withApplicationAtURL:configuration:completionHandler:", void, .{ Object, Foundation.NSURL, NSWorkspaceOpenConfiguration, ?*anyopaque } },
+        .{ "openURLs:withApplicationAtURL:options:configuration:error:", NSRunningApplication, .{ Object, Foundation.NSURL, objc.NSInteger, Object } },
+        .{ "performFileOperation:source:destination:files:tag:", objc.BOOL, .{ objc.NSString, objc.NSString, objc.NSString, Object, objc.NSInteger } },
         .{ "preferredFilenameExtensionForType:", ?objc.NSString, .{objc.NSString} },
-        .{ "recycleURLs:completionHandler:", void, .{ void, void } },
-        .{ "requestAuthorizationOfType:completionHandler:", void, .{ NSWorkspace.AuthorizationType, void } },
+        .{ "recycleURLs:completionHandler:", void, .{ Object, ?*anyopaque } },
+        .{ "requestAuthorizationOfType:completionHandler:", void, .{ NSWorkspace.AuthorizationType, ?*anyopaque } },
         .{ "runningApplications", Object, .{} },
         .{ "selectFile:inFileViewerRootedAtPath:", objc.BOOL, .{ ?objc.NSString, objc.NSString } },
-        .{ "setDefaultApplicationAtURL:toOpenContentType:completionHandler:", void, .{ Foundation.NSURL, ?*anyopaque, void } },
-        .{ "setDefaultApplicationAtURL:toOpenContentTypeOfFileAtURL:completionHandler:", void, .{ Foundation.NSURL, Foundation.NSURL, void } },
-        .{ "setDefaultApplicationAtURL:toOpenFileAtURL:completionHandler:", void, .{ Foundation.NSURL, Foundation.NSURL, void } },
-        .{ "setDefaultApplicationAtURL:toOpenURLsWithScheme:completionHandler:", void, .{ Foundation.NSURL, objc.NSString, void } },
-        .{ "setDesktopImageURL:forScreen:options:error:", void, .{ Foundation.NSURL, NSScreen, Any } },
+        .{ "setDefaultApplicationAtURL:toOpenContentType:completionHandler:", void, .{ Foundation.NSURL, ?*anyopaque, ?*anyopaque } },
+        .{ "setDefaultApplicationAtURL:toOpenContentTypeOfFileAtURL:completionHandler:", void, .{ Foundation.NSURL, Foundation.NSURL, ?*anyopaque } },
+        .{ "setDefaultApplicationAtURL:toOpenFileAtURL:completionHandler:", void, .{ Foundation.NSURL, Foundation.NSURL, ?*anyopaque } },
+        .{ "setDefaultApplicationAtURL:toOpenURLsWithScheme:completionHandler:", void, .{ Foundation.NSURL, objc.NSString, ?*anyopaque } },
+        .{ "setDesktopImageURL:forScreen:options:error:", void, .{ Foundation.NSURL, NSScreen, Object } },
         .{ "setIcon:forFile:options:", objc.BOOL, .{ ?NSImage, objc.NSString, objc.NSInteger } },
         .{ "showSearchResultsForQueryString:", objc.BOOL, .{objc.NSString} },
         .{ "switchControlEnabled", objc.BOOL, .{} },
@@ -14236,8 +14238,8 @@ pub const NSWritingToolsCoordinator = struct {
         .{ "setPreferredResultOptions:", void, .{objc.NSInteger} },
         .{ "state", NSWritingToolsCoordinator.State, .{} },
         .{ "stopWritingTools", void, .{} },
-        .{ "updateForReflowedTextInContextWithIdentifier:", void, .{?*anyopaque} },
-        .{ "updateRange:withText:reason:forContextWithIdentifier:", void, .{ NSRange, Foundation.NSAttributedString, NSWritingToolsCoordinator.TextUpdateReason, ?*anyopaque } },
+        .{ "updateForReflowedTextInContextWithIdentifier:", void, .{Foundation.NSUUID} },
+        .{ "updateRange:withText:reason:forContextWithIdentifier:", void, .{ NSRange, Foundation.NSAttributedString, NSWritingToolsCoordinator.TextUpdateReason, Foundation.NSUUID } },
         .{ "view", ?NSView, .{} },
     };
 
@@ -14246,7 +14248,7 @@ pub const NSWritingToolsCoordinator = struct {
     }
 
     pub const class_methods = .{
-        .{ "initWithDelegate:", Object, .{void} },
+        .{ "initWithDelegate:", Object, .{?NSWritingToolsCoordinator.Delegate} },
         .{ "isWritingToolsAvailable", objc.BOOL, .{} },
     };
 
@@ -14304,7 +14306,7 @@ pub const NSWritingToolsCoordinatorContext = struct {
 
     pub const methods = .{
         .{ "attributedString", Foundation.NSAttributedString, .{} },
-        .{ "identifier", ?*anyopaque, .{} },
+        .{ "identifier", Foundation.NSUUID, .{} },
         .{ "range", NSRange, .{} },
         .{ "resolvedRange", NSRange, .{} },
     };

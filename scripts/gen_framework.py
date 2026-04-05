@@ -4,9 +4,10 @@
 Usage:
     python3 scripts/gen_framework.py AppKit
     python3 scripts/gen_framework.py Foundation
-    python3 scripts/gen_framework.py CoreData
+    python3 scripts/gen_framework.py Accessibility
+    python3 scripts/gen_framework.py WebKit
 
-Automatically resolves and generates dependencies (e.g. AppKit → Foundation).
+Automatically resolves and generates dependencies (e.g. AppKit → Foundation, WebKit → AppKit → Foundation).
 Outputs to src/{FrameworkName}.zig
 """
 
@@ -60,24 +61,47 @@ SWIFT_TYPE_MAP = {
     "pid_t": "pid_t",
 }
 
-# Swift value types that bridge to ObjC classes at the ABI boundary.
-# Matched by preciseIdentifier since names like "Data" are too generic.
-# Values are (objc_class_precise, fallback_zig_type) — the precise ID is used
-# to look up the typed class name via class_type_map at resolution time.
-SWIFT_BRIDGED_TYPES = {
-    "s:10Foundation4DataV": "c:objc(cs)NSData",                # Data ↔ NSData
-    "s:10Foundation4DateV": "c:objc(cs)NSDate",                # Date ↔ NSDate
-    "s:10Foundation3URLV": "c:objc(cs)NSURL",                  # URL ↔ NSURL
-    "s:10Foundation6LocaleV": "c:objc(cs)NSLocale",            # Locale ↔ NSLocale
-    "s:10Foundation16AttributedStringV": "c:objc(cs)NSAttributedString",  # AttributedString
-    "s:10Foundation12NotificationV": "c:objc(cs)NSNotification",
-    "s:10Foundation8IndexSetV": "c:objc(cs)NSIndexSet",
-    "s:10Foundation11MeasurementV": "c:objc(cs)NSMeasurement",
+# Swift pointer types that map to Zig pointer types (not auto-discoverable).
+SWIFT_POINTER_TYPES = {
     "s:Sp": "UnsafeMutablePointer",             # UnsafeMutablePointer<T>
     "s:SP": "UnsafePointer",                   # UnsafePointer<T>
     "s:Sv": "UnsafeMutableRawPointer",         # UnsafeMutableRawPointer
     "s:SV": "UnsafeRawPointer",               # UnsafeRawPointer
 }
+
+# Auto-populated at generation time by _build_bridged_types().
+# Maps Swift struct precise IDs → ObjC class precise IDs.
+SWIFT_BRIDGED_TYPES = dict(SWIFT_POINTER_TYPES)
+
+
+def _build_bridged_types(graphs):
+    """Auto-discover Swift value types that bridge to ObjC classes.
+
+    Pattern: Swift struct 'Foo' (precise: s:...FooV) with a corresponding
+    ObjC class 'NSFoo' (precise: c:objc(cs)NSFoo) in the same module.
+    """
+    result = dict(SWIFT_POINTER_TYPES)
+
+    # Collect Swift structs and ObjC classes from all modules
+    swift_structs = {}  # title → precise
+    objc_classes = {}   # title → precise
+    for sg in graphs.values():
+        for sym in sg["symbols"]:
+            p = sym["identifier"]["precise"]
+            title = sym.get("names", {}).get("title", "")
+            kind = sym["kind"]["identifier"]
+            if kind == "swift.struct" and p.startswith("s:") and p.endswith("V"):
+                swift_structs.setdefault(title, p)
+            elif kind == "swift.class" and p.startswith("c:objc(cs)"):
+                objc_classes.setdefault(title, p)
+
+    # Match: Swift struct 'Foo' ↔ ObjC class 'NSFoo'
+    for swift_name, swift_p in swift_structs.items():
+        objc_name = "NS" + swift_name
+        if objc_name in objc_classes:
+            result[swift_p] = objc_classes[objc_name]
+
+    return result
 
 # Types that are always opaque pointers (C refs, CF types, etc.)
 OPAQUE_TYPES = {
@@ -430,12 +454,23 @@ def extract_arg_type_frags(param_frags):
     type_frags = []
     found_colon = False
     for f in param_frags:
-        if f.get("spelling", "").strip() == ":":
-            found_colon = True
+        spelling = f.get("spelling", "")
+        if not found_colon:
+            if ":" in spelling:
+                found_colon = True
+                # Handle colon embedded in text (e.g. ": @escaping")
+                after = spelling.split(":", 1)[1]
+                if after.strip():
+                    type_frags.append({"kind": f.get("kind", "text"), "spelling": after})
             continue
-        if found_colon:
-            type_frags.append(f)
+        type_frags.append(f)
     return type_frags
+
+
+def _is_closure_type(param_frags):
+    """Detect if parameter fragments represent a closure/block type."""
+    text = "".join(f.get("spelling", "") for f in param_frags)
+    return "->" in text
 
 
 def parse_all_modules(module_names):
@@ -443,12 +478,17 @@ def parse_all_modules(module_names):
     Returns {module_name: {classes, enums}} for each module."""
 
     # Determine full set of modules to extract
+    # Frameworks that implicitly depend on Foundation
+    FOUNDATION_DEPS = {"AppKit", "UIKit", "Accessibility", "WebKit"}
+    # Frameworks that implicitly depend on AppKit
+    APPKIT_DEPS = {"WebKit"}
     all_modules = set()
     for name in module_names:
         all_modules.add(name)
-        # Auto-add Foundation for AppKit/UIKit
-        if name in ("AppKit", "UIKit"):
+        if name in FOUNDATION_DEPS:
             all_modules.add("Foundation")
+        if name in APPKIT_DEPS:
+            all_modules.add("AppKit")
 
     # Extract all symbol graphs
     graphs = {}
@@ -456,8 +496,14 @@ def parse_all_modules(module_names):
         graphs[mod] = extract_symbolgraph(mod)
         print(f"  {mod}: {len(graphs[mod]['symbols'])} symbols", file=sys.stderr)
 
+    # Auto-discover Swift struct ↔ ObjC class bridges
+    global SWIFT_BRIDGED_TYPES
+    SWIFT_BRIDGED_TYPES = _build_bridged_types(graphs)
+    print(f"  Discovered {len(SWIFT_BRIDGED_TYPES) - len(SWIFT_POINTER_TYPES)} Swift ↔ ObjC type bridges", file=sys.stderr)
+
     # Build global class registry (precise → module)
-    global_classes = {}  # precise_id → (module_name, class_name)
+    # Store both ObjC name (for runtime) and Swift name (for Zig struct)
+    global_classes = {}  # precise_id → (module_name, objc_name, swift_name)
     for mod, sg in graphs.items():
         for sym in sg["symbols"]:
             if sym["kind"]["identifier"] == "swift.class":
@@ -465,7 +511,11 @@ def parse_all_modules(module_names):
                 if precise.startswith("c:objc(cs)"):
                     m = re.match(r'c:objc\(cs\)(\w+)', precise)
                     objc_name = m.group(1) if m else sym["names"]["title"]
-                    global_classes[precise] = (mod, objc_name)
+                    swift_name = sym.get("names", {}).get("title", objc_name)
+                    # Use Swift name unless it contains dots (nested types like NSImage.SymbolConfiguration)
+                    if "." in swift_name:
+                        swift_name = objc_name
+                    global_classes[precise] = (mod, objc_name, swift_name)
 
     # Build global inheritance map
     global_inherits = {}  # child_precise → parent_precise
@@ -481,20 +531,41 @@ def parse_all_modules(module_names):
     # Build enum map (extract all NS_ENUM definitions and raw values)
     enum_map = _build_enum_map(graphs)
 
+    # Build ObjC name → Swift name lookup from global_classes
+    objc_to_swift = {}
+    for _, (_, objc_name, swift_name) in global_classes.items():
+        objc_to_swift[objc_name] = swift_name
+
+    # Pre-compute which standalone enum swift_names are duplicated per module
+    standalone_name_counts = defaultdict(lambda: defaultdict(int))
+    for c_name, info in enum_map.items():
+        if info["owner_class"] is None and info["cases"]:
+            standalone_name_counts[info["owner_module"]][info["swift_name"]] += 1
+
     # Build per-module enum type maps: c:@E@Name → Zig type path
     # Cross-module references get a module prefix (e.g. Foundation.NSRectEdge)
     enum_type_maps = {}  # module → {c_name → zig_type}
+    standalone_seen = defaultdict(set)  # mod → set of emitted names
     for mod in sorted(all_modules):
         etm = {}
-        for c_name, info in enum_map.items():
+        standalone_seen[mod] = set()
+        for c_name, info in sorted(enum_map.items()):
             if not info["cases"]:
                 continue
             swift_name = info["swift_name"]
-            zig_name = f'@"{swift_name}"' if swift_name in ZIG_KEYWORDS else swift_name
             enum_mod = info["owner_module"]
             if info["owner_class"]:
-                local_path = f'{info["owner_class"]}.{zig_name}'
+                # Use Swift name for the owning class
+                owner_swift = objc_to_swift.get(info["owner_class"], info["owner_class"])
+                zig_name = f'@"{swift_name}"' if swift_name in ZIG_KEYWORDS else swift_name
+                local_path = f'{owner_swift}.{zig_name}'
             else:
+                # Standalone: use C name if swift_name would collide
+                if standalone_name_counts[enum_mod][swift_name] > 1 and swift_name in standalone_seen[enum_mod]:
+                    zig_name = f'@"{c_name}"' if c_name in ZIG_KEYWORDS else c_name
+                else:
+                    zig_name = f'@"{swift_name}"' if swift_name in ZIG_KEYWORDS else swift_name
+                standalone_seen[enum_mod].add(swift_name)
                 local_path = zig_name
             if enum_mod != mod:
                 etm[c_name] = f"{enum_mod}.{local_path}"
@@ -502,30 +573,25 @@ def parse_all_modules(module_names):
                 etm[c_name] = local_path
         enum_type_maps[mod] = etm
 
-    # Module dependency map — derived from cross-module Super references.
-    # If class X in module A has Super in module B, then A depends on B.
-    module_deps = {mod: {mod} for mod in all_modules}
-    for mod, sg in graphs.items():
-        for sym in sg["symbols"]:
-            precise = sym["identifier"]["precise"]
-            if precise.startswith("c:objc(cs)"):
-                parent = global_inherits.get(precise)
-                if parent and parent in global_classes:
-                    parent_mod = global_classes[parent][0]
-                    if parent_mod != mod and parent_mod in all_modules:
-                        module_deps[mod].add(parent_mod)
+    # Module dependency map — all co-generated modules can reference each other.
+    # Types from any extracted module may appear in another's method signatures,
+    # not just via inheritance (e.g. WebKit uses Foundation.NSURLRequest).
+    module_deps = {mod: set(all_modules) for mod in all_modules}
 
     # Collect protocols: both defined as symbols and referenced in signatures.
     # Some protocols (e.g. NSObjectProtocol from ObjectiveC module) are only
     # referenced, not defined, in the extracted modules' symbol graphs.
-    global_protos = {}  # precise → (module, swift_name)
+    # Track (swift_name, set of modules that reference this protocol).
+    global_protos = {}  # precise → (swift_name, set_of_modules)
     for mod, sg in graphs.items():
         # Protocols defined as symbols
         for sym in sg["symbols"]:
             p = sym["identifier"]["precise"]
             if p.startswith("c:objc(pl)") and sym["kind"]["identifier"] == "swift.protocol":
                 swift_name = sym.get("names", {}).get("title", p[10:])
-                global_protos.setdefault(p, (mod, swift_name))
+                if p not in global_protos:
+                    global_protos[p] = (swift_name, set())
+                global_protos[p][1].add(mod)
         # Protocols only referenced in fragments (not defined in our modules)
         for sym in sg["symbols"]:
             fs = sym.get("functionSignature", {})
@@ -535,21 +601,19 @@ def parse_all_modules(module_names):
             all_frags.extend(sym.get("declarationFragments", []))
             for f in all_frags:
                 p = f.get("preciseIdentifier", "")
-                if p.startswith("c:objc(pl)") and p not in global_protos:
-                    global_protos[p] = (mod, f["spelling"])
+                if p.startswith("c:objc(pl)"):
+                    if p not in global_protos:
+                        global_protos[p] = (f["spelling"], set())
+                    global_protos[p][1].add(mod)
 
     proto_type_maps = {}
     for mod in sorted(all_modules):
         ptm = {}
-        allowed = module_deps[mod]
-        for precise, (proto_mod, proto_name) in global_protos.items():
-            if proto_mod not in allowed:
+        for precise, (proto_name, referencing_mods) in global_protos.items():
+            if mod not in referencing_mods:
                 continue
             zig_name = f'@"{proto_name}"' if proto_name in ZIG_KEYWORDS else proto_name
-            if proto_mod == mod:
-                ptm[precise] = zig_name
-            else:
-                ptm[precise] = f"{proto_mod}.{zig_name}"
+            ptm[precise] = zig_name
         proto_type_maps[mod] = ptm
 
     # First pass: process modules to discover which classes generate structs
@@ -560,27 +624,27 @@ def parse_all_modules(module_names):
                                        proto_type_map=proto_type_maps[mod])
 
     # Build set of classes that have generated structs (have methods or properties)
-    generated_classes = {}  # objc_name → module
+    generated_classes = {}  # objc_name → (module, swift_name)
     for mod, classes in results.items():
-        for cls_name, cls in classes.items():
+        for objc_name, cls in classes.items():
             if cls["methods"] or cls["properties"] or cls["class_methods"]:
-                generated_classes[cls_name] = mod
+                generated_classes[objc_name] = (mod, cls["swift_name"])
 
-    # Build per-module class type maps: c:objc(cs)Name → Zig type
+    # Build per-module class type maps: c:objc(cs)Name → Zig type (Swift name)
     # Only include classes from the current module or its dependencies.
     class_type_maps = {}
     for mod in sorted(all_modules):
         ctm = {}
         allowed = module_deps[mod]
-        for precise, (cls_mod, objc_name) in global_classes.items():
+        for precise, (cls_mod, objc_name, swift_name) in global_classes.items():
             if objc_name not in generated_classes:
                 continue  # no struct — fall back to Object
             if cls_mod not in allowed:
                 continue  # can't reference this module
             if cls_mod == mod:
-                ctm[precise] = objc_name
+                ctm[precise] = swift_name
             else:
-                ctm[precise] = f"{cls_mod}.{objc_name}"
+                ctm[precise] = f"{cls_mod}.{swift_name}"
         class_type_maps[mod] = ctm
 
     # Second pass: re-process with class type maps for proper typed references
@@ -607,15 +671,18 @@ def process_module(module_name, sg, global_classes, global_inherits, typedef_map
         title = sym.get("names", {}).get("title", "")
 
         if kind == "swift.class" and precise.startswith("c:objc(cs)"):
-            # Use ObjC name from precise, not Swift title (handles nested types like NSImage.SymbolConfiguration)
             objc_name = re.match(r'c:objc\(cs\)(\w+)', precise).group(1)
+            # Prefer Swift name for the Zig struct, but fall back to ObjC for nested types
+            swift_title = sym.get("names", {}).get("title", objc_name)
+            swift_name = objc_name if "." in swift_title else swift_title
             super_precise = global_inherits.get(precise, "")
             super_info = global_classes.get(super_precise)
-            super_name = super_info[1] if super_info else None
+            super_name = super_info[2] if super_info else None  # Swift name
             super_module = super_info[0] if super_info else None
 
             classes[objc_name] = {
                 "precise": precise,
+                "swift_name": swift_name,
                 "methods": [],
                 "class_methods": [],
                 "properties": [],
@@ -661,6 +728,12 @@ def _parse_method(sym, typedef_map, enum_type_map=None, class_type_map=None, pro
     if not m:
         return None
 
+    # Skip async method variants — they share the same ObjC selector as
+    # the completion-handler version but drop the callback parameter.
+    decl_text = "".join(f.get("spelling", "") for f in sym.get("declarationFragments", []))
+    if " async" in decl_text:
+        return None
+
     class_name = m.group(1)
     is_class = m.group(2) == "cm"
     selector = m.group(3)
@@ -676,8 +749,12 @@ def _parse_method(sym, typedef_map, enum_type_map=None, class_type_map=None, pro
 
     arg_types = []
     for param in func_sig.get("parameters", []):
-        type_frags = extract_arg_type_frags(param.get("declarationFragments", []))
-        arg_types.append(map_swift_type(type_frags, typedef_map, enum_type_map, class_type_map, proto_type_map))
+        param_frags = param.get("declarationFragments", [])
+        if _is_closure_type(param_frags):
+            arg_types.append("?*anyopaque")
+        else:
+            type_frags = extract_arg_type_frags(param_frags)
+            arg_types.append(map_swift_type(type_frags, typedef_map, enum_type_map, class_type_map, proto_type_map))
 
     return {"class": class_name, "selector": selector, "is_class": is_class,
             "ret": ret_type, "args": arg_types}
@@ -731,12 +808,9 @@ def generate_zig(module_name, classes, all_results, enum_map, proto_type_map):
     out.append("pub const pid_t = std.c_int;")
     out.append("")
 
-    # Import other generated modules if referenced
-    deps_needed = set()
-    for cls in classes.values():
-        sm = cls.get("super_module")
-        if sm and sm != module_name and sm in all_results:
-            deps_needed.add(sm)
+    # Import all other co-generated modules — cross-module type references
+    # can appear in method signatures, not just inheritance.
+    deps_needed = {mod for mod in all_results if mod != module_name}
     for dep in sorted(deps_needed):
         out.append(f'pub const {dep} = @import("{dep}.zig");')
     if deps_needed:
@@ -765,6 +839,7 @@ def generate_zig(module_name, classes, all_results, enum_map, proto_type_map):
         out.append("")
 
     # Standalone enums (not owned by any class)
+    emitted_enums = set()
     for c_name, info in sorted(enum_map.items()):
         if info["owner_module"] != module_name:
             continue
@@ -772,13 +847,21 @@ def generate_zig(module_name, classes, all_results, enum_map, proto_type_map):
             continue  # will be emitted inside the class
         if not info["cases"]:
             continue
-        out.append(_gen_enum_decl(info["swift_name"], info["cases"]))
+        # Use C name for disambiguation when Swift name would collide
+        enum_name = info["swift_name"]
+        if enum_name in emitted_enums:
+            enum_name = c_name
+        emitted_enums.add(enum_name)
+        out.append(_gen_enum_decl(enum_name, info["cases"]))
         out.append("")
 
     # Protocol type aliases (protocols are opaque pointers at the ABI level)
     # Skip protocols that share a name with a generated class struct.
-    class_names = {cn for cn, cls in classes.items()
-                   if cls["methods"] or cls["properties"] or cls["class_methods"]}
+    class_names = set()
+    for cn, cls in classes.items():
+        if cls["methods"] or cls["properties"] or cls["class_methods"]:
+            class_names.add(cn)
+            class_names.add(cls["swift_name"])
     emitted_protos = set()
     for precise, zig_name in sorted(proto_type_map.items()):
         # Only emit local protocols (not cross-module qualified ones)
@@ -796,14 +879,14 @@ def generate_zig(module_name, classes, all_results, enum_map, proto_type_map):
 
     # All classes that have methods
     generated_classes = set()
-    for class_name in sorted(classes):
-        cls = classes[class_name]
-        code = _gen_class(class_name, cls, classes, all_results, module_name,
-                          class_enums.get(class_name, []))
+    for objc_name in sorted(classes):
+        cls = classes[objc_name]
+        code = _gen_class(objc_name, cls, classes, all_results, module_name,
+                          class_enums.get(objc_name, []))
         if code:
             out.append(code)
             out.append("")
-            generated_classes.add(class_name)
+            generated_classes.add(objc_name)
 
     # Helpers
     out.append("pub fn viewObj(val: anytype) Object {")
@@ -844,8 +927,9 @@ def _gen_enum_decl(swift_name, cases, indent=""):
     return "\n".join(lines)
 
 
-def _gen_class(name, cls, module_classes, all_results, module_name, class_enums=None):
+def _gen_class(objc_name, cls, module_classes, all_results, module_name, class_enums=None):
     """Generate one class struct."""
+    swift_name = cls["swift_name"]
     method_entries = []
     class_entries = []
     seen = set()
@@ -876,26 +960,32 @@ def _gen_class(name, cls, module_classes, all_results, module_name, class_enums=
         seen_class.add(sel)
         class_entries.append((sel, ret, args))
 
-    if not method_entries and not class_entries:
+    if not method_entries and not class_entries and not class_enums:
         return None
 
     # Resolve Super — could be in this module or a dep
-    super_name = cls.get("super")
+    # super_name is stored as Swift name, but module_classes is keyed by ObjC name
+    super_swift = cls.get("super")
     super_module = cls.get("super_module")
     has_super = False
     super_ref = None
 
-    if super_name:
-        if super_name in module_classes and _class_has_methods(module_classes[super_name]):
-            has_super = True
-            super_ref = super_name
-        elif super_module and super_module != module_name and super_module in all_results:
-            dep_classes = all_results[super_module]
-            if super_name in dep_classes and _class_has_methods(dep_classes[super_name]):
+    if super_swift:
+        # Find the ObjC key for the super class
+        for oname, ocls in module_classes.items():
+            if ocls["swift_name"] == super_swift and _class_has_methods(ocls):
                 has_super = True
-                super_ref = f"{super_module}.{super_name}"
+                super_ref = super_swift
+                break
+        if not has_super and super_module and super_module != module_name and super_module in all_results:
+            dep_classes = all_results[super_module]
+            for oname, ocls in dep_classes.items():
+                if ocls["swift_name"] == super_swift and _class_has_methods(ocls):
+                    has_super = True
+                    super_ref = f"{super_module}.{super_swift}"
+                    break
 
-    lines = [f"pub const {name} = struct {{"]
+    lines = [f"pub const {swift_name} = struct {{"]
 
     if method_entries:
         lines.append("    obj: Object,")
@@ -909,10 +999,10 @@ def _gen_class(name, cls, module_classes, all_results, module_name, class_enums=
         lines.append("    };")
         lines.append("")
         if has_super:
-            lines.append(f"    pub fn send(self: {name}, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {{")
+            lines.append(f"    pub fn send(self: {swift_name}, comptime selector: [*:0]const u8, args: anytype) objc.SendReturnChain(@This(), selector) {{")
             lines.append("        return objc.typedSendChain(@This(), self.obj, selector, args);")
         else:
-            lines.append(f"    pub fn send(self: {name}, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {{")
+            lines.append(f"    pub fn send(self: {swift_name}, comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(methods, selector) {{")
             lines.append("        return objc.typedSend(methods, self.obj, selector, args);")
         lines.append("    }")
 
@@ -925,7 +1015,7 @@ def _gen_class(name, cls, module_classes, all_results, module_name, class_enums=
         lines.append("    };")
         lines.append("")
         lines.append(f'    pub fn class(comptime selector: [*:0]const u8, args: anytype) objc.SendReturn(class_methods, selector) {{')
-        lines.append(f'        return objc.typedClassSend("{name}", class_methods, selector, args);')
+        lines.append(f'        return objc.typedClassSend("{objc_name}", class_methods, selector, args);')
         lines.append("    }")
 
     # Class-owned enums
@@ -1063,7 +1153,7 @@ def post_process(module_name, content):
 
 
 def main():
-    targets = sys.argv[1:] if len(sys.argv) > 1 else ["AppKit"]
+    targets = sys.argv[1:] if len(sys.argv) > 1 else ["AppKit", "Accessibility", "WebKit"]
     print("Generating Zig bindings from Swift symbol graphs...", file=sys.stderr)
 
     all_results, enum_map, proto_type_maps = parse_all_modules(targets)
