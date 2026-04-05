@@ -224,9 +224,9 @@ pub const NSXPCListenerDelegate = *anyopaque;
 pub const NSXPCProxyCreating = *anyopaque;
 
 pub const NSAffineTransform = struct {
-    pub const name = "NSAffineTransform";
+    pub const class = objc.class("NSAffineTransform");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -247,9 +247,9 @@ pub const NSAffineTransform = struct {
 };
 
 pub const NSAppleEventDescriptor = struct {
-    pub const name = "NSAppleEventDescriptor";
+    pub const class = objc.class("NSAppleEventDescriptor");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -313,9 +313,9 @@ pub const NSAppleEventDescriptor = struct {
 };
 
 pub const NSAppleEventManager = struct {
-    pub const name = "NSAppleEventManager";
+    pub const class = objc.class("NSAppleEventManager");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -337,9 +337,9 @@ pub const NSAppleEventManager = struct {
 };
 
 pub const NSAppleScript = struct {
-    pub const name = "NSAppleScript";
+    pub const class = objc.class("NSAppleScript");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -355,9 +355,9 @@ pub const NSAppleScript = struct {
 
 pub const NSArchiver = struct {
     pub const Super = NSCoder;
-    pub const name = "NSArchiver";
+    pub const class = objc.class("NSArchiver");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -377,9 +377,9 @@ pub const NSArchiver = struct {
 };
 
 pub const NSArray = struct {
-    pub const name = "NSArray";
+    pub const class = objc.class("NSArray");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -457,9 +457,9 @@ pub const NSAssertionHandler = struct {
 };
 
 pub const NSAttributedString = struct {
-    pub const name = "NSAttributedString";
+    pub const class = objc.class("NSAttributedString");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -481,9 +481,9 @@ pub const NSAttributedString = struct {
 };
 
 pub const NSBackgroundActivityScheduler = struct {
-    pub const name = "NSBackgroundActivityScheduler";
+    pub const class = objc.class("NSBackgroundActivityScheduler");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -510,9 +510,9 @@ pub const NSBackgroundActivityScheduler = struct {
 
 pub const BlockOperation = struct {
     pub const Super = Operation;
-    pub const name = "NSBlockOperation";
+    pub const class = objc.class("NSBlockOperation");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -526,9 +526,9 @@ pub const BlockOperation = struct {
 };
 
 pub const Bundle = struct {
-    pub const name = "NSBundle";
+    pub const class = objc.class("NSBundle");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -596,9 +596,9 @@ pub const Bundle = struct {
 
 pub const ByteCountFormatter = struct {
     pub const Super = Formatter;
-    pub const name = "NSByteCountFormatter";
+    pub const class = objc.class("NSByteCountFormatter");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -639,9 +639,9 @@ pub const ByteCountFormatter = struct {
 };
 
 pub const NSCache = struct {
-    pub const name = "NSCache";
+    pub const class = objc.class("NSCache");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -664,9 +664,9 @@ pub const NSCache = struct {
 };
 
 pub const CachedURLResponse = struct {
-    pub const name = "NSCachedURLResponse";
+    pub const class = objc.class("NSCachedURLResponse");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -680,9 +680,9 @@ pub const CachedURLResponse = struct {
 };
 
 pub const NSCalendar = struct {
-    pub const name = "NSCalendar";
+    pub const class = objc.class("NSCalendar");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -761,9 +761,9 @@ pub const NSCalendar = struct {
 };
 
 pub const NSCharacterSet = struct {
-    pub const name = "NSCharacterSet";
+    pub const class = objc.class("NSCharacterSet");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -806,9 +806,9 @@ pub const NSCharacterSet = struct {
 };
 
 pub const NSClassDescription = struct {
-    pub const name = "NSClassDescription";
+    pub const class = objc.class("NSClassDescription");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -827,9 +827,9 @@ pub const NSClassDescription = struct {
 
 pub const NSCloneCommand = struct {
     pub const Super = NSScriptCommand;
-    pub const name = "NSCloneCommand";
+    pub const class = objc.class("NSCloneCommand");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -840,9 +840,9 @@ pub const NSCloneCommand = struct {
 
 pub const NSCloseCommand = struct {
     pub const Super = NSScriptCommand;
-    pub const name = "NSCloseCommand";
+    pub const class = objc.class("NSCloseCommand");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -851,9 +851,9 @@ pub const NSCloseCommand = struct {
 };
 
 pub const NSCoder = struct {
-    pub const name = "NSCoder";
+    pub const class = objc.class("NSCoder");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -927,9 +927,9 @@ pub const NSCoder = struct {
 
 pub const NSComparisonPredicate = struct {
     pub const Super = NSPredicate;
-    pub const name = "NSComparisonPredicate";
+    pub const class = objc.class("NSComparisonPredicate");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -969,9 +969,9 @@ pub const NSComparisonPredicate = struct {
 
 pub const NSCompoundPredicate = struct {
     pub const Super = NSPredicate;
-    pub const name = "NSCompoundPredicate";
+    pub const class = objc.class("NSCompoundPredicate");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -995,9 +995,9 @@ pub const NSCompoundPredicate = struct {
 };
 
 pub const NSCondition = struct {
-    pub const name = "NSCondition";
+    pub const class = objc.class("NSCondition");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1011,9 +1011,9 @@ pub const NSCondition = struct {
 };
 
 pub const NSConditionLock = struct {
-    pub const name = "NSConditionLock";
+    pub const class = objc.class("NSConditionLock");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1032,9 +1032,9 @@ pub const NSConditionLock = struct {
 
 pub const NSCountedSet = struct {
     pub const Super = NSMutableSet;
-    pub const name = "NSCountedSet";
+    pub const class = objc.class("NSCountedSet");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1050,9 +1050,9 @@ pub const NSCountedSet = struct {
 
 pub const NSCreateCommand = struct {
     pub const Super = NSScriptCommand;
-    pub const name = "NSCreateCommand";
+    pub const class = objc.class("NSCreateCommand");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1062,9 +1062,9 @@ pub const NSCreateCommand = struct {
 };
 
 pub const NSData = struct {
-    pub const name = "NSData";
+    pub const class = objc.class("NSData");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1116,9 +1116,9 @@ pub const NSData = struct {
 
 pub const NSDataDetector = struct {
     pub const Super = NSRegularExpression;
-    pub const name = "NSDataDetector";
+    pub const class = objc.class("NSDataDetector");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1128,9 +1128,9 @@ pub const NSDataDetector = struct {
 };
 
 pub const NSDate = struct {
-    pub const name = "NSDate";
+    pub const class = objc.class("NSDate");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1168,9 +1168,9 @@ pub const NSDate = struct {
 };
 
 pub const NSDateComponents = struct {
-    pub const name = "NSDateComponents";
+    pub const class = objc.class("NSDateComponents");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1222,9 +1222,9 @@ pub const NSDateComponents = struct {
 
 pub const DateComponentsFormatter = struct {
     pub const Super = Formatter;
-    pub const name = "NSDateComponentsFormatter";
+    pub const class = objc.class("NSDateComponentsFormatter");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1273,9 +1273,9 @@ pub const DateComponentsFormatter = struct {
 
 pub const DateFormatter = struct {
     pub const Super = Formatter;
-    pub const name = "NSDateFormatter";
+    pub const class = objc.class("NSDateFormatter");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1375,9 +1375,9 @@ pub const DateFormatter = struct {
 };
 
 pub const NSDateInterval = struct {
-    pub const name = "NSDateInterval";
+    pub const class = objc.class("NSDateInterval");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1397,9 +1397,9 @@ pub const NSDateInterval = struct {
 
 pub const DateIntervalFormatter = struct {
     pub const Super = Formatter;
-    pub const name = "NSDateIntervalFormatter";
+    pub const class = objc.class("NSDateIntervalFormatter");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1430,9 +1430,9 @@ pub const DateIntervalFormatter = struct {
 
 pub const NSDecimalNumber = struct {
     pub const Super = NSNumber;
-    pub const name = "NSDecimalNumber";
+    pub const class = objc.class("NSDecimalNumber");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1486,9 +1486,9 @@ pub const NSDecimalNumber = struct {
 };
 
 pub const NSDecimalNumberHandler = struct {
-    pub const name = "NSDecimalNumberHandler";
+    pub const class = objc.class("NSDecimalNumberHandler");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1502,9 +1502,9 @@ pub const NSDecimalNumberHandler = struct {
 
 pub const NSDeleteCommand = struct {
     pub const Super = NSScriptCommand;
-    pub const name = "NSDeleteCommand";
+    pub const class = objc.class("NSDeleteCommand");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1514,9 +1514,9 @@ pub const NSDeleteCommand = struct {
 };
 
 pub const NSDictionary = struct {
-    pub const name = "NSDictionary";
+    pub const class = objc.class("NSDictionary");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1579,9 +1579,9 @@ pub const NSDictionary = struct {
 
 pub const Dimension = struct {
     pub const Super = Unit;
-    pub const name = "NSDimension";
+    pub const class = objc.class("NSDimension");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1596,9 +1596,9 @@ pub const Dimension = struct {
 
 pub const NSDirectoryEnumerator = struct {
     pub const Super = NSEnumerator;
-    pub const name = "NSDirectoryEnumerator";
+    pub const class = objc.class("NSDirectoryEnumerator");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1612,9 +1612,9 @@ pub const NSDirectoryEnumerator = struct {
 };
 
 pub const NSDistributedLock = struct {
-    pub const name = "NSDistributedLock";
+    pub const class = objc.class("NSDistributedLock");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1628,9 +1628,9 @@ pub const NSDistributedLock = struct {
 
 pub const DistributedNotificationCenter = struct {
     pub const Super = NotificationCenter;
-    pub const name = "NSDistributedNotificationCenter";
+    pub const class = objc.class("NSDistributedNotificationCenter");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1660,9 +1660,9 @@ pub const DistributedNotificationCenter = struct {
 
 pub const EnergyFormatter = struct {
     pub const Super = Formatter;
-    pub const name = "NSEnergyFormatter";
+    pub const class = objc.class("NSEnergyFormatter");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1688,9 +1688,9 @@ pub const EnergyFormatter = struct {
 };
 
 pub const NSEnumerator = struct {
-    pub const name = "NSEnumerator";
+    pub const class = objc.class("NSEnumerator");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1700,9 +1700,9 @@ pub const NSEnumerator = struct {
 };
 
 pub const NSError = struct {
-    pub const name = "NSError";
+    pub const class = objc.class("NSError");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1726,9 +1726,9 @@ pub const NSError = struct {
 };
 
 pub const NSException = struct {
-    pub const name = "NSException";
+    pub const class = objc.class("NSException");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1747,9 +1747,9 @@ pub const NSException = struct {
 };
 
 pub const NSExpression = struct {
-    pub const name = "NSExpression";
+    pub const class = objc.class("NSExpression");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1810,9 +1810,9 @@ pub const NSExpression = struct {
 };
 
 pub const NSExtensionContext = struct {
-    pub const name = "NSExtensionContext";
+    pub const class = objc.class("NSExtensionContext");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1824,9 +1824,9 @@ pub const NSExtensionContext = struct {
 };
 
 pub const NSExtensionItem = struct {
-    pub const name = "NSExtensionItem";
+    pub const class = objc.class("NSExtensionItem");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1842,9 +1842,9 @@ pub const NSExtensionItem = struct {
 };
 
 pub const NSFileAccessIntent = struct {
-    pub const name = "NSFileAccessIntent";
+    pub const class = objc.class("NSFileAccessIntent");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1858,9 +1858,9 @@ pub const NSFileAccessIntent = struct {
 };
 
 pub const NSFileCoordinator = struct {
-    pub const name = "NSFileCoordinator";
+    pub const class = objc.class("NSFileCoordinator");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1887,9 +1887,9 @@ pub const NSFileCoordinator = struct {
 };
 
 pub const FileHandle = struct {
-    pub const name = "NSFileHandle";
+    pub const class = objc.class("NSFileHandle");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1941,9 +1941,9 @@ pub const FileHandle = struct {
 };
 
 pub const FileManager = struct {
-    pub const name = "NSFileManager";
+    pub const class = objc.class("NSFileManager");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2052,9 +2052,9 @@ pub const FileManager = struct {
 };
 
 pub const NSFileProviderService = struct {
-    pub const name = "NSFileProviderService";
+    pub const class = objc.class("NSFileProviderService");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2064,9 +2064,9 @@ pub const NSFileProviderService = struct {
 };
 
 pub const NSFileSecurity = struct {
-    pub const name = "NSFileSecurity";
+    pub const class = objc.class("NSFileSecurity");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2075,9 +2075,9 @@ pub const NSFileSecurity = struct {
 };
 
 pub const NSFileVersion = struct {
-    pub const name = "NSFileVersion";
+    pub const class = objc.class("NSFileVersion");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2111,9 +2111,9 @@ pub const NSFileVersion = struct {
 };
 
 pub const FileWrapper = struct {
-    pub const name = "NSFileWrapper";
+    pub const class = objc.class("NSFileWrapper");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2155,9 +2155,9 @@ pub const FileWrapper = struct {
 };
 
 pub const Formatter = struct {
-    pub const name = "NSFormatter";
+    pub const class = objc.class("NSFormatter");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2185,9 +2185,9 @@ pub const Formatter = struct {
 };
 
 pub const HTTPCookie = struct {
-    pub const name = "NSHTTPCookie";
+    pub const class = objc.class("NSHTTPCookie");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2221,9 +2221,9 @@ pub const HTTPCookie = struct {
 };
 
 pub const HTTPCookieStorage = struct {
-    pub const name = "NSHTTPCookieStorage";
+    pub const class = objc.class("NSHTTPCookieStorage");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2248,9 +2248,9 @@ pub const HTTPCookieStorage = struct {
 
 pub const HTTPURLResponse = struct {
     pub const Super = URLResponse;
-    pub const name = "NSHTTPURLResponse";
+    pub const class = objc.class("NSHTTPURLResponse");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2266,9 +2266,9 @@ pub const HTTPURLResponse = struct {
 };
 
 pub const NSHashTable = struct {
-    pub const name = "NSHashTable";
+    pub const class = objc.class("NSHashTable");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2301,9 +2301,9 @@ pub const NSHashTable = struct {
 };
 
 pub const Host = struct {
-    pub const name = "NSHost";
+    pub const class = objc.class("NSHost");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2324,9 +2324,9 @@ pub const Host = struct {
 
 pub const ISO8601DateFormatter = struct {
     pub const Super = Formatter;
-    pub const name = "NSISO8601DateFormatter";
+    pub const class = objc.class("NSISO8601DateFormatter");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2344,9 +2344,9 @@ pub const ISO8601DateFormatter = struct {
 };
 
 pub const NSIndexPath = struct {
-    pub const name = "NSIndexPath";
+    pub const class = objc.class("NSIndexPath");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2363,9 +2363,9 @@ pub const NSIndexPath = struct {
 };
 
 pub const NSIndexSet = struct {
-    pub const name = "NSIndexSet";
+    pub const class = objc.class("NSIndexSet");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2403,9 +2403,9 @@ pub const NSIndexSet = struct {
 
 pub const NSIndexSpecifier = struct {
     pub const Super = NSScriptObjectSpecifier;
-    pub const name = "NSIndexSpecifier";
+    pub const class = objc.class("NSIndexSpecifier");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2417,9 +2417,9 @@ pub const NSIndexSpecifier = struct {
 
 pub const InputStream = struct {
     pub const Super = Stream;
-    pub const name = "NSInputStream";
+    pub const class = objc.class("NSInputStream");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2437,9 +2437,9 @@ pub const InputStream = struct {
 };
 
 pub const NSItemProvider = struct {
-    pub const name = "NSItemProvider";
+    pub const class = objc.class("NSItemProvider");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2487,9 +2487,9 @@ pub const JSONSerialization = struct {
 };
 
 pub const NSKeyValueSharedObservers = struct {
-    pub const name = "NSKeyValueSharedObservers";
+    pub const class = objc.class("NSKeyValueSharedObservers");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2501,9 +2501,9 @@ pub const NSKeyValueSharedObservers = struct {
 
 pub const NSKeyedArchiver = struct {
     pub const Super = NSCoder;
-    pub const name = "NSKeyedArchiver";
+    pub const class = objc.class("NSKeyedArchiver");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2540,9 +2540,9 @@ pub const NSKeyedArchiver = struct {
 
 pub const NSKeyedUnarchiver = struct {
     pub const Super = NSCoder;
-    pub const name = "NSKeyedUnarchiver";
+    pub const class = objc.class("NSKeyedUnarchiver");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2578,9 +2578,9 @@ pub const NSKeyedUnarchiver = struct {
 
 pub const LengthFormatter = struct {
     pub const Super = Formatter;
-    pub const name = "NSLengthFormatter";
+    pub const class = objc.class("NSLengthFormatter");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2610,9 +2610,9 @@ pub const LengthFormatter = struct {
 };
 
 pub const NSLinguisticTagger = struct {
-    pub const name = "NSLinguisticTagger";
+    pub const class = objc.class("NSLinguisticTagger");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2647,9 +2647,9 @@ pub const NSLinguisticTagger = struct {
 
 pub const ListFormatter = struct {
     pub const Super = Formatter;
-    pub const name = "NSListFormatter";
+    pub const class = objc.class("NSListFormatter");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2667,9 +2667,9 @@ pub const ListFormatter = struct {
 };
 
 pub const NSLocale = struct {
-    pub const name = "NSLocale";
+    pub const class = objc.class("NSLocale");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2738,9 +2738,9 @@ pub const NSLocale = struct {
 };
 
 pub const NSLock = struct {
-    pub const name = "NSLock";
+    pub const class = objc.class("NSLock");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2753,9 +2753,9 @@ pub const NSLock = struct {
 
 pub const NSLogicalTest = struct {
     pub const Super = NSScriptWhoseTest;
-    pub const name = "NSLogicalTest";
+    pub const class = objc.class("NSLogicalTest");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2767,9 +2767,9 @@ pub const NSLogicalTest = struct {
 
 pub const NSMachPort = struct {
     pub const Super = Port;
-    pub const name = "NSMachPort";
+    pub const class = objc.class("NSMachPort");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2789,9 +2789,9 @@ pub const NSMachPort = struct {
 };
 
 pub const NSMapTable = struct {
-    pub const name = "NSMapTable";
+    pub const class = objc.class("NSMapTable");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2820,9 +2820,9 @@ pub const NSMapTable = struct {
 
 pub const MassFormatter = struct {
     pub const Super = Formatter;
-    pub const name = "NSMassFormatter";
+    pub const class = objc.class("NSMassFormatter");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2849,9 +2849,9 @@ pub const MassFormatter = struct {
 };
 
 pub const NSMeasurement = struct {
-    pub const name = "NSMeasurement";
+    pub const class = objc.class("NSMeasurement");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2867,9 +2867,9 @@ pub const NSMeasurement = struct {
 
 pub const MeasurementFormatter = struct {
     pub const Super = Formatter;
-    pub const name = "NSMeasurementFormatter";
+    pub const class = objc.class("NSMeasurementFormatter");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2887,9 +2887,9 @@ pub const MeasurementFormatter = struct {
 };
 
 pub const NSMetadataItem = struct {
-    pub const name = "NSMetadataItem";
+    pub const class = objc.class("NSMetadataItem");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2901,9 +2901,9 @@ pub const NSMetadataItem = struct {
 };
 
 pub const NSMetadataQuery = struct {
-    pub const name = "NSMetadataQuery";
+    pub const class = objc.class("NSMetadataQuery");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2945,9 +2945,9 @@ pub const NSMetadataQuery = struct {
 };
 
 pub const NSMetadataQueryAttributeValueTuple = struct {
-    pub const name = "NSMetadataQueryAttributeValueTuple";
+    pub const class = objc.class("NSMetadataQueryAttributeValueTuple");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2958,9 +2958,9 @@ pub const NSMetadataQueryAttributeValueTuple = struct {
 };
 
 pub const NSMetadataQueryResultGroup = struct {
-    pub const name = "NSMetadataQueryResultGroup";
+    pub const class = objc.class("NSMetadataQueryResultGroup");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2975,9 +2975,9 @@ pub const NSMetadataQueryResultGroup = struct {
 
 pub const NSMoveCommand = struct {
     pub const Super = NSScriptCommand;
-    pub const name = "NSMoveCommand";
+    pub const class = objc.class("NSMoveCommand");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2988,9 +2988,9 @@ pub const NSMoveCommand = struct {
 
 pub const NSMutableArray = struct {
     pub const Super = NSArray;
-    pub const name = "NSMutableArray";
+    pub const class = objc.class("NSMutableArray");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3031,9 +3031,9 @@ pub const NSMutableArray = struct {
 
 pub const NSMutableAttributedString = struct {
     pub const Super = NSAttributedString;
-    pub const name = "NSMutableAttributedString";
+    pub const class = objc.class("NSMutableAttributedString");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3055,9 +3055,9 @@ pub const NSMutableAttributedString = struct {
 
 pub const NSMutableCharacterSet = struct {
     pub const Super = NSCharacterSet;
-    pub const name = "NSMutableCharacterSet";
+    pub const class = objc.class("NSMutableCharacterSet");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3095,9 +3095,9 @@ pub const NSMutableCharacterSet = struct {
 
 pub const NSMutableData = struct {
     pub const Super = NSData;
-    pub const name = "NSMutableData";
+    pub const class = objc.class("NSMutableData");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3120,9 +3120,9 @@ pub const NSMutableData = struct {
 
 pub const NSMutableDictionary = struct {
     pub const Super = NSDictionary;
-    pub const name = "NSMutableDictionary";
+    pub const class = objc.class("NSMutableDictionary");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3145,9 +3145,9 @@ pub const NSMutableDictionary = struct {
 
 pub const NSMutableIndexSet = struct {
     pub const Super = NSIndexSet;
-    pub const name = "NSMutableIndexSet";
+    pub const class = objc.class("NSMutableIndexSet");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3164,9 +3164,9 @@ pub const NSMutableIndexSet = struct {
 
 pub const NSMutableOrderedSet = struct {
     pub const Super = NSOrderedSet;
-    pub const name = "NSMutableOrderedSet";
+    pub const class = objc.class("NSMutableOrderedSet");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3205,9 +3205,9 @@ pub const NSMutableOrderedSet = struct {
 
 pub const NSMutableSet = struct {
     pub const Super = NSSet;
-    pub const name = "NSMutableSet";
+    pub const class = objc.class("NSMutableSet");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3227,9 +3227,9 @@ pub const NSMutableSet = struct {
 
 pub const NSMutableString = struct {
     pub const Super = NSString;
-    pub const name = "NSMutableString";
+    pub const class = objc.class("NSMutableString");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3246,9 +3246,9 @@ pub const NSMutableString = struct {
 
 pub const NSMutableURLRequest = struct {
     pub const Super = NSURLRequest;
-    pub const name = "NSMutableURLRequest";
+    pub const class = objc.class("NSMutableURLRequest");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3299,9 +3299,9 @@ pub const NSMutableURLRequest = struct {
 
 pub const NSNameSpecifier = struct {
     pub const Super = NSScriptObjectSpecifier;
-    pub const name = "NSNameSpecifier";
+    pub const class = objc.class("NSNameSpecifier");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3313,9 +3313,9 @@ pub const NSNameSpecifier = struct {
 };
 
 pub const NetService = struct {
-    pub const name = "NSNetService";
+    pub const class = objc.class("NSNetService");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3363,9 +3363,9 @@ pub const NetService = struct {
 };
 
 pub const NetServiceBrowser = struct {
-    pub const name = "NSNetServiceBrowser";
+    pub const class = objc.class("NSNetServiceBrowser");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3383,9 +3383,9 @@ pub const NetServiceBrowser = struct {
 };
 
 pub const NSNotification = struct {
-    pub const name = "NSNotification";
+    pub const class = objc.class("NSNotification");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3402,9 +3402,9 @@ pub const NSNotification = struct {
 };
 
 pub const NotificationCenter = struct {
-    pub const name = "NSNotificationCenter";
+    pub const class = objc.class("NSNotificationCenter");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3423,9 +3423,9 @@ pub const NotificationCenter = struct {
 };
 
 pub const NotificationQueue = struct {
-    pub const name = "NSNotificationQueue";
+    pub const class = objc.class("NSNotificationQueue");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3448,9 +3448,9 @@ pub const NotificationQueue = struct {
 
 pub const NSNumber = struct {
     pub const Super = NSValue;
-    pub const name = "NSNumber";
+    pub const class = objc.class("NSNumber");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3491,9 +3491,9 @@ pub const NSNumber = struct {
 
 pub const NumberFormatter = struct {
     pub const Super = Formatter;
-    pub const name = "NSNumberFormatter";
+    pub const class = objc.class("NSNumberFormatter");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3675,9 +3675,9 @@ pub const NumberFormatter = struct {
 };
 
 pub const Operation = struct {
-    pub const name = "NSOperation";
+    pub const class = objc.class("NSOperation");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3716,9 +3716,9 @@ pub const Operation = struct {
 };
 
 pub const OperationQueue = struct {
-    pub const name = "NSOperationQueue";
+    pub const class = objc.class("NSOperationQueue");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3750,9 +3750,9 @@ pub const OperationQueue = struct {
 };
 
 pub const NSOrderedCollectionChange = struct {
-    pub const name = "NSOrderedCollectionChange";
+    pub const class = objc.class("NSOrderedCollectionChange");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3766,9 +3766,9 @@ pub const NSOrderedCollectionChange = struct {
 };
 
 pub const NSOrderedCollectionDifference = struct {
-    pub const name = "NSOrderedCollectionDifference";
+    pub const class = objc.class("NSOrderedCollectionDifference");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3784,9 +3784,9 @@ pub const NSOrderedCollectionDifference = struct {
 };
 
 pub const NSOrderedSet = struct {
-    pub const name = "NSOrderedSet";
+    pub const class = objc.class("NSOrderedSet");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3849,9 +3849,9 @@ pub const NSOrderedSet = struct {
 };
 
 pub const NSOrthography = struct {
-    pub const name = "NSOrthography";
+    pub const class = objc.class("NSOrthography");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3873,9 +3873,9 @@ pub const NSOrthography = struct {
 
 pub const OutputStream = struct {
     pub const Super = Stream;
-    pub const name = "NSOutputStream";
+    pub const class = objc.class("NSOutputStream");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3894,9 +3894,9 @@ pub const OutputStream = struct {
 };
 
 pub const NSPersonNameComponents = struct {
-    pub const name = "NSPersonNameComponents";
+    pub const class = objc.class("NSPersonNameComponents");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3919,9 +3919,9 @@ pub const NSPersonNameComponents = struct {
 
 pub const PersonNameComponentsFormatter = struct {
     pub const Super = Formatter;
-    pub const name = "NSPersonNameComponentsFormatter";
+    pub const class = objc.class("NSPersonNameComponentsFormatter");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3951,9 +3951,9 @@ pub const PersonNameComponentsFormatter = struct {
 };
 
 pub const Pipe = struct {
-    pub const name = "NSPipe";
+    pub const class = objc.class("NSPipe");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3963,9 +3963,9 @@ pub const Pipe = struct {
 };
 
 pub const NSPointerArray = struct {
-    pub const name = "NSPointerArray";
+    pub const class = objc.class("NSPointerArray");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3990,9 +3990,9 @@ pub const NSPointerArray = struct {
 };
 
 pub const NSPointerFunctions = struct {
-    pub const name = "NSPointerFunctions";
+    pub const class = objc.class("NSPointerFunctions");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -4017,9 +4017,9 @@ pub const NSPointerFunctions = struct {
 };
 
 pub const Port = struct {
-    pub const name = "NSPort";
+    pub const class = objc.class("NSPort");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -4036,9 +4036,9 @@ pub const Port = struct {
 };
 
 pub const PortMessage = struct {
-    pub const name = "NSPortMessage";
+    pub const class = objc.class("NSPortMessage");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -4053,9 +4053,9 @@ pub const PortMessage = struct {
 };
 
 pub const NSPositionalSpecifier = struct {
-    pub const name = "NSPositionalSpecifier";
+    pub const class = objc.class("NSPositionalSpecifier");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -4080,9 +4080,9 @@ pub const NSPositionalSpecifier = struct {
 };
 
 pub const NSPredicate = struct {
-    pub const name = "NSPredicate";
+    pub const class = objc.class("NSPredicate");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -4103,9 +4103,9 @@ pub const NSPredicate = struct {
 };
 
 pub const ProcessInfo = struct {
-    pub const name = "NSProcessInfo";
+    pub const class = objc.class("NSProcessInfo");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -4156,9 +4156,9 @@ pub const ProcessInfo = struct {
 };
 
 pub const Progress = struct {
-    pub const name = "NSProgress";
+    pub const class = objc.class("NSProgress");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -4235,9 +4235,9 @@ pub const PropertyListSerialization = struct {
 
 pub const NSProtocolChecker = struct {
     pub const Super = NSProxy;
-    pub const name = "NSProtocolChecker";
+    pub const class = objc.class("NSProtocolChecker");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -4248,9 +4248,9 @@ pub const NSProtocolChecker = struct {
 };
 
 pub const NSProxy = struct {
-    pub const name = "NSProxy";
+    pub const class = objc.class("NSProxy");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -4269,9 +4269,9 @@ pub const NSProxy = struct {
 
 pub const NSQuitCommand = struct {
     pub const Super = NSScriptCommand;
-    pub const name = "NSQuitCommand";
+    pub const class = objc.class("NSQuitCommand");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -4281,9 +4281,9 @@ pub const NSQuitCommand = struct {
 
 pub const NSRangeSpecifier = struct {
     pub const Super = NSScriptObjectSpecifier;
-    pub const name = "NSRangeSpecifier";
+    pub const class = objc.class("NSRangeSpecifier");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -4297,9 +4297,9 @@ pub const NSRangeSpecifier = struct {
 };
 
 pub const NSRecursiveLock = struct {
-    pub const name = "NSRecursiveLock";
+    pub const class = objc.class("NSRecursiveLock");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -4311,9 +4311,9 @@ pub const NSRecursiveLock = struct {
 };
 
 pub const NSRegularExpression = struct {
-    pub const name = "NSRegularExpression";
+    pub const class = objc.class("NSRegularExpression");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -4339,9 +4339,9 @@ pub const NSRegularExpression = struct {
 
 pub const RelativeDateTimeFormatter = struct {
     pub const Super = Formatter;
-    pub const name = "NSRelativeDateTimeFormatter";
+    pub const class = objc.class("NSRelativeDateTimeFormatter");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -4375,9 +4375,9 @@ pub const RelativeDateTimeFormatter = struct {
 
 pub const NSRelativeSpecifier = struct {
     pub const Super = NSScriptObjectSpecifier;
-    pub const name = "NSRelativeSpecifier";
+    pub const class = objc.class("NSRelativeSpecifier");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -4396,9 +4396,9 @@ pub const NSRelativeSpecifier = struct {
 };
 
 pub const RunLoop = struct {
-    pub const name = "NSRunLoop";
+    pub const class = objc.class("NSRunLoop");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -4426,9 +4426,9 @@ pub const RunLoop = struct {
 };
 
 pub const Scanner = struct {
-    pub const name = "NSScanner";
+    pub const class = objc.class("NSScanner");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -4467,9 +4467,9 @@ pub const Scanner = struct {
 
 pub const NSScriptClassDescription = struct {
     pub const Super = NSClassDescription;
-    pub const name = "NSScriptClassDescription";
+    pub const class = objc.class("NSScriptClassDescription");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -4500,9 +4500,9 @@ pub const NSScriptClassDescription = struct {
 };
 
 pub const NSScriptCoercionHandler = struct {
-    pub const name = "NSScriptCoercionHandler";
+    pub const class = objc.class("NSScriptCoercionHandler");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -4516,9 +4516,9 @@ pub const NSScriptCoercionHandler = struct {
 };
 
 pub const NSScriptCommand = struct {
-    pub const name = "NSScriptCommand";
+    pub const class = objc.class("NSScriptCommand");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -4555,9 +4555,9 @@ pub const NSScriptCommand = struct {
 };
 
 pub const NSScriptCommandDescription = struct {
-    pub const name = "NSScriptCommandDescription";
+    pub const class = objc.class("NSScriptCommandDescription");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -4580,9 +4580,9 @@ pub const NSScriptCommandDescription = struct {
 };
 
 pub const NSScriptExecutionContext = struct {
-    pub const name = "NSScriptExecutionContext";
+    pub const class = objc.class("NSScriptExecutionContext");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -4600,9 +4600,9 @@ pub const NSScriptExecutionContext = struct {
 };
 
 pub const NSScriptObjectSpecifier = struct {
-    pub const name = "NSScriptObjectSpecifier";
+    pub const class = objc.class("NSScriptObjectSpecifier");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -4637,9 +4637,9 @@ pub const NSScriptObjectSpecifier = struct {
 };
 
 pub const NSScriptSuiteRegistry = struct {
-    pub const name = "NSScriptSuiteRegistry";
+    pub const class = objc.class("NSScriptSuiteRegistry");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -4665,9 +4665,9 @@ pub const NSScriptSuiteRegistry = struct {
 };
 
 pub const NSScriptWhoseTest = struct {
-    pub const name = "NSScriptWhoseTest";
+    pub const class = objc.class("NSScriptWhoseTest");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -4683,9 +4683,9 @@ pub const NSSecureUnarchiveFromDataTransformer = struct {
 };
 
 pub const NSSet = struct {
-    pub const name = "NSSet";
+    pub const class = objc.class("NSSet");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -4729,9 +4729,9 @@ pub const NSSet = struct {
 
 pub const NSSetCommand = struct {
     pub const Super = NSScriptCommand;
-    pub const name = "NSSetCommand";
+    pub const class = objc.class("NSSetCommand");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -4742,9 +4742,9 @@ pub const NSSetCommand = struct {
 
 pub const SocketPort = struct {
     pub const Super = Port;
-    pub const name = "NSSocketPort";
+    pub const class = objc.class("NSSocketPort");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -4762,9 +4762,9 @@ pub const SocketPort = struct {
 };
 
 pub const NSSortDescriptor = struct {
-    pub const name = "NSSortDescriptor";
+    pub const class = objc.class("NSSortDescriptor");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -4784,9 +4784,9 @@ pub const NSSortDescriptor = struct {
 
 pub const NSSpecifierTest = struct {
     pub const Super = NSScriptWhoseTest;
-    pub const name = "NSSpecifierTest";
+    pub const class = objc.class("NSSpecifierTest");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -4807,9 +4807,9 @@ pub const NSSpecifierTest = struct {
 };
 
 pub const NSSpellServer = struct {
-    pub const name = "NSSpellServer";
+    pub const class = objc.class("NSSpellServer");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -4822,9 +4822,9 @@ pub const NSSpellServer = struct {
 };
 
 pub const Stream = struct {
-    pub const name = "NSStream";
+    pub const class = objc.class("NSStream");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -4859,9 +4859,9 @@ pub const Stream = struct {
 };
 
 pub const NSString = struct {
-    pub const name = "NSString";
+    pub const class = objc.class("NSString");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -5005,9 +5005,9 @@ pub const NSString = struct {
 };
 
 pub const Process = struct {
-    pub const name = "NSTask";
+    pub const class = objc.class("NSTask");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -5060,9 +5060,9 @@ pub const Process = struct {
 };
 
 pub const NSTextCheckingResult = struct {
-    pub const name = "NSTextCheckingResult";
+    pub const class = objc.class("NSTextCheckingResult");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -5106,9 +5106,9 @@ pub const NSTextCheckingResult = struct {
 };
 
 pub const Thread = struct {
-    pub const name = "NSThread";
+    pub const class = objc.class("NSThread");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -5150,9 +5150,9 @@ pub const Thread = struct {
 };
 
 pub const NSTimeZone = struct {
-    pub const name = "NSTimeZone";
+    pub const class = objc.class("NSTimeZone");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -5201,9 +5201,9 @@ pub const NSTimeZone = struct {
 };
 
 pub const Timer = struct {
-    pub const name = "NSTimer";
+    pub const class = objc.class("NSTimer");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -5231,9 +5231,9 @@ pub const Timer = struct {
 };
 
 pub const NSURL = struct {
-    pub const name = "NSURL";
+    pub const class = objc.class("NSURL");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -5315,9 +5315,9 @@ pub const NSURL = struct {
 };
 
 pub const URLAuthenticationChallenge = struct {
-    pub const name = "NSURLAuthenticationChallenge";
+    pub const class = objc.class("NSURLAuthenticationChallenge");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -5333,9 +5333,9 @@ pub const URLAuthenticationChallenge = struct {
 };
 
 pub const URLCache = struct {
-    pub const name = "NSURLCache";
+    pub const class = objc.class("NSURLCache");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -5369,9 +5369,9 @@ pub const URLCache = struct {
 };
 
 pub const NSURLComponents = struct {
-    pub const name = "NSURLComponents";
+    pub const class = objc.class("NSURLComponents");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -5427,9 +5427,9 @@ pub const NSURLComponents = struct {
 };
 
 pub const NSURLConnection = struct {
-    pub const name = "NSURLConnection";
+    pub const class = objc.class("NSURLConnection");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -5452,9 +5452,9 @@ pub const NSURLConnection = struct {
 };
 
 pub const URLCredential = struct {
-    pub const name = "NSURLCredential";
+    pub const class = objc.class("NSURLCredential");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -5482,9 +5482,9 @@ pub const URLCredential = struct {
 };
 
 pub const URLCredentialStorage = struct {
-    pub const name = "NSURLCredentialStorage";
+    pub const class = objc.class("NSURLCredentialStorage");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -5508,9 +5508,9 @@ pub const URLCredentialStorage = struct {
 };
 
 pub const NSURLDownload = struct {
-    pub const name = "NSURLDownload";
+    pub const class = objc.class("NSURLDownload");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -5539,9 +5539,9 @@ pub const NSURLHandle = struct {
 };
 
 pub const URLProtectionSpace = struct {
-    pub const name = "NSURLProtectionSpace";
+    pub const class = objc.class("NSURLProtectionSpace");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -5561,9 +5561,9 @@ pub const URLProtectionSpace = struct {
 };
 
 pub const URLProtocol = struct {
-    pub const name = "NSURLProtocol";
+    pub const class = objc.class("NSURLProtocol");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -5591,9 +5591,9 @@ pub const URLProtocol = struct {
 };
 
 pub const NSURLQueryItem = struct {
-    pub const name = "NSURLQueryItem";
+    pub const class = objc.class("NSURLQueryItem");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -5604,9 +5604,9 @@ pub const NSURLQueryItem = struct {
 };
 
 pub const NSURLRequest = struct {
-    pub const name = "NSURLRequest";
+    pub const class = objc.class("NSURLRequest");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -5665,9 +5665,9 @@ pub const NSURLRequest = struct {
 };
 
 pub const URLResponse = struct {
-    pub const name = "NSURLResponse";
+    pub const class = objc.class("NSURLResponse");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -5681,9 +5681,9 @@ pub const URLResponse = struct {
 };
 
 pub const URLSession = struct {
-    pub const name = "NSURLSession";
+    pub const class = objc.class("NSURLSession");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -5749,9 +5749,9 @@ pub const URLSession = struct {
 };
 
 pub const URLSessionConfiguration = struct {
-    pub const name = "NSURLSessionConfiguration";
+    pub const class = objc.class("NSURLSessionConfiguration");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -5835,9 +5835,9 @@ pub const URLSessionDataTask = struct {
 
 pub const URLSessionDownloadTask = struct {
     pub const Super = URLSessionTask;
-    pub const name = "NSURLSessionDownloadTask";
+    pub const class = objc.class("NSURLSessionDownloadTask");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -5851,9 +5851,9 @@ pub const URLSessionDownloadTask = struct {
 
 pub const URLSessionStreamTask = struct {
     pub const Super = URLSessionTask;
-    pub const name = "NSURLSessionStreamTask";
+    pub const class = objc.class("NSURLSessionStreamTask");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -5872,9 +5872,9 @@ pub const URLSessionStreamTask = struct {
 };
 
 pub const URLSessionTask = struct {
-    pub const name = "NSURLSessionTask";
+    pub const class = objc.class("NSURLSessionTask");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -5921,9 +5921,9 @@ pub const URLSessionTask = struct {
 };
 
 pub const URLSessionTaskMetrics = struct {
-    pub const name = "NSURLSessionTaskMetrics";
+    pub const class = objc.class("NSURLSessionTaskMetrics");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -5952,9 +5952,9 @@ pub const URLSessionTaskMetrics = struct {
 };
 
 pub const URLSessionTaskTransactionMetrics = struct {
-    pub const name = "NSURLSessionTaskTransactionMetrics";
+    pub const class = objc.class("NSURLSessionTaskTransactionMetrics");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -5997,9 +5997,9 @@ pub const URLSessionTaskTransactionMetrics = struct {
 
 pub const URLSessionUploadTask = struct {
     pub const Super = URLSessionDataTask;
-    pub const name = "NSURLSessionUploadTask";
+    pub const class = objc.class("NSURLSessionUploadTask");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -6013,9 +6013,9 @@ pub const URLSessionUploadTask = struct {
 
 pub const URLSessionWebSocketTask = struct {
     pub const Super = URLSessionTask;
-    pub const name = "NSURLSessionWebSocketTask";
+    pub const class = objc.class("NSURLSessionWebSocketTask");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -6045,9 +6045,9 @@ pub const URLSessionWebSocketTask = struct {
 };
 
 pub const NSUUID = struct {
-    pub const name = "NSUUID";
+    pub const class = objc.class("NSUUID");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -6060,9 +6060,9 @@ pub const NSUUID = struct {
 };
 
 pub const NSUbiquitousKeyValueStore = struct {
-    pub const name = "NSUbiquitousKeyValueStore";
+    pub const class = objc.class("NSUbiquitousKeyValueStore");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -6094,9 +6094,9 @@ pub const NSUbiquitousKeyValueStore = struct {
 
 pub const NSUnarchiver = struct {
     pub const Super = NSCoder;
-    pub const name = "NSUnarchiver";
+    pub const class = objc.class("NSUnarchiver");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -6117,9 +6117,9 @@ pub const NSUnarchiver = struct {
 };
 
 pub const UndoManager = struct {
-    pub const name = "NSUndoManager";
+    pub const class = objc.class("NSUndoManager");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -6166,9 +6166,9 @@ pub const UndoManager = struct {
 
 pub const NSUniqueIDSpecifier = struct {
     pub const Super = NSScriptObjectSpecifier;
-    pub const name = "NSUniqueIDSpecifier";
+    pub const class = objc.class("NSUniqueIDSpecifier");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -6180,9 +6180,9 @@ pub const NSUniqueIDSpecifier = struct {
 };
 
 pub const Unit = struct {
-    pub const name = "NSUnit";
+    pub const class = objc.class("NSUnit");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -6237,9 +6237,9 @@ pub const UnitConcentrationMass = struct {
 };
 
 pub const UnitConverter = struct {
-    pub const name = "NSUnitConverter";
+    pub const class = objc.class("NSUnitConverter");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -6250,9 +6250,9 @@ pub const UnitConverter = struct {
 
 pub const UnitConverterLinear = struct {
     pub const Super = UnitConverter;
-    pub const name = "NSUnitConverterLinear";
+    pub const class = objc.class("NSUnitConverterLinear");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -6533,9 +6533,9 @@ pub const UnitVolume = struct {
 };
 
 pub const NSUserActivity = struct {
-    pub const name = "NSUserActivity";
+    pub const class = objc.class("NSUserActivity");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -6586,9 +6586,9 @@ pub const NSUserActivity = struct {
 
 pub const NSUserAppleScriptTask = struct {
     pub const Super = NSUserScriptTask;
-    pub const name = "NSUserAppleScriptTask";
+    pub const class = objc.class("NSUserAppleScriptTask");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -6598,9 +6598,9 @@ pub const NSUserAppleScriptTask = struct {
 
 pub const NSUserAutomatorTask = struct {
     pub const Super = NSUserScriptTask;
-    pub const name = "NSUserAutomatorTask";
+    pub const class = objc.class("NSUserAutomatorTask");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -6611,9 +6611,9 @@ pub const NSUserAutomatorTask = struct {
 };
 
 pub const UserDefaults = struct {
-    pub const name = "NSUserDefaults";
+    pub const class = objc.class("NSUserDefaults");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -6659,9 +6659,9 @@ pub const UserDefaults = struct {
 };
 
 pub const NSUserNotification = struct {
-    pub const name = "NSUserNotification";
+    pub const class = objc.class("NSUserNotification");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -6715,9 +6715,9 @@ pub const NSUserNotification = struct {
 };
 
 pub const NSUserNotificationAction = struct {
-    pub const name = "NSUserNotificationAction";
+    pub const class = objc.class("NSUserNotificationAction");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -6731,9 +6731,9 @@ pub const NSUserNotificationAction = struct {
 };
 
 pub const NSUserNotificationCenter = struct {
-    pub const name = "NSUserNotificationCenter";
+    pub const class = objc.class("NSUserNotificationCenter");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -6755,9 +6755,9 @@ pub const NSUserNotificationCenter = struct {
 };
 
 pub const NSUserScriptTask = struct {
-    pub const name = "NSUserScriptTask";
+    pub const class = objc.class("NSUserScriptTask");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -6769,9 +6769,9 @@ pub const NSUserScriptTask = struct {
 
 pub const NSUserUnixTask = struct {
     pub const Super = NSUserScriptTask;
-    pub const name = "NSUserUnixTask";
+    pub const class = objc.class("NSUserUnixTask");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -6786,9 +6786,9 @@ pub const NSUserUnixTask = struct {
 };
 
 pub const NSValue = struct {
-    pub const name = "NSValue";
+    pub const class = objc.class("NSValue");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -6821,9 +6821,9 @@ pub const NSValue = struct {
 };
 
 pub const ValueTransformer = struct {
-    pub const name = "NSValueTransformer";
+    pub const class = objc.class("NSValueTransformer");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -6842,9 +6842,9 @@ pub const ValueTransformer = struct {
 
 pub const NSWhoseSpecifier = struct {
     pub const Super = NSScriptObjectSpecifier;
-    pub const name = "NSWhoseSpecifier";
+    pub const class = objc.class("NSWhoseSpecifier");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -6873,9 +6873,9 @@ pub const NSWhoseSpecifier = struct {
 
 pub const XMLDTD = struct {
     pub const Super = XMLNode;
-    pub const name = "NSXMLDTD";
+    pub const class = objc.class("NSXMLDTD");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -6904,9 +6904,9 @@ pub const XMLDTD = struct {
 
 pub const XMLDTDNode = struct {
     pub const Super = XMLNode;
-    pub const name = "NSXMLDTDNode";
+    pub const class = objc.class("NSXMLDTDNode");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -6949,9 +6949,9 @@ pub const XMLDTDNode = struct {
 
 pub const XMLDocument = struct {
     pub const Super = XMLNode;
-    pub const name = "NSXMLDocument";
+    pub const class = objc.class("NSXMLDocument");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -7001,9 +7001,9 @@ pub const XMLDocument = struct {
 
 pub const XMLElement = struct {
     pub const Super = XMLNode;
-    pub const name = "NSXMLElement";
+    pub const class = objc.class("NSXMLElement");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -7040,9 +7040,9 @@ pub const XMLElement = struct {
 };
 
 pub const XMLNode = struct {
-    pub const name = "NSXMLNode";
+    pub const class = objc.class("NSXMLNode");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -7119,9 +7119,9 @@ pub const XMLNode = struct {
 };
 
 pub const XMLParser = struct {
-    pub const name = "NSXMLParser";
+    pub const class = objc.class("NSXMLParser");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -7254,9 +7254,9 @@ pub const XMLParser = struct {
 
 pub const NSXPCCoder = struct {
     pub const Super = NSCoder;
-    pub const name = "NSXPCCoder";
+    pub const class = objc.class("NSXPCCoder");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -7269,9 +7269,9 @@ pub const NSXPCCoder = struct {
 };
 
 pub const NSXPCConnection = struct {
-    pub const name = "NSXPCConnection";
+    pub const class = objc.class("NSXPCConnection");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -7311,9 +7311,9 @@ pub const NSXPCConnection = struct {
 };
 
 pub const NSXPCInterface = struct {
-    pub const name = "NSXPCInterface";
+    pub const class = objc.class("NSXPCInterface");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -7333,9 +7333,9 @@ pub const NSXPCInterface = struct {
 };
 
 pub const NSXPCListener = struct {
-    pub const name = "NSXPCListener";
+    pub const class = objc.class("NSXPCListener");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -7364,12 +7364,12 @@ pub fn viewObj(val: anytype) Object {
 }
 
 pub fn init(comptime class_name: [*:0]const u8) Object {
-    return objc.send(Object, objc.class(Object, class_name, "alloc", .{}), "init", .{});
+    return objc.send(objc.send(objc.getClass(class_name).?, "alloc", Object, .{}), "init", Object, .{});
 }
 
 pub fn nsArray(items: []const Object) Object {
-    const arr = objc.class(Object, "NSMutableArray", "arrayWithCapacity:", .{@as(c_ulong, items.len)});
-    for (items) |item| objc.send(void, arr, "addObject:", .{item});
+    const arr = objc.send(objc.class("NSMutableArray"), "arrayWithCapacity:", Object, .{@as(c_ulong, items.len)});
+    for (items) |item| objc.send(arr, "addObject:", void, .{item});
     return arr;
 }
 

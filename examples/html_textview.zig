@@ -11,7 +11,7 @@ pub fn main() void {
     const pool = objc.autoreleasePoolPush();
     defer objc.autoreleasePoolPop(pool);
 
-    const app = AppKit.NSApplication.class("sharedApplication", .{});
+    const app = AppKit.NSApplication.static("sharedApplication", .{});
     _ = app.send("setActivationPolicy:", .{AppKit.NSApplication.ActivationPolicy.regular});
 
     registerClasses();
@@ -36,7 +36,7 @@ fn appShouldTerminate(_: Object, _: objc.Sel, _: Object) callconv(cc) u8 {
 }
 
 fn buildUI() void {
-    const window = AppKit.NSWindow.class("alloc", .{}).send("initWithContentRect:styleMask:backing:defer:", .{
+    const window = AppKit.NSWindow.static("alloc", .{}).send("initWithContentRect:styleMask:backing:defer:", .{
         AppKit.NSRect.make(200, 200, 600, 500),
         @as(i64, (1 << 0) | (1 << 1) | (1 << 2) | (1 << 3)),
         @as(i64, 2),
@@ -46,11 +46,11 @@ fn buildUI() void {
     window.send("center", .{});
 
     // Scroll view + text view
-    const scroll = AppKit.NSScrollView.class("alloc", .{}).send("initWithFrame:", .{AppKit.NSRect.make(0, 0, 600, 500)});
+    const scroll = AppKit.NSScrollView.static("alloc", .{}).send("initWithFrame:", .{AppKit.NSRect.make(0, 0, 600, 500)});
     scroll.send("setHasVerticalScroller:", .{true});
     scroll.send("setAutohidesScrollers:", .{true});
 
-    const text_view = AppKit.NSTextView.class("alloc", .{}).send("initWithFrame:", .{AppKit.NSRect.make(0, 0, 600, 500)});
+    const text_view = AppKit.NSTextView.static("alloc", .{}).send("initWithFrame:", .{AppKit.NSRect.make(0, 0, 600, 500)});
     _ = text_view.send("setEditable:", .{false});
     _ = text_view.send("setRichText:", .{true});
     _ = text_view.send("setTextContainerInset:", .{AppKit.NSSize{ .width = 16, .height = 16 }});
@@ -119,29 +119,29 @@ fn buildUI() void {
 
     // NSAttributedString from HTML
     const html_nsstr = objc.nsString(html);
-    const html_data = objc.send(Object, html_nsstr, "dataUsingEncoding:", .{@as(c_ulong, 4)}); // NSUTF8StringEncoding = 4
+    const html_data = objc.send(html_nsstr, "dataUsingEncoding:", Object, .{@as(c_ulong, 4)}); // NSUTF8StringEncoding = 4
     const doc_type_key = objc.nsString("NSDocumentTypeDocumentAttribute");
     const html_type_val = objc.nsString("NSHTML");
     const keys = [_]Object{doc_type_key};
     const vals = [_]Object{html_type_val};
-    const opts = objc.class(Object, "NSDictionary", "dictionaryWithObjects:forKeys:count:", .{
+    const opts = objc.send(Foundation.NSDictionary.class, "dictionaryWithObjects:forKeys:count:", Object, .{
         @as([*]const Object, &vals),
         @as([*]const Object, &keys),
         @as(c_ulong, 1),
     });
 
-    const attr_str = objc.alloc(Foundation.NSAttributedString).send(Object, "initWithHTML:options:documentAttributes:", .{
+    const attr_str = objc.alloc(Foundation.NSAttributedString).send("initWithHTML:options:documentAttributes:", Object, .{
         html_data,
         opts,
         @as(?*?*anyopaque, null),
     });
 
     // Set on text view
-    const text_storage = objc.send(Object, text_view, "textStorage", .{});
-    objc.send(void, text_storage, "setAttributedString:", .{attr_str});
+    const text_storage = objc.send(text_view, "textStorage", Object, .{});
+    objc.send(text_storage, "setAttributedString:", void, .{attr_str});
 
     scroll.send("setDocumentView:", .{text_view.id});
     window.send("setContentView:", .{scroll.id});
-    objc.send(void, window, "makeKeyAndOrderFront:", .{@as(?*anyopaque, null)});
-    AppKit.NSApplication.class("sharedApplication", .{}).send("activateIgnoringOtherApps:", .{true});
+    objc.send(window, "makeKeyAndOrderFront:", void, .{@as(?*anyopaque, null)});
+    AppKit.NSApplication.static("sharedApplication", .{}).send("activateIgnoringOtherApps:", .{true});
 }

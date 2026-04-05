@@ -14,7 +14,7 @@ pub fn main() void {
     const pool = objc.autoreleasePoolPush();
     defer objc.autoreleasePoolPop(pool);
 
-    const app = AppKit.NSApplication.class("sharedApplication", .{});
+    const app = AppKit.NSApplication.static("sharedApplication", .{});
     _ = app.send("setActivationPolicy:", .{AppKit.NSApplication.ActivationPolicy.accessory});
 
     registerClasses();
@@ -43,7 +43,7 @@ fn appDidFinishLaunching(_: Object, _: objc.Sel, _: Object) callconv(cc) void {
 fn buildUI() void {
     // NSPanel — floating, non-activating
     const style: i64 = (1 << 0) | (1 << 1) | (1 << 2) | (1 << 3) | (1 << 7); // titled|closable|miniaturizable|resizable|nonactivatingPanel
-    const panel = AppKit.NSPanel.class("alloc", .{}).send("initWithContentRect:styleMask:backing:defer:", .{
+    const panel = AppKit.NSPanel.static("alloc", .{}).send("initWithContentRect:styleMask:backing:defer:", .{
         AppKit.NSRect.make(100, 100, 480, 320),
         style,
         @as(i64, 2), // buffered
@@ -55,18 +55,18 @@ fn buildUI() void {
     panel.send("setHidesOnDeactivate:", .{false});
 
     // WKWebView
-    const config = WebKit.WKWebViewConfiguration.class("alloc", .{}).send("init", .{});
-    const webview = WebKit.WKWebView.class("alloc", .{}).send("initWithFrame:configuration:", .{
+    const config = WebKit.WKWebViewConfiguration.static("alloc", .{}).send("init", .{});
+    const webview = WebKit.WKWebView.static("alloc", .{}).send("initWithFrame:configuration:", .{
         AppKit.NSRect.make(0, 0, 480, 320),
         config,
     });
 
     // Load https://example.com
-    const url = Foundation.NSURL.class("alloc", .{}).send("initWithString:", .{"https://example.com"});
-    const request = Foundation.NSURLRequest.class("alloc", .{}).send("initWithURL:", .{url});
+    const url = Foundation.NSURL.static("alloc", .{}).send("initWithString:", .{"https://example.com"});
+    const request = Foundation.NSURLRequest.static("alloc", .{}).send("initWithURL:", .{url});
     _ = webview.send("loadRequest:", .{request});
 
     panel.send("setContentView:", .{webview.id});
     panel.send("center", .{});
-    objc.send(void, panel, "makeKeyAndOrderFront:", .{@as(?*anyopaque, null)});
+    objc.send(panel, "makeKeyAndOrderFront:", void, .{@as(?*anyopaque, null)});
 }

@@ -42,9 +42,9 @@ pub const NSCopying = *anyopaque;
 pub const NSObjectProtocol = *anyopaque;
 
 pub const AXBrailleMap = struct {
-    pub const name = "AXBrailleMap";
+    pub const class = objc.class("AXBrailleMap");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -56,9 +56,9 @@ pub const AXBrailleMap = struct {
 };
 
 pub const AXBrailleTable = struct {
-    pub const name = "AXBrailleTable";
+    pub const class = objc.class("AXBrailleTable");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -80,9 +80,9 @@ pub const AXBrailleTable = struct {
 };
 
 pub const AXBrailleTranslationResult = struct {
-    pub const name = "AXBrailleTranslationResult";
+    pub const class = objc.class("AXBrailleTranslationResult");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -91,9 +91,9 @@ pub const AXBrailleTranslationResult = struct {
 };
 
 pub const AXBrailleTranslator = struct {
-    pub const name = "AXBrailleTranslator";
+    pub const class = objc.class("AXBrailleTranslator");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -104,9 +104,9 @@ pub const AXBrailleTranslator = struct {
 };
 
 pub const AXCategoricalDataAxisDescriptor = struct {
-    pub const name = "AXCategoricalDataAxisDescriptor";
+    pub const class = objc.class("AXCategoricalDataAxisDescriptor");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -118,9 +118,9 @@ pub const AXCategoricalDataAxisDescriptor = struct {
 };
 
 pub const AXChartDescriptor = struct {
-    pub const name = "AXChartDescriptor";
+    pub const class = objc.class("AXChartDescriptor");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -151,9 +151,9 @@ pub const AXChartDescriptor = struct {
 };
 
 pub const AXCustomContent = struct {
-    pub const name = "AXCustomContent";
+    pub const class = objc.class("AXCustomContent");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -177,9 +177,9 @@ pub const AXCustomContent = struct {
 };
 
 pub const AXDataPoint = struct {
-    pub const name = "AXDataPoint";
+    pub const class = objc.class("AXDataPoint");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -195,9 +195,9 @@ pub const AXDataPoint = struct {
 };
 
 pub const AXDataSeriesDescriptor = struct {
-    pub const name = "AXDataSeriesDescriptor";
+    pub const class = objc.class("AXDataSeriesDescriptor");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -223,9 +223,9 @@ pub const AXLiveAudioGraph = struct {
 };
 
 pub const AXMathExpressionFenced = struct {
-    pub const name = "AXMathExpressionFenced";
+    pub const class = objc.class("AXMathExpressionFenced");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -237,9 +237,9 @@ pub const AXMathExpressionFenced = struct {
 };
 
 pub const AXMathExpressionFraction = struct {
-    pub const name = "AXMathExpressionFraction";
+    pub const class = objc.class("AXMathExpressionFraction");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -250,9 +250,9 @@ pub const AXMathExpressionFraction = struct {
 };
 
 pub const AXMathExpressionIdentifier = struct {
-    pub const name = "AXMathExpressionIdentifier";
+    pub const class = objc.class("AXMathExpressionIdentifier");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -262,9 +262,9 @@ pub const AXMathExpressionIdentifier = struct {
 };
 
 pub const AXMathExpressionMultiscript = struct {
-    pub const name = "AXMathExpressionMultiscript";
+    pub const class = objc.class("AXMathExpressionMultiscript");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -276,9 +276,9 @@ pub const AXMathExpressionMultiscript = struct {
 };
 
 pub const AXMathExpressionNumber = struct {
-    pub const name = "AXMathExpressionNumber";
+    pub const class = objc.class("AXMathExpressionNumber");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -288,9 +288,9 @@ pub const AXMathExpressionNumber = struct {
 };
 
 pub const AXMathExpressionOperator = struct {
-    pub const name = "AXMathExpressionOperator";
+    pub const class = objc.class("AXMathExpressionOperator");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -300,9 +300,9 @@ pub const AXMathExpressionOperator = struct {
 };
 
 pub const AXMathExpressionRoot = struct {
-    pub const name = "AXMathExpressionRoot";
+    pub const class = objc.class("AXMathExpressionRoot");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -313,9 +313,9 @@ pub const AXMathExpressionRoot = struct {
 };
 
 pub const AXMathExpressionRow = struct {
-    pub const name = "AXMathExpressionRow";
+    pub const class = objc.class("AXMathExpressionRow");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -325,9 +325,9 @@ pub const AXMathExpressionRow = struct {
 };
 
 pub const AXMathExpressionSubSuperscript = struct {
-    pub const name = "AXMathExpressionSubSuperscript";
+    pub const class = objc.class("AXMathExpressionSubSuperscript");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -339,9 +339,9 @@ pub const AXMathExpressionSubSuperscript = struct {
 };
 
 pub const AXMathExpressionTable = struct {
-    pub const name = "AXMathExpressionTable";
+    pub const class = objc.class("AXMathExpressionTable");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -351,9 +351,9 @@ pub const AXMathExpressionTable = struct {
 };
 
 pub const AXMathExpressionTableCell = struct {
-    pub const name = "AXMathExpressionTableCell";
+    pub const class = objc.class("AXMathExpressionTableCell");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -363,9 +363,9 @@ pub const AXMathExpressionTableCell = struct {
 };
 
 pub const AXMathExpressionTableRow = struct {
-    pub const name = "AXMathExpressionTableRow";
+    pub const class = objc.class("AXMathExpressionTableRow");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -375,9 +375,9 @@ pub const AXMathExpressionTableRow = struct {
 };
 
 pub const AXMathExpressionText = struct {
-    pub const name = "AXMathExpressionText";
+    pub const class = objc.class("AXMathExpressionText");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -387,9 +387,9 @@ pub const AXMathExpressionText = struct {
 };
 
 pub const AXMathExpressionUnderOver = struct {
-    pub const name = "AXMathExpressionUnderOver";
+    pub const class = objc.class("AXMathExpressionUnderOver");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -401,9 +401,9 @@ pub const AXMathExpressionUnderOver = struct {
 };
 
 pub const AXNumericDataAxisDescriptor = struct {
-    pub const name = "AXNumericDataAxisDescriptor";
+    pub const class = objc.class("AXNumericDataAxisDescriptor");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -421,9 +421,9 @@ pub const AXNumericDataAxisDescriptor = struct {
 };
 
 pub const AccessibilityRequest = struct {
-    pub const name = "AXRequest";
+    pub const class = objc.class("AXRequest");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -443,12 +443,12 @@ pub fn viewObj(val: anytype) Object {
 }
 
 pub fn init(comptime class_name: [*:0]const u8) Object {
-    return objc.send(Object, objc.class(Object, class_name, "alloc", .{}), "init", .{});
+    return objc.send(objc.send(objc.getClass(class_name).?, "alloc", Object, .{}), "init", Object, .{});
 }
 
 pub fn nsArray(items: []const Object) Object {
-    const arr = objc.class(Object, "NSMutableArray", "arrayWithCapacity:", .{@as(c_ulong, items.len)});
-    for (items) |item| objc.send(void, arr, "addObject:", .{item});
+    const arr = objc.send(objc.class("NSMutableArray"), "arrayWithCapacity:", Object, .{@as(c_ulong, items.len)});
+    for (items) |item| objc.send(arr, "addObject:", void, .{item});
     return arr;
 }
 

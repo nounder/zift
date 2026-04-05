@@ -206,9 +206,9 @@ pub const WebUIDelegate = *anyopaque;
 
 pub const DOMAbstractView = struct {
     pub const Super = DOMObject;
-    pub const name = "DOMAbstractView";
+    pub const class = objc.class("DOMAbstractView");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -218,9 +218,9 @@ pub const DOMAbstractView = struct {
 
 pub const DOMAttr = struct {
     pub const Super = DOMNode;
-    pub const name = "DOMAttr";
+    pub const class = objc.class("DOMAttr");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -235,9 +235,9 @@ pub const DOMAttr = struct {
 
 pub const DOMBlob = struct {
     pub const Super = DOMObject;
-    pub const name = "DOMBlob";
+    pub const class = objc.class("DOMBlob");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -247,9 +247,9 @@ pub const DOMBlob = struct {
 
 pub const DOMCSSCharsetRule = struct {
     pub const Super = DOMCSSRule;
-    pub const name = "DOMCSSCharsetRule";
+    pub const class = objc.class("DOMCSSCharsetRule");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -259,9 +259,9 @@ pub const DOMCSSCharsetRule = struct {
 
 pub const DOMCSSFontFaceRule = struct {
     pub const Super = DOMCSSRule;
-    pub const name = "DOMCSSFontFaceRule";
+    pub const class = objc.class("DOMCSSFontFaceRule");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -271,9 +271,9 @@ pub const DOMCSSFontFaceRule = struct {
 
 pub const DOMCSSImportRule = struct {
     pub const Super = DOMCSSRule;
-    pub const name = "DOMCSSImportRule";
+    pub const class = objc.class("DOMCSSImportRule");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -285,9 +285,9 @@ pub const DOMCSSImportRule = struct {
 
 pub const DOMCSSMediaRule = struct {
     pub const Super = DOMCSSRule;
-    pub const name = "DOMCSSMediaRule";
+    pub const class = objc.class("DOMCSSMediaRule");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -300,9 +300,9 @@ pub const DOMCSSMediaRule = struct {
 
 pub const DOMCSSPageRule = struct {
     pub const Super = DOMCSSRule;
-    pub const name = "DOMCSSPageRule";
+    pub const class = objc.class("DOMCSSPageRule");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -314,9 +314,9 @@ pub const DOMCSSPageRule = struct {
 
 pub const DOMCSSPrimitiveValue = struct {
     pub const Super = DOMCSSValue;
-    pub const name = "DOMCSSPrimitiveValue";
+    pub const class = objc.class("DOMCSSPrimitiveValue");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -333,9 +333,9 @@ pub const DOMCSSPrimitiveValue = struct {
 
 pub const DOMCSSRule = struct {
     pub const Super = DOMObject;
-    pub const name = "DOMCSSRule";
+    pub const class = objc.class("DOMCSSRule");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -349,9 +349,9 @@ pub const DOMCSSRule = struct {
 
 pub const DOMCSSRuleList = struct {
     pub const Super = DOMObject;
-    pub const name = "DOMCSSRuleList";
+    pub const class = objc.class("DOMCSSRuleList");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -362,9 +362,9 @@ pub const DOMCSSRuleList = struct {
 
 pub const DOMCSSStyleDeclaration = struct {
     pub const Super = DOMObject;
-    pub const name = "DOMCSSStyleDeclaration";
+    pub const class = objc.class("DOMCSSStyleDeclaration");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -628,9 +628,9 @@ pub const DOMCSSStyleDeclaration = struct {
 
 pub const DOMCSSStyleRule = struct {
     pub const Super = DOMCSSRule;
-    pub const name = "DOMCSSStyleRule";
+    pub const class = objc.class("DOMCSSStyleRule");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -642,9 +642,9 @@ pub const DOMCSSStyleRule = struct {
 
 pub const DOMCSSStyleSheet = struct {
     pub const Super = DOMStyleSheet;
-    pub const name = "DOMCSSStyleSheet";
+    pub const class = objc.class("DOMCSSStyleSheet");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -660,9 +660,9 @@ pub const DOMCSSStyleSheet = struct {
 
 pub const DOMCSSValue = struct {
     pub const Super = DOMObject;
-    pub const name = "DOMCSSValue";
+    pub const class = objc.class("DOMCSSValue");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -674,9 +674,9 @@ pub const DOMCSSValue = struct {
 
 pub const DOMCSSValueList = struct {
     pub const Super = DOMCSSValue;
-    pub const name = "DOMCSSValueList";
+    pub const class = objc.class("DOMCSSValueList");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -687,9 +687,9 @@ pub const DOMCSSValueList = struct {
 
 pub const DOMCharacterData = struct {
     pub const Super = DOMNode;
-    pub const name = "DOMCharacterData";
+    pub const class = objc.class("DOMCharacterData");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -706,9 +706,9 @@ pub const DOMCharacterData = struct {
 
 pub const DOMCounter = struct {
     pub const Super = DOMObject;
-    pub const name = "DOMCounter";
+    pub const class = objc.class("DOMCounter");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -720,9 +720,9 @@ pub const DOMCounter = struct {
 
 pub const DOMDocument = struct {
     pub const Super = DOMNode;
-    pub const name = "DOMDocument";
+    pub const class = objc.class("DOMDocument");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -813,9 +813,9 @@ pub const DOMDocument = struct {
 
 pub const DOMDocumentType = struct {
     pub const Super = DOMNode;
-    pub const name = "DOMDocumentType";
+    pub const class = objc.class("DOMDocumentType");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -831,9 +831,9 @@ pub const DOMDocumentType = struct {
 
 pub const DOMElement = struct {
     pub const Super = DOMNode;
-    pub const name = "DOMElement";
+    pub const class = objc.class("DOMElement");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -902,9 +902,9 @@ pub const DOMElement = struct {
 
 pub const DOMEntity = struct {
     pub const Super = DOMNode;
-    pub const name = "DOMEntity";
+    pub const class = objc.class("DOMEntity");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -916,9 +916,9 @@ pub const DOMEntity = struct {
 
 pub const DOMEvent = struct {
     pub const Super = DOMObject;
-    pub const name = "DOMEvent";
+    pub const class = objc.class("DOMEvent");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -942,9 +942,9 @@ pub const DOMEvent = struct {
 
 pub const DOMFile = struct {
     pub const Super = DOMBlob;
-    pub const name = "DOMFile";
+    pub const class = objc.class("DOMFile");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -954,9 +954,9 @@ pub const DOMFile = struct {
 
 pub const DOMFileList = struct {
     pub const Super = DOMObject;
-    pub const name = "DOMFileList";
+    pub const class = objc.class("DOMFileList");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -967,9 +967,9 @@ pub const DOMFileList = struct {
 
 pub const DOMHTMLAnchorElement = struct {
     pub const Super = DOMHTMLElement;
-    pub const name = "DOMHTMLAnchorElement";
+    pub const class = objc.class("DOMHTMLAnchorElement");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1007,9 +1007,9 @@ pub const DOMHTMLAnchorElement = struct {
 
 pub const DOMHTMLAppletElement = struct {
     pub const Super = DOMHTMLElement;
-    pub const name = "DOMHTMLAppletElement";
+    pub const class = objc.class("DOMHTMLAppletElement");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1040,9 +1040,9 @@ pub const DOMHTMLAppletElement = struct {
 
 pub const DOMHTMLAreaElement = struct {
     pub const Super = DOMHTMLElement;
-    pub const name = "DOMHTMLAreaElement";
+    pub const class = objc.class("DOMHTMLAreaElement");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1071,9 +1071,9 @@ pub const DOMHTMLAreaElement = struct {
 
 pub const DOMHTMLBRElement = struct {
     pub const Super = DOMHTMLElement;
-    pub const name = "DOMHTMLBRElement";
+    pub const class = objc.class("DOMHTMLBRElement");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1084,9 +1084,9 @@ pub const DOMHTMLBRElement = struct {
 
 pub const DOMHTMLBaseElement = struct {
     pub const Super = DOMHTMLElement;
-    pub const name = "DOMHTMLBaseElement";
+    pub const class = objc.class("DOMHTMLBaseElement");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1099,9 +1099,9 @@ pub const DOMHTMLBaseElement = struct {
 
 pub const DOMHTMLBaseFontElement = struct {
     pub const Super = DOMHTMLElement;
-    pub const name = "DOMHTMLBaseFontElement";
+    pub const class = objc.class("DOMHTMLBaseFontElement");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1116,9 +1116,9 @@ pub const DOMHTMLBaseFontElement = struct {
 
 pub const DOMHTMLBodyElement = struct {
     pub const Super = DOMHTMLElement;
-    pub const name = "DOMHTMLBodyElement";
+    pub const class = objc.class("DOMHTMLBodyElement");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1139,9 +1139,9 @@ pub const DOMHTMLBodyElement = struct {
 
 pub const DOMHTMLButtonElement = struct {
     pub const Super = DOMHTMLElement;
-    pub const name = "DOMHTMLButtonElement";
+    pub const class = objc.class("DOMHTMLButtonElement");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1163,9 +1163,9 @@ pub const DOMHTMLButtonElement = struct {
 
 pub const DOMHTMLCollection = struct {
     pub const Super = DOMObject;
-    pub const name = "DOMHTMLCollection";
+    pub const class = objc.class("DOMHTMLCollection");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1178,9 +1178,9 @@ pub const DOMHTMLCollection = struct {
 
 pub const DOMHTMLDListElement = struct {
     pub const Super = DOMHTMLElement;
-    pub const name = "DOMHTMLDListElement";
+    pub const class = objc.class("DOMHTMLDListElement");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1191,9 +1191,9 @@ pub const DOMHTMLDListElement = struct {
 
 pub const DOMHTMLDirectoryElement = struct {
     pub const Super = DOMHTMLElement;
-    pub const name = "DOMHTMLDirectoryElement";
+    pub const class = objc.class("DOMHTMLDirectoryElement");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1204,9 +1204,9 @@ pub const DOMHTMLDirectoryElement = struct {
 
 pub const DOMHTMLDivElement = struct {
     pub const Super = DOMHTMLElement;
-    pub const name = "DOMHTMLDivElement";
+    pub const class = objc.class("DOMHTMLDivElement");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1217,9 +1217,9 @@ pub const DOMHTMLDivElement = struct {
 
 pub const DOMHTMLDocument = struct {
     pub const Super = DOMDocument;
-    pub const name = "DOMHTMLDocument";
+    pub const class = objc.class("DOMHTMLDocument");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1257,9 +1257,9 @@ pub const DOMHTMLDocument = struct {
 
 pub const DOMHTMLElement = struct {
     pub const Super = DOMElement;
-    pub const name = "DOMHTMLElement";
+    pub const class = objc.class("DOMHTMLElement");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1290,9 +1290,9 @@ pub const DOMHTMLElement = struct {
 
 pub const DOMHTMLEmbedElement = struct {
     pub const Super = DOMHTMLElement;
-    pub const name = "DOMHTMLEmbedElement";
+    pub const class = objc.class("DOMHTMLEmbedElement");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1313,9 +1313,9 @@ pub const DOMHTMLEmbedElement = struct {
 
 pub const DOMHTMLFieldSetElement = struct {
     pub const Super = DOMHTMLElement;
-    pub const name = "DOMHTMLFieldSetElement";
+    pub const class = objc.class("DOMHTMLFieldSetElement");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1325,9 +1325,9 @@ pub const DOMHTMLFieldSetElement = struct {
 
 pub const DOMHTMLFontElement = struct {
     pub const Super = DOMHTMLElement;
-    pub const name = "DOMHTMLFontElement";
+    pub const class = objc.class("DOMHTMLFontElement");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1342,9 +1342,9 @@ pub const DOMHTMLFontElement = struct {
 
 pub const DOMHTMLFormElement = struct {
     pub const Super = DOMHTMLElement;
-    pub const name = "DOMHTMLFormElement";
+    pub const class = objc.class("DOMHTMLFormElement");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1371,9 +1371,9 @@ pub const DOMHTMLFormElement = struct {
 
 pub const DOMHTMLFrameElement = struct {
     pub const Super = DOMHTMLElement;
-    pub const name = "DOMHTMLFrameElement";
+    pub const class = objc.class("DOMHTMLFrameElement");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1405,9 +1405,9 @@ pub const DOMHTMLFrameElement = struct {
 
 pub const DOMHTMLFrameSetElement = struct {
     pub const Super = DOMHTMLElement;
-    pub const name = "DOMHTMLFrameSetElement";
+    pub const class = objc.class("DOMHTMLFrameSetElement");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1420,9 +1420,9 @@ pub const DOMHTMLFrameSetElement = struct {
 
 pub const DOMHTMLHRElement = struct {
     pub const Super = DOMHTMLElement;
-    pub const name = "DOMHTMLHRElement";
+    pub const class = objc.class("DOMHTMLHRElement");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1439,9 +1439,9 @@ pub const DOMHTMLHRElement = struct {
 
 pub const DOMHTMLHeadElement = struct {
     pub const Super = DOMHTMLElement;
-    pub const name = "DOMHTMLHeadElement";
+    pub const class = objc.class("DOMHTMLHeadElement");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1452,9 +1452,9 @@ pub const DOMHTMLHeadElement = struct {
 
 pub const DOMHTMLHeadingElement = struct {
     pub const Super = DOMHTMLElement;
-    pub const name = "DOMHTMLHeadingElement";
+    pub const class = objc.class("DOMHTMLHeadingElement");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1465,9 +1465,9 @@ pub const DOMHTMLHeadingElement = struct {
 
 pub const DOMHTMLHtmlElement = struct {
     pub const Super = DOMHTMLElement;
-    pub const name = "DOMHTMLHtmlElement";
+    pub const class = objc.class("DOMHTMLHtmlElement");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1478,9 +1478,9 @@ pub const DOMHTMLHtmlElement = struct {
 
 pub const DOMHTMLIFrameElement = struct {
     pub const Super = DOMHTMLElement;
-    pub const name = "DOMHTMLIFrameElement";
+    pub const class = objc.class("DOMHTMLIFrameElement");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1512,9 +1512,9 @@ pub const DOMHTMLIFrameElement = struct {
 
 pub const DOMHTMLImageElement = struct {
     pub const Super = DOMHTMLElement;
-    pub const name = "DOMHTMLImageElement";
+    pub const class = objc.class("DOMHTMLImageElement");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1556,9 +1556,9 @@ pub const DOMHTMLImageElement = struct {
 
 pub const DOMHTMLInputElement = struct {
     pub const Super = DOMHTMLElement;
-    pub const name = "DOMHTMLInputElement";
+    pub const class = objc.class("DOMHTMLInputElement");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1616,9 +1616,9 @@ pub const DOMHTMLInputElement = struct {
 
 pub const DOMHTMLLIElement = struct {
     pub const Super = DOMHTMLElement;
-    pub const name = "DOMHTMLLIElement";
+    pub const class = objc.class("DOMHTMLLIElement");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1631,9 +1631,9 @@ pub const DOMHTMLLIElement = struct {
 
 pub const DOMHTMLLabelElement = struct {
     pub const Super = DOMHTMLElement;
-    pub const name = "DOMHTMLLabelElement";
+    pub const class = objc.class("DOMHTMLLabelElement");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1645,9 +1645,9 @@ pub const DOMHTMLLabelElement = struct {
 
 pub const DOMHTMLLegendElement = struct {
     pub const Super = DOMHTMLElement;
-    pub const name = "DOMHTMLLegendElement";
+    pub const class = objc.class("DOMHTMLLegendElement");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1659,9 +1659,9 @@ pub const DOMHTMLLegendElement = struct {
 
 pub const DOMHTMLLinkElement = struct {
     pub const Super = DOMHTMLElement;
-    pub const name = "DOMHTMLLinkElement";
+    pub const class = objc.class("DOMHTMLLinkElement");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1690,9 +1690,9 @@ pub const DOMHTMLLinkElement = struct {
 
 pub const DOMHTMLMapElement = struct {
     pub const Super = DOMHTMLElement;
-    pub const name = "DOMHTMLMapElement";
+    pub const class = objc.class("DOMHTMLMapElement");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1704,9 +1704,9 @@ pub const DOMHTMLMapElement = struct {
 
 pub const DOMHTMLMarqueeElement = struct {
     pub const Super = DOMHTMLElement;
-    pub const name = "DOMHTMLMarqueeElement";
+    pub const class = objc.class("DOMHTMLMarqueeElement");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1717,9 +1717,9 @@ pub const DOMHTMLMarqueeElement = struct {
 
 pub const DOMHTMLMenuElement = struct {
     pub const Super = DOMHTMLElement;
-    pub const name = "DOMHTMLMenuElement";
+    pub const class = objc.class("DOMHTMLMenuElement");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1730,9 +1730,9 @@ pub const DOMHTMLMenuElement = struct {
 
 pub const DOMHTMLMetaElement = struct {
     pub const Super = DOMHTMLElement;
-    pub const name = "DOMHTMLMetaElement";
+    pub const class = objc.class("DOMHTMLMetaElement");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1749,9 +1749,9 @@ pub const DOMHTMLMetaElement = struct {
 
 pub const DOMHTMLModElement = struct {
     pub const Super = DOMHTMLElement;
-    pub const name = "DOMHTMLModElement";
+    pub const class = objc.class("DOMHTMLModElement");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1764,9 +1764,9 @@ pub const DOMHTMLModElement = struct {
 
 pub const DOMHTMLOListElement = struct {
     pub const Super = DOMHTMLElement;
-    pub const name = "DOMHTMLOListElement";
+    pub const class = objc.class("DOMHTMLOListElement");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1781,9 +1781,9 @@ pub const DOMHTMLOListElement = struct {
 
 pub const DOMHTMLObjectElement = struct {
     pub const Super = DOMHTMLElement;
-    pub const name = "DOMHTMLObjectElement";
+    pub const class = objc.class("DOMHTMLObjectElement");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1828,9 +1828,9 @@ pub const DOMHTMLObjectElement = struct {
 
 pub const DOMHTMLOptGroupElement = struct {
     pub const Super = DOMHTMLElement;
-    pub const name = "DOMHTMLOptGroupElement";
+    pub const class = objc.class("DOMHTMLOptGroupElement");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1843,9 +1843,9 @@ pub const DOMHTMLOptGroupElement = struct {
 
 pub const DOMHTMLOptionElement = struct {
     pub const Super = DOMHTMLElement;
-    pub const name = "DOMHTMLOptionElement";
+    pub const class = objc.class("DOMHTMLOptionElement");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1867,9 +1867,9 @@ pub const DOMHTMLOptionElement = struct {
 
 pub const DOMHTMLOptionsCollection = struct {
     pub const Super = DOMObject;
-    pub const name = "DOMHTMLOptionsCollection";
+    pub const class = objc.class("DOMHTMLOptionsCollection");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1886,9 +1886,9 @@ pub const DOMHTMLOptionsCollection = struct {
 
 pub const DOMHTMLParagraphElement = struct {
     pub const Super = DOMHTMLElement;
-    pub const name = "DOMHTMLParagraphElement";
+    pub const class = objc.class("DOMHTMLParagraphElement");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1899,9 +1899,9 @@ pub const DOMHTMLParagraphElement = struct {
 
 pub const DOMHTMLParamElement = struct {
     pub const Super = DOMHTMLElement;
-    pub const name = "DOMHTMLParamElement";
+    pub const class = objc.class("DOMHTMLParamElement");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1918,9 +1918,9 @@ pub const DOMHTMLParamElement = struct {
 
 pub const DOMHTMLPreElement = struct {
     pub const Super = DOMHTMLElement;
-    pub const name = "DOMHTMLPreElement";
+    pub const class = objc.class("DOMHTMLPreElement");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1933,9 +1933,9 @@ pub const DOMHTMLPreElement = struct {
 
 pub const DOMHTMLQuoteElement = struct {
     pub const Super = DOMHTMLElement;
-    pub const name = "DOMHTMLQuoteElement";
+    pub const class = objc.class("DOMHTMLQuoteElement");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1946,9 +1946,9 @@ pub const DOMHTMLQuoteElement = struct {
 
 pub const DOMHTMLScriptElement = struct {
     pub const Super = DOMHTMLElement;
-    pub const name = "DOMHTMLScriptElement";
+    pub const class = objc.class("DOMHTMLScriptElement");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1971,9 +1971,9 @@ pub const DOMHTMLScriptElement = struct {
 
 pub const DOMHTMLSelectElement = struct {
     pub const Super = DOMHTMLElement;
-    pub const name = "DOMHTMLSelectElement";
+    pub const class = objc.class("DOMHTMLSelectElement");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2005,9 +2005,9 @@ pub const DOMHTMLSelectElement = struct {
 
 pub const DOMHTMLStyleElement = struct {
     pub const Super = DOMHTMLElement;
-    pub const name = "DOMHTMLStyleElement";
+    pub const class = objc.class("DOMHTMLStyleElement");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2023,9 +2023,9 @@ pub const DOMHTMLStyleElement = struct {
 
 pub const DOMHTMLTableCaptionElement = struct {
     pub const Super = DOMHTMLElement;
-    pub const name = "DOMHTMLTableCaptionElement";
+    pub const class = objc.class("DOMHTMLTableCaptionElement");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2036,9 +2036,9 @@ pub const DOMHTMLTableCaptionElement = struct {
 
 pub const DOMHTMLTableCellElement = struct {
     pub const Super = DOMHTMLElement;
-    pub const name = "DOMHTMLTableCellElement";
+    pub const class = objc.class("DOMHTMLTableCellElement");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2076,9 +2076,9 @@ pub const DOMHTMLTableCellElement = struct {
 
 pub const DOMHTMLTableColElement = struct {
     pub const Super = DOMHTMLElement;
-    pub const name = "DOMHTMLTableColElement";
+    pub const class = objc.class("DOMHTMLTableColElement");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2099,9 +2099,9 @@ pub const DOMHTMLTableColElement = struct {
 
 pub const DOMHTMLTableElement = struct {
     pub const Super = DOMHTMLElement;
-    pub const name = "DOMHTMLTableElement";
+    pub const class = objc.class("DOMHTMLTableElement");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2144,9 +2144,9 @@ pub const DOMHTMLTableElement = struct {
 
 pub const DOMHTMLTableRowElement = struct {
     pub const Super = DOMHTMLElement;
-    pub const name = "DOMHTMLTableRowElement";
+    pub const class = objc.class("DOMHTMLTableRowElement");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2170,9 +2170,9 @@ pub const DOMHTMLTableRowElement = struct {
 
 pub const DOMHTMLTableSectionElement = struct {
     pub const Super = DOMHTMLElement;
-    pub const name = "DOMHTMLTableSectionElement";
+    pub const class = objc.class("DOMHTMLTableSectionElement");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2192,9 +2192,9 @@ pub const DOMHTMLTableSectionElement = struct {
 
 pub const DOMHTMLTextAreaElement = struct {
     pub const Super = DOMHTMLElement;
-    pub const name = "DOMHTMLTextAreaElement";
+    pub const class = objc.class("DOMHTMLTextAreaElement");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2228,9 +2228,9 @@ pub const DOMHTMLTextAreaElement = struct {
 
 pub const DOMHTMLTitleElement = struct {
     pub const Super = DOMHTMLElement;
-    pub const name = "DOMHTMLTitleElement";
+    pub const class = objc.class("DOMHTMLTitleElement");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2241,9 +2241,9 @@ pub const DOMHTMLTitleElement = struct {
 
 pub const DOMHTMLUListElement = struct {
     pub const Super = DOMHTMLElement;
-    pub const name = "DOMHTMLUListElement";
+    pub const class = objc.class("DOMHTMLUListElement");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2256,9 +2256,9 @@ pub const DOMHTMLUListElement = struct {
 
 pub const DOMImplementation = struct {
     pub const Super = DOMObject;
-    pub const name = "DOMImplementation";
+    pub const class = objc.class("DOMImplementation");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2272,9 +2272,9 @@ pub const DOMImplementation = struct {
 
 pub const DOMKeyboardEvent = struct {
     pub const Super = DOMUIEvent;
-    pub const name = "DOMKeyboardEvent";
+    pub const class = objc.class("DOMKeyboardEvent");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2295,9 +2295,9 @@ pub const DOMKeyboardEvent = struct {
 
 pub const DOMMediaList = struct {
     pub const Super = DOMObject;
-    pub const name = "DOMMediaList";
+    pub const class = objc.class("DOMMediaList");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2312,9 +2312,9 @@ pub const DOMMediaList = struct {
 
 pub const DOMMouseEvent = struct {
     pub const Super = DOMUIEvent;
-    pub const name = "DOMMouseEvent";
+    pub const class = objc.class("DOMMouseEvent");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2342,9 +2342,9 @@ pub const DOMMouseEvent = struct {
 
 pub const DOMMutationEvent = struct {
     pub const Super = DOMEvent;
-    pub const name = "DOMMutationEvent";
+    pub const class = objc.class("DOMMutationEvent");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2359,9 +2359,9 @@ pub const DOMMutationEvent = struct {
 
 pub const DOMNamedNodeMap = struct {
     pub const Super = DOMObject;
-    pub const name = "DOMNamedNodeMap";
+    pub const class = objc.class("DOMNamedNodeMap");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2378,9 +2378,9 @@ pub const DOMNamedNodeMap = struct {
 
 pub const DOMNode = struct {
     pub const Super = DOMObject;
-    pub const name = "DOMNode";
+    pub const class = objc.class("DOMNode");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2429,9 +2429,9 @@ pub const DOMNode = struct {
 
 pub const DOMNodeIterator = struct {
     pub const Super = DOMObject;
-    pub const name = "DOMNodeIterator";
+    pub const class = objc.class("DOMNodeIterator");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2449,9 +2449,9 @@ pub const DOMNodeIterator = struct {
 
 pub const DOMNodeList = struct {
     pub const Super = DOMObject;
-    pub const name = "DOMNodeList";
+    pub const class = objc.class("DOMNodeList");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2462,9 +2462,9 @@ pub const DOMNodeList = struct {
 
 pub const DOMObject = struct {
     pub const Super = WebScriptObject;
-    pub const name = "DOMObject";
+    pub const class = objc.class("DOMObject");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2474,9 +2474,9 @@ pub const DOMObject = struct {
 
 pub const DOMOverflowEvent = struct {
     pub const Super = DOMEvent;
-    pub const name = "DOMOverflowEvent";
+    pub const class = objc.class("DOMOverflowEvent");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2489,9 +2489,9 @@ pub const DOMOverflowEvent = struct {
 
 pub const DOMProcessingInstruction = struct {
     pub const Super = DOMCharacterData;
-    pub const name = "DOMProcessingInstruction";
+    pub const class = objc.class("DOMProcessingInstruction");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2502,9 +2502,9 @@ pub const DOMProcessingInstruction = struct {
 
 pub const DOMProgressEvent = struct {
     pub const Super = DOMEvent;
-    pub const name = "DOMProgressEvent";
+    pub const class = objc.class("DOMProgressEvent");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2516,9 +2516,9 @@ pub const DOMProgressEvent = struct {
 
 pub const DOMRGBColor = struct {
     pub const Super = DOMObject;
-    pub const name = "DOMRGBColor";
+    pub const class = objc.class("DOMRGBColor");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2532,9 +2532,9 @@ pub const DOMRGBColor = struct {
 
 pub const DOMRange = struct {
     pub const Super = DOMObject;
-    pub const name = "DOMRange";
+    pub const class = objc.class("DOMRange");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2577,9 +2577,9 @@ pub const DOMRange = struct {
 
 pub const DOMRect = struct {
     pub const Super = DOMObject;
-    pub const name = "DOMRect";
+    pub const class = objc.class("DOMRect");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2592,9 +2592,9 @@ pub const DOMRect = struct {
 
 pub const DOMStyleSheet = struct {
     pub const Super = DOMObject;
-    pub const name = "DOMStyleSheet";
+    pub const class = objc.class("DOMStyleSheet");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2611,9 +2611,9 @@ pub const DOMStyleSheet = struct {
 
 pub const DOMStyleSheetList = struct {
     pub const Super = DOMObject;
-    pub const name = "DOMStyleSheetList";
+    pub const class = objc.class("DOMStyleSheetList");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2624,9 +2624,9 @@ pub const DOMStyleSheetList = struct {
 
 pub const DOMText = struct {
     pub const Super = DOMCharacterData;
-    pub const name = "DOMText";
+    pub const class = objc.class("DOMText");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2638,9 +2638,9 @@ pub const DOMText = struct {
 
 pub const DOMTreeWalker = struct {
     pub const Super = DOMObject;
-    pub const name = "DOMTreeWalker";
+    pub const class = objc.class("DOMTreeWalker");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2662,9 +2662,9 @@ pub const DOMTreeWalker = struct {
 
 pub const DOMUIEvent = struct {
     pub const Super = DOMEvent;
-    pub const name = "DOMUIEvent";
+    pub const class = objc.class("DOMUIEvent");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2681,9 +2681,9 @@ pub const DOMUIEvent = struct {
 
 pub const DOMWheelEvent = struct {
     pub const Super = DOMMouseEvent;
-    pub const name = "DOMWheelEvent";
+    pub const class = objc.class("DOMWheelEvent");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2697,9 +2697,9 @@ pub const DOMWheelEvent = struct {
 
 pub const DOMXPathExpression = struct {
     pub const Super = DOMObject;
-    pub const name = "DOMXPathExpression";
+    pub const class = objc.class("DOMXPathExpression");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2709,9 +2709,9 @@ pub const DOMXPathExpression = struct {
 
 pub const DOMXPathResult = struct {
     pub const Super = DOMObject;
-    pub const name = "DOMXPathResult";
+    pub const class = objc.class("DOMXPathResult");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2728,9 +2728,9 @@ pub const DOMXPathResult = struct {
 };
 
 pub const WKBackForwardList = struct {
-    pub const name = "WKBackForwardList";
+    pub const class = objc.class("WKBackForwardList");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2744,9 +2744,9 @@ pub const WKBackForwardList = struct {
 };
 
 pub const WKBackForwardListItem = struct {
-    pub const name = "WKBackForwardListItem";
+    pub const class = objc.class("WKBackForwardListItem");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2757,9 +2757,9 @@ pub const WKBackForwardListItem = struct {
 };
 
 pub const WKContentRuleList = struct {
-    pub const name = "WKContentRuleList";
+    pub const class = objc.class("WKContentRuleList");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2768,9 +2768,9 @@ pub const WKContentRuleList = struct {
 };
 
 pub const WKContentRuleListStore = struct {
-    pub const name = "WKContentRuleListStore";
+    pub const class = objc.class("WKContentRuleListStore");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2787,9 +2787,9 @@ pub const WKContentRuleListStore = struct {
 };
 
 pub const WKContentWorld = struct {
-    pub const name = "WKContentWorld";
+    pub const class = objc.class("WKContentWorld");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2804,9 +2804,9 @@ pub const WKContentWorld = struct {
 };
 
 pub const WKDownload = struct {
-    pub const name = "WKDownload";
+    pub const class = objc.class("WKDownload");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2830,9 +2830,9 @@ pub const WKDownload = struct {
 };
 
 pub const WKFindConfiguration = struct {
-    pub const name = "WKFindConfiguration";
+    pub const class = objc.class("WKFindConfiguration");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2846,9 +2846,9 @@ pub const WKFindConfiguration = struct {
 };
 
 pub const WKFindResult = struct {
-    pub const name = "WKFindResult";
+    pub const class = objc.class("WKFindResult");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2857,9 +2857,9 @@ pub const WKFindResult = struct {
 };
 
 pub const WKFrameInfo = struct {
-    pub const name = "WKFrameInfo";
+    pub const class = objc.class("WKFrameInfo");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2871,9 +2871,9 @@ pub const WKFrameInfo = struct {
 };
 
 pub const WKHTTPCookieStore = struct {
-    pub const name = "WKHTTPCookieStore";
+    pub const class = objc.class("WKHTTPCookieStore");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2894,9 +2894,9 @@ pub const WKHTTPCookieStore = struct {
 };
 
 pub const WKNavigation = struct {
-    pub const name = "WKNavigation";
+    pub const class = objc.class("WKNavigation");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2905,9 +2905,9 @@ pub const WKNavigation = struct {
 };
 
 pub const WKNavigationAction = struct {
-    pub const name = "WKNavigationAction";
+    pub const class = objc.class("WKNavigationAction");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2923,9 +2923,9 @@ pub const WKNavigationAction = struct {
 };
 
 pub const WKNavigationResponse = struct {
-    pub const name = "WKNavigationResponse";
+    pub const class = objc.class("WKNavigationResponse");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2936,9 +2936,9 @@ pub const WKNavigationResponse = struct {
 };
 
 pub const WKOpenPanelParameters = struct {
-    pub const name = "WKOpenPanelParameters";
+    pub const class = objc.class("WKOpenPanelParameters");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2948,9 +2948,9 @@ pub const WKOpenPanelParameters = struct {
 };
 
 pub const WKPDFConfiguration = struct {
-    pub const name = "WKPDFConfiguration";
+    pub const class = objc.class("WKPDFConfiguration");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2960,9 +2960,9 @@ pub const WKPDFConfiguration = struct {
 };
 
 pub const WKPreferences = struct {
-    pub const name = "WKPreferences";
+    pub const class = objc.class("WKPreferences");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3000,9 +3000,9 @@ pub const WKPreferences = struct {
 };
 
 pub const WKScriptMessage = struct {
-    pub const name = "WKScriptMessage";
+    pub const class = objc.class("WKScriptMessage");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3015,9 +3015,9 @@ pub const WKScriptMessage = struct {
 };
 
 pub const WKSecurityOrigin = struct {
-    pub const name = "WKSecurityOrigin";
+    pub const class = objc.class("WKSecurityOrigin");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3028,9 +3028,9 @@ pub const WKSecurityOrigin = struct {
 };
 
 pub const WKSnapshotConfiguration = struct {
-    pub const name = "WKSnapshotConfiguration";
+    pub const class = objc.class("WKSnapshotConfiguration");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3044,9 +3044,9 @@ pub const WKSnapshotConfiguration = struct {
 };
 
 pub const WKUserContentController = struct {
-    pub const name = "WKUserContentController";
+    pub const class = objc.class("WKUserContentController");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3067,9 +3067,9 @@ pub const WKUserContentController = struct {
 };
 
 pub const WKUserScript = struct {
-    pub const name = "WKUserScript";
+    pub const class = objc.class("WKUserScript");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3082,9 +3082,9 @@ pub const WKUserScript = struct {
 };
 
 pub const WKWebExtension = struct {
-    pub const name = "WKWebExtension";
+    pub const class = objc.class("WKWebExtension");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3128,9 +3128,9 @@ pub const WKWebExtension = struct {
 };
 
 pub const WKWebExtensionAction = struct {
-    pub const name = "WKWebExtensionAction";
+    pub const class = objc.class("WKWebExtensionAction");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3153,9 +3153,9 @@ pub const WKWebExtensionAction = struct {
 };
 
 pub const WKWebExtensionCommand = struct {
-    pub const name = "WKWebExtensionCommand";
+    pub const class = objc.class("WKWebExtensionCommand");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3171,9 +3171,9 @@ pub const WKWebExtensionCommand = struct {
 };
 
 pub const WKWebExtensionContext = struct {
-    pub const name = "WKWebExtensionContext";
+    pub const class = objc.class("WKWebExtensionContext");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3266,9 +3266,9 @@ pub const WKWebExtensionContext = struct {
 };
 
 pub const WKWebExtensionController = struct {
-    pub const name = "WKWebExtensionController";
+    pub const class = objc.class("WKWebExtensionController");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3301,9 +3301,9 @@ pub const WKWebExtensionController = struct {
 };
 
 pub const WKWebExtensionControllerConfiguration = struct {
-    pub const name = "WKWebExtensionControllerConfiguration";
+    pub const class = objc.class("WKWebExtensionControllerConfiguration");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3323,9 +3323,9 @@ pub const WKWebExtensionControllerConfiguration = struct {
 };
 
 pub const WKWebExtensionDataRecord = struct {
-    pub const name = "WKWebExtensionDataRecord";
+    pub const class = objc.class("WKWebExtensionDataRecord");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3339,9 +3339,9 @@ pub const WKWebExtensionDataRecord = struct {
 };
 
 pub const WKWebExtensionMatchPattern = struct {
-    pub const name = "WKWebExtensionMatchPattern";
+    pub const class = objc.class("WKWebExtensionMatchPattern");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3367,9 +3367,9 @@ pub const WKWebExtensionMatchPattern = struct {
 };
 
 pub const WKWebExtensionMessagePort = struct {
-    pub const name = "WKWebExtensionMessagePort";
+    pub const class = objc.class("WKWebExtensionMessagePort");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3386,9 +3386,9 @@ pub const WKWebExtensionMessagePort = struct {
 };
 
 pub const WKWebExtensionTabConfiguration = struct {
-    pub const name = "WKWebExtensionTabConfiguration";
+    pub const class = objc.class("WKWebExtensionTabConfiguration");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3405,9 +3405,9 @@ pub const WKWebExtensionTabConfiguration = struct {
 };
 
 pub const WKWebExtensionWindowConfiguration = struct {
-    pub const name = "WKWebExtensionWindowConfiguration";
+    pub const class = objc.class("WKWebExtensionWindowConfiguration");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3423,9 +3423,9 @@ pub const WKWebExtensionWindowConfiguration = struct {
 
 pub const WKWebView = struct {
     pub const Super = AppKit.NSView;
-    pub const name = "WKWebView";
+    pub const class = objc.class("WKWebView");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3529,9 +3529,9 @@ pub const WKWebView = struct {
 };
 
 pub const WKWebViewConfiguration = struct {
-    pub const name = "WKWebViewConfiguration";
+    pub const class = objc.class("WKWebViewConfiguration");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3573,9 +3573,9 @@ pub const WKWebViewConfiguration = struct {
 };
 
 pub const WKWebpagePreferences = struct {
-    pub const name = "WKWebpagePreferences";
+    pub const class = objc.class("WKWebpagePreferences");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3603,9 +3603,9 @@ pub const WKWebpagePreferences = struct {
 };
 
 pub const WKWebsiteDataRecord = struct {
-    pub const name = "WKWebsiteDataRecord";
+    pub const class = objc.class("WKWebsiteDataRecord");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3615,9 +3615,9 @@ pub const WKWebsiteDataRecord = struct {
 };
 
 pub const WKWebsiteDataStore = struct {
-    pub const name = "WKWebsiteDataStore";
+    pub const class = objc.class("WKWebsiteDataStore");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3642,9 +3642,9 @@ pub const WKWebsiteDataStore = struct {
 };
 
 pub const WKWindowFeatures = struct {
-    pub const name = "WKWindowFeatures";
+    pub const class = objc.class("WKWindowFeatures");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3660,9 +3660,9 @@ pub const WKWindowFeatures = struct {
 };
 
 pub const WebArchive = struct {
-    pub const name = "WebArchive";
+    pub const class = objc.class("WebArchive");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3676,9 +3676,9 @@ pub const WebArchive = struct {
 };
 
 pub const WebBackForwardList = struct {
-    pub const name = "WebBackForwardList";
+    pub const class = objc.class("WebBackForwardList");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3703,9 +3703,9 @@ pub const WebBackForwardList = struct {
 };
 
 pub const WebDataSource = struct {
-    pub const name = "WebDataSource";
+    pub const class = objc.class("WebDataSource");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3729,9 +3729,9 @@ pub const WebDataSource = struct {
 };
 
 pub const WebFrame = struct {
-    pub const name = "WebFrame";
+    pub const class = objc.class("WebFrame");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3762,9 +3762,9 @@ pub const WebFrame = struct {
 
 pub const WebFrameView = struct {
     pub const Super = AppKit.NSView;
-    pub const name = "WebFrameView";
+    pub const class = objc.class("WebFrameView");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3780,9 +3780,9 @@ pub const WebFrameView = struct {
 };
 
 pub const WebHistory = struct {
-    pub const name = "WebHistory";
+    pub const class = objc.class("WebHistory");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3807,9 +3807,9 @@ pub const WebHistory = struct {
 };
 
 pub const WebHistoryItem = struct {
-    pub const name = "WebHistoryItem";
+    pub const class = objc.class("WebHistoryItem");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3825,9 +3825,9 @@ pub const WebHistoryItem = struct {
 };
 
 pub const WebPreferences = struct {
-    pub const name = "WebPreferences";
+    pub const class = objc.class("WebPreferences");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3897,9 +3897,9 @@ pub const WebPreferences = struct {
 };
 
 pub const WebResource = struct {
-    pub const name = "WebResource";
+    pub const class = objc.class("WebResource");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3913,9 +3913,9 @@ pub const WebResource = struct {
 };
 
 pub const WebScriptObject = struct {
-    pub const name = "WebScriptObject";
+    pub const class = objc.class("WebScriptObject");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3937,9 +3937,9 @@ pub const WebScriptObject = struct {
 
 pub const WebView = struct {
     pub const Super = AppKit.NSView;
-    pub const name = "WebView";
+    pub const class = objc.class("WebView");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -4095,12 +4095,12 @@ pub fn viewObj(val: anytype) Object {
 }
 
 pub fn init(comptime class_name: [*:0]const u8) Object {
-    return objc.send(Object, objc.class(Object, class_name, "alloc", .{}), "init", .{});
+    return objc.send(objc.send(objc.getClass(class_name).?, "alloc", Object, .{}), "init", Object, .{});
 }
 
 pub fn nsArray(items: []const Object) Object {
-    const arr = objc.class(Object, "NSMutableArray", "arrayWithCapacity:", .{@as(c_ulong, items.len)});
-    for (items) |item| objc.send(void, arr, "addObject:", .{item});
+    const arr = objc.send(objc.class("NSMutableArray"), "arrayWithCapacity:", Object, .{@as(c_ulong, items.len)});
+    for (items) |item| objc.send(arr, "addObject:", void, .{item});
     return arr;
 }
 

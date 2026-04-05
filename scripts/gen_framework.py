@@ -920,12 +920,12 @@ def generate_zig(module_name, classes, all_results, enum_map, proto_type_map):
     out.append("}")
     out.append("")
     out.append('pub fn init(comptime class_name: [*:0]const u8) Object {')
-    out.append('    return objc.send(Object, objc.class(Object, class_name, "alloc", .{}), "init", .{});')
+    out.append('    return objc.send(objc.send(objc.getClass(class_name).?, "alloc", Object, .{}), "init", Object, .{});')
     out.append("}")
     out.append("")
     out.append("pub fn nsArray(items: []const Object) Object {")
-    out.append('    const arr = objc.class(Object, "NSMutableArray", "arrayWithCapacity:", .{@as(c_ulong, items.len)});')
-    out.append('    for (items) |item| objc.send(void, arr, "addObject:", .{item});')
+    out.append('    const arr = objc.send(objc.class("NSMutableArray"), "arrayWithCapacity:", Object, .{@as(c_ulong, items.len)});')
+    out.append('    for (items) |item| objc.send(arr, "addObject:", void, .{item});')
     out.append("    return arr;")
     out.append("}")
     out.append("")
@@ -1019,20 +1019,20 @@ def _gen_factories(objc_name, swift_name, inits, has_instance_methods=False):
 
         if not arg_types:
             lines.append(f'    pub fn create() {swift_name} {{')
-            lines.append(f'        return .{{ .id = objc.send(Object, objc.class(Object, "{objc_name}", "alloc", .{{}}), "init", .{{}}) }};')
+            lines.append(f'        return .{{ .id = objc.send(objc.send(objc.class("{objc_name}"), "alloc", Object, .{{}}), "init", Object, .{{}}) }};')
             lines.append(f'    }}')
         else:
             params = ", ".join(f"{safe_params[i]}: {arg_types[i]}" for i in range(len(arg_types)))
             args = ", ".join(safe_params)
             lines.append(f'    pub fn {fname}({params}) {swift_name} {{')
-            lines.append(f'        return .{{ .id = objc.send(Object, objc.class(Object, "{objc_name}", "alloc", .{{}}), "{selector}", .{{ {args} }}) }};')
+            lines.append(f'        return .{{ .id = objc.send(objc.send(objc.class("{objc_name}"), "alloc", Object, .{{}}), "{selector}", Object, .{{ {args} }}) }};')
             lines.append(f'    }}')
 
     # Every ObjC class inherits alloc+init from NSObject.
     # If no explicit no-arg init was found, generate a default create().
     if "create" not in seen_names and has_instance_methods:
         lines.append(f'    pub fn create() {swift_name} {{')
-        lines.append(f'        return .{{ .id = objc.send(Object, objc.class(Object, "{objc_name}", "alloc", .{{}}), "init", .{{}}) }};')
+        lines.append(f'        return .{{ .id = objc.send(objc.send(objc.class("{objc_name}"), "alloc", Object, .{{}}), "init", Object, .{{}}) }};')
         lines.append(f'    }}')
 
     return lines
@@ -1122,9 +1122,9 @@ def _gen_class(objc_name, cls, module_classes, all_results, module_name, class_e
 
         if has_super:
             lines.append(f"    pub const Super = {super_ref};")
-        lines.append(f'    pub const name = "{objc_name}";')
+        lines.append(f'    pub const class = objc.class("{objc_name}");')
         lines.append("    pub const send = objc.InstanceDispatch(@This()).invoke;")
-        lines.append("    pub const class = objc.ClassDispatch(@This()).invoke;")
+        lines.append("    pub const static = objc.StaticDispatch(@This()).invoke;")
         lines.append("    id: Object,")
         lines.append("")
         lines.append("    pub const methods = .{")
@@ -1188,8 +1188,8 @@ pub const CALayer = struct {
 
 # NSLayoutConstraint helpers — injected into the struct
 LAYOUT_HELPERS = (
-    '    pub fn make(item: Object, attr: Attribute, rel: Relation, to_item: ?Object, to_attr: Attribute, mult: f64, constant: f64) Object { return objc.class(Object, "NSLayoutConstraint", "constraintWithItem:attribute:relatedBy:toItem:attribute:multiplier:constant:", .{ item, @intFromEnum(attr), @intFromEnum(rel), @as(?*anyopaque, if (to_item) |t| @ptrCast(t) else null), @intFromEnum(to_attr), mult, constant }); }\n'
-    '    pub fn activate(constraints: []const Object) void { const arr = objc.class(Object, "NSMutableArray", "arrayWithCapacity:", .{@as(c_ulong, constraints.len)}); for (constraints) |c| objc.send(void, arr, "addObject:", .{c}); objc.send(void, objc.getClass("NSLayoutConstraint").?, "activateConstraints:", .{arr}); }\n'
+    '    pub fn make(item: Object, attr: Attribute, rel: Relation, to_item: ?Object, to_attr: Attribute, mult: f64, constant: f64) Object { return objc.send(objc.class("NSLayoutConstraint"), "constraintWithItem:attribute:relatedBy:toItem:attribute:multiplier:constant:", Object, .{ item, @intFromEnum(attr), @intFromEnum(rel), @as(?*anyopaque, if (to_item) |t| @ptrCast(t) else null), @intFromEnum(to_attr), mult, constant }); }\n'
+    '    pub fn activate(constraints: []const Object) void { const arr = objc.send(objc.class("NSMutableArray"), "arrayWithCapacity:", Object, .{@as(c_ulong, constraints.len)}); for (constraints) |c| objc.send(arr, "addObject:", void, .{c}); objc.send(objc.class("NSLayoutConstraint"), "activateConstraints:", void, .{arr}); }\n'
     '    pub fn pinWidthEqual(child: Object, parent: Object) void { activate(&.{make(child, .width, .equal, parent, .width, 1.0, 0.0)}); }\n'
     '    pub fn fill(parent: Object, child: Object, inset: f64) void { activate(&.{ make(child, .leading, .equal, parent, .leading, 1.0, inset), make(child, .trailing, .equal, parent, .trailing, 1.0, -inset), make(child, .top, .equal, parent, .top, 1.0, inset), make(child, .bottom, .equal, parent, .bottom, 1.0, -inset) }); }'
 )

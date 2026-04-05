@@ -540,9 +540,9 @@ pub const QLPreviewItem = *anyopaque;
 
 pub const NSATSTypesetter = struct {
     pub const Super = NSTypesetter;
-    pub const name = "NSATSTypesetter";
+    pub const class = objc.class("NSATSTypesetter");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -587,9 +587,9 @@ pub const NSATSTypesetter = struct {
 };
 
 pub const NSAccessibilityCustomAction = struct {
-    pub const name = "NSAccessibilityCustomAction";
+    pub const class = objc.class("NSAccessibilityCustomAction");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -607,9 +607,9 @@ pub const NSAccessibilityCustomAction = struct {
 };
 
 pub const NSAccessibilityCustomRotor = struct {
-    pub const name = "NSAccessibilityCustomRotor";
+    pub const class = objc.class("NSAccessibilityCustomRotor");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -656,9 +656,9 @@ pub const NSAccessibilityCustomRotor = struct {
 };
 
 pub const NSAccessibilityCustomRotorItemResult = struct {
-    pub const name = "NSAccessibilityCustomRotorItemResult";
+    pub const class = objc.class("NSAccessibilityCustomRotorItemResult");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -674,9 +674,9 @@ pub const NSAccessibilityCustomRotorItemResult = struct {
 };
 
 pub const NSAccessibilityCustomRotorSearchParameters = struct {
-    pub const name = "NSAccessibilityCustomRotorSearchParameters";
+    pub const class = objc.class("NSAccessibilityCustomRotorSearchParameters");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -690,9 +690,9 @@ pub const NSAccessibilityCustomRotorSearchParameters = struct {
 };
 
 pub const NSAccessibilityElement = struct {
-    pub const name = "NSAccessibilityElement";
+    pub const class = objc.class("NSAccessibilityElement");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -708,9 +708,9 @@ pub const NSAccessibilityElement = struct {
 
 pub const NSActionCell = struct {
     pub const Super = NSCell;
-    pub const name = "NSActionCell";
+    pub const class = objc.class("NSActionCell");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -724,9 +724,9 @@ pub const NSActionCell = struct {
 };
 
 pub const NSAdaptiveImageGlyph = struct {
-    pub const name = "NSAdaptiveImageGlyph";
+    pub const class = objc.class("NSAdaptiveImageGlyph");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -743,9 +743,9 @@ pub const NSAdaptiveImageGlyph = struct {
 };
 
 pub const NSAlert = struct {
-    pub const name = "NSAlert";
+    pub const class = objc.class("NSAlert");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -789,9 +789,9 @@ pub const NSAlert = struct {
 };
 
 pub const NSAlignmentFeedbackFilter = struct {
-    pub const name = "NSAlignmentFeedbackFilter";
+    pub const class = objc.class("NSAlignmentFeedbackFilter");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -809,9 +809,9 @@ pub const NSAlignmentFeedbackFilter = struct {
 };
 
 pub const NSAnimation = struct {
-    pub const name = "NSAnimation";
+    pub const class = objc.class("NSAnimation");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -858,9 +858,9 @@ pub const NSAnimation = struct {
 };
 
 pub const NSAnimationContext = struct {
-    pub const name = "NSAnimationContext";
+    pub const class = objc.class("NSAnimationContext");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -884,9 +884,9 @@ pub const NSAnimationContext = struct {
 };
 
 pub const NSAppearance = struct {
-    pub const name = "NSAppearance";
+    pub const class = objc.class("NSAppearance");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -908,9 +908,9 @@ pub const NSAppearance = struct {
 
 pub const NSApplication = struct {
     pub const Super = NSResponder;
-    pub const name = "NSApplication";
+    pub const class = objc.class("NSApplication");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1063,9 +1063,9 @@ pub const NSApplication = struct {
 
 pub const NSArrayController = struct {
     pub const Super = NSObjectController;
-    pub const name = "NSArrayController";
+    pub const class = objc.class("NSArrayController");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1121,9 +1121,9 @@ pub const NSArrayController = struct {
 
 pub const NSBackgroundExtensionView = struct {
     pub const Super = NSView;
-    pub const name = "NSBackgroundExtensionView";
+    pub const class = objc.class("NSBackgroundExtensionView");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1135,9 +1135,9 @@ pub const NSBackgroundExtensionView = struct {
 };
 
 pub const NSBezierPath = struct {
-    pub const name = "NSBezierPath";
+    pub const class = objc.class("NSBezierPath");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1257,9 +1257,9 @@ pub const NSBindingSelectionMarker = struct {
 
 pub const NSBitmapImageRep = struct {
     pub const Super = NSImageRep;
-    pub const name = "NSBitmapImageRep";
+    pub const class = objc.class("NSBitmapImageRep");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1338,9 +1338,9 @@ pub const NSBitmapImageRep = struct {
 
 pub const NSBox = struct {
     pub const Super = NSView;
-    pub const name = "NSBox";
+    pub const class = objc.class("NSBox");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1393,9 +1393,9 @@ pub const NSBox = struct {
 
 pub const NSBrowser = struct {
     pub const Super = NSControl;
-    pub const name = "NSBrowser";
+    pub const class = objc.class("NSBrowser");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1531,9 +1531,9 @@ pub const NSBrowser = struct {
 
 pub const NSBrowserCell = struct {
     pub const Super = NSCell;
-    pub const name = "NSBrowserCell";
+    pub const class = objc.class("NSBrowserCell");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1561,9 +1561,9 @@ pub const NSBrowserCell = struct {
 
 pub const NSButton = struct {
     pub const Super = NSControl;
-    pub const name = "NSButton";
+    pub const class = objc.class("NSButton");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1678,9 +1678,9 @@ pub const NSButton = struct {
 
 pub const NSButtonCell = struct {
     pub const Super = NSActionCell;
-    pub const name = "NSButtonCell";
+    pub const class = objc.class("NSButtonCell");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1741,9 +1741,9 @@ pub const NSButtonCell = struct {
 
 pub const NSButtonTouchBarItem = struct {
     pub const Super = NSTouchBarItem;
-    pub const name = "NSButtonTouchBarItem";
+    pub const class = objc.class("NSButtonTouchBarItem");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1772,9 +1772,9 @@ pub const NSButtonTouchBarItem = struct {
 
 pub const NSCIImageRep = struct {
     pub const Super = NSImageRep;
-    pub const name = "NSCIImageRep";
+    pub const class = objc.class("NSCIImageRep");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1785,9 +1785,9 @@ pub const NSCIImageRep = struct {
 
 pub const NSCandidateListTouchBarItem = struct {
     pub const Super = NSTouchBarItem;
-    pub const name = "NSCandidateListTouchBarItem";
+    pub const class = objc.class("NSCandidateListTouchBarItem");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1813,9 +1813,9 @@ pub const NSCandidateListTouchBarItem = struct {
 };
 
 pub const NSCell = struct {
-    pub const name = "NSCell";
+    pub const class = objc.class("NSCell");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -1996,9 +1996,9 @@ pub const NSCell = struct {
 
 pub const NSClickGestureRecognizer = struct {
     pub const Super = NSGestureRecognizer;
-    pub const name = "NSClickGestureRecognizer";
+    pub const class = objc.class("NSClickGestureRecognizer");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2013,9 +2013,9 @@ pub const NSClickGestureRecognizer = struct {
 
 pub const NSClipView = struct {
     pub const Super = NSView;
-    pub const name = "NSClipView";
+    pub const class = objc.class("NSClipView");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2045,9 +2045,9 @@ pub const NSClipView = struct {
 };
 
 pub const NSCollectionLayoutAnchor = struct {
-    pub const name = "NSCollectionLayoutAnchor";
+    pub const class = objc.class("NSCollectionLayoutAnchor");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2069,9 +2069,9 @@ pub const NSCollectionLayoutAnchor = struct {
 
 pub const NSCollectionLayoutBoundarySupplementaryItem = struct {
     pub const Super = NSCollectionLayoutSupplementaryItem;
-    pub const name = "NSCollectionLayoutBoundarySupplementaryItem";
+    pub const class = objc.class("NSCollectionLayoutBoundarySupplementaryItem");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2092,9 +2092,9 @@ pub const NSCollectionLayoutBoundarySupplementaryItem = struct {
 
 pub const NSCollectionLayoutDecorationItem = struct {
     pub const Super = NSCollectionLayoutItem;
-    pub const name = "NSCollectionLayoutDecorationItem";
+    pub const class = objc.class("NSCollectionLayoutDecorationItem");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2109,9 +2109,9 @@ pub const NSCollectionLayoutDecorationItem = struct {
 };
 
 pub const NSCollectionLayoutDimension = struct {
-    pub const name = "NSCollectionLayoutDimension";
+    pub const class = objc.class("NSCollectionLayoutDimension");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2131,9 +2131,9 @@ pub const NSCollectionLayoutDimension = struct {
 };
 
 pub const NSCollectionLayoutEdgeSpacing = struct {
-    pub const name = "NSCollectionLayoutEdgeSpacing";
+    pub const class = objc.class("NSCollectionLayoutEdgeSpacing");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2150,9 +2150,9 @@ pub const NSCollectionLayoutEdgeSpacing = struct {
 
 pub const NSCollectionLayoutGroup = struct {
     pub const Super = NSCollectionLayoutItem;
-    pub const name = "NSCollectionLayoutGroup";
+    pub const class = objc.class("NSCollectionLayoutGroup");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2174,9 +2174,9 @@ pub const NSCollectionLayoutGroup = struct {
 };
 
 pub const NSCollectionLayoutGroupCustomItem = struct {
-    pub const name = "NSCollectionLayoutGroupCustomItem";
+    pub const class = objc.class("NSCollectionLayoutGroupCustomItem");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2191,9 +2191,9 @@ pub const NSCollectionLayoutGroupCustomItem = struct {
 };
 
 pub const NSCollectionLayoutItem = struct {
-    pub const name = "NSCollectionLayoutItem";
+    pub const class = objc.class("NSCollectionLayoutItem");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2212,9 +2212,9 @@ pub const NSCollectionLayoutItem = struct {
 };
 
 pub const NSCollectionLayoutSection = struct {
-    pub const name = "NSCollectionLayoutSection";
+    pub const class = objc.class("NSCollectionLayoutSection");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2240,9 +2240,9 @@ pub const NSCollectionLayoutSection = struct {
 };
 
 pub const NSCollectionLayoutSize = struct {
-    pub const name = "NSCollectionLayoutSize";
+    pub const class = objc.class("NSCollectionLayoutSize");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2256,9 +2256,9 @@ pub const NSCollectionLayoutSize = struct {
 };
 
 pub const NSCollectionLayoutSpacing = struct {
-    pub const name = "NSCollectionLayoutSpacing";
+    pub const class = objc.class("NSCollectionLayoutSpacing");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2275,9 +2275,9 @@ pub const NSCollectionLayoutSpacing = struct {
 
 pub const NSCollectionLayoutSupplementaryItem = struct {
     pub const Super = NSCollectionLayoutItem;
-    pub const name = "NSCollectionLayoutSupplementaryItem";
+    pub const class = objc.class("NSCollectionLayoutSupplementaryItem");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2296,9 +2296,9 @@ pub const NSCollectionLayoutSupplementaryItem = struct {
 
 pub const NSCollectionView = struct {
     pub const Super = NSView;
-    pub const name = "NSCollectionView";
+    pub const class = objc.class("NSCollectionView");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2401,9 +2401,9 @@ pub const NSCollectionView = struct {
 
 pub const NSCollectionViewCompositionalLayout = struct {
     pub const Super = NSCollectionViewLayout;
-    pub const name = "NSCollectionViewCompositionalLayout";
+    pub const class = objc.class("NSCollectionViewCompositionalLayout");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2417,9 +2417,9 @@ pub const NSCollectionViewCompositionalLayout = struct {
 };
 
 pub const NSCollectionViewCompositionalLayoutConfiguration = struct {
-    pub const name = "NSCollectionViewCompositionalLayoutConfiguration";
+    pub const class = objc.class("NSCollectionViewCompositionalLayoutConfiguration");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2433,9 +2433,9 @@ pub const NSCollectionViewCompositionalLayoutConfiguration = struct {
 };
 
 pub const NSCollectionViewDiffableDataSourceReference = struct {
-    pub const name = "NSCollectionViewDiffableDataSource";
+    pub const class = objc.class("NSCollectionViewDiffableDataSource");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2451,9 +2451,9 @@ pub const NSCollectionViewDiffableDataSourceReference = struct {
 
 pub const NSCollectionViewFlowLayout = struct {
     pub const Super = NSCollectionViewLayout;
-    pub const name = "NSCollectionViewFlowLayout";
+    pub const class = objc.class("NSCollectionViewFlowLayout");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2485,9 +2485,9 @@ pub const NSCollectionViewFlowLayout = struct {
 
 pub const NSCollectionViewFlowLayoutInvalidationContext = struct {
     pub const Super = NSCollectionViewLayoutInvalidationContext;
-    pub const name = "NSCollectionViewFlowLayoutInvalidationContext";
+    pub const class = objc.class("NSCollectionViewFlowLayoutInvalidationContext");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2500,9 +2500,9 @@ pub const NSCollectionViewFlowLayoutInvalidationContext = struct {
 
 pub const NSCollectionViewGridLayout = struct {
     pub const Super = NSCollectionViewLayout;
-    pub const name = "NSCollectionViewGridLayout";
+    pub const class = objc.class("NSCollectionViewGridLayout");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2527,9 +2527,9 @@ pub const NSCollectionViewGridLayout = struct {
 
 pub const NSCollectionViewItem = struct {
     pub const Super = NSViewController;
-    pub const name = "NSCollectionViewItem";
+    pub const class = objc.class("NSCollectionViewItem");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2554,9 +2554,9 @@ pub const NSCollectionViewItem = struct {
 };
 
 pub const NSCollectionViewLayout = struct {
-    pub const name = "NSCollectionViewLayout";
+    pub const class = objc.class("NSCollectionViewLayout");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2605,9 +2605,9 @@ pub const NSCollectionViewLayout = struct {
 };
 
 pub const NSCollectionViewLayoutAttributes = struct {
-    pub const name = "NSCollectionViewLayoutAttributes";
+    pub const class = objc.class("NSCollectionViewLayoutAttributes");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2636,9 +2636,9 @@ pub const NSCollectionViewLayoutAttributes = struct {
 };
 
 pub const NSCollectionViewLayoutInvalidationContext = struct {
-    pub const name = "NSCollectionViewLayoutInvalidationContext";
+    pub const class = objc.class("NSCollectionViewLayoutInvalidationContext");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2659,9 +2659,9 @@ pub const NSCollectionViewLayoutInvalidationContext = struct {
 
 pub const NSCollectionViewTransitionLayout = struct {
     pub const Super = NSCollectionViewLayout;
-    pub const name = "NSCollectionViewTransitionLayout";
+    pub const class = objc.class("NSCollectionViewTransitionLayout");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2676,9 +2676,9 @@ pub const NSCollectionViewTransitionLayout = struct {
 };
 
 pub const NSCollectionViewUpdateItem = struct {
-    pub const name = "NSCollectionViewUpdateItem";
+    pub const class = objc.class("NSCollectionViewUpdateItem");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2689,9 +2689,9 @@ pub const NSCollectionViewUpdateItem = struct {
 };
 
 pub const NSColor = struct {
-    pub const name = "NSColor";
+    pub const class = objc.class("NSColor");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2872,9 +2872,9 @@ pub const NSColor = struct {
 };
 
 pub const NSColorList = struct {
-    pub const name = "NSColorList";
+    pub const class = objc.class("NSColorList");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2900,9 +2900,9 @@ pub const NSColorList = struct {
 
 pub const NSColorPanel = struct {
     pub const Super = NSPanel;
-    pub const name = "NSColorPanel";
+    pub const class = objc.class("NSColorPanel");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2947,9 +2947,9 @@ pub const NSColorPanel = struct {
 };
 
 pub const NSColorPicker = struct {
-    pub const name = "NSColorPicker";
+    pub const class = objc.class("NSColorPicker");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -2968,9 +2968,9 @@ pub const NSColorPicker = struct {
 
 pub const NSColorPickerTouchBarItem = struct {
     pub const Super = NSTouchBarItem;
-    pub const name = "NSColorPickerTouchBarItem";
+    pub const class = objc.class("NSColorPickerTouchBarItem");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3001,9 +3001,9 @@ pub const NSColorPickerTouchBarItem = struct {
 };
 
 pub const NSColorSampler = struct {
-    pub const name = "NSColorSampler";
+    pub const class = objc.class("NSColorSampler");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3012,9 +3012,9 @@ pub const NSColorSampler = struct {
 };
 
 pub const NSColorSpace = struct {
-    pub const name = "NSColorSpace";
+    pub const class = objc.class("NSColorSpace");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3059,9 +3059,9 @@ pub const NSColorSpace = struct {
 
 pub const NSColorWell = struct {
     pub const Super = NSControl;
-    pub const name = "NSColorWell";
+    pub const class = objc.class("NSColorWell");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3101,9 +3101,9 @@ pub const NSColorWell = struct {
 
 pub const NSComboBox = struct {
     pub const Super = NSTextField;
-    pub const name = "NSComboBox";
+    pub const class = objc.class("NSComboBox");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3149,9 +3149,9 @@ pub const NSComboBox = struct {
 
 pub const NSComboBoxCell = struct {
     pub const Super = NSTextFieldCell;
-    pub const name = "NSComboBoxCell";
+    pub const class = objc.class("NSComboBoxCell");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3196,9 +3196,9 @@ pub const NSComboBoxCell = struct {
 
 pub const NSComboButton = struct {
     pub const Super = NSControl;
-    pub const name = "NSComboButton";
+    pub const class = objc.class("NSComboButton");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3228,9 +3228,9 @@ pub const NSComboButton = struct {
 
 pub const NSControl = struct {
     pub const Super = NSView;
-    pub const name = "NSControl";
+    pub const class = objc.class("NSControl");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3347,9 +3347,9 @@ pub const NSControl = struct {
 };
 
 pub const NSController = struct {
-    pub const name = "NSController";
+    pub const class = objc.class("NSController");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3364,9 +3364,9 @@ pub const NSController = struct {
 };
 
 pub const NSCursor = struct {
-    pub const name = "NSCursor";
+    pub const class = objc.class("NSCursor");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3431,9 +3431,9 @@ pub const NSCursor = struct {
 
 pub const NSCustomImageRep = struct {
     pub const Super = NSImageRep;
-    pub const name = "NSCustomImageRep";
+    pub const class = objc.class("NSCustomImageRep");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3447,9 +3447,9 @@ pub const NSCustomImageRep = struct {
 
 pub const NSCustomTouchBarItem = struct {
     pub const Super = NSTouchBarItem;
-    pub const name = "NSCustomTouchBarItem";
+    pub const class = objc.class("NSCustomTouchBarItem");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3463,9 +3463,9 @@ pub const NSCustomTouchBarItem = struct {
 };
 
 pub const NSDataAsset = struct {
-    pub const name = "NSDataAsset";
+    pub const class = objc.class("NSDataAsset");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3480,9 +3480,9 @@ pub const NSDataAsset = struct {
 
 pub const NSDatePicker = struct {
     pub const Super = NSControl;
-    pub const name = "NSDatePicker";
+    pub const class = objc.class("NSDatePicker");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3535,9 +3535,9 @@ pub const NSDatePicker = struct {
 
 pub const NSDatePickerCell = struct {
     pub const Super = NSActionCell;
-    pub const name = "NSDatePickerCell";
+    pub const class = objc.class("NSDatePickerCell");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3576,9 +3576,9 @@ pub const NSDatePickerCell = struct {
 
 pub const NSDictionaryController = struct {
     pub const Super = NSArrayController;
-    pub const name = "NSDictionaryController";
+    pub const class = objc.class("NSDictionaryController");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3599,9 +3599,9 @@ pub const NSDictionaryController = struct {
 };
 
 pub const NSDictionaryControllerKeyValuePair = struct {
-    pub const name = "NSDictionaryControllerKeyValuePair";
+    pub const class = objc.class("NSDictionaryControllerKeyValuePair");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3616,9 +3616,9 @@ pub const NSDictionaryControllerKeyValuePair = struct {
 };
 
 pub const NSDiffableDataSourceSnapshotReference = struct {
-    pub const name = "NSDiffableDataSourceSnapshot";
+    pub const class = objc.class("NSDiffableDataSourceSnapshot");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3651,9 +3651,9 @@ pub const NSDiffableDataSourceSnapshotReference = struct {
 };
 
 pub const NSDockTile = struct {
-    pub const name = "NSDockTile";
+    pub const class = objc.class("NSDockTile");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3670,9 +3670,9 @@ pub const NSDockTile = struct {
 };
 
 pub const NSDocument = struct {
-    pub const name = "NSDocument";
+    pub const class = objc.class("NSDocument");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3857,9 +3857,9 @@ pub const NSDocument = struct {
 };
 
 pub const NSDocumentController = struct {
-    pub const name = "NSDocumentController";
+    pub const class = objc.class("NSDocumentController");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3914,9 +3914,9 @@ pub const NSDocumentController = struct {
 };
 
 pub const NSDraggingImageComponent = struct {
-    pub const name = "NSDraggingImageComponent";
+    pub const class = objc.class("NSDraggingImageComponent");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3931,9 +3931,9 @@ pub const NSDraggingImageComponent = struct {
 };
 
 pub const NSDraggingItem = struct {
-    pub const name = "NSDraggingItem";
+    pub const class = objc.class("NSDraggingItem");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3949,9 +3949,9 @@ pub const NSDraggingItem = struct {
 };
 
 pub const NSDraggingSession = struct {
-    pub const name = "NSDraggingSession";
+    pub const class = objc.class("NSDraggingSession");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -3970,9 +3970,9 @@ pub const NSDraggingSession = struct {
 
 pub const NSDrawer = struct {
     pub const Super = NSResponder;
-    pub const name = "NSDrawer";
+    pub const class = objc.class("NSDrawer");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -4015,9 +4015,9 @@ pub const NSDrawer = struct {
 
 pub const NSEPSImageRep = struct {
     pub const Super = NSImageRep;
-    pub const name = "NSEPSImageRep";
+    pub const class = objc.class("NSEPSImageRep");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -4029,9 +4029,9 @@ pub const NSEPSImageRep = struct {
 };
 
 pub const NSEvent = struct {
-    pub const name = "NSEvent";
+    pub const class = objc.class("NSEvent");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -4190,9 +4190,9 @@ pub const NSEvent = struct {
 };
 
 pub const NSFilePromiseProvider = struct {
-    pub const name = "NSFilePromiseProvider";
+    pub const class = objc.class("NSFilePromiseProvider");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -4207,9 +4207,9 @@ pub const NSFilePromiseProvider = struct {
 };
 
 pub const NSFilePromiseReceiver = struct {
-    pub const name = "NSFilePromiseReceiver";
+    pub const class = objc.class("NSFilePromiseReceiver");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -4224,9 +4224,9 @@ pub const NSFilePromiseReceiver = struct {
 };
 
 pub const NSFont = struct {
-    pub const name = "NSFont";
+    pub const class = objc.class("NSFont");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -4304,9 +4304,9 @@ pub const NSFont = struct {
 };
 
 pub const NSFontAssetRequest = struct {
-    pub const name = "NSFontAssetRequest";
+    pub const class = objc.class("NSFontAssetRequest");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -4318,9 +4318,9 @@ pub const NSFontAssetRequest = struct {
 };
 
 pub const NSFontCollection = struct {
-    pub const name = "NSFontCollection";
+    pub const class = objc.class("NSFontCollection");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -4346,9 +4346,9 @@ pub const NSFontCollection = struct {
 };
 
 pub const NSFontDescriptor = struct {
-    pub const name = "NSFontDescriptor";
+    pub const class = objc.class("NSFontDescriptor");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -4380,9 +4380,9 @@ pub const NSFontDescriptor = struct {
 };
 
 pub const NSFontManager = struct {
-    pub const name = "NSFontManager";
+    pub const class = objc.class("NSFontManager");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -4445,9 +4445,9 @@ pub const NSFontManager = struct {
 
 pub const NSFontPanel = struct {
     pub const Super = NSPanel;
-    pub const name = "NSFontPanel";
+    pub const class = objc.class("NSFontPanel");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -4470,9 +4470,9 @@ pub const NSFontPanel = struct {
 
 pub const NSForm = struct {
     pub const Super = NSMatrix;
-    pub const name = "NSForm";
+    pub const class = objc.class("NSForm");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -4502,9 +4502,9 @@ pub const NSForm = struct {
 
 pub const NSFormCell = struct {
     pub const Super = NSActionCell;
-    pub const name = "NSFormCell";
+    pub const class = objc.class("NSFormCell");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -4534,9 +4534,9 @@ pub const NSFormCell = struct {
 };
 
 pub const NSGestureRecognizer = struct {
-    pub const name = "NSGestureRecognizer";
+    pub const class = objc.class("NSGestureRecognizer");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -4613,9 +4613,9 @@ pub const NSGestureRecognizer = struct {
 
 pub const NSGlassEffectContainerView = struct {
     pub const Super = NSView;
-    pub const name = "NSGlassEffectContainerView";
+    pub const class = objc.class("NSGlassEffectContainerView");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -4628,9 +4628,9 @@ pub const NSGlassEffectContainerView = struct {
 
 pub const NSGlassEffectView = struct {
     pub const Super = NSView;
-    pub const name = "NSGlassEffectView";
+    pub const class = objc.class("NSGlassEffectView");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -4651,9 +4651,9 @@ pub const NSGlassEffectView = struct {
 };
 
 pub const NSGlyphGenerator = struct {
-    pub const name = "NSGlyphGenerator";
+    pub const class = objc.class("NSGlyphGenerator");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -4666,9 +4666,9 @@ pub const NSGlyphGenerator = struct {
 };
 
 pub const NSGlyphInfo = struct {
-    pub const name = "NSGlyphInfo";
+    pub const class = objc.class("NSGlyphInfo");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -4688,9 +4688,9 @@ pub const NSGlyphInfo = struct {
 };
 
 pub const NSGradient = struct {
-    pub const name = "NSGradient";
+    pub const class = objc.class("NSGradient");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -4712,9 +4712,9 @@ pub const NSGradient = struct {
 };
 
 pub const NSGraphicsContext = struct {
-    pub const name = "NSGraphicsContext";
+    pub const class = objc.class("NSGraphicsContext");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -4755,9 +4755,9 @@ pub const NSGraphicsContext = struct {
 };
 
 pub const NSGridCell = struct {
-    pub const name = "NSGridCell";
+    pub const class = objc.class("NSGridCell");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -4790,9 +4790,9 @@ pub const NSGridCell = struct {
 };
 
 pub const NSGridColumn = struct {
-    pub const name = "NSGridColumn";
+    pub const class = objc.class("NSGridColumn");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -4814,9 +4814,9 @@ pub const NSGridColumn = struct {
 };
 
 pub const NSGridRow = struct {
-    pub const name = "NSGridRow";
+    pub const class = objc.class("NSGridRow");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -4848,9 +4848,9 @@ pub const NSGridRow = struct {
 
 pub const NSGridView = struct {
     pub const Super = NSView;
-    pub const name = "NSGridView";
+    pub const class = objc.class("NSGridView");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -4893,9 +4893,9 @@ pub const NSGridView = struct {
 
 pub const NSGroupTouchBarItem = struct {
     pub const Super = NSTouchBarItem;
-    pub const name = "NSGroupTouchBarItem";
+    pub const class = objc.class("NSGroupTouchBarItem");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -4939,9 +4939,9 @@ pub const NSHapticFeedbackManager = struct {
 };
 
 pub const NSHelpManager = struct {
-    pub const name = "NSHelpManager";
+    pub const class = objc.class("NSHelpManager");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -4962,9 +4962,9 @@ pub const NSHelpManager = struct {
 };
 
 pub const NSImage = struct {
-    pub const name = "NSImage";
+    pub const class = objc.class("NSImage");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -5097,9 +5097,9 @@ pub const NSImage = struct {
 
 pub const NSImageCell = struct {
     pub const Super = NSCell;
-    pub const name = "NSImageCell";
+    pub const class = objc.class("NSImageCell");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -5113,9 +5113,9 @@ pub const NSImageCell = struct {
 };
 
 pub const NSImageRep = struct {
-    pub const name = "NSImageRep";
+    pub const class = objc.class("NSImageRep");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -5169,9 +5169,9 @@ pub const NSImageRep = struct {
 };
 
 pub const NSImageSymbolConfiguration = struct {
-    pub const name = "NSImageSymbolConfiguration";
+    pub const class = objc.class("NSImageSymbolConfiguration");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -5196,9 +5196,9 @@ pub const NSImageSymbolConfiguration = struct {
 
 pub const NSImageView = struct {
     pub const Super = NSControl;
-    pub const name = "NSImageView";
+    pub const class = objc.class("NSImageView");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -5241,9 +5241,9 @@ pub const NSImageView = struct {
 };
 
 pub const NSLayoutAnchor = struct {
-    pub const name = "NSLayoutAnchor";
+    pub const class = objc.class("NSLayoutAnchor");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -5261,9 +5261,9 @@ pub const NSLayoutAnchor = struct {
 };
 
 pub const NSLayoutConstraint = struct {
-    pub const name = "NSLayoutConstraint";
+    pub const class = objc.class("NSLayoutConstraint");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -5320,12 +5320,12 @@ pub const NSLayoutConstraint = struct {
     };
 
     pub fn make(item: Object, attr: Attribute, rel: Relation, to_item: ?Object, to_attr: Attribute, mult: f64, constant: f64) Object {
-        return objc.class(Object, "NSLayoutConstraint", "constraintWithItem:attribute:relatedBy:toItem:attribute:multiplier:constant:", .{ item, @intFromEnum(attr), @intFromEnum(rel), @as(?*anyopaque, if (to_item) |t| @ptrCast(t) else null), @intFromEnum(to_attr), mult, constant });
+        return objc.send(objc.class("NSLayoutConstraint"), "constraintWithItem:attribute:relatedBy:toItem:attribute:multiplier:constant:", Object, .{ item, @intFromEnum(attr), @intFromEnum(rel), @as(?*anyopaque, if (to_item) |t| @ptrCast(t) else null), @intFromEnum(to_attr), mult, constant });
     }
     pub fn activate(constraints: []const Object) void {
-        const arr = objc.class(Object, "NSMutableArray", "arrayWithCapacity:", .{@as(c_ulong, constraints.len)});
-        for (constraints) |c| objc.send(void, arr, "addObject:", .{c});
-        objc.send(void, objc.getClass("NSLayoutConstraint").?, "activateConstraints:", .{arr});
+        const arr = objc.send(objc.class("NSMutableArray"), "arrayWithCapacity:", Object, .{@as(c_ulong, constraints.len)});
+        for (constraints) |c| objc.send(arr, "addObject:", void, .{c});
+        objc.send(objc.class("NSLayoutConstraint"), "activateConstraints:", void, .{arr});
     }
     pub fn pinWidthEqual(child: Object, parent: Object) void {
         activate(&.{make(child, .width, .equal, parent, .width, 1.0, 0.0)});
@@ -5337,9 +5337,9 @@ pub const NSLayoutConstraint = struct {
 
 pub const NSLayoutDimension = struct {
     pub const Super = NSLayoutAnchor;
-    pub const name = "NSLayoutDimension";
+    pub const class = objc.class("NSLayoutDimension");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -5356,9 +5356,9 @@ pub const NSLayoutDimension = struct {
 };
 
 pub const NSLayoutGuide = struct {
-    pub const name = "NSLayoutGuide";
+    pub const class = objc.class("NSLayoutGuide");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -5383,9 +5383,9 @@ pub const NSLayoutGuide = struct {
 };
 
 pub const NSLayoutManager = struct {
-    pub const name = "NSLayoutManager";
+    pub const class = objc.class("NSLayoutManager");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -5555,9 +5555,9 @@ pub const NSLayoutManager = struct {
 
 pub const NSLayoutXAxisAnchor = struct {
     pub const Super = NSLayoutAnchor;
-    pub const name = "NSLayoutXAxisAnchor";
+    pub const class = objc.class("NSLayoutXAxisAnchor");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -5570,9 +5570,9 @@ pub const NSLayoutXAxisAnchor = struct {
 
 pub const NSLayoutYAxisAnchor = struct {
     pub const Super = NSLayoutAnchor;
-    pub const name = "NSLayoutYAxisAnchor";
+    pub const class = objc.class("NSLayoutYAxisAnchor");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -5585,9 +5585,9 @@ pub const NSLayoutYAxisAnchor = struct {
 
 pub const NSLevelIndicator = struct {
     pub const Super = NSControl;
-    pub const name = "NSLevelIndicator";
+    pub const class = objc.class("NSLevelIndicator");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -5642,9 +5642,9 @@ pub const NSLevelIndicator = struct {
 
 pub const NSLevelIndicatorCell = struct {
     pub const Super = NSActionCell;
-    pub const name = "NSLevelIndicatorCell";
+    pub const class = objc.class("NSLevelIndicatorCell");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -5672,9 +5672,9 @@ pub const NSLevelIndicatorCell = struct {
 
 pub const NSMagnificationGestureRecognizer = struct {
     pub const Super = NSGestureRecognizer;
-    pub const name = "NSMagnificationGestureRecognizer";
+    pub const class = objc.class("NSMagnificationGestureRecognizer");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -5685,9 +5685,9 @@ pub const NSMagnificationGestureRecognizer = struct {
 
 pub const NSMatrix = struct {
     pub const Super = NSControl;
-    pub const name = "NSMatrix";
+    pub const class = objc.class("NSMatrix");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -5799,9 +5799,9 @@ pub const NSMatrix = struct {
 };
 
 pub const NSMediaLibraryBrowserController = struct {
-    pub const name = "NSMediaLibraryBrowserController";
+    pub const class = objc.class("NSMediaLibraryBrowserController");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -5820,9 +5820,9 @@ pub const NSMediaLibraryBrowserController = struct {
 };
 
 pub const NSMenu = struct {
-    pub const name = "NSMenu";
+    pub const class = objc.class("NSMenu");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -5912,9 +5912,9 @@ pub const NSMenu = struct {
 };
 
 pub const NSMenuItem = struct {
-    pub const name = "NSMenuItem";
+    pub const class = objc.class("NSMenuItem");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -5991,9 +5991,9 @@ pub const NSMenuItem = struct {
 };
 
 pub const NSMenuItemBadge = struct {
-    pub const name = "NSMenuItemBadge";
+    pub const class = objc.class("NSMenuItemBadge");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -6020,9 +6020,9 @@ pub const NSMenuItemBadge = struct {
 
 pub const NSMenuItemCell = struct {
     pub const Super = NSButtonCell;
-    pub const name = "NSMenuItemCell";
+    pub const class = objc.class("NSMenuItemCell");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -6055,9 +6055,9 @@ pub const NSMenuItemCell = struct {
 
 pub const NSMenuToolbarItem = struct {
     pub const Super = NSToolbarItem;
-    pub const name = "NSMenuToolbarItem";
+    pub const class = objc.class("NSMenuToolbarItem");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -6070,9 +6070,9 @@ pub const NSMenuToolbarItem = struct {
 
 pub const NSMutableFontCollection = struct {
     pub const Super = NSFontCollection;
-    pub const name = "NSMutableFontCollection";
+    pub const class = objc.class("NSMutableFontCollection");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -6095,9 +6095,9 @@ pub const NSMutableFontCollection = struct {
 
 pub const NSMutableParagraphStyle = struct {
     pub const Super = NSParagraphStyle;
-    pub const name = "NSMutableParagraphStyle";
+    pub const class = objc.class("NSMutableParagraphStyle");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -6152,9 +6152,9 @@ pub const NSMutableParagraphStyle = struct {
 };
 
 pub const NSNib = struct {
-    pub const name = "NSNib";
+    pub const class = objc.class("NSNib");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -6166,9 +6166,9 @@ pub const NSNib = struct {
 
 pub const NSObjectController = struct {
     pub const Super = NSController;
-    pub const name = "NSObjectController";
+    pub const class = objc.class("NSObjectController");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -6208,9 +6208,9 @@ pub const NSObjectController = struct {
 };
 
 pub const NSOpenGLContext = struct {
-    pub const name = "NSOpenGLContext";
+    pub const class = objc.class("NSOpenGLContext");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -6255,9 +6255,9 @@ pub const NSOpenGLContext = struct {
 };
 
 pub const NSOpenGLLayer = struct {
-    pub const name = "NSOpenGLLayer";
+    pub const class = objc.class("NSOpenGLLayer");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -6275,9 +6275,9 @@ pub const NSOpenGLLayer = struct {
 };
 
 pub const NSOpenGLPixelFormat = struct {
-    pub const name = "NSOpenGLPixelFormat";
+    pub const class = objc.class("NSOpenGLPixelFormat");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -6291,9 +6291,9 @@ pub const NSOpenGLPixelFormat = struct {
 
 pub const NSOpenGLView = struct {
     pub const Super = NSView;
-    pub const name = "NSOpenGLView";
+    pub const class = objc.class("NSOpenGLView");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -6319,9 +6319,9 @@ pub const NSOpenGLView = struct {
 
 pub const NSOpenPanel = struct {
     pub const Super = NSSavePanel;
-    pub const name = "NSOpenPanel";
+    pub const class = objc.class("NSOpenPanel");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -6345,9 +6345,9 @@ pub const NSOpenPanel = struct {
 
 pub const NSOutlineView = struct {
     pub const Super = NSTableView;
-    pub const name = "NSOutlineView";
+    pub const class = objc.class("NSOutlineView");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -6396,9 +6396,9 @@ pub const NSOutlineView = struct {
 
 pub const NSPDFImageRep = struct {
     pub const Super = NSImageRep;
-    pub const name = "NSPDFImageRep";
+    pub const class = objc.class("NSPDFImageRep");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -6412,9 +6412,9 @@ pub const NSPDFImageRep = struct {
 };
 
 pub const NSPDFInfo = struct {
-    pub const name = "NSPDFInfo";
+    pub const class = objc.class("NSPDFInfo");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -6433,9 +6433,9 @@ pub const NSPDFInfo = struct {
 };
 
 pub const NSPDFPanel = struct {
-    pub const name = "NSPDFPanel";
+    pub const class = objc.class("NSPDFPanel");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -6451,9 +6451,9 @@ pub const NSPDFPanel = struct {
 
 pub const NSPICTImageRep = struct {
     pub const Super = NSImageRep;
-    pub const name = "NSPICTImageRep";
+    pub const class = objc.class("NSPICTImageRep");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -6465,9 +6465,9 @@ pub const NSPICTImageRep = struct {
 
 pub const NSPageController = struct {
     pub const Super = NSViewController;
-    pub const name = "NSPageController";
+    pub const class = objc.class("NSPageController");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -6495,9 +6495,9 @@ pub const NSPageController = struct {
 };
 
 pub const NSPageLayout = struct {
-    pub const name = "NSPageLayout";
+    pub const class = objc.class("NSPageLayout");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -6519,9 +6519,9 @@ pub const NSPageLayout = struct {
 
 pub const NSPanGestureRecognizer = struct {
     pub const Super = NSGestureRecognizer;
-    pub const name = "NSPanGestureRecognizer";
+    pub const class = objc.class("NSPanGestureRecognizer");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -6537,9 +6537,9 @@ pub const NSPanGestureRecognizer = struct {
 
 pub const NSPanel = struct {
     pub const Super = NSWindow;
-    pub const name = "NSPanel";
+    pub const class = objc.class("NSPanel");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -6553,9 +6553,9 @@ pub const NSPanel = struct {
 };
 
 pub const NSParagraphStyle = struct {
-    pub const name = "NSParagraphStyle";
+    pub const class = objc.class("NSParagraphStyle");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -6597,9 +6597,9 @@ pub const NSParagraphStyle = struct {
 };
 
 pub const NSPasteboard = struct {
-    pub const name = "NSPasteboard";
+    pub const class = objc.class("NSPasteboard");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -6650,9 +6650,9 @@ pub const NSPasteboard = struct {
 };
 
 pub const NSPasteboardItem = struct {
-    pub const name = "NSPasteboardItem";
+    pub const class = objc.class("NSPasteboardItem");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -6670,9 +6670,9 @@ pub const NSPasteboardItem = struct {
 
 pub const NSPathCell = struct {
     pub const Super = NSActionCell;
-    pub const name = "NSPathCell";
+    pub const class = objc.class("NSPathCell");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -6709,9 +6709,9 @@ pub const NSPathCell = struct {
 
 pub const NSPathComponentCell = struct {
     pub const Super = NSTextFieldCell;
-    pub const name = "NSPathComponentCell";
+    pub const class = objc.class("NSPathComponentCell");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -6724,9 +6724,9 @@ pub const NSPathComponentCell = struct {
 
 pub const NSPathControl = struct {
     pub const Super = NSControl;
-    pub const name = "NSPathControl";
+    pub const class = objc.class("NSPathControl");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -6766,9 +6766,9 @@ pub const NSPathControl = struct {
 };
 
 pub const NSPathControlItem = struct {
-    pub const name = "NSPathControlItem";
+    pub const class = objc.class("NSPathControlItem");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -6784,9 +6784,9 @@ pub const NSPathControlItem = struct {
 
 pub const NSPersistentDocument = struct {
     pub const Super = NSDocument;
-    pub const name = "NSPersistentDocument";
+    pub const class = objc.class("NSPersistentDocument");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -6803,9 +6803,9 @@ pub const NSPersistentDocument = struct {
 
 pub const NSPickerTouchBarItem = struct {
     pub const Super = NSTouchBarItem;
-    pub const name = "NSPickerTouchBarItem";
+    pub const class = objc.class("NSPickerTouchBarItem");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -6858,9 +6858,9 @@ pub const NSPickerTouchBarItem = struct {
 
 pub const NSPopUpButton = struct {
     pub const Super = NSButton;
-    pub const name = "NSPopUpButton";
+    pub const class = objc.class("NSPopUpButton");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -6916,9 +6916,9 @@ pub const NSPopUpButton = struct {
 
 pub const NSPopUpButtonCell = struct {
     pub const Super = NSMenuItemCell;
-    pub const name = "NSPopUpButtonCell";
+    pub const class = objc.class("NSPopUpButtonCell");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -6973,9 +6973,9 @@ pub const NSPopUpButtonCell = struct {
 
 pub const NSPopover = struct {
     pub const Super = NSResponder;
-    pub const name = "NSPopover";
+    pub const class = objc.class("NSPopover");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -7018,9 +7018,9 @@ pub const NSPopover = struct {
 
 pub const NSPopoverTouchBarItem = struct {
     pub const Super = NSTouchBarItem;
-    pub const name = "NSPopoverTouchBarItem";
+    pub const class = objc.class("NSPopoverTouchBarItem");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -7046,9 +7046,9 @@ pub const NSPopoverTouchBarItem = struct {
 
 pub const NSPredicateEditor = struct {
     pub const Super = NSRuleEditor;
-    pub const name = "NSPredicateEditor";
+    pub const class = objc.class("NSPredicateEditor");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -7058,9 +7058,9 @@ pub const NSPredicateEditor = struct {
 };
 
 pub const NSPredicateEditorRowTemplate = struct {
-    pub const name = "NSPredicateEditorRowTemplate";
+    pub const class = objc.class("NSPredicateEditorRowTemplate");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -7088,9 +7088,9 @@ pub const NSPredicateEditorRowTemplate = struct {
 
 pub const NSPressGestureRecognizer = struct {
     pub const Super = NSGestureRecognizer;
-    pub const name = "NSPressGestureRecognizer";
+    pub const class = objc.class("NSPressGestureRecognizer");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -7106,9 +7106,9 @@ pub const NSPressGestureRecognizer = struct {
 };
 
 pub const NSPressureConfiguration = struct {
-    pub const name = "NSPressureConfiguration";
+    pub const class = objc.class("NSPressureConfiguration");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -7119,9 +7119,9 @@ pub const NSPressureConfiguration = struct {
 };
 
 pub const NSPreviewRepresentingActivityItem = struct {
-    pub const name = "NSPreviewRepresentingActivityItem";
+    pub const class = objc.class("NSPreviewRepresentingActivityItem");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -7131,9 +7131,9 @@ pub const NSPreviewRepresentingActivityItem = struct {
 };
 
 pub const NSPrintInfo = struct {
-    pub const name = "NSPrintInfo";
+    pub const class = objc.class("NSPrintInfo");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -7204,9 +7204,9 @@ pub const NSPrintInfo = struct {
 };
 
 pub const NSPrintOperation = struct {
-    pub const name = "NSPrintOperation";
+    pub const class = objc.class("NSPrintOperation");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -7266,9 +7266,9 @@ pub const NSPrintOperation = struct {
 };
 
 pub const NSPrintPanel = struct {
-    pub const name = "NSPrintPanel";
+    pub const class = objc.class("NSPrintPanel");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -7297,9 +7297,9 @@ pub const NSPrintPanel = struct {
 };
 
 pub const NSPrinter = struct {
-    pub const name = "NSPrinter";
+    pub const class = objc.class("NSPrinter");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -7326,9 +7326,9 @@ pub const NSPrinter = struct {
 
 pub const NSProgressIndicator = struct {
     pub const Super = NSView;
-    pub const name = "NSProgressIndicator";
+    pub const class = objc.class("NSProgressIndicator");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -7367,9 +7367,9 @@ pub const NSProgressIndicator = struct {
 };
 
 pub const NSResponder = struct {
-    pub const name = "NSResponder";
+    pub const class = objc.class("NSResponder");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -7455,9 +7455,9 @@ pub const NSResponder = struct {
 
 pub const NSRotationGestureRecognizer = struct {
     pub const Super = NSGestureRecognizer;
-    pub const name = "NSRotationGestureRecognizer";
+    pub const class = objc.class("NSRotationGestureRecognizer");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -7470,9 +7470,9 @@ pub const NSRotationGestureRecognizer = struct {
 
 pub const NSRuleEditor = struct {
     pub const Super = NSControl;
-    pub const name = "NSRuleEditor";
+    pub const class = objc.class("NSRuleEditor");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -7533,9 +7533,9 @@ pub const NSRuleEditor = struct {
 };
 
 pub const NSRulerMarker = struct {
-    pub const name = "NSRulerMarker";
+    pub const class = objc.class("NSRulerMarker");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -7564,9 +7564,9 @@ pub const NSRulerMarker = struct {
 
 pub const NSRulerView = struct {
     pub const Super = NSView;
-    pub const name = "NSRulerView";
+    pub const class = objc.class("NSRulerView");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -7615,9 +7615,9 @@ pub const NSRulerView = struct {
 };
 
 pub const NSRunningApplication = struct {
-    pub const name = "NSRunningApplication";
+    pub const class = objc.class("NSRunningApplication");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -7653,9 +7653,9 @@ pub const NSRunningApplication = struct {
 
 pub const NSSavePanel = struct {
     pub const Super = NSPanel;
-    pub const name = "NSSavePanel";
+    pub const class = objc.class("NSSavePanel");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -7713,9 +7713,9 @@ pub const NSSavePanel = struct {
 };
 
 pub const NSScreen = struct {
-    pub const name = "NSScreen";
+    pub const class = objc.class("NSScreen");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -7762,9 +7762,9 @@ pub const NSScrollEdgeEffectStyle = struct {
 
 pub const NSScrollView = struct {
     pub const Super = NSView;
-    pub const name = "NSScrollView";
+    pub const class = objc.class("NSScrollView");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -7874,9 +7874,9 @@ pub const NSScrollView = struct {
 
 pub const NSScroller = struct {
     pub const Super = NSControl;
-    pub const name = "NSScroller";
+    pub const class = objc.class("NSScroller");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -7947,9 +7947,9 @@ pub const NSScroller = struct {
 
 pub const NSScrubber = struct {
     pub const Super = NSView;
-    pub const name = "NSScrubber";
+    pub const class = objc.class("NSScrubber");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -8012,9 +8012,9 @@ pub const NSScrubber = struct {
 
 pub const NSScrubberArrangedView = struct {
     pub const Super = NSView;
-    pub const name = "NSScrubberArrangedView";
+    pub const class = objc.class("NSScrubberArrangedView");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -8028,9 +8028,9 @@ pub const NSScrubberArrangedView = struct {
 
 pub const NSScrubberFlowLayout = struct {
     pub const Super = NSScrubberLayout;
-    pub const name = "NSScrubberFlowLayout";
+    pub const class = objc.class("NSScrubberFlowLayout");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -8043,9 +8043,9 @@ pub const NSScrubberFlowLayout = struct {
 };
 
 pub const NSScrubberImageItemView = struct {
-    pub const name = "NSScrubberImageItemView";
+    pub const class = objc.class("NSScrubberImageItemView");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -8058,9 +8058,9 @@ pub const NSScrubberImageItemView = struct {
 };
 
 pub const NSScrubberLayout = struct {
-    pub const name = "NSScrubberLayout";
+    pub const class = objc.class("NSScrubberLayout");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -8084,9 +8084,9 @@ pub const NSScrubberLayout = struct {
 };
 
 pub const NSScrubberLayoutAttributes = struct {
-    pub const name = "NSScrubberLayoutAttributes";
+    pub const class = objc.class("NSScrubberLayoutAttributes");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -8105,9 +8105,9 @@ pub const NSScrubberLayoutAttributes = struct {
 
 pub const NSScrubberProportionalLayout = struct {
     pub const Super = NSScrubberLayout;
-    pub const name = "NSScrubberProportionalLayout";
+    pub const class = objc.class("NSScrubberProportionalLayout");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -8119,9 +8119,9 @@ pub const NSScrubberProportionalLayout = struct {
 };
 
 pub const NSScrubberSelectionStyle = struct {
-    pub const name = "NSScrubberSelectionStyle";
+    pub const class = objc.class("NSScrubberSelectionStyle");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -8136,9 +8136,9 @@ pub const NSScrubberSelectionStyle = struct {
 };
 
 pub const NSScrubberTextItemView = struct {
-    pub const name = "NSScrubberTextItemView";
+    pub const class = objc.class("NSScrubberTextItemView");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -8150,9 +8150,9 @@ pub const NSScrubberTextItemView = struct {
 
 pub const NSSearchField = struct {
     pub const Super = NSTextField;
-    pub const name = "NSSearchField";
+    pub const class = objc.class("NSSearchField");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -8183,9 +8183,9 @@ pub const NSSearchField = struct {
 
 pub const NSSearchFieldCell = struct {
     pub const Super = NSTextFieldCell;
-    pub const name = "NSSearchFieldCell";
+    pub const class = objc.class("NSSearchFieldCell");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -8217,9 +8217,9 @@ pub const NSSearchFieldCell = struct {
 
 pub const NSSearchToolbarItem = struct {
     pub const Super = NSToolbarItem;
-    pub const name = "NSSearchToolbarItem";
+    pub const class = objc.class("NSSearchToolbarItem");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -8236,9 +8236,9 @@ pub const NSSearchToolbarItem = struct {
 
 pub const NSSecureTextFieldCell = struct {
     pub const Super = NSTextFieldCell;
-    pub const name = "NSSecureTextFieldCell";
+    pub const class = objc.class("NSSecureTextFieldCell");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -8249,9 +8249,9 @@ pub const NSSecureTextFieldCell = struct {
 
 pub const NSSegmentedCell = struct {
     pub const Super = NSActionCell;
-    pub const name = "NSSegmentedCell";
+    pub const class = objc.class("NSSegmentedCell");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -8291,9 +8291,9 @@ pub const NSSegmentedCell = struct {
 
 pub const NSSegmentedControl = struct {
     pub const Super = NSControl;
-    pub const name = "NSSegmentedControl";
+    pub const class = objc.class("NSSegmentedControl");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -8373,9 +8373,9 @@ pub const NSSegmentedControl = struct {
 };
 
 pub const NSShadow = struct {
-    pub const name = "NSShadow";
+    pub const class = objc.class("NSShadow");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -8390,9 +8390,9 @@ pub const NSShadow = struct {
 };
 
 pub const NSSharingCollaborationModeRestriction = struct {
-    pub const name = "NSSharingCollaborationModeRestriction";
+    pub const class = objc.class("NSSharingCollaborationModeRestriction");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -8410,9 +8410,9 @@ pub const NSSharingCollaborationModeRestriction = struct {
 };
 
 pub const NSSharingService = struct {
-    pub const name = "NSSharingService";
+    pub const class = objc.class("NSSharingService");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -8449,9 +8449,9 @@ pub const NSSharingService = struct {
 };
 
 pub const NSSharingServicePicker = struct {
-    pub const name = "NSSharingServicePicker";
+    pub const class = objc.class("NSSharingServicePicker");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -8466,9 +8466,9 @@ pub const NSSharingServicePicker = struct {
 
 pub const NSSharingServicePickerToolbarItem = struct {
     pub const Super = NSToolbarItem;
-    pub const name = "NSSharingServicePickerToolbarItem";
+    pub const class = objc.class("NSSharingServicePickerToolbarItem");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -8479,9 +8479,9 @@ pub const NSSharingServicePickerToolbarItem = struct {
 
 pub const NSSharingServicePickerTouchBarItem = struct {
     pub const Super = NSTouchBarItem;
-    pub const name = "NSSharingServicePickerTouchBarItem";
+    pub const class = objc.class("NSSharingServicePickerTouchBarItem");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -8498,9 +8498,9 @@ pub const NSSharingServicePickerTouchBarItem = struct {
 
 pub const NSSlider = struct {
     pub const Super = NSControl;
-    pub const name = "NSSlider";
+    pub const class = objc.class("NSSlider");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -8550,9 +8550,9 @@ pub const NSSlider = struct {
 };
 
 pub const NSSliderAccessory = struct {
-    pub const name = "NSSliderAccessory";
+    pub const class = objc.class("NSSliderAccessory");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -8568,9 +8568,9 @@ pub const NSSliderAccessory = struct {
 };
 
 pub const NSSliderAccessoryBehavior = struct {
-    pub const name = "NSSliderAccessoryBehavior";
+    pub const class = objc.class("NSSliderAccessoryBehavior");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -8589,9 +8589,9 @@ pub const NSSliderAccessoryBehavior = struct {
 
 pub const NSSliderCell = struct {
     pub const Super = NSActionCell;
-    pub const name = "NSSliderCell";
+    pub const class = objc.class("NSSliderCell");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -8632,9 +8632,9 @@ pub const NSSliderCell = struct {
 
 pub const NSSliderTouchBarItem = struct {
     pub const Super = NSTouchBarItem;
-    pub const name = "NSSliderTouchBarItem";
+    pub const class = objc.class("NSSliderTouchBarItem");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -8665,9 +8665,9 @@ pub const NSSliderTouchBarItem = struct {
 };
 
 pub const NSSound = struct {
-    pub const name = "NSSound";
+    pub const class = objc.class("NSSound");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -8704,9 +8704,9 @@ pub const NSSound = struct {
 };
 
 pub const NSSpeechRecognizer = struct {
-    pub const name = "NSSpeechRecognizer";
+    pub const class = objc.class("NSSpeechRecognizer");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -8726,9 +8726,9 @@ pub const NSSpeechRecognizer = struct {
 };
 
 pub const NSSpeechSynthesizer = struct {
-    pub const name = "NSSpeechSynthesizer";
+    pub const class = objc.class("NSSpeechSynthesizer");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -8771,9 +8771,9 @@ pub const NSSpeechSynthesizer = struct {
 };
 
 pub const NSSpellChecker = struct {
-    pub const name = "NSSpellChecker";
+    pub const class = objc.class("NSSpellChecker");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -8853,9 +8853,9 @@ pub const NSSpellChecker = struct {
 
 pub const NSSplitView = struct {
     pub const Super = NSView;
-    pub const name = "NSSplitView";
+    pub const class = objc.class("NSSplitView");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -8894,9 +8894,9 @@ pub const NSSplitView = struct {
 
 pub const NSSplitViewController = struct {
     pub const Super = NSViewController;
-    pub const name = "NSSplitViewController";
+    pub const class = objc.class("NSSplitViewController");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -8923,9 +8923,9 @@ pub const NSSplitViewController = struct {
 };
 
 pub const NSSplitViewItem = struct {
-    pub const name = "NSSplitViewItem";
+    pub const class = objc.class("NSSplitViewItem");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -8993,9 +8993,9 @@ pub const NSSplitViewItem = struct {
 
 pub const NSSplitViewItemAccessoryViewController = struct {
     pub const Super = NSViewController;
-    pub const name = "NSSplitViewItemAccessoryViewController";
+    pub const class = objc.class("NSSplitViewItemAccessoryViewController");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -9014,9 +9014,9 @@ pub const NSSplitViewItemAccessoryViewController = struct {
 
 pub const NSStackView = struct {
     pub const Super = NSView;
-    pub const name = "NSStackView";
+    pub const class = objc.class("NSStackView");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -9077,9 +9077,9 @@ pub const NSStackView = struct {
 };
 
 pub const NSStatusBar = struct {
-    pub const name = "NSStatusBar";
+    pub const class = objc.class("NSStatusBar");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -9096,9 +9096,9 @@ pub const NSStatusBar = struct {
 
 pub const NSStatusBarButton = struct {
     pub const Super = NSButton;
-    pub const name = "NSStatusBarButton";
+    pub const class = objc.class("NSStatusBarButton");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -9108,9 +9108,9 @@ pub const NSStatusBarButton = struct {
 };
 
 pub const NSStatusItem = struct {
-    pub const name = "NSStatusItem";
+    pub const class = objc.class("NSStatusItem");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -9156,9 +9156,9 @@ pub const NSStatusItem = struct {
 
 pub const NSStepper = struct {
     pub const Super = NSControl;
-    pub const name = "NSStepper";
+    pub const class = objc.class("NSStepper");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -9177,9 +9177,9 @@ pub const NSStepper = struct {
 
 pub const NSStepperCell = struct {
     pub const Super = NSActionCell;
-    pub const name = "NSStepperCell";
+    pub const class = objc.class("NSStepperCell");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -9198,9 +9198,9 @@ pub const NSStepperCell = struct {
 
 pub const NSStepperTouchBarItem = struct {
     pub const Super = NSTouchBarItem;
-    pub const name = "NSStepperTouchBarItem";
+    pub const class = objc.class("NSStepperTouchBarItem");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -9227,9 +9227,9 @@ pub const NSStepperTouchBarItem = struct {
 };
 
 pub const NSStoryboard = struct {
-    pub const name = "NSStoryboard";
+    pub const class = objc.class("NSStoryboard");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -9244,9 +9244,9 @@ pub const NSStoryboard = struct {
 };
 
 pub const NSStoryboardSegue = struct {
-    pub const name = "NSStoryboardSegue";
+    pub const class = objc.class("NSStoryboardSegue");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -9263,9 +9263,9 @@ pub const NSStoryboardSegue = struct {
 };
 
 pub const NSStringDrawingContext = struct {
-    pub const name = "NSStringDrawingContext";
+    pub const class = objc.class("NSStringDrawingContext");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -9278,9 +9278,9 @@ pub const NSStringDrawingContext = struct {
 
 pub const NSSwitch = struct {
     pub const Super = NSControl;
-    pub const name = "NSSwitch";
+    pub const class = objc.class("NSSwitch");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -9291,9 +9291,9 @@ pub const NSSwitch = struct {
 
 pub const NSTabView = struct {
     pub const Super = NSView;
-    pub const name = "NSTabView";
+    pub const class = objc.class("NSTabView");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -9363,9 +9363,9 @@ pub const NSTabView = struct {
 
 pub const NSTabViewController = struct {
     pub const Super = NSViewController;
-    pub const name = "NSTabViewController";
+    pub const class = objc.class("NSTabViewController");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -9404,9 +9404,9 @@ pub const NSTabViewController = struct {
 };
 
 pub const NSTabViewItem = struct {
-    pub const name = "NSTabViewItem";
+    pub const class = objc.class("NSTabViewItem");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -9446,9 +9446,9 @@ pub const NSTabViewItem = struct {
 
 pub const NSTableCellView = struct {
     pub const Super = NSView;
-    pub const name = "NSTableCellView";
+    pub const class = objc.class("NSTableCellView");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -9467,9 +9467,9 @@ pub const NSTableCellView = struct {
 };
 
 pub const NSTableColumn = struct {
-    pub const name = "NSTableColumn";
+    pub const class = objc.class("NSTableColumn");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -9508,9 +9508,9 @@ pub const NSTableColumn = struct {
 
 pub const NSTableHeaderCell = struct {
     pub const Super = NSTextFieldCell;
-    pub const name = "NSTableHeaderCell";
+    pub const class = objc.class("NSTableHeaderCell");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -9521,9 +9521,9 @@ pub const NSTableHeaderCell = struct {
 
 pub const NSTableHeaderView = struct {
     pub const Super = NSView;
-    pub const name = "NSTableHeaderView";
+    pub const class = objc.class("NSTableHeaderView");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -9539,9 +9539,9 @@ pub const NSTableHeaderView = struct {
 
 pub const NSTableRowView = struct {
     pub const Super = NSView;
-    pub const name = "NSTableRowView";
+    pub const class = objc.class("NSTableRowView");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -9579,9 +9579,9 @@ pub const NSTableRowView = struct {
 
 pub const NSTableView = struct {
     pub const Super = NSControl;
-    pub const name = "NSTableView";
+    pub const class = objc.class("NSTableView");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -9775,9 +9775,9 @@ pub const NSTableView = struct {
 };
 
 pub const NSTableViewDiffableDataSourceReference = struct {
-    pub const name = "NSTableViewDiffableDataSource";
+    pub const class = objc.class("NSTableViewDiffableDataSource");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -9799,9 +9799,9 @@ pub const NSTableViewDiffableDataSourceReference = struct {
 };
 
 pub const NSTableViewRowAction = struct {
-    pub const name = "NSTableViewRowAction";
+    pub const class = objc.class("NSTableViewRowAction");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -9826,9 +9826,9 @@ pub const NSTableViewRowAction = struct {
 
 pub const NSText = struct {
     pub const Super = NSView;
-    pub const name = "NSText";
+    pub const class = objc.class("NSText");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -9908,9 +9908,9 @@ pub const NSText = struct {
 };
 
 pub const NSTextAlternatives = struct {
-    pub const name = "NSTextAlternatives";
+    pub const class = objc.class("NSTextAlternatives");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -9922,9 +9922,9 @@ pub const NSTextAlternatives = struct {
 };
 
 pub const NSTextAttachment = struct {
-    pub const name = "NSTextAttachment";
+    pub const class = objc.class("NSTextAttachment");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -9956,9 +9956,9 @@ pub const NSTextAttachment = struct {
 };
 
 pub const NSTextAttachmentViewProvider = struct {
-    pub const name = "NSTextAttachmentViewProvider";
+    pub const class = objc.class("NSTextAttachmentViewProvider");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -9976,9 +9976,9 @@ pub const NSTextAttachmentViewProvider = struct {
 };
 
 pub const NSTextBlock = struct {
-    pub const name = "NSTextBlock";
+    pub const class = objc.class("NSTextBlock");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -10030,9 +10030,9 @@ pub const NSTextBlock = struct {
 };
 
 pub const NSTextCheckingController = struct {
-    pub const name = "NSTextCheckingController";
+    pub const class = objc.class("NSTextCheckingController");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -10060,9 +10060,9 @@ pub const NSTextCheckingController = struct {
 };
 
 pub const NSTextContainer = struct {
-    pub const name = "NSTextContainer";
+    pub const class = objc.class("NSTextContainer");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -10099,9 +10099,9 @@ pub const NSTextContainer = struct {
 };
 
 pub const NSTextContentManager = struct {
-    pub const name = "NSTextContentManager";
+    pub const class = objc.class("NSTextContentManager");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -10127,9 +10127,9 @@ pub const NSTextContentManager = struct {
 
 pub const NSTextContentStorage = struct {
     pub const Super = NSTextContentManager;
-    pub const name = "NSTextContentStorage";
+    pub const class = objc.class("NSTextContentStorage");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -10148,9 +10148,9 @@ pub const NSTextContentStorage = struct {
 };
 
 pub const NSTextElement = struct {
-    pub const name = "NSTextElement";
+    pub const class = objc.class("NSTextElement");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -10167,9 +10167,9 @@ pub const NSTextElement = struct {
 
 pub const NSTextField = struct {
     pub const Super = NSControl;
-    pub const name = "NSTextField";
+    pub const class = objc.class("NSTextField");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -10245,9 +10245,9 @@ pub const NSTextField = struct {
 
 pub const NSTextFieldCell = struct {
     pub const Super = NSActionCell;
-    pub const name = "NSTextFieldCell";
+    pub const class = objc.class("NSTextFieldCell");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -10273,9 +10273,9 @@ pub const NSTextFieldCell = struct {
 };
 
 pub const NSTextFinder = struct {
-    pub const name = "NSTextFinder";
+    pub const class = objc.class("NSTextFinder");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -10325,9 +10325,9 @@ pub const NSTextFinder = struct {
 };
 
 pub const NSTextInputContext = struct {
-    pub const name = "NSTextInputContext";
+    pub const class = objc.class("NSTextInputContext");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -10359,9 +10359,9 @@ pub const NSTextInputContext = struct {
 
 pub const NSTextInsertionIndicator = struct {
     pub const Super = NSView;
-    pub const name = "NSTextInsertionIndicator";
+    pub const class = objc.class("NSTextInsertionIndicator");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -10383,9 +10383,9 @@ pub const NSTextInsertionIndicator = struct {
 };
 
 pub const NSTextLayoutFragment = struct {
-    pub const name = "NSTextLayoutFragment";
+    pub const class = objc.class("NSTextLayoutFragment");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -10421,9 +10421,9 @@ pub const NSTextLayoutFragment = struct {
 };
 
 pub const NSTextLayoutManager = struct {
-    pub const name = "NSTextLayoutManager";
+    pub const class = objc.class("NSTextLayoutManager");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -10481,9 +10481,9 @@ pub const NSTextLayoutManager = struct {
 };
 
 pub const NSTextLineFragment = struct {
-    pub const name = "NSTextLineFragment";
+    pub const class = objc.class("NSTextLineFragment");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -10502,9 +10502,9 @@ pub const NSTextLineFragment = struct {
 };
 
 pub const NSTextList = struct {
-    pub const name = "NSTextList";
+    pub const class = objc.class("NSTextList");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -10526,9 +10526,9 @@ pub const NSTextList = struct {
 
 pub const NSTextListElement = struct {
     pub const Super = NSTextParagraph;
-    pub const name = "NSTextListElement";
+    pub const class = objc.class("NSTextListElement");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -10549,9 +10549,9 @@ pub const NSTextListElement = struct {
 
 pub const NSTextParagraph = struct {
     pub const Super = NSTextElement;
-    pub const name = "NSTextParagraph";
+    pub const class = objc.class("NSTextParagraph");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -10563,9 +10563,9 @@ pub const NSTextParagraph = struct {
 };
 
 pub const NSTextPreview = struct {
-    pub const name = "NSTextPreview";
+    pub const class = objc.class("NSTextPreview");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -10578,9 +10578,9 @@ pub const NSTextPreview = struct {
 };
 
 pub const NSTextRange = struct {
-    pub const name = "NSTextRange";
+    pub const class = objc.class("NSTextRange");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -10599,9 +10599,9 @@ pub const NSTextRange = struct {
 };
 
 pub const NSTextSelection = struct {
-    pub const name = "NSTextSelection";
+    pub const class = objc.class("NSTextSelection");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -10638,9 +10638,9 @@ pub const NSTextSelection = struct {
 };
 
 pub const NSTextSelectionNavigation = struct {
-    pub const name = "NSTextSelectionNavigation";
+    pub const class = objc.class("NSTextSelectionNavigation");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -10688,9 +10688,9 @@ pub const NSTextSelectionNavigation = struct {
 
 pub const NSTextStorage = struct {
     pub const Super = Foundation.NSMutableAttributedString;
-    pub const name = "NSTextStorage";
+    pub const class = objc.class("NSTextStorage");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -10725,9 +10725,9 @@ pub const NSTextStorage = struct {
 };
 
 pub const NSTextTab = struct {
-    pub const name = "NSTextTab";
+    pub const class = objc.class("NSTextTab");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -10746,9 +10746,9 @@ pub const NSTextTab = struct {
 
 pub const NSTextTable = struct {
     pub const Super = NSTextBlock;
-    pub const name = "NSTextTable";
+    pub const class = objc.class("NSTextTable");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -10773,9 +10773,9 @@ pub const NSTextTable = struct {
 
 pub const NSTextTableBlock = struct {
     pub const Super = NSTextBlock;
-    pub const name = "NSTextTableBlock";
+    pub const class = objc.class("NSTextTableBlock");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -10790,9 +10790,9 @@ pub const NSTextTableBlock = struct {
 
 pub const NSTextView = struct {
     pub const Super = NSText;
-    pub const name = "NSTextView";
+    pub const class = objc.class("NSTextView");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -11036,9 +11036,9 @@ pub const NSTextView = struct {
 };
 
 pub const NSTextViewportLayoutController = struct {
-    pub const name = "NSTextViewportLayoutController";
+    pub const class = objc.class("NSTextViewportLayoutController");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -11055,9 +11055,9 @@ pub const NSTextViewportLayoutController = struct {
 };
 
 pub const NSTintConfiguration = struct {
-    pub const name = "NSTintConfiguration";
+    pub const class = objc.class("NSTintConfiguration");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -11076,9 +11076,9 @@ pub const NSTintConfiguration = struct {
 
 pub const NSTitlebarAccessoryViewController = struct {
     pub const Super = NSViewController;
-    pub const name = "NSTitlebarAccessoryViewController";
+    pub const class = objc.class("NSTitlebarAccessoryViewController");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -11100,9 +11100,9 @@ pub const NSTitlebarAccessoryViewController = struct {
 
 pub const NSTokenField = struct {
     pub const Super = NSTextField;
-    pub const name = "NSTokenField";
+    pub const class = objc.class("NSTokenField");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -11132,9 +11132,9 @@ pub const NSTokenField = struct {
 
 pub const NSTokenFieldCell = struct {
     pub const Super = NSTextFieldCell;
-    pub const name = "NSTokenFieldCell";
+    pub const class = objc.class("NSTokenFieldCell");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -11155,9 +11155,9 @@ pub const NSTokenFieldCell = struct {
 };
 
 pub const NSToolbar = struct {
-    pub const name = "NSToolbar";
+    pub const class = objc.class("NSToolbar");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -11221,9 +11221,9 @@ pub const NSToolbar = struct {
 };
 
 pub const NSToolbarItem = struct {
-    pub const name = "NSToolbarItem";
+    pub const class = objc.class("NSToolbarItem");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -11285,9 +11285,9 @@ pub const NSToolbarItem = struct {
 
 pub const NSToolbarItemGroup = struct {
     pub const Super = NSToolbarItem;
-    pub const name = "NSToolbarItemGroup";
+    pub const class = objc.class("NSToolbarItemGroup");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -11321,9 +11321,9 @@ pub const NSToolbarItemGroup = struct {
 };
 
 pub const NSTouch = struct {
-    pub const name = "NSTouch";
+    pub const class = objc.class("NSTouch");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -11345,9 +11345,9 @@ pub const NSTouch = struct {
 };
 
 pub const NSTouchBar = struct {
-    pub const name = "NSTouchBar";
+    pub const class = objc.class("NSTouchBar");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -11380,9 +11380,9 @@ pub const NSTouchBar = struct {
 };
 
 pub const NSTouchBarItem = struct {
-    pub const name = "NSTouchBarItem";
+    pub const class = objc.class("NSTouchBarItem");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -11399,9 +11399,9 @@ pub const NSTouchBarItem = struct {
 };
 
 pub const NSTrackingArea = struct {
-    pub const name = "NSTrackingArea";
+    pub const class = objc.class("NSTrackingArea");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -11415,9 +11415,9 @@ pub const NSTrackingArea = struct {
 
 pub const NSTrackingSeparatorToolbarItem = struct {
     pub const Super = NSToolbarItem;
-    pub const name = "NSTrackingSeparatorToolbarItem";
+    pub const class = objc.class("NSTrackingSeparatorToolbarItem");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -11434,9 +11434,9 @@ pub const NSTrackingSeparatorToolbarItem = struct {
 
 pub const NSTreeController = struct {
     pub const Super = NSObjectController;
-    pub const name = "NSTreeController";
+    pub const class = objc.class("NSTreeController");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -11489,9 +11489,9 @@ pub const NSTreeController = struct {
 };
 
 pub const NSTreeNode = struct {
-    pub const name = "NSTreeNode";
+    pub const class = objc.class("NSTreeNode");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -11508,9 +11508,9 @@ pub const NSTreeNode = struct {
 };
 
 pub const NSTypesetter = struct {
-    pub const name = "NSTypesetter";
+    pub const class = objc.class("NSTypesetter");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -11585,9 +11585,9 @@ pub const NSTypesetter = struct {
 
 pub const NSUserDefaultsController = struct {
     pub const Super = NSController;
-    pub const name = "NSUserDefaultsController";
+    pub const class = objc.class("NSUserDefaultsController");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -11611,9 +11611,9 @@ pub const NSUserDefaultsController = struct {
 };
 
 pub const NSUserInterfaceCompressionOptions = struct {
-    pub const name = "NSUserInterfaceCompressionOptions";
+    pub const class = objc.class("NSUserInterfaceCompressionOptions");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -11638,9 +11638,9 @@ pub const NSUserInterfaceCompressionOptions = struct {
 
 pub const NSView = struct {
     pub const Super = NSResponder;
-    pub const name = "NSView";
+    pub const class = objc.class("NSView");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -12015,9 +12015,9 @@ pub const NSView = struct {
 
 pub const NSViewAnimation = struct {
     pub const Super = NSAnimation;
-    pub const name = "NSViewAnimation";
+    pub const class = objc.class("NSViewAnimation");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -12029,9 +12029,9 @@ pub const NSViewAnimation = struct {
 
 pub const NSViewController = struct {
     pub const Super = NSResponder;
-    pub const name = "NSViewController";
+    pub const class = objc.class("NSViewController");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -12094,9 +12094,9 @@ pub const NSViewController = struct {
 
 pub const NSVisualEffectView = struct {
     pub const Super = NSView;
-    pub const name = "NSVisualEffectView";
+    pub const class = objc.class("NSVisualEffectView");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -12149,9 +12149,9 @@ pub const NSVisualEffectView = struct {
 
 pub const NSWindow = struct {
     pub const Super = NSResponder;
-    pub const name = "NSWindow";
+    pub const class = objc.class("NSWindow");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -12569,9 +12569,9 @@ pub const NSWindow = struct {
 
 pub const NSWindowController = struct {
     pub const Super = NSResponder;
-    pub const name = "NSWindowController";
+    pub const class = objc.class("NSWindowController");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -12612,9 +12612,9 @@ pub const NSWindowController = struct {
 };
 
 pub const NSWindowTab = struct {
-    pub const name = "NSWindowTab";
+    pub const class = objc.class("NSWindowTab");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -12630,9 +12630,9 @@ pub const NSWindowTab = struct {
 };
 
 pub const NSWindowTabGroup = struct {
-    pub const name = "NSWindowTabGroup";
+    pub const class = objc.class("NSWindowTabGroup");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -12650,9 +12650,9 @@ pub const NSWindowTabGroup = struct {
 };
 
 pub const NSWorkspace = struct {
-    pub const name = "NSWorkspace";
+    pub const class = objc.class("NSWorkspace");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -12741,9 +12741,9 @@ pub const NSWorkspace = struct {
 };
 
 pub const NSWorkspaceOpenConfiguration = struct {
-    pub const name = "NSWorkspaceOpenConfiguration";
+    pub const class = objc.class("NSWorkspaceOpenConfiguration");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -12777,9 +12777,9 @@ pub const NSWorkspaceOpenConfiguration = struct {
 };
 
 pub const NSWritingToolsCoordinator = struct {
-    pub const name = "NSWritingToolsCoordinator";
+    pub const class = objc.class("NSWritingToolsCoordinator");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -12837,9 +12837,9 @@ pub const NSWritingToolsCoordinator = struct {
 };
 
 pub const NSWritingToolsCoordinatorAnimationParameters = struct {
-    pub const name = "NSWritingToolsCoordinatorAnimationParameters";
+    pub const class = objc.class("NSWritingToolsCoordinatorAnimationParameters");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -12853,9 +12853,9 @@ pub const NSWritingToolsCoordinatorAnimationParameters = struct {
 };
 
 pub const NSWritingToolsCoordinatorContext = struct {
-    pub const name = "NSWritingToolsCoordinatorContext";
+    pub const class = objc.class("NSWritingToolsCoordinatorContext");
     pub const send = objc.InstanceDispatch(@This()).invoke;
-    pub const class = objc.ClassDispatch(@This()).invoke;
+    pub const static = objc.StaticDispatch(@This()).invoke;
     id: Object,
 
     pub const methods = .{
@@ -12899,12 +12899,12 @@ pub fn viewObj(val: anytype) Object {
 }
 
 pub fn init(comptime class_name: [*:0]const u8) Object {
-    return objc.send(Object, objc.class(Object, class_name, "alloc", .{}), "init", .{});
+    return objc.send(objc.send(objc.getClass(class_name).?, "alloc", Object, .{}), "init", Object, .{});
 }
 
 pub fn nsArray(items: []const Object) Object {
-    const arr = objc.class(Object, "NSMutableArray", "arrayWithCapacity:", .{@as(c_ulong, items.len)});
-    for (items) |item| objc.send(void, arr, "addObject:", .{item});
+    const arr = objc.send(objc.class("NSMutableArray"), "arrayWithCapacity:", Object, .{@as(c_ulong, items.len)});
+    for (items) |item| objc.send(arr, "addObject:", void, .{item});
     return arr;
 }
 

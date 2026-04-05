@@ -103,74 +103,85 @@ extern "c" fn objc_msgSend() void;
 extern "c" fn objc_msgSend_stret() void;
 
 /// Send a message to an ObjC object/class.
-///   const result = send(ReturnType, target, "selectorName:", .{ arg1, arg2 });
-pub fn send(comptime ReturnType: type, target: anytype, comptime selector: [*:0]const u8, args: anytype) ReturnType {
-    return sendSel(ReturnType, target, sel(selector), args);
-}
-
-/// Send with a pre-resolved selector.
-pub fn sendSel(comptime ReturnType: type, target: anytype, _sel: Sel, args: anytype) ReturnType {
+///   const result = send(target, "selectorName:", ReturnType, .{ arg1, arg2 });
+pub fn send(target: anytype, comptime selector: [*:0]const u8, comptime ReturnType: type, args: anytype) ReturnType {
     const target_ptr = objcPtr(target);
     const FnType = MsgSendFn(ReturnType, @TypeOf(args));
     const func: *const FnType = @ptrCast(&objc_msgSend);
-    return @call(.auto, func, .{ target_ptr, _sel } ++ args);
+    return @call(.auto, func, .{ target_ptr, sel(selector) } ++ args);
 }
 
-/// Alloc an ObjC class by name, returning a chainable Id.
-///   objc.alloc("NSAttributedString").send(Object, "initWithHTML:options:", .{ data, opts })
+/// Get an ObjC class pointer resolved at link time — zero runtime cost.
+///
+/// Every ObjC class emits a linker symbol `_OBJC_CLASS_$_<ClassName>` in its
+/// framework's Mach-O binary. The dynamic linker (dyld) resolves these symbols
+/// at load time and writes the class pointer into the Global Offset Table (GOT).
+///
+/// This function uses Zig's @extern to reference that symbol directly, which
+/// compiles down to a single `adrp` + `ldr` from the GOT — the same codegen
+/// that Swift produces for ObjC class references. No hash table lookup, no
+/// function call overhead.
+///
+/// Compare to `objc_getClass("NSWindow")` which does a runtime hash table
+/// lookup on every call (~10-20ns). The linker approach is effectively free
+/// since the pointer is already in the GOT after process launch.
+///
+/// Only works for classes defined in linked frameworks (AppKit, Foundation,
+/// WebKit, etc). Does not work for dynamically registered classes created
+/// with `objc_allocateClassPair` at runtime.
+pub fn class(comptime name: [:0]const u8) Class {
+    return @ptrCast(@extern(*anyopaque, .{ .name = "OBJC_CLASS_$_" ++ name }));
+}
+
 pub fn alloc(comptime T: type) Id {
-    const cls = getClass(T.name) orelse @panic("class not found: " ++ T.name);
-    return .{ .id = send(Object, cls, "alloc", .{}) };
+    return .{ .id = send(T.class, "alloc", Object, .{}) };
 }
 
 pub const Id = struct {
     id: Object,
 
-    pub fn send(self: Id, comptime R: type, comptime selector: [*:0]const u8, args: anytype) R {
-        return sendSel(R, self.id, sel(selector), args);
+    pub fn send(self: Id, comptime selector: [*:0]const u8, comptime R: type, args: anytype) R {
+        const target_ptr = objcPtr(self.id);
+        const FnType = MsgSendFn(R, @TypeOf(args));
+        const func: *const FnType = @ptrCast(&objc_msgSend);
+        return @call(.auto, func, .{ target_ptr, sel(selector) } ++ args);
     }
 };
 
-/// Send a message to an ObjC class by name.
-///   const result = class(ReturnType, "NSObject", "alloc", .{});
-pub fn class(comptime ReturnType: type, comptime class_name: [*:0]const u8, comptime selector: [*:0]const u8, args: anytype) ReturnType {
-    const cls = getClass(class_name) orelse @panic("class not found");
-    return send(ReturnType, cls, selector, args);
-}
 
 // ── NSString helpers ───────────────────────────────────────────────────
 
 pub fn nsString(str: [*:0]const u8) Object {
-    return class(Object, "NSString", "stringWithUTF8String:", .{str});
+    return send(class("NSString"), "stringWithUTF8String:", Object, .{str});
 }
 
 pub fn nsStringFromSlice(bytes: []const u8) Object {
-    return send(Object, getClass("NSString").?, "stringWithUTF8String:", .{bytes.ptr});
+    return send(class("NSString"), "stringWithUTF8String:", Object, .{bytes.ptr});
 }
 
 pub fn toZigString(ns_str: Object) ?[*:0]const u8 {
-    return send(?[*:0]const u8, ns_str, "UTF8String", .{});
+    return send(ns_str, "UTF8String", ?[*:0]const u8, .{});
 }
 
 // ── NSNumber helpers ───────────────────────────────────────────────────
 
 pub fn nsNumberWithInt(val: c_int) Object {
-    return class(Object, "NSNumber", "numberWithInt:", .{val});
+    return send(class("NSNumber"), "numberWithInt:", Object, .{val});
 }
 
 pub fn nsNumberWithBool(val: bool) Object {
     const byte: u8 = if (val) 1 else 0;
-    return class(Object, "NSNumber", "numberWithBool:", .{byte});
+    return send(class("NSNumber"), "numberWithBool:", Object, .{byte});
 }
 
 // ── NSValue helpers (for wrapping pointers) ────────────────────────────
 
 pub fn nsValueWithPointer(ptr: *anyopaque) Object {
-    return class(Object, "NSValue", "valueWithPointer:", .{ptr});
+    return send(class("NSValue"), "valueWithPointer:", Object, .{ptr});
 }
 
 pub fn pointerFromNSValue(val: Object) ?*anyopaque {
-    return send(?*anyopaque, val, "pointerValue", .{});
+    return send(val, "pointerValue", ?*anyopaque, .{});
 }
 
 // ── Autorelease pool ───────────────────────────────────────────────────
@@ -223,11 +234,11 @@ pub fn typedSendFor(comptime Cls: type, comptime table: anytype, target: Object,
     const sel_s = comptime selStr(selector);
     // Implicit NSObject selectors have no table entry for arg types — they take no args
     if (Cls != void and comptime isObjcStruct(Cls) and findInTable(table, sel_s) == null) {
-        const raw = send(AbiType(Ret), target, selector, .{});
+        const raw = send(target, selector, AbiType(Ret), .{});
         return wrapReturn(Ret, raw);
     }
     const AbiArgs = AbiArgTypes(SendArgTypes(table, selector));
-    const raw = send(AbiType(Ret), target, selector, coerceArgs(AbiArgs, args));
+    const raw = send(target, selector, AbiType(Ret), coerceArgs(AbiArgs, args));
     return wrapReturn(Ret, raw);
 }
 
@@ -239,13 +250,14 @@ pub fn typedClassSend(comptime class_name: [*:0]const u8, comptime table: anytyp
 pub fn typedClassSendFor(comptime Cls: type, comptime class_name: [*:0]const u8, comptime table: anytype, comptime selector: [*:0]const u8, args: anytype) SendReturnFor(Cls, table, selector) {
     const Ret = SendReturnFor(Cls, table, selector);
     const sel_s = comptime selStr(selector);
+    const cls_ptr = class(std.mem.span(class_name));
     // Implicit NSObject selectors have no table entry for arg types — they take no args
     if (Cls != void and comptime isObjcStruct(Cls) and findInTable(table, sel_s) == null) {
-        const raw = class(AbiType(Ret), class_name, selector, .{});
+        const raw = send(cls_ptr, selector, AbiType(Ret), .{});
         return wrapReturn(Ret, raw);
     }
     const AbiArgs = AbiArgTypes(SendArgTypes(table, selector));
-    const raw = class(AbiType(Ret), class_name, selector, coerceArgs(AbiArgs, args));
+    const raw = send(cls_ptr, selector, AbiType(Ret), coerceArgs(AbiArgs, args));
     return wrapReturn(Ret, raw);
 }
 
@@ -318,7 +330,7 @@ pub fn typedSendChain(comptime Cls: type, target: Object, comptime selector: [*:
     const RetType = SendReturnChain(Cls, selector);
     const ArgTypes = SendArgTypesChain(Cls, selector);
     const AbiArgs = AbiArgTypes(ArgTypes);
-    const raw = send(AbiType(RetType), target, selector, coerceArgs(AbiArgs, args));
+    const raw = send(target, selector, AbiType(RetType), coerceArgs(AbiArgs, args));
     return wrapReturn(RetType, raw);
 }
 
@@ -348,14 +360,14 @@ pub fn InstanceDispatch(comptime Self: type) type {
 pub fn RawDispatch(comptime Self: type) type {
     return struct {
         pub fn invoke(self: Self, comptime ReturnType: type, comptime selector: [*:0]const u8, args: anytype) ReturnType {
-            return send(ReturnType, self.id, selector, args);
+            return send(self.id, selector, ReturnType, args);
         }
     };
 }
 
-/// Generates class dispatch for an ObjC wrapper struct.
-/// Usage in generated code: `pub const class = objc.ClassDispatch(@This()).invoke;`
-pub fn ClassDispatch(comptime Self: type) type {
+/// Generates static (class-level) dispatch for an ObjC wrapper struct.
+/// Usage in generated code: `pub const static = objc.StaticDispatch(@This()).invoke;`
+pub fn StaticDispatch(comptime Self: type) type {
     return struct {
         pub fn invoke(comptime selector: [*:0]const u8, args: anytype) ClassReturn(Self, selector) {
             return classSend(Self, selector, args);
@@ -392,7 +404,7 @@ fn instanceSend(comptime Cls: type, target: Object, comptime selector: [*:0]cons
     if (@hasDecl(Cls, "Super")) {
         const ArgTypes = SendArgTypesChain(Cls, selector);
         const AbiArgs = AbiArgTypes(ArgTypes);
-        const raw = send(AbiType(Ret), target, selector, coerceArgs(AbiArgs, args));
+        const raw = send(target, selector, AbiType(Ret), coerceArgs(AbiArgs, args));
         return wrapReturn(Ret, raw);
     }
 
@@ -400,13 +412,13 @@ fn instanceSend(comptime Cls: type, target: Object, comptime selector: [*:0]cons
     if (@hasDecl(Cls, "methods")) {
         if (comptime findInTable(Cls.methods, sel_s)) |_| {
             const AbiArgs = AbiArgTypes(SendArgTypes(Cls.methods, selector));
-            const raw = send(AbiType(Ret), target, selector, coerceArgs(AbiArgs, args));
+            const raw = send(target, selector, AbiType(Ret), coerceArgs(AbiArgs, args));
             return wrapReturn(Ret, raw);
         }
     }
 
     // Implicit NSObject (init, alloc) — no args
-    const raw = send(AbiType(Ret), target, selector, .{});
+    const raw = send(target, selector, AbiType(Ret), .{});
     return wrapReturn(Ret, raw);
 }
 
@@ -414,17 +426,17 @@ fn instanceSend(comptime Cls: type, target: Object, comptime selector: [*:0]cons
 fn classSend(comptime Cls: type, comptime selector: [*:0]const u8, args: anytype) ClassReturn(Cls, selector) {
     const Ret = ClassReturn(Cls, selector);
     const sel_s = comptime selStr(selector);
-    const class_name = Cls.name;
+    const cls_ptr = Cls.class;
     const table = if (@hasDecl(Cls, "class_methods")) Cls.class_methods else .{};
 
     if (comptime findInTable(table, sel_s)) |_| {
         const AbiArgs = AbiArgTypes(SendArgTypes(table, selector));
-        const raw = class(AbiType(Ret), class_name, selector, coerceArgs(AbiArgs, args));
+        const raw = send(cls_ptr, selector, AbiType(Ret), coerceArgs(AbiArgs, args));
         return wrapReturn(Ret, raw);
     }
 
     // Implicit NSObject (alloc) — no args
-    const raw = class(AbiType(Ret), class_name, selector, .{});
+    const raw = send(cls_ptr, selector, AbiType(Ret), .{});
     return wrapReturn(Ret, raw);
 }
 

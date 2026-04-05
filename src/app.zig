@@ -124,7 +124,7 @@ pub fn main() void {
     const pool = objc.autoreleasePoolPush();
     defer objc.autoreleasePoolPop(pool);
 
-    const app = AppKit.NSApplication.class("sharedApplication", .{});
+    const app = AppKit.NSApplication.static("sharedApplication", .{});
     _ = app.send("setActivationPolicy:", .{AppKit.NSApplication.ActivationPolicy.regular});
 
     setupMenu(app);
@@ -138,27 +138,27 @@ pub fn main() void {
 // ── Menu bar ───────────────────────────────────────────────────────────
 
 fn setupMenu(app: AppKit.NSApplication) void {
-    const bar = AppKit.NSMenu.class("alloc", .{}).send("initWithTitle:", .{""});
+    const bar = AppKit.NSMenu.static("alloc", .{}).send("initWithTitle:", .{""});
 
     { // App menu
-        const item = AppKit.NSMenuItem.class("alloc", .{}).send("init", .{});
-        const menu = AppKit.NSMenu.class("alloc", .{}).send("initWithTitle:", .{"Todoz"});
+        const item = AppKit.NSMenuItem.static("alloc", .{}).send("init", .{});
+        const menu = AppKit.NSMenu.static("alloc", .{}).send("initWithTitle:", .{"Todoz"});
         _ = menu.send("addItemWithTitle:action:keyEquivalent:", .{ "About Todoz", objc.sel("orderFrontStandardAboutPanel:"), "" });
-        menu.send("addItem:", .{AppKit.NSMenuItem.class("separatorItem", .{})});
+        menu.send("addItem:", .{AppKit.NSMenuItem.static("separatorItem", .{})});
         _ = menu.send("addItemWithTitle:action:keyEquivalent:", .{ "Hide Todoz", objc.sel("hide:"), "h" });
         _ = menu.send("addItemWithTitle:action:keyEquivalent:", .{ "Hide Others", objc.sel("hideOtherApplications:"), "" });
-        menu.send("addItem:", .{AppKit.NSMenuItem.class("separatorItem", .{})});
+        menu.send("addItem:", .{AppKit.NSMenuItem.static("separatorItem", .{})});
         _ = menu.send("addItemWithTitle:action:keyEquivalent:", .{ "Quit Todoz", objc.sel("terminate:"), "q" });
         item.send("setSubmenu:", .{menu.id});
         bar.send("addItem:", .{item.id});
     }
 
     { // Edit menu
-        const item = AppKit.NSMenuItem.class("alloc", .{}).send("init", .{});
-        const menu = AppKit.NSMenu.class("alloc", .{}).send("initWithTitle:", .{"Edit"});
+        const item = AppKit.NSMenuItem.static("alloc", .{}).send("init", .{});
+        const menu = AppKit.NSMenu.static("alloc", .{}).send("initWithTitle:", .{"Edit"});
         _ = menu.send("addItemWithTitle:action:keyEquivalent:", .{ "Undo", objc.sel("undo:"), "z" });
         _ = menu.send("addItemWithTitle:action:keyEquivalent:", .{ "Redo", objc.sel("redo:"), "Z" });
-        menu.send("addItem:", .{AppKit.NSMenuItem.class("separatorItem", .{})});
+        menu.send("addItem:", .{AppKit.NSMenuItem.static("separatorItem", .{})});
         _ = menu.send("addItemWithTitle:action:keyEquivalent:", .{ "Cut", objc.sel("cut:"), "x" });
         _ = menu.send("addItemWithTitle:action:keyEquivalent:", .{ "Copy", objc.sel("copy:"), "c" });
         _ = menu.send("addItemWithTitle:action:keyEquivalent:", .{ "Paste", objc.sel("paste:"), "v" });
@@ -168,8 +168,8 @@ fn setupMenu(app: AppKit.NSApplication) void {
     }
 
     { // Window menu
-        const item = AppKit.NSMenuItem.class("alloc", .{}).send("init", .{});
-        const menu = AppKit.NSMenu.class("alloc", .{}).send("initWithTitle:", .{"Window"});
+        const item = AppKit.NSMenuItem.static("alloc", .{}).send("init", .{});
+        const menu = AppKit.NSMenu.static("alloc", .{}).send("initWithTitle:", .{"Window"});
         _ = menu.send("addItemWithTitle:action:keyEquivalent:", .{ "Close", objc.sel("performClose:"), "w" });
         _ = menu.send("addItemWithTitle:action:keyEquivalent:", .{ "Minimize", objc.sel("performMiniaturize:"), "m" });
         _ = menu.send("addItemWithTitle:action:keyEquivalent:", .{ "Zoom", objc.sel("performZoom:"), "" });
@@ -185,19 +185,19 @@ fn setupMenu(app: AppKit.NSApplication) void {
 
 fn registerAllClasses() void {
     { // App delegate
-        const cls = objc.allocateClassPair(objc.getClass("NSObject").?, "TodozAppDelegate") orelse @panic("failed");
+        const cls = objc.allocateClassPair(objc.class("NSObject"), "TodozAppDelegate") orelse @panic("failed");
         _ = objc.addMethod(cls, objc.sel("applicationDidFinishLaunching:"), @ptrCast(&appDidFinishLaunching), "v@:@");
         _ = objc.addMethod(cls, objc.sel("applicationShouldTerminateAfterLastWindowClosed:"), @ptrCast(&appShouldTerminate), "B@:@");
         objc.registerClassPair(cls);
     }
     {
-        const cls = objc.allocateClassPair(objc.getClass("NSObject").?, "TodozInputDelegate") orelse return;
+        const cls = objc.allocateClassPair(objc.class("NSObject"), "TodozInputDelegate") orelse return;
         _ = objc.addMethod(cls, objc.sel("control:textView:doCommandBySelector:"), @ptrCast(&inputDoCommand), "B@:@@:");
         _ = objc.addMethod(cls, objc.sel("addTodoz:"), @ptrCast(&addTodozAction), "v@:@");
         objc.registerClassPair(cls);
     }
     {
-        const cls = objc.allocateClassPair(objc.getClass("NSObject").?, "TodozActionHandler") orelse return;
+        const cls = objc.allocateClassPair(objc.class("NSObject"), "TodozActionHandler") orelse return;
         _ = objc.addMethod(cls, objc.sel("clearCompleted:"), @ptrCast(&clearCompletedAction), "v@:@");
         _ = objc.addMethod(cls, objc.sel("toggleTodoz:"), @ptrCast(&toggleTodozAction), "v@:@");
         _ = objc.addMethod(cls, objc.sel("removeTodoz:"), @ptrCast(&removeTodozAction), "v@:@");
@@ -205,14 +205,14 @@ fn registerAllClasses() void {
         objc.registerClassPair(cls);
     }
     {
-        const cls = objc.allocateClassPair(objc.getClass("NSObject").?, "TodozToolbarDelegate") orelse return;
+        const cls = objc.allocateClassPair(objc.class("NSObject"), "TodozToolbarDelegate") orelse return;
         _ = objc.addMethod(cls, objc.sel("toolbar:itemForItemIdentifier:willBeInsertedIntoToolbar:"), @ptrCast(&toolbarItemForIdentifier), "@36@0:8@16@24B32");
         _ = objc.addMethod(cls, objc.sel("toolbarAllowedItemIdentifiers:"), @ptrCast(&toolbarAllowedIdentifiers), "@24@0:8@16");
         _ = objc.addMethod(cls, objc.sel("toolbarDefaultItemIdentifiers:"), @ptrCast(&toolbarDefaultIdentifiers), "@24@0:8@16");
         objc.registerClassPair(cls);
     }
     {
-        const cls = objc.allocateClassPair(objc.getClass("NSClipView").?, "TodozFlippedClipView") orelse return;
+        const cls = objc.allocateClassPair(objc.class("NSClipView"), "TodozFlippedClipView") orelse return;
         _ = objc.addMethod(cls, objc.sel("isFlipped"), @ptrCast(&flippedClipIsFlipped), "B@:");
         objc.registerClassPair(cls);
     }
@@ -239,10 +239,10 @@ fn toolbarItemForIdentifier(_: Object, _: objc.Sel, _: Object, ident: Object, _:
     const ident_slice = std.mem.span(ident_str);
 
     if (std.mem.eql(u8, ident_slice, tb_filter)) {
-        const item = AppKit.NSToolbarItem.class("alloc", .{}).send("initWithItemIdentifier:", .{ident});
+        const item = AppKit.NSToolbarItem.static("alloc", .{}).send("initWithItemIdentifier:", .{ident});
         const handler = AppKit.init("TodozActionHandler");
 
-        filter_seg = AppKit.NSSegmentedControl.class("alloc", .{}).send("initWithFrame:", .{AppKit.NSRect.make(0, 0, 200, 24)});
+        filter_seg = AppKit.NSSegmentedControl.static("alloc", .{}).send("initWithFrame:", .{AppKit.NSRect.make(0, 0, 200, 24)});
         filter_seg.send("setSegmentCount:", .{3});
         filter_seg.send("setLabel:forSegment:", .{ "All", 0 });
         filter_seg.send("setLabel:forSegment:", .{ "Pending", 1 });
@@ -274,7 +274,7 @@ fn toolbarDefaultIdentifiers(_: Object, _: objc.Sel, _: Object) callconv(cc) Obj
 // ── UI construction ────────────────────────────────────────────────────
 
 fn buildUI() void {
-    main_window = AppKit.NSWindow.class("alloc", .{}).send("initWithContentRect:styleMask:backing:defer:", .{
+    main_window = AppKit.NSWindow.static("alloc", .{}).send("initWithContentRect:styleMask:backing:defer:", .{
         AppKit.NSRect.make(200, 200, 560, 680),
         (1 << 0) | (1 << 1) | (1 << 2) | (1 << 3), // titled|closable|miniaturizable|resizable
         2, // buffered
@@ -286,7 +286,7 @@ fn buildUI() void {
     main_window.send("setSubtitle:", .{"0 pending \xc2\xb7 0 done"});
 
     { // Toolbar
-        const toolbar = AppKit.NSToolbar.class("alloc", .{}).send("initWithIdentifier:", .{"org.nounder.todoz.toolbar"});
+        const toolbar = AppKit.NSToolbar.static("alloc", .{}).send("initWithIdentifier:", .{"org.nounder.todoz.toolbar"});
         toolbar_delegate_inst = AppKit.init("TodozToolbarDelegate");
         toolbar.send("setDelegate:", .{toolbar_delegate_inst});
         toolbar.send("setDisplayMode:", .{AppKit.NSToolbar.DisplayMode.iconOnly});
@@ -294,22 +294,22 @@ fn buildUI() void {
         main_window.send("setToolbarStyle:", .{AppKit.NSWindow.ToolbarStyle.unified});
     }
 
-    const root = AppKit.NSStackView.class("alloc", .{}).send("initWithFrame:", .{AppKit.NSRect.make(0, 0, 0, 0)});
+    const root = AppKit.NSStackView.static("alloc", .{}).send("initWithFrame:", .{AppKit.NSRect.make(0, 0, 0, 0)});
     root.send("setOrientation:", .{AppKit.NSUserInterfaceLayoutOrientation.vertical});
     root.send("setSpacing:", .{0});
 
     { // Input bar
-        input_field = AppKit.NSTextField.class("alloc", .{}).send("initWithFrame:", .{AppKit.NSRect.make(0, 0, 200, 24)});
+        input_field = AppKit.NSTextField.static("alloc", .{}).send("initWithFrame:", .{AppKit.NSRect.make(0, 0, 200, 24)});
         input_field.send("setPlaceholderString:", .{"What needs to be done?"});
         input_field.send("setTranslatesAutoresizingMaskIntoConstraints:", .{false});
-        objc.send(void, input_field.id, "setAccessibilityLabel:", .{objc.nsString("New todo title")});
-        input_field.send("setFont:", .{AppKit.NSFont.class("systemFontOfSize:", .{13})});
+        objc.send(input_field.id, "setAccessibilityLabel:", void, .{objc.nsString("New todo title")});
+        input_field.send("setFont:", .{AppKit.NSFont.static("systemFontOfSize:", .{13})});
         input_field.send("setContentHuggingPriority:forOrientation:", .{ 249, 0 });
 
         const del = AppKit.init("TodozInputDelegate");
         input_field.send("setDelegate:", .{del});
 
-        const bar = AppKit.NSStackView.class("alloc", .{}).send("initWithFrame:", .{AppKit.NSRect.make(0, 0, 0, 0)});
+        const bar = AppKit.NSStackView.static("alloc", .{}).send("initWithFrame:", .{AppKit.NSRect.make(0, 0, 0, 0)});
         bar.send("setOrientation:", .{AppKit.NSUserInterfaceLayoutOrientation.horizontal});
         bar.send("setSpacing:", .{10});
         bar.send("setEdgeInsets:", .{AppKit.NSEdgeInsets{ .top = 10, .left = 16, .bottom = 10, .right = 16 }});
@@ -318,24 +318,24 @@ fn buildUI() void {
     }
 
     { // Separator
-        const sep = AppKit.NSBox.class("alloc", .{}).send("initWithFrame:", .{AppKit.NSRect.make(0, 0, 0, 1)});
+        const sep = AppKit.NSBox.static("alloc", .{}).send("initWithFrame:", .{AppKit.NSRect.make(0, 0, 0, 1)});
         sep.send("setBoxType:", .{2});
         sep.send("setTranslatesAutoresizingMaskIntoConstraints:", .{false});
         root.send("addArrangedSubview:", .{sep.id});
     }
 
     { // Scroll view + todo list
-        scroll_view = AppKit.NSScrollView.class("alloc", .{}).send("initWithFrame:", .{AppKit.NSRect.make(0, 0, 0, 0)});
+        scroll_view = AppKit.NSScrollView.static("alloc", .{}).send("initWithFrame:", .{AppKit.NSRect.make(0, 0, 0, 0)});
         scroll_view.send("setTranslatesAutoresizingMaskIntoConstraints:", .{false});
         scroll_view.send("setHasVerticalScroller:", .{true});
         scroll_view.send("setAutohidesScrollers:", .{true});
         scroll_view.send("setDrawsBackground:", .{false});
 
-        todo_list_stack = AppKit.NSStackView.class("alloc", .{}).send("initWithFrame:", .{AppKit.NSRect.make(0, 0, 0, 0)});
+        todo_list_stack = AppKit.NSStackView.static("alloc", .{}).send("initWithFrame:", .{AppKit.NSRect.make(0, 0, 0, 0)});
         todo_list_stack.send("setOrientation:", .{AppKit.NSUserInterfaceLayoutOrientation.vertical});
         todo_list_stack.send("setSpacing:", .{0});
 
-        const fclip = objc.send(Object, objc.class(Object, "TodozFlippedClipView", "alloc", .{}), "initWithFrame:", .{AppKit.NSRect.make(0, 0, 0, 0)});
+        const fclip = objc.send(objc.send(objc.getClass("TodozFlippedClipView").?, "alloc", Object, .{}), "initWithFrame:", Object, .{AppKit.NSRect.make(0, 0, 0, 0)});
         scroll_view.send("setContentView:", .{fclip});
         scroll_view.send("setDocumentView:", .{todo_list_stack.id});
 
@@ -348,29 +348,29 @@ fn buildUI() void {
     }
 
     { // Empty state
-        empty_container = AppKit.NSStackView.class("alloc", .{}).send("initWithFrame:", .{AppKit.NSRect.make(0, 0, 0, 0)});
+        empty_container = AppKit.NSStackView.static("alloc", .{}).send("initWithFrame:", .{AppKit.NSRect.make(0, 0, 0, 0)});
         empty_container.send("setOrientation:", .{AppKit.NSUserInterfaceLayoutOrientation.vertical});
         empty_container.send("setSpacing:", .{6});
         empty_container.send("setEdgeInsets:", .{AppKit.NSEdgeInsets{ .top = 60, .left = 60, .bottom = 60, .right = 60 }});
         empty_container.send("setAlignment:", .{9}); // centerX
 
-        const img = AppKit.NSImage.class("imageWithSystemSymbolName:accessibilityDescription:", .{ "checkmark.circle", "No todos" });
-        const icon: AppKit.NSImageView = .{ .id = AppKit.NSImageView.class("imageViewWithImage:", .{img}) };
+        const img = AppKit.NSImage.static("imageWithSystemSymbolName:accessibilityDescription:", .{ "checkmark.circle", "No todos" });
+        const icon: AppKit.NSImageView = .{ .id = AppKit.NSImageView.static("imageViewWithImage:", .{img}) };
         icon.send("setTranslatesAutoresizingMaskIntoConstraints:", .{false});
-        icon.send("setContentTintColor:", .{AppKit.NSColor.class("secondaryLabelColor", .{})});
-        icon.send("setSymbolConfiguration:", .{AppKit.NSImageSymbolConfiguration.class("configurationWithPointSize:weight:", .{ 36.0, 0.0 })});
+        icon.send("setContentTintColor:", .{AppKit.NSColor.static("secondaryLabelColor", .{})});
+        icon.send("setSymbolConfiguration:", .{AppKit.NSImageSymbolConfiguration.static("configurationWithPointSize:weight:", .{ 36.0, 0.0 })});
 
-        const title: AppKit.NSTextField = .{ .id = AppKit.NSTextField.class("labelWithString:", .{"No Todos Yet"}) };
+        const title: AppKit.NSTextField = .{ .id = AppKit.NSTextField.static("labelWithString:", .{"No Todos Yet"}) };
         title.send("setTranslatesAutoresizingMaskIntoConstraints:", .{false});
-        title.send("setFont:", .{AppKit.NSFont.class("boldSystemFontOfSize:", .{17})});
-        title.send("setTextColor:", .{AppKit.NSColor.class("secondaryLabelColor", .{})});
+        title.send("setFont:", .{AppKit.NSFont.static("boldSystemFontOfSize:", .{17})});
+        title.send("setTextColor:", .{AppKit.NSColor.static("secondaryLabelColor", .{})});
         title.send("setAlignment:", .{2});
         title.send("setContentCompressionResistancePriority:forOrientation:", .{ 999, 0 });
 
-        const hint: AppKit.NSTextField = .{ .id = AppKit.NSTextField.class("labelWithString:", .{"Add one above to get started."}) };
+        const hint: AppKit.NSTextField = .{ .id = AppKit.NSTextField.static("labelWithString:", .{"Add one above to get started."}) };
         hint.send("setTranslatesAutoresizingMaskIntoConstraints:", .{false});
-        hint.send("setFont:", .{AppKit.NSFont.class("systemFontOfSize:", .{13})});
-        hint.send("setTextColor:", .{AppKit.NSColor.class("tertiaryLabelColor", .{})});
+        hint.send("setFont:", .{AppKit.NSFont.static("systemFontOfSize:", .{13})});
+        hint.send("setTextColor:", .{AppKit.NSColor.static("tertiaryLabelColor", .{})});
         hint.send("setAlignment:", .{2});
         hint.send("setContentCompressionResistancePriority:forOrientation:", .{ 999, 0 });
 
@@ -387,8 +387,8 @@ fn buildUI() void {
     AppKit.NSLayoutConstraint.pinWidthEqual(scroll_view.id, root.id);
 
     refreshTodozList();
-    objc.send(void, main_window.id, "makeKeyAndOrderFront:", .{null});
-    AppKit.NSApplication.class("sharedApplication", .{}).send("activateIgnoringOtherApps:", .{true});
+    objc.send(main_window.id, "makeKeyAndOrderFront:", void, .{null});
+    AppKit.NSApplication.static("sharedApplication", .{}).send("activateIgnoringOtherApps:", .{true});
 }
 
 // ── Actions ────────────────────────────────────────────────────────────
@@ -478,7 +478,7 @@ fn refreshTodozList() void {
 }
 
 fn buildTodozRow(t: *const Todoz, idx: usize) AppKit.NSStackView {
-    const row = AppKit.NSStackView.class("alloc", .{}).send("initWithFrame:", .{AppKit.NSRect.make(0, 0, 0, 0)});
+    const row = AppKit.NSStackView.static("alloc", .{}).send("initWithFrame:", .{AppKit.NSRect.make(0, 0, 0, 0)});
     row.send("setOrientation:", .{AppKit.NSUserInterfaceLayoutOrientation.horizontal});
     row.send("setSpacing:", .{10});
     row.send("setEdgeInsets:", .{AppKit.NSEdgeInsets{ .top = 10, .left = 16, .bottom = 10, .right = 16 }});
@@ -488,7 +488,7 @@ fn buildTodozRow(t: *const Todoz, idx: usize) AppKit.NSStackView {
         rv.send("setWantsLayer:", .{true});
         const layer: AppKit.CALayer = .{ .id = @ptrCast(rv.send("layer", .{}).?) };
         const alpha: f64 = if (idx % 2 == 0) 0.08 else 0.16;
-        const color: AppKit.NSColor = .{ .id = AppKit.NSColor.class("colorWithRed:green:blue:alpha:", .{ 0.5, 0.5, 0.5, alpha }) };
+        const color: AppKit.NSColor = .{ .id = AppKit.NSColor.static("colorWithRed:green:blue:alpha:", .{ 0.5, 0.5, 0.5, alpha }) };
         layer.send("setBackgroundColor:", .{color.send("CGColor", .{})});
     }
 
@@ -497,16 +497,16 @@ fn buildTodozRow(t: *const Todoz, idx: usize) AppKit.NSStackView {
     { // Checkbox
         const sym_name = if (t.completed) "checkmark.circle.fill" else "circle";
         const sym_desc = if (t.completed) "Mark incomplete" else "Mark complete";
-        const img = AppKit.NSImage.class("imageWithSystemSymbolName:accessibilityDescription:", .{ sym_name, sym_desc });
-        const checkbox: AppKit.NSButton = .{ .id = AppKit.NSButton.class("buttonWithImage:target:action:", .{ img, handler, objc.sel("toggleTodoz:") }) };
+        const img = AppKit.NSImage.static("imageWithSystemSymbolName:accessibilityDescription:", .{ sym_name, sym_desc });
+        const checkbox: AppKit.NSButton = .{ .id = AppKit.NSButton.static("buttonWithImage:target:action:", .{ img, handler, objc.sel("toggleTodoz:") }) };
         checkbox.send("setTranslatesAutoresizingMaskIntoConstraints:", .{false});
         checkbox.send("setBordered:", .{false});
         checkbox.send("setTag:", .{t.id});
         checkbox.send("setContentTintColor:", .{if (t.completed)
-            AppKit.NSColor.class("systemGreenColor", .{})
+            AppKit.NSColor.static("systemGreenColor", .{})
         else
-            AppKit.NSColor.class("secondaryLabelColor", .{})});
-        checkbox.send("setSymbolConfiguration:", .{AppKit.NSImageSymbolConfiguration.class("configurationWithPointSize:weight:", .{ 18.0, 0.0 })});
+            AppKit.NSColor.static("secondaryLabelColor", .{})});
+        checkbox.send("setSymbolConfiguration:", .{AppKit.NSImageSymbolConfiguration.static("configurationWithPointSize:weight:", .{ 18.0, 0.0 })});
         row.send("addArrangedSubview:", .{checkbox.id});
     }
 
@@ -515,14 +515,14 @@ fn buildTodozRow(t: *const Todoz, idx: usize) AppKit.NSStackView {
         @memcpy(title_buf[0..t.title_len], t.title[0..t.title_len]);
         title_buf[t.title_len] = 0;
 
-        const label: AppKit.NSTextField = .{ .id = AppKit.NSTextField.class("labelWithString:", .{objc.nsString(@ptrCast(&title_buf))}) };
+        const label: AppKit.NSTextField = .{ .id = AppKit.NSTextField.static("labelWithString:", .{objc.nsString(@ptrCast(&title_buf))}) };
         label.send("setTranslatesAutoresizingMaskIntoConstraints:", .{false});
-        label.send("setFont:", .{AppKit.NSFont.class("systemFontOfSize:", .{13})});
+        label.send("setFont:", .{AppKit.NSFont.static("systemFontOfSize:", .{13})});
         if (t.completed) {
-            label.send("setTextColor:", .{AppKit.NSColor.class("secondaryLabelColor", .{})});
+            label.send("setTextColor:", .{AppKit.NSColor.static("secondaryLabelColor", .{})});
             const str_val = label.send("stringValue", .{});
-            const str_len = objc.send(c_ulong, str_val, "length", .{});
-            const attr = Foundation.NSMutableAttributedString.class("alloc", .{}).send("initWithString:", .{str_val});
+            const str_len = objc.send(str_val, "length", c_ulong, .{});
+            const attr = Foundation.NSMutableAttributedString.static("alloc", .{}).send("initWithString:", .{str_val});
             attr.send("addAttribute:value:range:", .{
                 objc.nsString("NSStrikethrough"),                   objc.nsNumberWithInt(1),
                 AppKit.NSRange{ .location = 0, .length = str_len },
@@ -531,17 +531,17 @@ fn buildTodozRow(t: *const Todoz, idx: usize) AppKit.NSStackView {
         }
         label.send("setContentHuggingPriority:forOrientation:", .{ 249, 0 });
         label.send("setContentCompressionResistancePriority:forOrientation:", .{ 749, 0 });
-        const cell = objc.send(Object, label.id, "cell", .{});
-        objc.send(void, cell, "setLineBreakMode:", .{4});
+        const cell = objc.send(label.id, "cell", Object, .{});
+        objc.send(cell, "setLineBreakMode:", void, .{4});
         row.send("addArrangedSubview:", .{label.id});
     }
 
     { // Delete button
-        const img = AppKit.NSImage.class("imageWithSystemSymbolName:accessibilityDescription:", .{ "trash", "Delete" });
-        const btn: AppKit.NSButton = .{ .id = AppKit.NSButton.class("buttonWithImage:target:action:", .{ img, handler, objc.sel("removeTodoz:") }) };
+        const img = AppKit.NSImage.static("imageWithSystemSymbolName:accessibilityDescription:", .{ "trash", "Delete" });
+        const btn: AppKit.NSButton = .{ .id = AppKit.NSButton.static("buttonWithImage:target:action:", .{ img, handler, objc.sel("removeTodoz:") }) };
         btn.send("setTranslatesAutoresizingMaskIntoConstraints:", .{false});
         btn.send("setBordered:", .{false});
-        const red = AppKit.NSColor.class("systemRedColor", .{});
+        const red = AppKit.NSColor.static("systemRedColor", .{});
         btn.send("setContentTintColor:", .{red.send("colorWithAlphaComponent:", .{0.7})});
         btn.send("setTag:", .{t.id});
         row.send("addArrangedSubview:", .{btn.id});
