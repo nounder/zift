@@ -91,6 +91,10 @@ pub fn build(b: *std.Build) void {
 
     addExample(b, zift, target, optimize, "floating_webview");
     addExample(b, zift, target, optimize, "html_textview");
+    if (comptime @import("builtin").os.tag == .macos) {
+        addSwiftUIExample(b, target, optimize, "floating_webview_swiftui");
+        addSwiftUIExample(b, target, optimize, "todoz_swiftui");
+    }
 
     // ── Default: build both apps ──────────────────────────────────────
 
@@ -136,6 +140,90 @@ fn addExample(
     example.root_module.linkFramework("CoreGraphics", .{});
     example.root_module.linkFramework("Accessibility", .{});
     example.root_module.linkFramework("ApplicationServices", .{});
+    example.root_module.linkSystemLibrary("objc", .{});
+
+    const run = b.addRunArtifact(example);
+    const step = b.step("run-" ++ name, "Run " ++ name ++ " example");
+    step.dependOn(&run.step);
+}
+
+// ── Swift toolchain resolution ─────────────────────────────────────────
+
+const SwiftPaths = struct { toolchain_swift_lib: []const u8, sdk_swift_lib: []const u8 };
+
+fn resolveSwiftPaths(b: *std.Build) SwiftPaths {
+    const S = struct { var cached: ?SwiftPaths = null; };
+    if (S.cached) |paths| return paths;
+
+    const swiftc = std.mem.trim(u8, b.run(&.{ "xcrun", "--find", "swiftc" }), &std.ascii.whitespace);
+    // xcrun --find swiftc → …/Toolchain/usr/bin/swiftc
+    const toolchain_root = std.fs.path.dirname(std.fs.path.dirname(swiftc).?).?;
+
+    const sdk = std.mem.trim(u8, b.run(&.{ "xcrun", "--show-sdk-path" }), &std.ascii.whitespace);
+
+    S.cached = .{
+        .toolchain_swift_lib = b.fmt("{s}/lib/swift/macosx", .{toolchain_root}),
+        .sdk_swift_lib = b.fmt("{s}/usr/lib/swift", .{sdk}),
+    };
+    return S.cached.?;
+}
+
+// ── SwiftUI example helper ─────────────────────────────────────────────
+//
+// Builds a Zig executable that links the Swift runtime + SwiftUI framework.
+// If a matching .swift file exists, it is compiled to .o and linked in.
+
+fn addSwiftUIExample(
+    b: *std.Build,
+    target: std.Build.ResolvedTarget,
+    optimize: std.builtin.OptimizeMode,
+    comptime name: []const u8,
+) void {
+    const swift_paths = resolveSwiftPaths(b);
+
+    const example = b.addExecutable(.{
+        .name = name,
+        .root_module = b.createModule(.{
+            .root_source_file = b.path("examples/" ++ name ++ ".zig"),
+            .target = target,
+            .optimize = optimize,
+            .link_libc = true,
+        }),
+    });
+
+    // Compile any companion .swift files (example-specific + shared app stub)
+    const swift_files = [_][]const u8{ "examples/" ++ name ++ ".swift", "src/swiftui_app_stub.swift" };
+    inline for (swift_files) |swift_path| {
+        if (std.fs.cwd().access(swift_path, .{})) |_| {
+            const swiftc_cmd = b.addSystemCommand(&.{ "swiftc", "-parse-as-library", "-emit-object", "-o" });
+            const swift_obj = swiftc_cmd.addOutputFileArg(swift_path ++ ".o");
+            swiftc_cmd.addFileArg(b.path(swift_path));
+            example.addObjectFile(swift_obj);
+        } else |_| {}
+    }
+
+    // Swift runtime library paths
+    example.root_module.addLibraryPath(.{ .cwd_relative = swift_paths.toolchain_swift_lib });
+    example.root_module.addLibraryPath(.{ .cwd_relative = swift_paths.sdk_swift_lib });
+    example.root_module.addRPath(.{ .cwd_relative = "/usr/lib/swift" });
+
+    // Swift core + overlay libraries
+    const swift_libs = [_][]const u8{
+        "swiftCore",            "swiftCoreFoundation", "swiftCoreImage",
+        "swiftDispatch",        "swiftIOKit",          "swiftMetal",
+        "swiftOSLog",           "swiftObjectiveC",     "swiftQuartzCore",
+        "swiftSpatial",         "swiftUniformTypeIdentifiers",
+        "swiftXPC",             "swift_Builtin_float",  "swiftos",
+        "swiftsimd",
+    };
+    for (swift_libs) |lib| {
+        example.root_module.linkSystemLibrary(lib, .{});
+    }
+
+    // Frameworks
+    example.root_module.linkFramework("SwiftUI", .{});
+    example.root_module.linkFramework("AppKit", .{});
+    example.root_module.linkFramework("Foundation", .{});
     example.root_module.linkSystemLibrary("objc", .{});
 
     const run = b.addRunArtifact(example);
