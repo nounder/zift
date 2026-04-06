@@ -1,9 +1,9 @@
 const std = @import("std");
-const zift = @import("zift");
-const objc = zift.objc;
-const AppKit = zift.AppKit;
-const Foundation = zift.Foundation;
-const WebKit = zift.WebKit;
+const zwift = @import("zwift");
+const objc = zwift.objc;
+const AppKit = zwift.AppKit;
+const Foundation = zwift.Foundation;
+const WebKit = zwift.WebKit;
 
 const cc = std.builtin.CallingConvention.c;
 const Object = objc.Object;

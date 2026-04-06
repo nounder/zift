@@ -4,20 +4,20 @@ pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
 
-    // ── Shared zift module ────────────────────────────────────────────
+    // ── Shared zwift module ────────────────────────────────────────────
 
-    const zift = b.createModule(.{
-        .root_source_file = b.path("src/zift.zig"),
+    const zwift = b.createModule(.{
+        .root_source_file = b.path("src/zwift.zig"),
         .target = target,
         .optimize = optimize,
         .link_libc = true,
     });
-    zift.linkFramework("AppKit", .{});
-    zift.linkFramework("WebKit", .{});
-    zift.linkFramework("CoreGraphics", .{});
-    zift.linkFramework("Accessibility", .{});
-    zift.linkFramework("ApplicationServices", .{});
-    zift.linkSystemLibrary("objc", .{});
+    zwift.linkFramework("AppKit", .{});
+    zwift.linkFramework("WebKit", .{});
+    zwift.linkFramework("CoreGraphics", .{});
+    zwift.linkFramework("Accessibility", .{});
+    zwift.linkFramework("ApplicationServices", .{});
+    zwift.linkSystemLibrary("objc", .{});
 
     // ── Todoz app ─────────────────────────────────────────────────────
 
@@ -89,11 +89,11 @@ pub fn build(b: *std.Build) void {
 
     // ── Examples ───────────────────────────────────────────────────────
 
-    addExample(b, zift, target, optimize, "floating_webview");
-    addExample(b, zift, target, optimize, "html_textview");
+    addExample(b, zwift, target, optimize, "floating_webview_zig");
+    addExample(b, zwift, target, optimize, "html_textview");
     if (comptime @import("builtin").os.tag == .macos) {
-        addSwiftUIExample(b, target, optimize, "floating_webview_swiftui");
-        addSwiftUIExample(b, target, optimize, "todoz_swiftui");
+        addSwiftUIExample(b, target, optimize, "floating_webview_swiftui", &.{});
+        addSwiftUIExample(b, target, optimize, "todoz_swiftui", &.{"examples/todoz_swiftui/bridge.swift"});
     }
 
     // ── Default: build both apps ──────────────────────────────────────
@@ -120,7 +120,7 @@ pub fn build(b: *std.Build) void {
 
 fn addExample(
     b: *std.Build,
-    zift: *std.Build.Module,
+    zwift: *std.Build.Module,
     target: std.Build.ResolvedTarget,
     optimize: std.builtin.OptimizeMode,
     comptime name: []const u8,
@@ -128,11 +128,11 @@ fn addExample(
     const example = b.addExecutable(.{
         .name = name,
         .root_module = b.createModule(.{
-            .root_source_file = b.path("examples/" ++ name ++ ".zig"),
+            .root_source_file = b.path("examples/" ++ name ++ "/main.zig"),
             .target = target,
             .optimize = optimize,
             .link_libc = true,
-            .imports = &.{.{ .name = "zift", .module = zift }},
+            .imports = &.{.{ .name = "zwift", .module = zwift }},
         }),
     });
     example.root_module.linkFramework("AppKit", .{});
@@ -178,36 +178,26 @@ fn addSwiftUIExample(
     target: std.Build.ResolvedTarget,
     optimize: std.builtin.OptimizeMode,
     comptime name: []const u8,
+    comptime swift_files: []const []const u8,
 ) void {
     const swift_paths = resolveSwiftPaths(b);
 
     const example = b.addExecutable(.{
         .name = name,
         .root_module = b.createModule(.{
-            .root_source_file = b.path("examples/" ++ name ++ ".zig"),
+            .root_source_file = b.path("examples/" ++ name ++ "/main.zig"),
             .target = target,
             .optimize = optimize,
             .link_libc = true,
         }),
     });
 
-    // Compile any companion .swift files (example-specific + shared app stub)
-    const swift_files = [_][]const u8{ "examples/" ++ name ++ ".swift", "src/swiftui_app_stub.swift" };
+    // Compile companion Swift files
     inline for (swift_files) |swift_path| {
-        if (std.fs.cwd().access(swift_path, .{})) |_| {
-            const swiftc_cmd = b.addSystemCommand(&.{ "swiftc", "-parse-as-library", "-emit-object", "-o" });
-            const swift_obj = swiftc_cmd.addOutputFileArg(swift_path ++ ".o");
-            swiftc_cmd.addFileArg(b.path(swift_path));
-            example.addObjectFile(swift_obj);
-        } else |_| {}
-    }
-
-    // Link any companion .o object files (e.g., keypath patterns)
-    const obj_files = [_][]const u8{ "examples/" ++ name ++ "_keypath.o" };
-    inline for (obj_files) |obj_path| {
-        if (std.fs.cwd().access(obj_path, .{})) |_| {
-            example.addObjectFile(b.path(obj_path));
-        } else |_| {}
+        const swiftc_cmd = b.addSystemCommand(&.{ "swiftc", "-parse-as-library", "-emit-object", "-o" });
+        const swift_obj = swiftc_cmd.addOutputFileArg(swift_path ++ ".o");
+        swiftc_cmd.addFileArg(b.path(swift_path));
+        example.addObjectFile(swift_obj);
     }
 
     // Swift runtime library paths
@@ -222,7 +212,7 @@ fn addSwiftUIExample(
         "swiftOSLog",           "swiftObjectiveC",     "swiftQuartzCore",
         "swiftSpatial",         "swiftUniformTypeIdentifiers",
         "swiftXPC",             "swift_Builtin_float",  "swiftos",
-        "swiftsimd",
+        "swiftsimd",            "swiftObservation",     "swift_Concurrency",
     };
     for (swift_libs) |lib| {
         example.root_module.linkSystemLibrary(lib, .{});

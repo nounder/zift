@@ -1,4 +1,4 @@
-# zift
+# zwift
 
 A macOS todo app with two frontends:
 
