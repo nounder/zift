@@ -5,6 +5,8 @@
 //!   - Text.bold() / .italic()    — style modifiers
 //!   - Text + Text                — concatenate styled segments
 //!   - Button.init(_:action:)     — interactive button with Zig callback
+//!   - Toggle.init(_:isOn:)       — interactive toggle with Zig-backed state
+//!   - Binding(get:set:)          — mutable binding backed by Zig global
 //!   - swift_getWitnessTable      — generic protocol conformance resolution
 //!
 //! No Swift source code needed.
@@ -223,6 +225,86 @@ fn buttonInit(label: *const LocalizedStringKey, action: *const anyopaque, out: *
         : .{ .memory = true });
 }
 
+// ── Binding<Bool> (17 bytes — swiftcc decomposed as x0,x1,w2) ───────
+//
+// Binding.init(get:set:) creates a mutable binding from closure pairs.
+// Each closure is a thick Swift function: (fn_ptr, context_ptr).
+// For non-capturing closures, context = 0 (null).
+//
+// The closures use generic/indirect convention:
+//   GET:  x8 = output ptr, x20 = context → store Bool to [x8]
+//   SET:  x0 = ptr to Bool, x20 = context → read from [x0]
+
+const BindingBool = extern struct { _0: u64, _1: u64, _2: u8, _pad: [7]u8 = .{0} ** 7 };
+
+// Bool type metadata
+extern const @"$sSbN": anyopaque;
+
+fn bindingInit(
+    get_fn: *const anyopaque,
+    set_fn: *const anyopaque,
+    out: *BindingBool,
+) callconv(.c) void {
+    var save: [3]u64 = undefined;
+    asm volatile (
+        \\stp x19, x20, [x11]
+        \\str x30, [x11, #16]
+        \\mov x19, x11
+        // x0 = get fn, x1 = get context (0), x2 = set fn, x3 = set context (0), x4 = Bool metadata
+        \\mov x1, #0
+        \\mov x2, x10
+        \\mov x3, #0
+        \\mov x4, x9
+        \\bl _$s7SwiftUI7BindingV3get3setACyxGxyc_yxctcfC
+        \\ldr x30, [x19, #16]
+        \\ldp x19, x20, [x19]
+        :
+        : [get] "{x0}" (get_fn),
+          [set] "{x10}" (set_fn),
+          [meta] "{x9}" (&@"$sSbN"),
+          [buf] "{x8}" (out),
+          [sv] "{x11}" (&save),
+        : .{ .memory = true }
+    );
+}
+
+// ── Toggle<Text> (104 bytes — sret via x8) ──────────────────────────
+//
+// Toggle<Text>.init(_:isOn:)
+// Args: x0,x1,w2,x3 = LocalizedStringKey (32 bytes decomposed)
+//       x4,x5,w6    = Binding<Bool> (17 bytes decomposed)
+//       x8           = sret output (104 bytes)
+
+const ToggleText = [13]u64; // 104 bytes, 8-byte aligned
+
+// Toggle<Text>: View conformance descriptor
+extern const @"$s7SwiftUI6ToggleVyxGAA4ViewAAMc": anyopaque;
+
+fn toggleInit(label: *const LocalizedStringKey, binding: *const BindingBool, out: *ToggleText) callconv(.c) void {
+    var save: [3]u64 = undefined;
+    asm volatile (
+        \\stp x19, x20, [x11]
+        \\str x30, [x11, #16]
+        \\mov x19, x11
+        // Load LocalizedStringKey into x0,x1,w2,x3
+        \\ldp x0, x1, [x9]
+        \\ldrb w2, [x9, #16]
+        \\ldr x3, [x9, #24]
+        // Load Binding<Bool> into x4,x5,w6
+        \\ldp x4, x5, [x10]
+        \\ldrb w6, [x10, #16]
+        \\bl _$s7SwiftUI6ToggleVA2A4TextVRszrlE_4isOnACyAEGAA18LocalizedStringKeyV_AA7BindingVySbGtcfC
+        \\ldr x30, [x19, #16]
+        \\ldp x19, x20, [x19]
+        :
+        : [key] "{x9}" (label),
+          [bind] "{x10}" (binding),
+          [buf] "{x8}" (out),
+          [sv] "{x11}" (&save),
+        : .{ .memory = true }
+    );
+}
+
 // ── __App.run ────────────────────────────────────────────────────────
 
 fn appRun(value_ptr: *const anyopaque, type_meta: *anyopaque, view_wt: *anyopaque) noreturn {
@@ -244,7 +326,7 @@ const todos = [_]struct { title: []const u8, done: bool }{
     .{ .title = "Style with Text.bold()", .done = true },
     .{ .title = "Compose with Text + Text", .done = true },
     .{ .title = "Wire up button actions", .done = true },
-    .{ .title = "Dynamic state updates", .done = false },
+    .{ .title = "Dynamic state updates", .done = true },
 };
 
 // ── Helpers ──────────────────────────────────────────────────────────
@@ -264,6 +346,34 @@ fn isAscii(s: []const u8) bool {
     return true;
 }
 
+// ── Zig-backed state ────────────────────────────────────────────────
+//
+// These globals are read/written by SwiftUI through Binding(get:set:).
+// The closures use swiftcc generic convention:
+//   GET:  x8 = indirect output pointer, x20 = context (ignored)
+//   SET:  x0 = indirect input pointer,  x20 = context (ignored)
+
+var toggle_state: bool = false;
+
+/// Binding GET closure: write toggle_state to [x8] (indirect return).
+/// In swiftcc generic closures, the result is always written indirectly.
+export fn bindingGetBool() void {
+    // x8 = indirect result pointer (set by SwiftUI before calling us)
+    const out: *u8 = asm ("" : [out] "={x8}" (-> *u8) : : .{});
+    out.* = if (toggle_state) 1 else 0;
+}
+
+/// Binding SET closure: read new value from [x0] (in_guaranteed).
+export fn bindingSetBool(ptr: *const u8) callconv(.c) void {
+    toggle_state = ptr.* != 0;
+    const stdout = std.fs.File.stdout();
+    if (toggle_state) {
+        stdout.writeAll("Toggle ON  (from Zig)\n") catch {};
+    } else {
+        stdout.writeAll("Toggle OFF (from Zig)\n") catch {};
+    }
+}
+
 // ── Button action callback ──────────────────────────────────────────
 
 export fn onButtonTap() void {
@@ -274,27 +384,30 @@ export fn onButtonTap() void {
 // ── Entry point ──────────────────────────────────────────────────────
 
 pub fn main() void {
-    // 1. Create Button<Text> with Zig callback
-    //    (must happen BEFORE ButtonVMa metadata resolution)
-    const label = localizedStringKey("Tap me from Zig!", 16);
-    var btn: ButtonText = undefined;
-    buttonInit(&label, @ptrCast(&onButtonTap), &btn);
+    // 1. Create Binding<Bool> backed by Zig global state
+    var binding: BindingBool = undefined;
+    bindingInit(@ptrCast(&bindingGetBool), @ptrCast(&bindingSetBool), &binding);
 
-    // 2. Resolve Button<Text> metadata via mangled name (NOT ButtonVMa!)
-    const btn_name = "7SwiftUI6ButtonVyAA4TextVG";
-    const btn_meta = swift_getTypeByMangledNameInEnvironment(
-        btn_name.ptr, btn_name.len, null, null,
+    // 2. Create Toggle<Text> with the Zig-backed binding
+    const label = localizedStringKey("Enable feature (Zig state)", 26);
+    var toggle: ToggleText = undefined;
+    toggleInit(&label, &binding, &toggle);
+
+    // 3. Resolve Toggle<Text> metadata via mangled name
+    const toggle_name = "7SwiftUI6ToggleVyAA4TextVG";
+    const toggle_meta = swift_getTypeByMangledNameInEnvironment(
+        toggle_name.ptr, toggle_name.len, null, null,
     ) orelse unreachable;
 
-    // 3. Get Button<Text>: View witness table
+    // 4. Get Toggle<Text>: View witness table
     const text_meta = @"$s7SwiftUI4TextVMa"(0).m;
     var wt_args = [_]?*anyopaque{@ptrCast(text_meta)};
-    const btn_view_wt = swift_getWitnessTable(
-        @ptrCast(&@"$s7SwiftUI6ButtonVyxGAA4ViewAAMc"),
-        btn_meta,
+    const toggle_view_wt = swift_getWitnessTable(
+        @ptrCast(&@"$s7SwiftUI6ToggleVyxGAA4ViewAAMc"),
+        toggle_meta,
         @ptrCast(&wt_args),
     );
 
-    // 4. Launch SwiftUI app
-    appRun(@ptrCast(&btn), btn_meta, btn_view_wt);
+    // 5. Launch SwiftUI app — Toggle reads/writes Zig state via Binding
+    appRun(@ptrCast(&toggle), toggle_meta, toggle_view_wt);
 }
