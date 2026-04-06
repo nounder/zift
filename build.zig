@@ -202,6 +202,14 @@ fn addSwiftUIExample(
         } else |_| {}
     }
 
+    // Link any companion .o object files (e.g., keypath patterns)
+    const obj_files = [_][]const u8{ "examples/" ++ name ++ "_keypath.o" };
+    inline for (obj_files) |obj_path| {
+        if (std.fs.cwd().access(obj_path, .{})) |_| {
+            example.addObjectFile(b.path(obj_path));
+        } else |_| {}
+    }
+
     // Swift runtime library paths
     example.root_module.addLibraryPath(.{ .cwd_relative = swift_paths.toolchain_swift_lib });
     example.root_module.addLibraryPath(.{ .cwd_relative = swift_paths.sdk_swift_lib });
